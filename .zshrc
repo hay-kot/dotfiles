@@ -50,7 +50,7 @@ mac_config() {
 }
 
 
-if [ AM_MAC==1 ]; then; mac_config; fi
+if (( AM_MAC > 0)); then; mac_config; fi
 
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
@@ -86,7 +86,7 @@ source $ZSH/oh-my-zsh.sh
 
 ## MAC OS
 
-if [ AM_MAC==1 ]; then
+if (( AM_MAC > 0)); then
   source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
