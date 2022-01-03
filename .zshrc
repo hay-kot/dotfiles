@@ -2,6 +2,16 @@
 #                     Mac OS Configuration Functions                          #
 ###############################################################################
 
+AM_MAC=0
+
+is_mac() {
+  if [[ $OSTYPE == 'darwin'* ]]; then
+        AM_MAC=1
+  fi
+}
+
+is_mac
+
 mac_config() {
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the start of this file.
@@ -39,11 +49,8 @@ mac_config() {
     #### END FIG ENV VARIABLES ####
 }
 
-is_mac() {
-  [[ $OSTYPE == 'darwin'* ]]
-}
 
-if [ is_mac ]; then; mac_config; fi
+if [ AM_MAC==1 ]; then; mac_config; fi
 
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
@@ -79,7 +86,7 @@ source $ZSH/oh-my-zsh.sh
 
 ## MAC OS
 
-if [ is_mac ]; then
+if [ AM_MAC==1 ]; then
   source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
@@ -131,7 +138,7 @@ linux_aliases() {
 }
 
 # Only Alias apt-get if we are on linux
-if ! [ is_mac ]; then; linux_aliases; fi
+if ! [ AM_MAC==1 ]; then; linux_aliases; fi
 
 
 
