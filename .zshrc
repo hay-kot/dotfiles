@@ -159,6 +159,21 @@ repos() {
 
     cd ~/code/repos/$1
 }
+
+git-big() {
+    if [ -z "$1" ]; then
+        echo "Usage: git-big <number of files>"
+        return
+    fi
+
+    git rev-list --objects --all \
+    | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+    | sed -n 's/^blob //p' \
+    | sort --numeric-sort --key=2 \
+    | tail -n $1 \
+    | cut -c 1-12,41- \
+    | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
+}
  
 ###############################################################################
 #                         Alias Functions                                     #
