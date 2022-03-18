@@ -49,8 +49,11 @@ mac_config() {
     #### END FIG ENV VARIABLES ####
 }
 
-
-if (( AM_MAC > 0)); then; mac_config; fi
+## MAC OS
+if (( AM_MAC > 0)); then; 
+  mac_config; 
+  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
 
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
@@ -67,6 +70,7 @@ export ZSH=$HOME/.oh-my-zsh
 # ZSH_THEME="agnoster"
 export DEFAULT_USER="$(whoami)"
 DISABLE_AUTO_TITLE="true"
+export PATH="~/scripts:$PATH"
 
 
 # ============================================================================
@@ -84,11 +88,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-## MAC OS
 
-if (( AM_MAC > 0)); then
-  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
 
 # ============================================================================
 # Python Dev Common
@@ -109,21 +109,16 @@ export MARKER_KEY_NEXT_PLACEHOLDER="\C-b"   #change maker key binding from Ctr+t
 
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
-export PATH=$PATH:~/.quickzsh/todo/bin    #usig alias doesn't properly work
+export PATH=$PATH:~/.quickzsh/todo/bin    # using alias doesn't properly work
 
 autoload -U compinit && compinit
-
-# export COOKIECUTTER_CONFIG="$HOME/linux-dev/dotfiles/cookiecutter.yaml"
-
 SAVEHIST=10000    #save upto 50,000 lines in history. oh-my-zsh default is 10,000
-#setopt hist_ignore_all_dups     # dont record duplicated entries in history during a single session
 
 # Start stuff that downloads in ~/Downloads
 alias wget="cd ~/Downloads; wget"
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
-
 
 linux_aliases() {
     # Custom Apt
@@ -140,15 +135,15 @@ linux_aliases() {
 # Only Alias apt-get if we are on linux
 if ! [ AM_MAC==1 ]; then; linux_aliases; fi
 
-
-
-
-
 # Stuff That Came With Template
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
 alias l="ls -lah"
 alias x="exit"
 alias k="k -h"						# show human readable filesizes, in kb, mb etc
+
+###############################################################################
+#                         Alias Functions                                     #
+###############################################################################
 
 repos() {
     # Navigate to repos director and open target directory is specified
@@ -160,6 +155,7 @@ repos() {
     cd ~/code/repos/$1
 }
 
+# Returns the largest files in a repository incase you're an idiot like me
 git-big() {
     if [ -z "$1" ]; then
         echo "Usage: git-big <number of files>"
@@ -175,10 +171,6 @@ git-big() {
     | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
 }
  
-###############################################################################
-#                         Alias Functions                                     #
-###############################################################################
-
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
     tmp="$(mktemp)"
@@ -203,11 +195,9 @@ lfcode () {
 }
 bindkey -s '^[c' 'lfcode\n'
 
-
 speedtest() {
     curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -
 }
-
 
 # Find geo info from IP
 ipgeo() {
@@ -220,7 +210,7 @@ ipgeo() {
 }
 
 # Make and CD into directory
-function mkcd {
+mkcd() {
   if [ ! -n "$1" ]; then
     echo "Enter a directory name"
   elif [ -d $1 ]; then
@@ -230,25 +220,12 @@ function mkcd {
   fi
 }
 
+alias lscripts="ls ~/.dotfiles/scripts"
+
 ###############################################################################
 #                                  Prompt                                     #
 ###############################################################################
 
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
-
-# New Line Prompt
-prompt_end() {
-  if [[ -n $CURRENT_BG ]]; then
-      print -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
-  else
-      print -n "%{%k%}"
-  fi
-
-  print -n "%{%f%}"
-  CURRENT_BG='' 
-
-  #Adds the new line and ➜ as the start character.
-  printf "\n ➜";
-}
 
 
