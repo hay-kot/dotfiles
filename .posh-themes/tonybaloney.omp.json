@@ -5,6 +5,16 @@
       "alignment": "left",
       "segments": [
         {
+          "type": "session",
+          "style": "diamond",
+          "foreground": "#ffc107",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "properties": {
+            "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }} {{ end }}"
+          }
+        },
+        {
           "background": "#18354c",
           "foreground": "#ffc107",
           "leading_diamond": "\ue0b6",
