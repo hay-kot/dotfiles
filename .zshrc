@@ -133,7 +133,7 @@ linux_aliases() {
 }
 
 # Only Alias apt-get if we are on linux
-if ! [ AM_MAC==1 ]; then; linux_aliases; fi
+if ! [ AM_MAC==0 ]; then; linux_aliases; fi
 
 # Stuff That Came With Template
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
