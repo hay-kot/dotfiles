@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+languages=`echo "python golang typescript nodejs vue" | tr ' ' '\n' `
+core_utils=`echo "xargs find mv sed awk" | tr ' ' '\n'`
+
+selected=`printf "$languages\n$core_utils" | fzf`
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+read -p "Enter Query: " query
+
+echo $selected
+echo $languages
+
+if echo $languages | grep -qs $selected; then
+    query=`echo $query | tr ' ' '+'`
+    echo cht.sh/$selected/$query
+    curl cht.sh/$selected/$query
+else
+    echo "Core Util"
+    curl -s "cht.sh/$selected~$query" | less
+fi
