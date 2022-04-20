@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+. "$HOME/.fig/shell/zshrc.pre.zsh"
 ###############################################################################
 #                     Mac OS Configuration Functions                          #
 ###############################################################################
@@ -148,11 +150,21 @@ alias k="k -h"						# show human readable filesizes, in kb, mb etc
 repos() {
     # Navigate to repos director and open target directory is specified
     if [ -z "$1" ]; then
-        cd ~/code/repos && ls -la
+        p=`~/.builds/repos`
+        cd "$p"
         return
     fi
 
     cd ~/code/repos/$1
+}
+
+init() {
+    # Go Scripts
+    go build -o .builds ~/.dotfiles/pkgs/repos/*.go 
+
+    # Make Scripts Executable
+    chmod +x ~/scripts/*
+
 }
 
 # Returns the largest files in a repository incase you're an idiot like me
