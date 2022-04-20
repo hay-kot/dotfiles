@@ -1,0 +1,7 @@
+.git.*
+.gitignore
+pkgs
+
+^/README.*
+^/LICENSE.*
+^/COPYING
