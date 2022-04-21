@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-. "$HOME/.fig/shell/zshrc.pre.zsh"
 ###############################################################################
 #                     Mac OS Configuration Functions                          #
 ###############################################################################
@@ -17,8 +15,7 @@ is_mac
 mac_config() {
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the start of this file.
-    [ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
-    #### END FIG ENV VARIABLES ####
+        #### END FIG ENV VARIABLES ####
 
     # ============================================================================
     # Homebrew Path
@@ -47,8 +44,7 @@ mac_config() {
 
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the end of this file.
-    [ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
-    #### END FIG ENV VARIABLES ####
+        #### END FIG ENV VARIABLES ####
 }
 
 ## MAC OS
@@ -239,5 +235,3 @@ alias lscripts="ls ~/.dotfiles/scripts"
 ###############################################################################
 
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
-
-
