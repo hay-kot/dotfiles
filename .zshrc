@@ -50,8 +50,9 @@ mac_config() {
 ## MAC OS
 if (( AM_MAC > 0)); then; 
   mac_config; 
-  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+  ### Brew Setup ###
+  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   alias brew-sync="brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile"
   alias brew-restore="brew bundle install --file=~/.dotfiles/.mac/Brewfile"
 fi
