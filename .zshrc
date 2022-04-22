@@ -15,7 +15,7 @@ is_mac
 mac_config() {
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the start of this file.
-        #### END FIG ENV VARIABLES ####
+    #### END FIG ENV VARIABLES ####
 
     # ============================================================================
     # Homebrew Path
@@ -44,13 +44,16 @@ mac_config() {
 
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the end of this file.
-        #### END FIG ENV VARIABLES ####
+    #### END FIG ENV VARIABLES ####
 }
 
 ## MAC OS
 if (( AM_MAC > 0)); then; 
   mac_config; 
   source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+  alias brew-sync="brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile"
+  alias brew-restore="brew bundle install --file=~/.dotfiles/.mac/Brewfile"
 fi
 
 export TERM="xterm-256color"
@@ -143,20 +146,23 @@ alias k="k -h"						# show human readable filesizes, in kb, mb etc
 #                         Alias Functions                                     #
 ###############################################################################
 
+alias fcode="code \`gofind repos\`"
+
 repos() {
     # Navigate to repos director and open target directory is specified
     if [ -z "$1" ]; then
-        p=`~/.builds/repos`
-        cd "$p"
+        cd `gofind repos`
         return
     fi
 
     cd ~/code/repos/$1
 }
 
+
+
 init() {
-    # Go Scripts
-    go build -o .builds ~/.dotfiles/pkgs/repos/*.go 
+    # Go Installs
+    go install github.com/hay-kot/gofind@latest
 
     # Make Scripts Executable
     chmod +x ~/scripts/*
