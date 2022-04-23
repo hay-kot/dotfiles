@@ -25,7 +25,7 @@ plugins = [
 def clone_plungin(plugin: Plugin):
     plugin_dest = f"{CUSTOM}/plugins/{plugin.name}"
     print(plugin_dest)
-    print("Cloning plugin: {}".format(plugin))
+    print(f"Cloning plugin: {plugin}")
     subprocess.run(["git", "clone", plugin.url, plugin_dest], stdout=subprocess.PIPE)
 
 
