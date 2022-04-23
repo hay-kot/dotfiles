@@ -1,14 +1,9 @@
-
-###############################################################################
-#                     Mac OS Configuration Functions                          #
-###############################################################################
-
 AM_MAC=0
 
 is_mac() {
-  if [[ $OSTYPE == 'darwin'* ]]; then
+    if [[ $OSTYPE == 'darwin'* ]]; then
         AM_MAC=1
-  fi
+    fi
 }
 
 is_mac
@@ -17,32 +12,32 @@ mac_config() {
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the start of this file.
     #### END FIG ENV VARIABLES ####
-
+    
     # ============================================================================
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-
+    
     # ============================================================================
     # Python Setup Functions
-
+    
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
-
+    
     # Poetry
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
-
+    
     # ============================================================================
     # Node Setup Functions
     export NVM_DIR="$HOME/.nvm"
     [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
     [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
+    
     # ============================================================================
     # Go Setup Functions
     export PATH="$HOME/Go/bin:$PATH"
-
+    
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the end of this file.
     #### END FIG ENV VARIABLES ####
@@ -50,15 +45,15 @@ mac_config() {
 
 ## MAC OS
 if (( AM_MAC > 0)); then;
-  # Fig pre block. Keep at the top of this file.
-  . "$HOME/.fig/shell/zshrc.pre.zsh"
-
-  mac_config;
-
-  ### Brew Setup ###
-  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  alias brew-sync="brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile"
-  alias brew-restore="brew bundle install --file=~/.dotfiles/.mac/Brewfile"
+    # Fig pre block. Keep at the top of this file.
+    . "$HOME/.fig/shell/zshrc.pre.zsh"
+    
+    mac_config;
+    
+    ### Brew Setup ###
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    alias brew-sync="brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile"
+    alias brew-restore="brew bundle install --file=~/.dotfiles/.mac/Brewfile"
 fi
 
 export TERM="xterm-256color"
@@ -76,7 +71,6 @@ export ZSH=$HOME/.oh-my-zsh
 # ZSH_THEME="agnoster"
 export DEFAULT_USER="$(whoami)"
 DISABLE_AUTO_TITLE="true"
-export PATH="~/scripts:$PATH"
 
 
 # ============================================================================
@@ -90,7 +84,7 @@ plugins=(
     docker
     pyenv
     systemd
-    )
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -159,19 +153,17 @@ repos() {
         cd `gofind repos`
         return
     fi
-
+    
     cd ~/code/repos/$1
 }
-
-
 
 init() {
     # Go Installs
     go install github.com/hay-kot/gofind@latest
-
+    
     # Make Scripts Executable
     chmod +x ~/scripts/*
-
+    
 }
 
 # Returns the largest files in a repository incase you're an idiot like me
@@ -180,7 +172,7 @@ git-big() {
         echo "Usage: git-big <number of files>"
         return
     fi
-
+    
     git rev-list --objects --all \
     | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
     | sed -n 's/^blob //p' \
@@ -230,25 +222,22 @@ ipgeo() {
 
 # Make and CD into directory
 mkcd() {
-  if [ ! -n "$1" ]; then
-    echo "Enter a directory name"
-  elif [ -d $1 ]; then
-    echo "\`$1' already exists"
-  else
-    mkdir $1 && cd $1
-  fi
+    if [ ! -n "$1" ]; then
+        echo "Enter a directory name"
+        elif [ -d $1 ]; then
+        echo "\`$1' already exists"
+    else
+        mkdir $1 && cd $1
+    fi
 }
 
-###############################################################################
-#                                  Prompt                                     #
-###############################################################################
-
+### Prompt ###
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
 
 
 
 ## MAC OS
 if (( AM_MAC > 0)); then;
-  # Fig post block. Keep at the bottom of this file.
-  . "$HOME/.fig/shell/zshrc.post.zsh"
+    # Fig post block. Keep at the bottom of this file.
+    . "$HOME/.fig/shell/zshrc.post.zsh"
 fi
