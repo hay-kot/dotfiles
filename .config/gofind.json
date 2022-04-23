@@ -1,0 +1,14 @@
+{
+  "default": "repos",
+  "commands": {
+    "compose": {
+      "root": "~/Docker",
+      "match": "docker-compose*"
+    },
+    "repos": {
+      "root": "~/Code",
+      "match": ".git"
+    }
+  },
+  "cache": "~/.cache/gofind/"
+}
