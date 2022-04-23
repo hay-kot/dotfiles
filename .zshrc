@@ -1,3 +1,4 @@
+
 ###############################################################################
 #                     Mac OS Configuration Functions                          #
 ###############################################################################
@@ -29,7 +30,7 @@ mac_config() {
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
 
-    # Poetry 
+    # Poetry
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
 
     # ============================================================================
@@ -39,7 +40,7 @@ mac_config() {
     [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
     # ============================================================================
-    # Go Setup Functions 
+    # Go Setup Functions
     export PATH="$HOME/Go/bin:$PATH"
 
     #### FIG ENV VARIABLES ####
@@ -48,8 +49,11 @@ mac_config() {
 }
 
 ## MAC OS
-if (( AM_MAC > 0)); then; 
-  mac_config; 
+if (( AM_MAC > 0)); then;
+  # Fig pre block. Keep at the top of this file.
+  . "$HOME/.fig/shell/zshrc.pre.zsh"
+
+  mac_config;
 
   ### Brew Setup ###
   source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -185,7 +189,7 @@ git-big() {
     | cut -c 1-12,41- \
     | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
 }
- 
+
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
     tmp="$(mktemp)"
@@ -240,3 +244,11 @@ mkcd() {
 ###############################################################################
 
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
+
+
+
+## MAC OS
+if (( AM_MAC > 0)); then;
+  # Fig post block. Keep at the bottom of this file.
+  . "$HOME/.fig/shell/zshrc.post.zsh"
+fi
