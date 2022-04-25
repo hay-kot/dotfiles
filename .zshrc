@@ -12,32 +12,32 @@ mac_config() {
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the start of this file.
     #### END FIG ENV VARIABLES ####
-    
+
     # ============================================================================
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-    
+
     # ============================================================================
     # Python Setup Functions
-    
+
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
-    
+
     # Poetry
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
-    
+
     # ============================================================================
     # Node Setup Functions
     export NVM_DIR="$HOME/.nvm"
     [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
     [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-    
+
     # ============================================================================
     # Go Setup Functions
     export PATH="$HOME/Go/bin:$PATH"
-    
+
     #### FIG ENV VARIABLES ####
     # Please make sure this block is at the end of this file.
     #### END FIG ENV VARIABLES ####
@@ -47,9 +47,9 @@ mac_config() {
 if (( AM_MAC > 0)); then;
     # Fig pre block. Keep at the top of this file.
     . "$HOME/.fig/shell/zshrc.pre.zsh"
-    
+
     mac_config;
-    
+
     ### Brew Setup ###
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     alias brew-sync="brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile"
@@ -133,7 +133,7 @@ linux_aliases() {
 }
 
 # Only Alias apt-get if we are on linux
-if ! [ AM_MAC==0 ]; then; linux_aliases; fi
+if (( AM_MAC == 0 )); then; linux_aliases; fi
 
 # Stuff That Came With Template
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
@@ -153,17 +153,17 @@ repos() {
         cd `gofind repos`
         return
     fi
-    
+
     cd ~/code/repos/$1
 }
 
 init() {
     # Go Installs
     go install github.com/hay-kot/gofind@latest
-    
+
     # Make Scripts Executable
     chmod +x ~/scripts/*
-    
+
 }
 
 # Returns the largest files in a repository incase you're an idiot like me
@@ -172,7 +172,7 @@ git-big() {
         echo "Usage: git-big <number of files>"
         return
     fi
-    
+
     git rev-list --objects --all \
     | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
     | sed -n 's/^blob //p' \
@@ -233,8 +233,6 @@ mkcd() {
 
 ### Prompt ###
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
-
-
 
 ## MAC OS
 if (( AM_MAC > 0)); then;
