@@ -47,9 +47,8 @@ brew "libproxy"
 brew "librsvg"
 brew "libspng"
 brew "mas"
-brew "mosquitto"
 brew "mozjpeg"
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 brew "nghttp2"
 brew "nss"
 brew "nvm"
@@ -60,10 +59,13 @@ brew "poetry"
 brew "postgresql", restart_service: true
 brew "pre-commit"
 brew "pyenv"
+brew "rich-cli"
+brew "rustup-init"
 brew "sqlc"
 brew "sqldiff"
 brew "stow"
 brew "subversion"
+brew "tmux"
 brew "tree"
 brew "wget"
 brew "wireguard-go"
@@ -82,30 +84,25 @@ cask "battle-net", args: { appdir: "/Applications" }
 cask "bitwarden", args: { appdir: "/Applications" }
 cask "brave-browser", args: { appdir: "/Applications" }
 cask "caffeine"
-cask "calibre"
 cask "chromedriver", args: { appdir: "/Applications" }
 cask "dash", args: { appdir: "/Applications" }
 cask "docker", args: { appdir: "/Applications" }
-cask "dropbox", args: { appdir: "/Applications" }
 cask "firefox", args: { appdir: "/Applications" }
 cask "flutter", args: { appdir: "/Applications" }
 cask "font-fira-code", args: { appdir: "/Applications" }
 cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "font-hack-nerd-font", args: { appdir: "/Applications" }
-cask "github", args: { appdir: "/Applications" }
 cask "goland"
 cask "google-chrome", args: { appdir: "/Applications" }
 cask "home-assistant", args: { appdir: "/Applications" }
 cask "iterm2", args: { appdir: "/Applications" }
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
-cask "microsoft-edge"
 cask "microsoft-office", args: { appdir: "/Applications" }
 cask "private-internet-access"
 cask "rider"
 cask "slack", args: { appdir: "/Applications" }
 cask "spotify", args: { appdir: "/Applications" }
 cask "steam", args: { appdir: "/Applications" }
-cask "sublime-text", args: { appdir: "/Applications" }
 cask "tableplus"
 cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
