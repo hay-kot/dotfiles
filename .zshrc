@@ -74,10 +74,10 @@ DISABLE_AUTO_TITLE="true"
 # ZSH Plugin
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    git
-    zsh-completions
-    zsh-autosuggestions
-    history-substring-search
+    # git
+    # zsh-completions
+    # zsh-autosuggestions
+    # history-substring-search
 )
 
 source $ZSH/oh-my-zsh.sh
