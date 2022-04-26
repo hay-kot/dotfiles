@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+echo "Dumping brew file..."
+
+brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
+
+## Commit and Push ##
+git diff --exit-code -s .mac/Brewfile
+
+if (( $? > 0 )); then
+    cd ~/.dotfiles
+    git add .mac/Brewfile
+    git commit -m "Updated Brewfile"
+    git push origin master
+    
+    echo "Synced Brewfile!"
+else
+    echo "No changes to Brewfile."
+fi
+
+echo "Done!"
+
+
+
