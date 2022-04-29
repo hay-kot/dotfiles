@@ -12,13 +12,10 @@ if (( $? > 0 )); then
     git add .mac/Brewfile
     git commit -m "Updated Brewfile"
     git push origin master
-    
+
     echo "Synced Brewfile!"
 else
     echo "No changes to Brewfile."
 fi
 
 echo "Done!"
-
-
-
