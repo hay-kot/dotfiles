@@ -33,9 +33,10 @@ mac_config() {
     
     # ============================================================================
     # Node Setup Functions
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+    export NVM_DIR=~/.nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+    alias node='unalias node ; unalias npm ; nvm use default ; node $@'
+    alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
     
     # ============================================================================
     # Go Setup Functions
@@ -44,13 +45,10 @@ mac_config() {
 
 ## MAC OS
 if (( AM_MAC > 0)); then;
-    # Fig pre block. Keep at the top of this file.
     mac_config;
     
     ### Brew Setup ###
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    
-    alias brew-restore="brew bundle install --file=~/.dotfiles/.mac/Brewfile"
 fi
 
 export TERM="xterm-256color"
@@ -111,6 +109,9 @@ alias wget="cd ~/Downloads; wget"
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
+alias vim="nvim"
+alias rl="source ~/.zshrc"
+alias cat="bat"
 
 linux_aliases() {
     # Custom Apt
