@@ -25,8 +25,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'navarasu/onedark.nvim'
 Plug 'airblade/vim-gitgutter'
+Plug 'ayu-theme/ayu-vim' " or other package manager
 
 call plug#end()
 
@@ -36,10 +36,9 @@ let g:coc_global_extensions = [
     \ 'coc-prettier',
     \]
 
-let g:onedark_config = {
-    \ 'style': 'darker',
-\}
-colorscheme onedark
+set termguicolors     " enable true colors support
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
 
 let mapleader = " "
 noremap <leader>fg :lua <cmd>Telescope git_files<cr>
