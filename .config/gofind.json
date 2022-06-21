@@ -1,8 +1,8 @@
 {
   "default": "repos",
   "commands": {
-    "compose": {
-      "root": "~/Docker",
+    "docker": {
+      "root": "~/docker",
       "match": "docker-compose*"
     },
     "repos": {
