@@ -1,3 +1,18 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
+# ============================================================================
+# ZSH Plugin
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+    # git
+    # zsh-completions
+    zsh-autosuggestions
+    # history-substring-search
+)
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+source $ZSH/oh-my-zsh.sh
+
 
 AM_MAC=0
 
@@ -12,8 +27,7 @@ is_mac
 ## MAC OS
 if (( AM_MAC > 0)); then;
     # Fig pre block. Keep at the top of this file.
-    . "$HOME/.fig/shell/zshrc.pre.zsh"
-fi
+    fi
 
 mac_config() {
     # ============================================================================
@@ -41,6 +55,10 @@ mac_config() {
     # ============================================================================
     # Go Setup Functions
     export PATH="$HOME/Go/bin:$PATH"
+    
+    # General Aliases
+    alias ls='exa'
+    alias l="exa --long --header --git --icons"
 }
 
 ## MAC OS
@@ -48,15 +66,14 @@ if (( AM_MAC > 0)); then;
     mac_config;
     
     ### Brew Setup ###
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    # source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -68,17 +85,7 @@ export DEFAULT_USER="$(whoami)"
 DISABLE_AUTO_TITLE="true"
 
 
-# ============================================================================
-# ZSH Plugin
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    # git
-    # zsh-completions
-    # zsh-autosuggestions
-    # history-substring-search
-)
 
-source $ZSH/oh-my-zsh.sh
 
 # ============================================================================
 # Python Dev Common
@@ -123,6 +130,8 @@ linux_aliases() {
     alias app-search-all="apt-cache search"
     alias app-update="sudo apt-get update && sudo apt-get upgrade"
     alias app-info="apt-cache showpkg"
+    
+    alias l="ls -lah"
 }
 
 # Only Alias apt-get if we are on linux
@@ -130,7 +139,6 @@ if (( AM_MAC == 0 )); then; linux_aliases; fi
 
 # Stuff That Came With Template
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
-alias l="ls -lah"
 alias x="exit"
 alias k="k -h"						# show human readable filesizes, in kb, mb etc
 
@@ -202,6 +210,12 @@ eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.js
 ## MAC OS
 if (( AM_MAC > 0)); then;
     # Fig post block. Keep at the bottom of this file.
-    . "$HOME/.fig/shell/zshrc.post.zsh"
-fi
+    fi
 
+# fh - search in your command history and execute selected command
+fh() {
+    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
