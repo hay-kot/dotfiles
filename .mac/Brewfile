@@ -120,6 +120,7 @@ cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
 cask "zoom", args: { appdir: "/Applications" }
 mas "BetterSnapTool", id: 417375580
+mas "Foxit PDF Reader", id: 1032155965
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
