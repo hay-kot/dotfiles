@@ -92,6 +92,7 @@ cask "authy", args: { appdir: "/Applications" }
 cask "bartender"
 cask "basictex", args: { appdir: "/Applications" }
 cask "battle-net", args: { appdir: "/Applications" }
+cask "bettertouchtool"
 cask "bitwarden", args: { appdir: "/Applications" }
 cask "brave-browser", args: { appdir: "/Applications" }
 cask "caffeine"
@@ -111,6 +112,7 @@ cask "kitty"
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
 cask "private-internet-access"
+cask "raycast"
 cask "rider"
 cask "slack", args: { appdir: "/Applications" }
 cask "spotify", args: { appdir: "/Applications" }
