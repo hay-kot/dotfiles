@@ -8,10 +8,9 @@ brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
 git diff --exit-code -s .mac/Brewfile
 
 if (( $? > 0 )); then
-    cd ~/.dotfiles
-    git add .mac/Brewfile
-    git commit -m "Updated Brewfile"
-    git push origin master
+    git -C ~/.dotfiles add .mac/Brewfile
+    git -C ~/.dotfiles commit -m "Updated Brewfile"
+    git -C ~/.dotfiles push origin master
 
     echo "Synced Brewfile!"
 else
