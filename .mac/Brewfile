@@ -67,6 +67,7 @@ brew "postgresql", restart_service: true
 brew "pre-commit"
 brew "pyenv"
 brew "rich-cli"
+brew "ripgrep"
 brew "rustup-init"
 brew "sqlc"
 brew "sqldiff"
