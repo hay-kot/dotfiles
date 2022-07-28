@@ -65,6 +65,7 @@ brew "pipx"
 brew "poetry"
 brew "postgresql", restart_service: true
 brew "pre-commit"
+brew "protobuf"
 brew "pyenv"
 brew "rich-cli"
 brew "ripgrep"
