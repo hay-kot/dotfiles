@@ -2,13 +2,10 @@
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
 # ============================================================================
 # ZSH Plugin
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    # git
-    # zsh-completions
     zsh-autosuggestions
-    # history-substring-search
 )
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -27,7 +24,7 @@ is_mac
 ## MAC OS
 if (( AM_MAC > 0)); then;
     # Fig pre block. Keep at the top of this file.
-    fi
+fi
 
 mac_config() {
     # ============================================================================
@@ -64,9 +61,6 @@ mac_config() {
 ## MAC OS
 if (( AM_MAC > 0)); then;
     mac_config;
-    
-    ### Brew Setup ###
-    # source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 export TERM="xterm-256color"
@@ -146,12 +140,12 @@ alias k="k -h"						# show human readable filesizes, in kb, mb etc
 #                         Alias Functions                                     #
 ###############################################################################
 
-alias fcode="code \`gofind repos\`"
+alias fcode="code \`gofind find repos\`"
 
 repos() {
     # Navigate to repos director and open target directory is specified
     if [ -z "$1" ]; then
-        cd `gofind repos`
+        cd "`gofind find repos`"
         return
     fi
     
@@ -210,7 +204,7 @@ eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.js
 ## MAC OS
 if (( AM_MAC > 0)); then;
     # Fig post block. Keep at the bottom of this file.
-    fi
+fi
 
 # fh - search in your command history and execute selected command
 fh() {
