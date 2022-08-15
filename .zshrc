@@ -30,32 +30,28 @@ mac_config() {
     # ============================================================================
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-    
+
     # ============================================================================
     # Python Setup Functions
-    
+
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
-    
+
     # Poetry
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
-    
+
     # ============================================================================
     # Node Setup Functions
     export NVM_DIR=~/.nvm
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
     alias node='unalias node ; unalias npm ; nvm use default ; node $@'
     alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
-    
+
     # ============================================================================
     # Go Setup Functions
     export PATH="$HOME/Go/bin:$PATH"
-    
-    # General Aliases
-    alias ls='exa'
-    alias l="exa --long --header --git --icons"
 }
 
 ## MAC OS
@@ -66,6 +62,7 @@ fi
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 
 
 
@@ -112,7 +109,17 @@ alias wget="cd ~/Downloads; wget"
 alias plusx="chmod +x"
 alias vim="nvim"
 alias rl="source ~/.zshrc"
-alias cat="bat"
+
+if which bat > /dev/null; then
+    alias cat="bat"
+elif which batcat > /dev/null; then
+    alias cat="batcat"
+fi
+
+if which exas > /dev/null; then
+    alias ls='exa --all'
+    alias l="exa --long --header --git --icons --all"
+fi
 
 linux_aliases() {
     # Custom Apt
@@ -124,7 +131,7 @@ linux_aliases() {
     alias app-search-all="apt-cache search"
     alias app-update="sudo apt-get update && sudo apt-get upgrade"
     alias app-info="apt-cache showpkg"
-    
+
     alias l="ls -lah"
 }
 
@@ -148,17 +155,17 @@ repos() {
         cd "`gofind find repos`"
         return
     fi
-    
+
     cd ~/code/repos/$1
 }
 
 init() {
     # Go Installs
     go install github.com/hay-kot/gofind@latest
-    
+
     # Make Scripts Executable
     chmod +x ~/scripts/*
-    
+
 }
 
 # Use lf to switch directories and bind it to ctrl-o
