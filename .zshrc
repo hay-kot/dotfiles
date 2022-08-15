@@ -116,7 +116,7 @@ elif which batcat > /dev/null; then
     alias cat="batcat"
 fi
 
-if which exas > /dev/null; then
+if which exa > /dev/null; then
     alias ls='exa --all'
     alias l="exa --long --header --git --icons --all"
 fi
