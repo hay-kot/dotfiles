@@ -6,5 +6,6 @@ pkgs
 ^/LICENSE.*
 ^/COPYING
 
-^/.DS_Store.* 
+^/.DS_Store.*
 .mac/*
+makefile

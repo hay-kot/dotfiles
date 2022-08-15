@@ -2,3 +2,4 @@
 !.builds/.gitkeep
 .DS_Store
 .mac/Brewfile.lock.json
+gofind.json
