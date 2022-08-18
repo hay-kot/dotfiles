@@ -2,11 +2,16 @@
   "default": "repos",
   "commands": {
     "docker": {
-      "root": "~/docker",
+      "roots": [
+        "~/docker"
+      ],
       "match": "docker-compose*"
     },
     "repos": {
-      "root": "~/Code",
+      "roots": [
+        "~/Code/haybytes",
+        "~/Code/Repos"
+      ],
       "match": ".git"
     }
   },
