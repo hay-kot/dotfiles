@@ -10,7 +10,6 @@ plugins=(
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-
 AM_MAC=0
 
 is_mac() {
@@ -21,10 +20,6 @@ is_mac() {
 
 is_mac
 
-## MAC OS
-if (( AM_MAC > 0)); then;
-    # Fig pre block. Keep at the top of this file.
-fi
 
 mac_config() {
     # ============================================================================
@@ -60,23 +55,8 @@ if (( AM_MAC > 0)); then;
 fi
 
 export TERM="xterm-256color"
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-
-
-
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-
-
-# ZSH_THEME="agnoster"
 export DEFAULT_USER="$(whoami)"
 DISABLE_AUTO_TITLE="true"
-
-
-
 
 # ============================================================================
 # Python Dev Common
@@ -119,6 +99,9 @@ fi
 if which exa > /dev/null; then
     alias ls='exa --all'
     alias l="exa --long --header --git --icons --all"
+else
+    alias ls='ls -lah'
+    alias l="ls -lah"
 fi
 
 linux_aliases() {
@@ -131,8 +114,6 @@ linux_aliases() {
     alias app-search-all="apt-cache search"
     alias app-update="sudo apt-get update && sudo apt-get upgrade"
     alias app-info="apt-cache showpkg"
-
-    alias l="ls -lah"
 }
 
 # Only Alias apt-get if we are on linux
@@ -159,15 +140,6 @@ repos() {
     cd ~/code/repos/$1
 }
 
-init() {
-    # Go Installs
-    go install github.com/hay-kot/gofind@latest
-
-    # Make Scripts Executable
-    chmod +x ~/scripts/*
-
-}
-
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
     tmp="$(mktemp)"
@@ -179,10 +151,6 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
-
-speedtest() {
-    curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -
-}
 
 # Find geo info from IP
 ipgeo() {
@@ -205,18 +173,22 @@ mkcd() {
     fi
 }
 
-### Prompt ###
-eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
-
-## MAC OS
-if (( AM_MAC > 0)); then;
-    # Fig post block. Keep at the bottom of this file.
-fi
-
 # fh - search in your command history and execute selected command
 fh() {
     eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
+
+
+if [ -f ~/.dotfiles/secrets/.env.local ]; then
+    export $(cat ~/.dotfiles/secrets/.env.local | xargs)
+else
+    mkdir -p ~/.dotfiles/secrets
+    touch ~/.dotfiles/secrets/.env.local
+fi
+
+
+### Prompt ###
+eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"

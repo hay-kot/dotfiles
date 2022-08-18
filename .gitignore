@@ -3,3 +3,5 @@
 .DS_Store
 .mac/Brewfile.lock.json
 gofind.json
+.env
+.env.local

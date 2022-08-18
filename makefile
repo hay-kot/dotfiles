@@ -10,3 +10,6 @@ osx-setup: xcode
 	which brew || install-brew
 
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
+init:
+	chmod +x ~/scripts/*
