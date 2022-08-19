@@ -178,9 +178,32 @@ fh() {
     eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
+commit() {
+    if which gum > /dev/null; then
+    TYPE=$(gum choose "fix" "feat" "docs" "style" "refactor" "test" "chore" "revert")
+    SCOPE=$(gum input --placeholder "scope")
+
+    # Since the scope is optional, wrap it in parentheses if it has a value.
+    test -n "$SCOPE" && SCOPE="($SCOPE)"
+
+    # Pre-populate the input with the type(scope): so that the user may change it
+    SUMMARY=$(gum input --value "$TYPE$SCOPE: " --placeholder "Summary of this change")
+    DESCRIPTION=$(gum write --placeholder "Details of this change (CTRL+D to finish)")
+
+    # Commit these changes
+    gum confirm "Commit changes?" && git commit -m "$SUMMARY" -m "$DESCRIPTION"
+
+    else
+        echo "charmbracelet/gum is required for 'commit'"
+    fi
+
+}
+
 
 if [ -f ~/.dotfiles/secrets/.env.local ]; then
-    export $(cat ~/.dotfiles/secrets/.env.local | xargs)
+    if [[ -s ~/.dotfiles/secrets/.env.local ]]; then
+        export $(cat ~/.dotfiles/secrets/.env.local | xargs)
+    fi
 else
     mkdir -p ~/.dotfiles/secrets
     touch ~/.dotfiles/secrets/.env.local
