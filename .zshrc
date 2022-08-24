@@ -15,7 +15,6 @@ source $ZSH/oh-my-zsh.sh
 export ENVAULT_FILE=~/.dotfiles/secrets/.env.local
 export ENVAULT_CONFG=~/.dotfiles/secrets/genv-config.json
 
-
 AM_MAC=0
 
 is_mac() {
@@ -26,32 +25,24 @@ is_mac() {
 
 is_mac
 
-
 mac_config() {
-    # ============================================================================
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
     
-    # ============================================================================
-    # Python Setup Functions
-    
+    # Python
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
     
-    # Poetry
+    # Node
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
-    
-    # ============================================================================
-    # Node Setup Functions
     export NVM_DIR=~/.nvm
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
     alias node='unalias node ; unalias npm ; nvm use default ; node $@'
     alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
     
-    # ============================================================================
-    # Go Setup Functions
+    # Go
     export PATH="$HOME/Go/bin:$PATH"
 }
 
@@ -77,17 +68,14 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPS="--extended"
 
-export MARKER_KEY_NEXT_PLACEHOLDER="\C-b"   #change maker key binding from Ctr+t to Ctr+b
+export MARKER_KEY_NEXT_PLACEHOLDER="\C-b"   # change maker key binding from Ctr+t to Ctr+b
 
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
 export PATH=$PATH:~/.quickzsh/todo/bin    # using alias doesn't properly work
 
 autoload -U compinit && compinit
-SAVEHIST=10000    #save upto 50,000 lines in history. oh-my-zsh default is 10,000
-
-# Start stuff that downloads in ~/Downloads
-alias wget="cd ~/Downloads; wget"
+SAVEHIST=10000 # save up to 50,000 lines in history. oh-my-zsh default is 10,000
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
@@ -132,8 +120,6 @@ alias k="k -h"						# show human readable filesizes, in kb, mb etc
 #                         Alias Functions                                     #
 ###############################################################################
 
-alias fcode="code \`gofind find repos\`"
-
 repos() {
     # Navigate to repos director and open target directory is specified
     if [ -z "$1" ]; then
@@ -155,16 +141,6 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
-
-# Find geo info from IP
-ipgeo() {
-    # Specify ip or your ip will be used
-    if [ "$1" ]; then
-        curl "http://api.db-ip.com/v2/free/$1"
-    else
-        curl "http://api.db-ip.com/v2/free/$(myip)"
-    fi
-}
 
 # Make and CD into directory
 mkcd() {
@@ -192,6 +168,9 @@ else
     touch ~/.dotfiles/secrets/.env.local
 fi
 
+# Gum Aliases
+alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
+alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
 
 ### Prompt ###
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
