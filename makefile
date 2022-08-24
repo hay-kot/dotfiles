@@ -12,4 +12,4 @@ osx-setup: xcode
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 init:
-	chmod +x ~/scripts/*
+	chmod +x ~/.dotfiles/bin/*
