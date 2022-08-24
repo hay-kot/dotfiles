@@ -5,11 +5,11 @@ echo "Dumping brew file..."
 brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
 
 ## Commit and Push ##
-git diff --exit-code -s .mac/Brewfile
+git -C ~/.dotfiles diff --exit-code -s .mac/Brewfile
 
 if (( $? > 0 )); then
     git -C ~/.dotfiles add .mac/Brewfile
-    git -C ~/.dotfiles commit -m "Updated Brewfile"
+    git -C ~/.dotfiles commit -m "auto: brew-sync"
     git -C ~/.dotfiles push origin master
 
     echo "Synced Brewfile!"
