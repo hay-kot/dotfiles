@@ -36,7 +36,6 @@ brew "golangci-lint"
 brew "goreleaser"
 brew "gum"
 brew "htop"
-brew "httpie"
 brew "hugo"
 brew "iftop"
 brew "ilmbase"
@@ -68,16 +67,12 @@ brew "pipx"
 brew "poetry"
 brew "postgresql", restart_service: true
 brew "pre-commit"
-brew "protobuf"
 brew "pyenv"
-brew "rich-cli"
 brew "ripgrep"
 brew "rustup-init"
-brew "sqlc"
 brew "sqldiff"
 brew "stow"
 brew "subversion"
-brew "swagger-codegen"
 brew "tmux"
 brew "tree"
 brew "wget"
@@ -110,7 +105,6 @@ cask "font-hack-nerd-font", args: { appdir: "/Applications" }
 cask "goland"
 cask "google-chrome", args: { appdir: "/Applications" }
 cask "home-assistant", args: { appdir: "/Applications" }
-cask "intellij-idea"
 cask "iterm2", args: { appdir: "/Applications" }
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
@@ -124,19 +118,4 @@ cask "tableplus"
 cask "transmit"
 cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
-cask "webstorm"
 cask "zoom", args: { appdir: "/Applications" }
-mas "BetterSnapTool", id: 417375580
-mas "Foxit PDF Reader", id: 1032155965
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
-mas "Microsoft OneNote", id: 784801555
-mas "Microsoft Remote Desktop", id: 1295203466
-mas "Microsoft To Do", id: 1274495053
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Pixelmator Pro", id: 1289583905
-mas "Transmit", id: 1436522307
-mas "WireGuard", id: 1451685025
-mas "Xcode", id: 497799835
