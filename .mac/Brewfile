@@ -24,6 +24,7 @@ brew "dockutil"
 brew "exa"
 brew "ffmpeg"
 brew "fftw"
+brew "flyctl"
 brew "fx"
 brew "fzf"
 brew "gh"
@@ -64,8 +65,9 @@ brew "nvm"
 brew "openslide"
 brew "orc"
 brew "pipx"
+brew "pnpm"
 brew "poetry"
-brew "postgresql", restart_service: true
+brew "postgresql@14"
 brew "pre-commit"
 brew "pyenv"
 brew "ripgrep"
@@ -73,6 +75,7 @@ brew "rustup-init"
 brew "sqldiff"
 brew "stow"
 brew "subversion"
+brew "tldr"
 brew "tmux"
 brew "tree"
 brew "wget"
@@ -110,7 +113,9 @@ cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
 cask "private-internet-access"
 cask "raycast"
+cask "rectangle"
 cask "rider"
+cask "signal"
 cask "slack", args: { appdir: "/Applications" }
 cask "spotify", args: { appdir: "/Applications" }
 cask "steam", args: { appdir: "/Applications" }
@@ -119,3 +124,17 @@ cask "transmit"
 cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
 cask "zoom", args: { appdir: "/Applications" }
+mas "BetterSnapTool", id: 417375580
+mas "Foxit PDF Reader", id: 1032155965
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
+mas "Microsoft OneNote", id: 784801555
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Microsoft To Do", id: 1274495053
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "PDF Reader Pro Lite", id: 919472673
+mas "Pixelmator Pro", id: 1289583905
+mas "WireGuard", id: 1451685025
+mas "Xcode", id: 497799835
