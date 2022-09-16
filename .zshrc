@@ -1,5 +1,5 @@
 # Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # ============================================================================
 # ZSH Plugin
 plugins=(
@@ -28,20 +28,20 @@ is_mac
 mac_config() {
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-    
+
     # Python
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
-    
+
     # Node
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
     export NVM_DIR=~/.nvm
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
     alias node='unalias node ; unalias npm ; nvm use default ; node $@'
     alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
-    
+
     # Go
     export PATH="$HOME/Go/bin:$PATH"
 }
@@ -126,7 +126,7 @@ repos() {
         cd "`gofind find repos`"
         return
     fi
-    
+
     cd ~/code/repos/$1
 }
 
@@ -176,4 +176,4 @@ alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr c
 eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
 
 # Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
