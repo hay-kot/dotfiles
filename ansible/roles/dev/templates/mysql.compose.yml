@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - "MYSQL_DATABASE=db"
+      - "MYSQL_USER={{ dev_containers_mysql_user }}"
+      - "MYSQL_PASSWORD={{ dev_containers_mysql_password }}"
+      - "MYSQL_ROOT_PASSWORD={{ dev_containers_mysql_password }}"
+    ports:
+      - "{{ dev_containers_mysql_port }}:3306"
+    expose:
+      - "3306"
+    volumes:
+      - mysql_db:/var/lib/mysql
+
+volumes:
+  my_db:
+    driver: local

@@ -1,6 +1,19 @@
 ---
 dev_dir: "{{ user_home }}/code"
 
+dev_containers_postgres_user: "postgres"
+dev_containers_postgres_password: "postgres"
+dev_containers_postgres_port: "5432"
+
+dev_containers_mysql_user: "mysql"
+dev_containers_mysql_password: "mysql"
+dev_containers_mysql_port: "3306"
+
+dev_containers_mongo_user: "mongo"
+dev_containers_mongo_password: "mongo"
+dev_containers_mongo_port: "27017"
+dev_containers_mongo_express_port: "8081"
+
 git_username: "Hayden"
 git_email: "64056131+hay-kot@users.noreply.github.com"
 git_global_ignore_file: "{{ user_home }}/.gitignore_global"
