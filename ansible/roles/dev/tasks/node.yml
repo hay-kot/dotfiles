@@ -1,0 +1,11 @@
+- name: Install Yarn
+  npm:
+    name: "{{ item }}"
+    global: yes
+  loop:
+    - eslint
+    - typescript
+    - ts-node
+  tags:
+    - install
+    - node

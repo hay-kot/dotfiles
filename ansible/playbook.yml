@@ -1,0 +1,18 @@
+# Before running the playbook make sure you setup the .venv in the ansible directory
+# and pip install the requirements.txt to setup the required python modules for
+# ansible to run.
+- name: "Mac OS Developer Setup"
+  hosts: localhost
+  no_log: false
+  vars:
+    main_group: "20"
+    main_user: "hayden"
+    user_home: "/Users/{{ main_user }}"
+    ansible_connection: local
+    ansible_python_interpreter: "{{ user_home }}/.dotfiles/ansible/.venv/bin/python"
+  vars_files:
+    - "vars/vault.yml"
+  roles:
+    - "ssh"
+    - "secrets"
+    - "dev"

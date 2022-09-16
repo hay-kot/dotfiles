@@ -1,0 +1,46 @@
+---
+- name: Set Permissions of .ssh Directory
+  file:
+    path: "{{ user_home }}/.ssh"
+    state: directory
+    owner: "{{ main_user }}"
+    group: "{{ main_group }}"
+    mode: 0700
+  become: true
+  tags:
+    - ssh
+
+- name: Write Private SSH Keys
+  copy:
+    content: "{{ item.private }}"
+    dest: "{{ user_home }}/.ssh/{{ item.name }}"
+    owner: "{{ main_user }}"
+    group: "{{ main_group }}"
+    mode: 0600
+  loop: "{{ ssh_keys }}"
+  tags:
+    - ssh
+
+- name: Write Public SSH Keys
+  copy:
+    content: "{{ item.public }}"
+    dest: "{{ user_home }}/.ssh/{{ item.name }}.pub"
+    owner: "{{ main_user }}"
+    group: "{{ main_group }}"
+    mode: 0644
+  loop: "{{ ssh_keys }}"
+  tags:
+    - ssh
+
+- name: Add a host in the configuration
+  community.general.ssh_config:
+    group: "{{ main_group }}"
+    user: "{{ item.user | default(ssh_config_default_user) }}"
+    host: "{{ item.host }}"
+    hostname: "{{ item.hostname }}"
+    identity_file: "{{ item.identity_file | default(ssh_config_default_identity_file) }}"
+    port: "{{ item.port | default(ssh_config_default_port) }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ ssh_config }}"
+  tags:
+    - ssh

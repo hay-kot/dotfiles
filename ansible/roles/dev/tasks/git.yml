@@ -1,0 +1,30 @@
+---
+- name: Set Git Username
+  git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_username }}"
+  when: git_username is defined
+  tags: git
+
+- name: Set Git Email
+  git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_email }}"
+  when: git_email is defined
+  tags: git
+
+- name: Ensure Global Git Ignore File Exists
+  copy:
+    dest: "{{ git_global_ignore_file }}"
+    content: "{{ git_global_ignore_content }}"
+  tags: git
+
+- name: Setup Global Git Ignore
+  git_config:
+    name: core.excludesfile
+    scope: global
+    value: "{{ git_global_ignore }}"
+  when: git_global_ignore is defined
+  tags: git
