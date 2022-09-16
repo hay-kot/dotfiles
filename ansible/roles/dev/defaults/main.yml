@@ -1,6 +1,8 @@
 ---
 dev_dir: "{{ user_home }}/code"
 
+dev_repos_haybytes: []
+
 dev_containers_postgres_user: "postgres"
 dev_containers_postgres_password: "postgres"
 dev_containers_postgres_port: "5432"

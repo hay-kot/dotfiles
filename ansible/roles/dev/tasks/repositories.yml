@@ -1,0 +1,27 @@
+---
+- name: Ensure Haybytes Directory Exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ main_user }}"
+    group: "{{ main_group }}"
+    mode: 0755
+  loop:
+    - "{{ dev_dir }}/haybytes"
+  tags:
+    - dev
+    - directories
+    - haybytes
+
+- name: Ensure Haybytes Repositories Exist
+  ansible.builtin.git:
+    key_file: "{{ user_home }}/.ssh/id_ed25519"
+    repo: "https://github.com/{{ item.repo }}.git"
+    dest: "{{ dev_dir }}/haybytes/{{ item.name }}"
+    update: no
+  loop: "{{ dev_repos_haybytes }}"
+
+  tags:
+    - dev
+    - repositories
+    - haybytes
