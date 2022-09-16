@@ -1,4 +1,3 @@
-
 xcode:
 	sudo softwareupdate -i -a
 	xcode-select --install || true
@@ -12,4 +11,15 @@ osx-setup: xcode
 	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 init:
+	chmod +x ~/.dotfiles/ansible/git-init.sh
+	cd ansible && ./git-init.sh
 	chmod +x ~/.dotfiles/bin/*
+
+playbook:
+	ansible-playbook ansible/playbook.yml --vault-password-file ./secrets/.vaultpass --ask-become-pass
+
+encrypt:
+	ansible-vault encrypt --vault-password-file ./secrets/.vaultpass ./ansible/vars/vault.yml
+
+decrypt:
+	ansible-vault decrypt --vault-password-file ./secrets/.vaultpass ./ansible/vars/vault.yml

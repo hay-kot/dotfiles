@@ -5,3 +5,5 @@
 gofind.json
 .env
 .env.local
+.venv
+.vaultpass

@@ -10,3 +10,4 @@ pkgs
 .mac/*
 makefile
 bin/*
+ansible/*
