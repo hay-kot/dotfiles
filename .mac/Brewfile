@@ -1,3 +1,4 @@
+tap "ariga/tap"
 tap "go-task/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -85,6 +86,7 @@ brew "yarn"
 brew "yq"
 brew "zlib"
 brew "zsh-autosuggestions"
+brew "ariga/tap/atlas"
 brew "go-task/tap/go-task"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 cask "android-file-transfer", args: { appdir: "/Applications" }
