@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-echo "Running Brew Upgrades"
-brew update && brew upgrade
-
-echo "Upgrading Pipx Installs"
-pipx upgrade-all
