@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+help() {
+cat << EOF
+NAME:
+    apps - manage global apps on MacOS
+
+VERSION:
+    0.0.1
+
+COMMANDS:
+    help, h   Shows a list of commands or help for one command
+    upgrade   Upgrade all global apps (homebrew, pipx)
+    sync      Sync global apps with dotfiles (homebrew)
+    restore   Restore global apps from dotfiles (homebrew)
+EOF
+}
+
+restore() {
+    brew bundle install --file=~/.dotfiles/.mac/Brewfile
+}
+
+upgrade() {
+    echo "Running Brew Upgrades"
+    brew update && brew upgrade
+    
+    echo "Upgrading Pipx Installs"
+    pipx upgrade-all
+}
+
+sync() {
+    echo "Dumping brew file..."
+    
+    brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
+    
+    ## Commit and Push ##
+    git -C ~/.dotfiles diff --exit-code -s .mac/Brewfile
+    
+    if (( $? > 0 )); then
+        git -C ~/.dotfiles add .mac/Brewfile
+        git -C ~/.dotfiles commit -m "auto: brew-sync"
+        git -C ~/.dotfiles push origin master
+        
+        echo "Synced Brewfile!"
+    else
+        echo "No changes to Brewfile."
+    fi
+    
+    echo "Done!"
+}
+
+if [[ $1 == "help" || $1 == "" ]]; then
+    help
+    exit 0
+fi
+
+if [[ $1 == "restore" ]]; then
+    restore
+    exit 0
+fi
+
+if [[ $1 == "sync" ]]; then
+    sync
+    exit 0
+fi
+
+if [[ $1 == "upgrade" ]]; then
+    upgrade
+    exit 0
+fi
+
+
+
+echo "Unknown command: $1"
