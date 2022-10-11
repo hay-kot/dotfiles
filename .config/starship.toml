@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # Inserts a blank line between shell prompts
-add_newline = true
+add_newline = false
 
 [character] # The name of the module we are configuring is "character"
 success_symbol = "[❯](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
@@ -23,3 +23,11 @@ disabled = true
 [golang]
 format = "[~ $symbol($version )]($style)"
 symbol = "\ufcd1 "
+
+[nodejs]
+format = "[~ $symbol($version )]($style)"
+symbol = "\uf898 "
+
+[python]
+format = "[~ $symbol($version )]($style)"
+symbol = "\uf81f "
