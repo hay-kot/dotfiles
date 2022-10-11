@@ -44,6 +44,8 @@ mac_config() {
     
     # Go
     export PATH="$HOME/Go/bin:$PATH"
+    
+    export NOTEBOOK_LOC="~/code/notebook"
 }
 
 ## MAC OS
@@ -159,6 +161,8 @@ else
     mkdir -p ~/.dotfiles/secrets
     touch ~/.dotfiles/secrets/.env.local
 fi
+
+alias rgnb="rg -- "
 
 # Gum Aliases
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
