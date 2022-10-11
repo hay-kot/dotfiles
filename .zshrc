@@ -28,20 +28,20 @@ is_mac
 mac_config() {
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-
+    
     # Python
     # Pyenv
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
-
+    
     # Node
     export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
     export NVM_DIR=~/.nvm
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
     alias node='unalias node ; unalias npm ; nvm use default ; node $@'
     alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
-
+    
     # Go
     export PATH="$HOME/Go/bin:$PATH"
 }
@@ -96,18 +96,6 @@ else
     alias l="ls -lah"
 fi
 
-linux_aliases() {
-    # Custom Apt
-    alias app="sudo apt-get"
-    alias app-remove="sudo apt-get remove"
-    alias app-install="sudo apt-get install"
-    alias app-edit="sudo envedit /etc/apt/sources.list"
-    alias app-search="apt-cache --names-only search"
-    alias app-search-all="apt-cache search"
-    alias app-update="sudo apt-get update && sudo apt-get upgrade"
-    alias app-info="apt-cache showpkg"
-}
-
 # Only Alias apt-get if we are on linux
 if (( AM_MAC == 0 )); then; linux_aliases; fi
 
@@ -126,7 +114,7 @@ repos() {
         cd "`gofind find repos`"
         return
     fi
-
+    
     cd ~/code/repos/$1
 }
 
@@ -153,6 +141,10 @@ mkcd() {
     fi
 }
 
+killport() {
+    kill $(lsof -t -i:$1)
+}
+
 # fh - search in your command history and execute selected command
 fh() {
     eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
@@ -173,7 +165,8 @@ alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git 
 alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
 
 ### Prompt ###
-eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
+# eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
+eval "$(starship init zsh)"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

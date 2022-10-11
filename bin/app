@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ $OSTYPE != 'darwin'* ]]; then
+    echo "Not a Mac"
+    exit 1
+fi
+
 help() {
 cat << EOF
 NAME:
