@@ -98,9 +98,6 @@ else
     alias l="ls -lah"
 fi
 
-# Only Alias apt-get if we are on linux
-if (( AM_MAC == 0 )); then; linux_aliases; fi
-
 # Stuff That Came With Template
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
 alias x="exit"
