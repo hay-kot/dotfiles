@@ -17,7 +17,6 @@ format = "[$symbol$branch(:$remote_branch)]($style) "
 style = "bold red"
 
 [git_status]
-
 disabled = true
 
 [golang]
@@ -31,3 +30,6 @@ symbol = "\uf898 "
 [python]
 format = "[~ $symbol($version )]($style)"
 symbol = "\uf81f "
+
+[rust]
+format = "[~ $symbol($version )]($style)"
