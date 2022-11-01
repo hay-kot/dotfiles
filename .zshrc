@@ -26,6 +26,8 @@ is_mac() {
 is_mac
 
 mac_config() {
+    # GPG Keys
+    export GPG_TTY=$(tty)
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
     
