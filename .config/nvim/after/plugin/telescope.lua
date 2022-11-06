@@ -1,6 +1,11 @@
+local ok, telescope = pcall(require, "telescope")
+if not ok then
+  return
+end
+
+
 -- close on escape
 local actions = require("telescope.actions")
-local telescope = require("telescope")
 
 telescope.setup{
   defaults = {
@@ -10,7 +15,7 @@ telescope.setup{
         ["<esc>"] = actions.close
       },
     },
-    
+
   },
   extensions = {
     fzf = {

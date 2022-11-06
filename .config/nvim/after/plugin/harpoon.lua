@@ -1,3 +1,8 @@
+local ok, harpoon = pcall(require, "harpoon")
+if not ok then
+  return
+end
+
 local km = require("haykot.keymaps")
 km.nnoremap("<leader>jq", function() require("harpoon.ui").nav_file(1) end)
 km.nnoremap("<leader>jw", function() require("harpoon.ui").nav_file(2) end)
