@@ -1,4 +1,3 @@
-vim.cmd.colorscheme "gruvbox"
 
 local options = {
     backup = false,                          -- creates a backup file
