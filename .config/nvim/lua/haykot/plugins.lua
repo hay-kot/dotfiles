@@ -60,7 +60,6 @@ return packer.startup(function(use)
 
   -- Pretty Things
   use { "morhetz/gruvbox", as = "gruvbox" }
-  vim.cmd.colorscheme "gruvbox"
 
   use "kyazdani42/nvim-web-devicons" -- Icons
 
