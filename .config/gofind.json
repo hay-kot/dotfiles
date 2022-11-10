@@ -10,7 +10,8 @@
     "repos": {
       "roots": [
         "~/Code/haybytes",
-        "~/Code/Repos"
+        "~/Code/Repos",
+        "~/Code/pr"
       ],
       "match": ".git"
     }
