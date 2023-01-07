@@ -1,12 +1,16 @@
 tap "ariga/tap"
 tap "bufbuild/buf"
 tap "go-task/tap"
+tap "hay-kot/flint-tap"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "jandedobbeleer/oh-my-posh"
+tap "osx-cross/arm"
+tap "osx-cross/avr"
+tap "qmk/qmk"
 tap "tinygo-org/tools"
 brew "ansible"
 brew "ansible-lint"
@@ -24,6 +28,7 @@ brew "coreutils"
 brew "crf++"
 brew "ctop"
 brew "dockutil"
+brew "drone-cli"
 brew "exa"
 brew "ffmpeg"
 brew "fftw"
@@ -49,6 +54,7 @@ brew "liblqr"
 brew "libomp", link: true
 brew "imagemagick"
 brew "ipython"
+brew "jq"
 brew "lefthook"
 brew "lf"
 brew "libexif"
@@ -68,6 +74,7 @@ brew "nss"
 brew "nvm"
 brew "openslide"
 brew "orc"
+brew "pinentry-mac"
 brew "pipx"
 brew "pnpm"
 brew "poetry"
@@ -83,6 +90,8 @@ brew "subversion"
 brew "tldr"
 brew "tmux"
 brew "tree"
+brew "ttyd", args: ["HEAD"]
+brew "vhs"
 brew "wget"
 brew "wireguard-go"
 brew "yank"
@@ -93,6 +102,7 @@ brew "zsh-autosuggestions"
 brew "ariga/tap/atlas"
 brew "bufbuild/buf/buf"
 brew "go-task/tap/go-task"
+brew "hay-kot/flint-tap/flint"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 brew "tinygo-org/tools/tinygo"
 cask "android-file-transfer", args: { appdir: "/Applications" }
@@ -113,12 +123,15 @@ cask "flutter", args: { appdir: "/Applications" }
 cask "font-fira-code", args: { appdir: "/Applications" }
 cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "font-hack-nerd-font", args: { appdir: "/Applications" }
+cask "font-jetbrains-mono-nerd-font"
 cask "goland"
 cask "google-chrome", args: { appdir: "/Applications" }
+cask "gpg-suite-no-mail"
 cask "home-assistant", args: { appdir: "/Applications" }
 cask "iterm2", args: { appdir: "/Applications" }
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
+cask "ngrok"
 cask "obsidian"
 cask "private-internet-access"
 cask "raycast"
@@ -130,15 +143,13 @@ cask "spotify", args: { appdir: "/Applications" }
 cask "steam", args: { appdir: "/Applications" }
 cask "tableplus"
 cask "transmit"
-cask "tuple"
 cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
-cask "zoom", args: { appdir: "/Applications" }
+cask "zoom"
 mas "Foxit PDF Reader", id: 1032155965
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
-mas "Microsoft OneNote", id: 784801555
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft To Do", id: 1274495053
 mas "Numbers", id: 409203825
