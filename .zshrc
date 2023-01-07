@@ -48,6 +48,7 @@ mac_config() {
     export PATH="$HOME/Go/bin:$PATH"
     
     export NOTEBOOK_LOC="~/code/notebook"
+    alias edf='nvim ~/.dotfiles'
 }
 
 ## MAC OS
