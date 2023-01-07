@@ -11,7 +11,8 @@
       "roots": [
         "~/Code/haybytes",
         "~/Code/Repos",
-        "~/Code/pr"
+        "~/Code/pr",
+        "~/Code/business"
       ],
       "match": ".git"
     }
