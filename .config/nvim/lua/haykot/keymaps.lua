@@ -10,23 +10,32 @@ vim.g.maplocalleader = " "
 local M = {}
 
 local function bind(op, outer_opts)
-    outer_opts = outer_opts or {noremap = true, silent = true}
-    return function(lhs, rhs, opts)
-        opts = vim.tbl_extend("force",
-            outer_opts,
-            opts or {}
-        )
-        vim.keymap.set(op, lhs, rhs, opts)
-    end
+	outer_opts = outer_opts or { noremap = true, silent = true }
+	return function(lhs, rhs, opts)
+		opts = vim.tbl_extend("force", outer_opts, opts or {})
+		vim.keymap.set(op, lhs, rhs, opts)
+	end
 end
 
-M.nmap = bind("n", {noremap = false})
+M.keymap = keymap
+M.nmap = bind("n", { noremap = false })
 M.nnoremap = bind("n")
 M.vnoremap = bind("v")
 M.xnoremap = bind("x")
 M.inoremap = bind("i")
 
 -- Normal --
+
+-- Close Buffers
+keymap("n", "<leader>q", ":bd<CR>", opts)
+keymap("n", "<leader>Q", ":bd!<CR>", opts)
+
+-- LSP Bindings
+-- format
+keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+-- command Format
+vim.cmd([[command! Format execute 'lua vim.lsp.buf.format()']])
+
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)

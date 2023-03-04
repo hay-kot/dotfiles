@@ -3,7 +3,7 @@ require("haykot.options")
 
 local infra_server = os.getenv("INFRA_SERVER")
 if infra_server == "true" then
-  return
+	return
 end
 
 require("haykot.plugins")

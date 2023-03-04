@@ -1,10 +1,10 @@
 local status_ok, comment = pcall(require, "lualine")
 if not status_ok then
-  return
+	return
 end
 
-require('lualine').setup({
-  options =  {
-    theme =  'gruvbox'
-  }
+require("lualine").setup({
+	options = {
+		theme = "gruvbox",
+	},
 })

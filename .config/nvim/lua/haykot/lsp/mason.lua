@@ -1,12 +1,11 @@
 local servers = {
-	"sumneko_lua",
 	"pyright",
 	"jsonls",
-  "html",
-  "gopls",
+	"html",
+	"gopls",
 }
 
-local settings = {
+require("mason").setup({
 	ui = {
 		border = "none",
 		icons = {
@@ -17,35 +16,9 @@ local settings = {
 	},
 	log_level = vim.log.levels.INFO,
 	max_concurrent_installers = 4,
-}
+})
 
-require("mason").setup(settings)
 require("mason-lspconfig").setup({
 	ensure_installed = servers,
 	automatic_installation = true,
 })
-
-local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_status_ok then
-	return
-end
-
-local opts = {}
-
-for _, server in pairs(servers) do
-  local hdlr = require("haykot.lsp.handlers")
-	opts = {
-		on_attach = hdlr.on_attach,
-		capabilities = hdlr.capabilities,
-	}
-
-	server = vim.split(server, "@")[1]
-
-	local require_ok, conf_opts = pcall(require, "haykot.lsp.settings." .. server)
-	if require_ok then
-		opts = vim.tbl_deep_extend("force", conf_opts, opts)
-	end
-
-	lspconfig[server].setup(opts)
-end
-
