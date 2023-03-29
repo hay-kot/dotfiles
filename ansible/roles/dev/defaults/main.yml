@@ -50,6 +50,10 @@ git_global_ignore_content: |
   *.zip
   *.msi
 
+  # Dev Runtime Conf Files #
+  ##########################
+  *rtx.toml
+
   # Logs and databases #
   ######################
   *.log
