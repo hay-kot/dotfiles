@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # ============================================================================
 # ZSH Plugin
 plugins=(
@@ -31,24 +29,14 @@ mac_config() {
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
     
-    # Python
-    # Pyenv
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-    
-    # Node
-    export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
-    export NVM_DIR=~/.nvm
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
-    alias node='unalias node ; unalias npm ; nvm use default ; node $@'
-    alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
-    
     # Go
     export PATH="$HOME/Go/bin:$PATH"
     
     export NOTEBOOK_LOC="~/code/notebook"
     alias edf='nvim ~/.dotfiles'
+    alias lg=lazygit
+
+    eval "$(/opt/homebrew/bin/rtx activate zsh)"
 }
 
 ## MAC OS
@@ -152,6 +140,8 @@ fh() {
     eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
+alias cz="cd \$(fd --type directory | fzf)"
+
 # Magic .env file loading function
 if [ -f ~/.dotfiles/secrets/.env.local ]; then
     if [[ -s ~/.dotfiles/secrets/.env.local ]]; then
@@ -168,9 +158,4 @@ alias rgnb="rg -- "
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
 
-### Prompt ###
-# eval "$(oh-my-posh --init --shell zsh --config ~/.posh-themes/tonybaloney.omp.json)"
 eval "$(starship init zsh)"
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
