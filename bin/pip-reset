@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Check if pip or pip3 is the correct command to use
+if command -v pip &> /dev/null; then
+  PIP_CMD="pip"
+elif command -v pip3 &> /dev/null; then
+  PIP_CMD="pip3"
+else
+  echo "Error: pip or pip3 command not found."
+  exit 1
+fi
+
+# Create a temporary file to store the list of installed packages
+TMP_FILE=$(mktemp)
+
+# Get a list of all installed packages and save it to the temporary file
+$PIP_CMD freeze > "$TMP_FILE"
+
+# Loop over each package and uninstall it
+while read package; do
+  echo "Uninstalling package: $package"
+  $PIP_CMD uninstall -y $package
+done < "$TMP_FILE"
+
+# Remove the temporary file
+rm "$TMP_FILE"
+
+echo "All packages have been uninstalled."
