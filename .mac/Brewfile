@@ -32,6 +32,7 @@ brew "ctop"
 brew "dockutil"
 brew "drone-cli"
 brew "exa"
+brew "fd"
 brew "ffmpeg"
 brew "fftw"
 brew "flyctl"
@@ -88,8 +89,10 @@ brew "starship"
 brew "stow"
 brew "stylua"
 brew "subversion"
+brew "terraform"
 brew "tldr"
 brew "tmux"
+brew "traefik"
 brew "tree"
 brew "ttyd", args: ["HEAD"]
 brew "vhs"
@@ -118,7 +121,7 @@ cask "bitwarden", args: { appdir: "/Applications" }
 cask "brave-browser", args: { appdir: "/Applications" }
 cask "caffeine"
 cask "chromedriver", args: { appdir: "/Applications" }
-cask "docker", args: { appdir: "/Applications" }
+cask "docker"
 cask "firefox", args: { appdir: "/Applications" }
 cask "flutter", args: { appdir: "/Applications" }
 cask "font-fira-code", args: { appdir: "/Applications" }
@@ -130,6 +133,7 @@ cask "goland"
 cask "google-chrome", args: { appdir: "/Applications" }
 cask "gpg-suite-no-mail"
 cask "home-assistant", args: { appdir: "/Applications" }
+cask "insomnia"
 cask "iterm2", args: { appdir: "/Applications" }
 cask "keyboard-cleaner"
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
