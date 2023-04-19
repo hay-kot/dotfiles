@@ -33,7 +33,6 @@ toggleterm.setup({
 	},
 })
 
-km.nmap("<leader>t", ":ToggleTerm<CR>")
 
 function _G.set_terminal_keymaps()
 	local opts = { noremap = true }
@@ -47,6 +46,8 @@ end
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
 -- Lazy Git Custom Terminal
+--
+-- Creates a shared terminal to use for LazyGit.
 local Terminal  = require('toggleterm.terminal').Terminal
 local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
@@ -55,3 +56,49 @@ function _lazygit_toggle()
 end
 
 vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+
+
+-- Shared Default Terminal
+km.nmap("<leader>t", ":ToggleTerm<CR>")
+
+-- Local Directory Terminal
+--
+-- This section creates a new terminal in the local directory
+-- It is removed when toggled EVERY TIME which means you lose history
+-- This is a hack since toggle term doesn't support setting the working
+-- directory at toggle time. 
+--
+-- See https://github.com/akinsho/toggleterm.nvim/issues/346 for more info
+local local_term = Terminal:new({
+  -- whatever options you want, EXCEPT:
+  -- DO NOT supply `cmd`. We have to modify it and send directly.
+  size = 80,
+  close_on_exit = true,
+})
+
+local cd_command = function(term, cmd, dir)
+  if dir then
+    cmd = string.format('pushd %s && clear', dir, cmd)
+  end
+
+  if not term:is_open() then
+    term:open()
+  end
+
+  toggleterm.exec(cmd, term.id)
+end
+
+local current_dir = function()
+  -- regular files have empty string for buftype
+  local is_file = vim.api.nvim_buf_get_option(0, 'buftype') == ''
+  if is_file then
+    local filename = vim.api.nvim_buf_get_name(0)
+    return vim.fs.dirname(filename)
+  end
+end
+
+vim.keymap.set('n', '<leader>lt', function()
+  local dir = current_dir()
+  cd_command(local_term, '', dir)
+end)
+
