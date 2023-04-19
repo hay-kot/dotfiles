@@ -23,14 +23,12 @@ telescope.setup({
 			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 			-- the default case_mode is "smart_case"
 		},
-		file_browser = {},
 	},
 })
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
-telescope.load_extension("file_browser")
 
 -- telescope keymaps
 local km = require("haykot.keymaps")
@@ -49,4 +47,3 @@ end)
 km.nnoremap("<leader>fh", function()
 	require("telescope.builtin").help_tags()
 end)
-km.nnoremap("<leader>fo", ":Telescope file_browser<CR>")
