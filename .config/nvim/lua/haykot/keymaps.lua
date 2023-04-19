@@ -24,8 +24,6 @@ M.vnoremap = bind("v")
 M.xnoremap = bind("x")
 M.inoremap = bind("i")
 
--- Normal --
-
 -- Close Buffers
 keymap("n", "<leader>q", ":bd<CR>", opts)
 keymap("n", "<leader>Q", ":bd!<CR>", opts)
@@ -64,5 +62,7 @@ M.nnoremap("<leader>ev", ":e ~/.config/nvim/init.lua<CR>")
 M.nnoremap("<leader>sv", ":source ~/.config/nvim/init.lua<CR>")
 M.nnoremap("<C-d>", "<C-d>zz")
 M.nnoremap("<C-u>", "<C-u>zz")
+
+M.nnoremap("<leader>/", ":noh<cr>", opts)
 
 return M
