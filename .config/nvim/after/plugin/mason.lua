@@ -5,6 +5,8 @@ local servers = {
 	"gopls",
 }
 
+print("Loading Mason")
+
 require("mason").setup({
 	ui = {
 		border = "none",

@@ -94,11 +94,6 @@ _G.packer_plugins = {
     path = "/Users/hayden/.local/share/nvim/site/pack/packer/start/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
   },
-  ["cmp-cmdline"] = {
-    loaded = true,
-    path = "/Users/hayden/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
-    url = "https://github.com/hrsh7th/cmp-cmdline"
-  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/Users/hayden/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
@@ -120,12 +115,9 @@ _G.packer_plugins = {
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
   ["copilot.lua"] = {
-    commands = { "Copilot" },
-    config = { "\27LJ\2\n²\2\0\0\5\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0005\4\5\0=\4\6\3=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\14filetypes\1\0\t\thelp\1\6*\2\14gitrebase\1\14gitcommit\1\rhgcommit\1\rmarkdown\1\bcvs\1\tyaml\1\bsvn\1\15suggestion\vkeymap\1\0\6\tnext\n<M-]>\16accept_word\1\16accept_line\1\tprev\n<M-[>\fdismiss\n<C-]>\vaccept\n<M-l>\1\0\3\rdebounce\3K\17auto_trigger\2\fenabled\2\1\0\1\fenabled\2\nsetup\fcopilot\frequire\0" },
-    loaded = false,
-    needs_bufread = false,
-    only_cond = false,
-    path = "/Users/hayden/.local/share/nvim/site/pack/packer/opt/copilot.lua",
+    config = { "\27LJ\2\n²\2\0\0\5\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0005\4\5\0=\4\6\3=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\14filetypes\1\0\t\6*\2\bcvs\1\bsvn\1\rhgcommit\1\14gitrebase\1\14gitcommit\1\thelp\1\rmarkdown\1\tyaml\1\15suggestion\vkeymap\1\0\6\vaccept\n<M-l>\fdismiss\n<C-]>\tnext\n<M-]>\tprev\n<M-[>\16accept_line\1\16accept_word\1\1\0\3\rdebounce\3K\fenabled\2\17auto_trigger\2\1\0\1\fenabled\2\nsetup\fcopilot\frequire\0" },
+    loaded = true,
+    path = "/Users/hayden/.local/share/nvim/site/pack/packer/start/copilot.lua",
     url = "https://github.com/zbirenbaum/copilot.lua"
   },
   ["friendly-snippets"] = {
@@ -159,7 +151,7 @@ _G.packer_plugins = {
     url = "https://github.com/williamboman/mason.nvim"
   },
   ["noice.nvim"] = {
-    config = { "\27LJ\2\n­\2\0\0\5\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\4\0005\4\3\0=\4\5\3=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\fpresets\1\0\5\19lsp_doc_border\1\15inc_rename\1\26long_message_to_split\2\20command_palette\2\18bottom_search\1\blsp\1\0\0\roverride\1\0\0\1\0\3 cmp.entry.get_documentation\2\"vim.lsp.util.stylize_markdown\0021vim.lsp.util.convert_input_to_markdown_lines\2\nsetup\nnoice\frequire\0" },
+    config = { "\27LJ\2\nå\2\0\0\5\0\14\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\n\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\3=\3\v\0025\3\f\0=\3\r\2B\0\2\1K\0\1\0\fpresets\1\0\5\26long_message_to_split\2\20command_palette\2\18bottom_search\1\19lsp_doc_border\1\15inc_rename\1\blsp\1\0\0\roverride\1\0\3 cmp.entry.get_documentation\2\"vim.lsp.util.stylize_markdown\0021vim.lsp.util.convert_input_to_markdown_lines\2\14signature\1\0\1\fenabled\1\nhover\1\0\0\1\0\1\fenabled\1\nsetup\nnoice\frequire\0" },
     loaded = true,
     path = "/Users/hayden/.local/share/nvim/site/pack/packer/start/noice.nvim",
     url = "https://github.com/folke/noice.nvim"
@@ -269,27 +261,12 @@ try_loadstring("\27LJ\2\nt\0\0\3\0\a\0\0156\0\0\0009\0\1\0+\1\2\0=\1\2\0006\0\0\
 time([[Config for which-key.nvim]], false)
 -- Config for: noice.nvim
 time([[Config for noice.nvim]], true)
-try_loadstring("\27LJ\2\n­\2\0\0\5\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\6\0005\3\4\0005\4\3\0=\4\5\3=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\fpresets\1\0\5\19lsp_doc_border\1\15inc_rename\1\26long_message_to_split\2\20command_palette\2\18bottom_search\1\blsp\1\0\0\roverride\1\0\0\1\0\3 cmp.entry.get_documentation\2\"vim.lsp.util.stylize_markdown\0021vim.lsp.util.convert_input_to_markdown_lines\2\nsetup\nnoice\frequire\0", "config", "noice.nvim")
+try_loadstring("\27LJ\2\nå\2\0\0\5\0\14\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\n\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\3=\3\v\0025\3\f\0=\3\r\2B\0\2\1K\0\1\0\fpresets\1\0\5\26long_message_to_split\2\20command_palette\2\18bottom_search\1\19lsp_doc_border\1\15inc_rename\1\blsp\1\0\0\roverride\1\0\3 cmp.entry.get_documentation\2\"vim.lsp.util.stylize_markdown\0021vim.lsp.util.convert_input_to_markdown_lines\2\14signature\1\0\1\fenabled\1\nhover\1\0\0\1\0\1\fenabled\1\nsetup\nnoice\frequire\0", "config", "noice.nvim")
 time([[Config for noice.nvim]], false)
-
--- Command lazy-loads
-time([[Defining lazy-load commands]], true)
-pcall(vim.api.nvim_create_user_command, 'Copilot', function(cmdargs)
-          require('packer.load')({'copilot.lua'}, { cmd = 'Copilot', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
-        end,
-        {nargs = '*', range = true, bang = true, complete = function()
-          require('packer.load')({'copilot.lua'}, {}, _G.packer_plugins)
-          return vim.fn.getcompletion('Copilot ', 'cmdline')
-      end})
-time([[Defining lazy-load commands]], false)
-
-vim.cmd [[augroup packer_load_aucmds]]
-vim.cmd [[au!]]
-  -- Event lazy-loads
-time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'copilot.lua'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
-time([[Defining lazy-load event autocommands]], false)
-vim.cmd("augroup END")
+-- Config for: copilot.lua
+time([[Config for copilot.lua]], true)
+try_loadstring("\27LJ\2\n²\2\0\0\5\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0005\4\5\0=\4\6\3=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\14filetypes\1\0\t\6*\2\bcvs\1\bsvn\1\rhgcommit\1\14gitrebase\1\14gitcommit\1\thelp\1\rmarkdown\1\tyaml\1\15suggestion\vkeymap\1\0\6\vaccept\n<M-l>\fdismiss\n<C-]>\tnext\n<M-]>\tprev\n<M-[>\16accept_line\1\16accept_word\1\1\0\3\rdebounce\3K\fenabled\2\17auto_trigger\2\1\0\1\fenabled\2\nsetup\fcopilot\frequire\0", "config", "copilot.lua")
+time([[Config for copilot.lua]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

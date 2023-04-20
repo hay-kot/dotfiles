@@ -8,7 +8,6 @@ end
 
 require("haykot.plugins")
 require("haykot.theme")
-require("haykot.lsp")
 require("haykot.treesitter")
 require("haykot.toggleterm")
 require("haykot.comment")
