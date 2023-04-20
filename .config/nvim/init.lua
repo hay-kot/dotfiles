@@ -7,7 +7,6 @@ if infra_server == "true" then
 end
 
 require("haykot.plugins")
-require("haykot.cmp")
 require("haykot.theme")
 require("haykot.lsp")
 require("haykot.treesitter")
