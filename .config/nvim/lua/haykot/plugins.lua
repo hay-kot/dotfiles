@@ -33,7 +33,7 @@ require("packer").init({
 return require("packer").startup(function(use)
   -- Base Plugins
   use("wbthomason/packer.nvim") -- Have packer manage itself
-  use("nvim-lua/popup.nvim") -- An implementation of the Popup API from vim in Neovim
+  use("nvim-lua/popup.nvim")   -- An implementation of the Popup API from vim in Neovim
   use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
   use("simrat39/rust-tools.nvim")
   use({ "akinsho/toggleterm.nvim" })
@@ -75,11 +75,11 @@ return require("packer").startup(function(use)
         },
         -- you can enable a preset for easier configuration
         presets = {
-          bottom_search = false, -- use a classic bottom cmdline for search
-          command_palette = true, -- position the cmdline and popupmenu together
+          bottom_search = false,   -- use a classic bottom cmdline for search
+          command_palette = true,  -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          inc_rename = false,      -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false,  -- add a border to hover docs and signature help
         },
       })
     end,
@@ -91,13 +91,35 @@ return require("packer").startup(function(use)
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
+        enabled = true,
         suggestion = {
-          accept = false,
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["*"] = true,
         },
       })
     end,
   })
-  
+
   -- Vim Test
   use("vim-test/vim-test")
   -- LSP Zero
@@ -167,7 +189,7 @@ return require("packer").startup(function(use)
 
   use({
     "nvim-tree/nvim-tree.lua",
-    tag = "nightly", -- optional, updated every week. (see issue #1193)
+    tag = "nightly",              -- optional, updated every week. (see issue #1193)
     requires = {
       "nvim-tree/nvim-web-devicons", -- optional, for file icons
     },
