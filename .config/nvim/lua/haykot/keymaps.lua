@@ -10,11 +10,11 @@ vim.g.maplocalleader = " "
 local M = {}
 
 local function bind(op, outer_opts)
-	outer_opts = outer_opts or { noremap = true, silent = true }
-	return function(lhs, rhs, opts)
-		opts = vim.tbl_extend("force", outer_opts, opts or {})
-		vim.keymap.set(op, lhs, rhs, opts)
-	end
+  outer_opts = outer_opts or { noremap = true, silent = true }
+  return function(lhs, rhs, opts)
+    opts = vim.tbl_extend("force", outer_opts, opts or {})
+    vim.keymap.set(op, lhs, rhs, opts)
+  end
 end
 
 M.keymap = keymap
@@ -35,10 +35,10 @@ keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 vim.cmd([[command! Format execute 'lua vim.lsp.buf.format()']])
 
 -- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+M.nnoremap("<C-h>", "<C-w>h", opts)
+M.nnoremap("<C-j>", "<C-w>j", opts)
+M.nnoremap("<C-l>", "<C-w>l", opts)
+M.nnoremap("<C-k>", "<C-w>k", opts)
 
 -- Visual --
 -- Stay in indent mode
