@@ -6,9 +6,21 @@ end
 -- close on escape
 local actions = require("telescope.actions")
 
+local telescope_config = require("telescope.config")
+
+-- unpack depreciated in lua 5.2
+local vimgrep_args = { unpack(telescope_config.values.vimgrep_arguments) }
+
+-- Searches hidden directories and files by default
+-- with live_grep
+table.insert(vimgrep_args, "--hidden")
+table.insert(vimgrep_args, "--glob")
+table.insert(vimgrep_args, "!.git/*")
+
 telescope.setup({
   defaults = {
     sorting_strategy = "ascending",
+    vimgrep_arguments = vimgrep_args,
     layout_config = {
       prompt_position = "top",
     },
