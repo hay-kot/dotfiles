@@ -43,3 +43,7 @@ end
 vim.cmd("set whichwrap+=<,>,[,],h,l")
 vim.cmd([[set iskeyword+=-]])
 vim.cmd([[let test#strategy = "toggleterm"]])
+
+-- vim-test settings for vim-test fork 
+vim.cmd([[let test#root_markers = ["Cargo.toml", "package.json", "go.mod"] ]])
+

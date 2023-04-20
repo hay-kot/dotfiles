@@ -121,7 +121,7 @@ return require("packer").startup(function(use)
 	})
 
 	-- Vim Test
-	use("vim-test/vim-test")
+	use("hay-kot/vim-test")
 	-- LSP Zero
 	use({
 		"VonHeikemen/lsp-zero.nvim",
