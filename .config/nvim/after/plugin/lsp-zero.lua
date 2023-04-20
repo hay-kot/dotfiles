@@ -21,7 +21,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	-- Configure Ctrl-Space to trigger completion
 	["<C-Space>"] = cmp.mapping.complete(),
 	-- Configure Ctrl-y to confirm completion
-	["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
+	["<S-CR>"] = cmp.mapping.confirm({ select = true }),
 	-- Configure tab to select the first item in the completion, but not
 	-- interfer with github copilot
 	--
