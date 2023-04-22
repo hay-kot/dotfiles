@@ -24,6 +24,8 @@ is_mac() {
 is_mac
 
 mac_config() {
+    # Set Lazygit Config Dir
+    export XDG_CONFIG_HOME="$HOME/.config"
     # GPG Keys
     export GPG_TTY=$(tty)
     # Homebrew Path
