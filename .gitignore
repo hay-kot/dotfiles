@@ -7,3 +7,4 @@ gofind.json
 .env.local
 .venv
 .vaultpass
+.config/lazygit/state.yml
