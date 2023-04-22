@@ -160,6 +160,15 @@ return require("packer").startup(function(use)
     },
   })
 
+  -- Trouble LSP Diagnostics
+  use({
+    "folke/trouble.nvim",
+    requires = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("trouble").setup({})
+    end,
+  })
+
   -- Tabs
   use({
     "akinsho/bufferline.nvim",
