@@ -52,7 +52,18 @@ return require("packer").startup(function(use)
     end,
   })
 
-  -- UI Elements for Search and cmd-- Packer
+  -- Auto Session Manager
+  use({
+    "rmagatti/auto-session",
+    config = function()
+      require("auto-session").setup({
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
+      })
+    end,
+  })
+
+  -- UI Elements for Search and cmd
   use({
     "folke/noice.nvim",
     requires = {
