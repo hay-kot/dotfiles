@@ -34,6 +34,9 @@ keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 -- command Format
 vim.cmd([[command! Format execute 'lua vim.lsp.buf.format()']])
 
+-- set sbr to Split Buffer righ
+M.nnoremap("<leader>sbr", ":vsplit<CR>")
+
 -- Better window navigation
 M.nnoremap("<C-h>", "<C-w>h", opts)
 M.nnoremap("<C-j>", "<C-w>j", opts)
@@ -58,11 +61,23 @@ keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- Reload Config
-M.nnoremap("<leader>ev", ":e ~/.config/nvim/init.lua<CR>")
 M.nnoremap("<leader>sv", ":source ~/.config/nvim/init.lua<CR>")
+
+-- Center Buffer
 M.nnoremap("<C-d>", "<C-d>zz")
 M.nnoremap("<C-u>", "<C-u>zz")
 
+-- Hide search highlight
 M.nnoremap("<leader>/", ":noh<cr>", opts)
+
+-- Keeps the cursor in the same place when pulling next line up
+M.nnoremap("J", "mzJ`z", opts)
+
+-- Allow Search Terms to say centered in buffer
+M.nnoremap("n", "nzzzv", opts)
+M.nnoremap("N", "Nzzzv", opts)
+
+-- Keep Paste over from yanking to nvim register
+M.xnoremap("<leader>p", '"_dP', opts)
 
 return M

@@ -13,6 +13,7 @@ lsp.on_attach(function(_, bufnr)
   -- Keymap Overrides
   -- 
 	map("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>")
+  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
 end)
 
 
@@ -69,6 +70,7 @@ null_ls.setup({
 
 		-- Go
 		null_ls.builtins.formatting.gofumpt,
+    null_ls.builtins.formatting.goimports,
 	},
 })
 
