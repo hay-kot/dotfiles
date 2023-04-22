@@ -44,7 +44,7 @@ sync() {
     if (( $? > 0 )); then
         git -C ~/.dotfiles add .mac/Brewfile
         git -C ~/.dotfiles commit -m "auto: brew-sync"
-        git -C ~/.dotfiles push origin master
+        git -C ~/.dotfiles push origin main
         
         echo "Synced Brewfile!"
     else
