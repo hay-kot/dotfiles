@@ -81,8 +81,8 @@ bufferline.setup({
 for i = 1, 9 do
 	km.nnoremap("<leader>" .. i, function()
 		require("bufferline").go_to_buffer(i, true)
-	end)
+	end, { desc = "go to buffer " .. i })
 end
 km.nnoremap("<leader>" .. 0, function()
 	require("bufferline").go_to_buffer(-1, true)
-end)
+end, { desc = "go to last buffer" })

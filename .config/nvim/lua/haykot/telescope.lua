@@ -80,7 +80,7 @@ M.taskfile = function()
         -- for most use cases
         previewer = previewers.new_buffer_previewer({
           title = "Task",
-          define_preview = function(self, entry, status)
+          define_preview = function(self, entry, _)
             -- Get all lines from taskfile where task name is entry[1]
             local task_lines = vim.fn.system(
               "bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. entry[1] .. ":"

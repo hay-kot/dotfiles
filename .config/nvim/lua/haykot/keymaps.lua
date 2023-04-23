@@ -1,9 +1,8 @@
 -- Shorten function name
 local keymap = vim.keymap.set
 
-local opts = { noremap = true, silent = true }
 --Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
+keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -25,40 +24,39 @@ M.xnoremap = bind("x")
 M.inoremap = bind("i")
 
 -- Close Buffers
-keymap("n", "<leader>q", ":bd<CR>", opts)
-keymap("n", "<leader>Q", ":bd!<CR>", opts)
+M.nnoremap("<leader>q", ":bd<CR>", { desc = "close buffer" })
+M.nnoremap("<leader>Q", ":bd!<CR>", { desc = "force close buffer" })
 
 -- LSP Bindings
 -- format
-keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+M.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "format file" })
 -- command Format
-vim.cmd([[command! Format execute 'lua vim.lsp.buf.format()']])
+vim.cmd([[command! Fmt execute 'lua vim.lsp.buf.format()']])
 
 -- set sbr to Split Buffer righ
 M.nnoremap("<leader>sbr", ":vsplit<CR>")
 
 -- Better window navigation
-M.nnoremap("<C-h>", "<C-w>h", opts)
-M.nnoremap("<C-j>", "<C-w>j", opts)
-M.nnoremap("<C-l>", "<C-w>l", opts)
-M.nnoremap("<C-k>", "<C-w>k", opts)
+M.nnoremap("<C-h>", "<C-w>h", { desc = "move to left window" })
+M.nnoremap("<C-j>", "<C-w>j", { desc = "move to bottom window" })
+M.nnoremap("<C-l>", "<C-w>l", { desc = "move to right window" })
+M.nnoremap("<C-k>", "<C-w>k", { desc = "move to top window" })
 
 -- Visual --
 -- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+M.vnoremap("<", "<gv", { desc = "indent left" })
+M.vnoremap(">", ">gv", { desc = "indent right" })
 
 -- Move text up and down
-keymap("v", "<A-j>", ":m .+1<CR>==", opts)
-keymap("v", "<A-k>", ":m .-2<CR>==", opts)
-keymap("v", "p", '"_dP', opts)
+M.vnoremap("<A-j>", ":m .+1<CR>==", { desc = "move line down" })
+M.vnoremap("<A-k>", ":m .-2<CR>==", { desc = "move line up" })
 
 -- Visual Block --
 -- Move text up and down
-keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
+M.xnoremap("J", ":move '>+1<CR>gv-gv")
+M.xnoremap("K", ":move '<-2<CR>gv-gv")
+M.xnoremap("<A-j>", ":move '>+1<CR>gv-gv")
+M.xnoremap("<A-k>", ":move '<-2<CR>gv-gv")
 
 -- Reload Config
 M.nnoremap("<leader>sv", ":source ~/.config/nvim/init.lua<CR>")
@@ -68,16 +66,16 @@ M.nnoremap("<C-d>", "<C-d>zz")
 M.nnoremap("<C-u>", "<C-u>zz")
 
 -- Hide search highlight
-M.nnoremap("<leader>/", ":noh<cr>", opts)
+M.nnoremap("<leader>/", ":noh<cr>")
 
 -- Keeps the cursor in the same place when pulling next line up
-M.nnoremap("J", "mzJ`z", opts)
+M.nnoremap("J", "mzJ`z")
 
 -- Allow Search Terms to say centered in buffer
-M.nnoremap("n", "nzzzv", opts)
-M.nnoremap("N", "Nzzzv", opts)
+M.nnoremap("n", "nzzzv")
+M.nnoremap("N", "Nzzzv")
 
 -- Keep Paste over from yanking to nvim register
-M.xnoremap("<leader>p", '"_dP', opts)
+M.xnoremap("<leader>p", '"_dP')
 
 return M
