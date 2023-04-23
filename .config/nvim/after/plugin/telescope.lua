@@ -45,10 +45,11 @@ telescope.setup({
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
+telescope.load_extension("make")
 
+-----------------------------------------
 -- Telescope keymaps
---
---
+-----------------------------------------
 
 -- Git Filer or all Files
 local km = require("haykot.keymaps")
@@ -59,6 +60,10 @@ end)
 -- Search Dotfiles from anywhere
 km.nnoremap("<leader>fd", function()
   require("haykot.telescope").dotfiles()
+end)
+
+km.nnoremap("<leader>fm", function()
+  require("haykot.telescope").taskfile()
 end)
 
 -- Live Grep Search
@@ -79,3 +84,5 @@ end)
 km.nnoremap("<leader>fib", function()
   require("telescope.builtin").live_grep({ search_dirs = { vim.fn.expand("%:p") } })
 end)
+
+
