@@ -38,6 +38,8 @@ return require("packer").startup(function(use)
   use("simrat39/rust-tools.nvim")
   use({ "akinsho/toggleterm.nvim" })
 
+  use ("sopa0/telescope-makefile");
+
   -- Which Key (Experimental, may remove)
   use({
     "folke/which-key.nvim",
