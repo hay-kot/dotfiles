@@ -35,7 +35,8 @@ mac_config() {
     export PATH="$HOME/Go/bin:$PATH"
     
     export NOTEBOOK_LOC="~/code/notebook"
-    alias edf='nvim ~/.dotfiles'
+
+    alias edf='nvim --cmd "cd ~/.dotfiles" ~/.dotfiles'
     alias lg=lazygit
 
     eval "$(/opt/homebrew/bin/rtx activate zsh)"
