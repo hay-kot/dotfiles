@@ -1,47 +1,52 @@
-local fn = vim.fn
-
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]])
-
-local ensure_packer = function()
-  local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-    vim.cmd([[packadd packer.nvim]])
-    return true
+-- !Important: Leader key must be set before any plugins are loaded
+local ensure_lazy = function()
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable", -- latest stable release
+      lazypath,
+    })
   end
-  return false
+  vim.opt.rtp:prepend(lazypath)
 end
 
-local packer_bootstrap = ensure_packer()
+ensure_lazy()
 
--- Have packer use a popup window
-require("packer").init({
-  display = {
-    open_fn = function()
-      return require("packer.util").float({ border = "rounded" })
+require("lazy").setup({
+  -- Base Plugins
+  "nvim-lua/popup.nvim",  -- An implementation of the Popup API from vim in Neovim
+  "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
+  "simrat39/rust-tools.nvim",
+  "akinsho/toggleterm.nvim",
+  "sopa0/telescope-makefile",
+
+  {
+    priority = 101,
+    "morhetz/gruvbox",
+  },
+
+  {
+    priority = 100,
+    lazy = false,
+    "nvim-tree/nvim-tree.lua",
+    tag = "nightly", -- optional, updated every week. (see issue #1193)
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local function open_nvim_tree()
+        -- open the tree
+        require("nvim-tree.api").tree.open()
+      end
+
+      vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
     end,
   },
-})
-
--- Install your plugins here
-return require("packer").startup(function(use)
-  -- Base Plugins
-  use("wbthomason/packer.nvim") -- Have packer manage itself
-  use("nvim-lua/popup.nvim")   -- An implementation of the Popup API from vim in Neovim
-  use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
-  use("simrat39/rust-tools.nvim")
-  use({ "akinsho/toggleterm.nvim" })
-
-  use ("sopa0/telescope-makefile");
 
   -- Which Key (Experimental, may remove)
-  use({
+  {
     "folke/which-key.nvim",
     config = function()
       vim.o.timeout = true
@@ -52,10 +57,10 @@ return require("packer").startup(function(use)
         -- refer to the configuration section below
       })
     end,
-  })
+  },
 
   -- Auto Session Manager
-  use({
+  {
     "rmagatti/auto-session",
     config = function()
       require("auto-session").setup({
@@ -63,12 +68,11 @@ return require("packer").startup(function(use)
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
       })
     end,
-  })
-
+  },
   -- UI Elements for Search and cmd
-  use({
+  {
     "folke/noice.nvim",
-    requires = {
+    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
       -- OPTIONAL:
@@ -98,9 +102,9 @@ return require("packer").startup(function(use)
         },
       })
     end,
-  })
+  },
 
-  use({
+  {
     "zbirenbaum/copilot.lua",
     config = function()
       require("copilot").setup({
@@ -131,14 +135,14 @@ return require("packer").startup(function(use)
         },
       })
     end,
-  })
+  },
 
   -- Vim Test
-  use("hay-kot/vim-test")
+  "hay-kot/vim-test",
   -- LSP Zero
-  use({
+  {
     "VonHeikemen/lsp-zero.nvim",
-    requires = {
+    dependencies = {
       -- LSP Support
       { "neovim/nvim-lspconfig" },
       { "williamboman/mason.nvim" },
@@ -160,71 +164,59 @@ return require("packer").startup(function(use)
       -- Null LS (Optional)
       { "jose-elias-alvarez/null-ls.nvim" },
     },
-  })
+  },
 
   -- Trouble LSP Diagnostics
-  use({
+  {
     "folke/trouble.nvim",
-    requires = "nvim-tree/nvim-web-devicons",
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("trouble").setup({})
     end,
-  })
+  },
 
   -- Tabs
-  use({
+  {
     "akinsho/bufferline.nvim",
-    tag = "v3.*",
-    requires = "nvim-tree/nvim-web-devicons",
-  })
+    branch = "v3.*",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
 
   -- Status Line
-  use({
+  {
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", opt = true },
-  })
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
 
-  use({
+  {
     "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-  })
+    build = ":TSUpdate",
+  },
 
-  use("p00f/nvim-ts-rainbow")
+  "p00f/nvim-ts-rainbow",
 
   -- Git
-  use("airblade/vim-gitgutter") -- Shows a git diff in the gutter (sign column)
+  "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
 
   -- Navigation
-  use({
+  {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.0", -- Fuzzy finder
-    requires = {
-      { "nvim-lua/plenary.nvim" },
-    },
-  })
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
 
-  -- Don't run fzf native on windows
-  if vim.fn.has("win32") == 0 then
-    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-  end
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    enabled = function()
+      -- Don't run fzf native on windows
+      return vim.fn.has("win32") == 0
+    end,
+  },
 
-  use({
-    "nvim-tree/nvim-tree.lua",
-    tag = "nightly",              -- optional, updated every week. (see issue #1193)
-    requires = {
-      "nvim-tree/nvim-web-devicons", -- optional, for file icons
-    },
-  })
   -- Pretty Things
-  use({ "morhetz/gruvbox", as = "gruvbox" })
 
   -- Comments
-  use("numToStr/Comment.nvim")
-  use("JoosepAlviste/nvim-ts-context-commentstring")
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require("packer").sync()
-  end
-end)
+  "numToStr/Comment.nvim",
+  "JoosepAlviste/nvim-ts-context-commentstring",
+})
