@@ -155,6 +155,7 @@ cask "tableplus"
 cask "transmit"
 cask "visual-studio-code"
 cask "vlc", args: { appdir: "/Applications" }
+cask "wezterm"
 cask "zoom"
 mas "Foxit PDF Reader", id: 1032155965
 mas "GarageBand", id: 682658836
