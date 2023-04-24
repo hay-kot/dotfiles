@@ -16,11 +16,19 @@ end
 
 ensure_lazy()
 
+-- session_restored synchronizes the behavior of the auto-session plugin
+-- and the nvim-tree plugin. The auto-session plugin will restore the
+-- previous session on startup, but the nvim-tree plugin will open the
+-- file explorer on startup. This variable is used to prevent the
+-- nvim-tree plugin from opening the file explorer on startup if a
+-- session is restored.
+local session_restored = false
+
 require("lazy").setup({
   -- Base Plugins
   "nvim-lua/popup.nvim",  -- An implementation of the Popup API from vim in Neovim
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
-  "simrat39/rust-tools.nvim",
+  -- "simrat39/rust-tools.nvim",
   "akinsho/toggleterm.nvim",
   "sopa0/telescope-makefile",
 
@@ -28,22 +36,43 @@ require("lazy").setup({
     priority = 101,
     "morhetz/gruvbox",
   },
-
+  -- Auto Session Manager
   {
     priority = 100,
+    "rmagatti/auto-session",
+    config = function()
+      require("auto-session").setup({
+        bypass_session_save_file_types = {"", "blank", "alpha", "NvimTree", "nofile"},
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
+        pre_save_cmds = { "lua require'nvim-tree'.setup()", "tabdo NvimTreeClose" },
+        pre_restore_cmds = { function ()
+          print("Called")
+          session_restored = true
+        end}
+      })
+    end,
+  },
+
+  {
+    priority = 99,
     lazy = false,
     "nvim-tree/nvim-tree.lua",
     tag = "nightly", -- optional, updated every week. (see issue #1193)
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       local function open_nvim_tree()
-        -- open the tree
+        print(session_restored)
+        if session_restored then
+          return
+        end
         require("nvim-tree.api").tree.open()
       end
 
       vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
     end,
   },
+
 
   -- Which Key (Experimental, may remove)
   {
@@ -59,16 +88,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Auto Session Manager
-  {
-    "rmagatti/auto-session",
-    config = function()
-      require("auto-session").setup({
-        log_level = "error",
-        auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
-      })
-    end,
-  },
   -- UI Elements for Search and cmd
   {
     "folke/noice.nvim",
@@ -178,7 +197,7 @@ require("lazy").setup({
   -- Tabs
   {
     "akinsho/bufferline.nvim",
-    branch = "v3.*",
+    version = "v3.*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 

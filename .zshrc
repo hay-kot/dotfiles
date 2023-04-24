@@ -36,7 +36,7 @@ mac_config() {
     
     export NOTEBOOK_LOC="~/code/notebook"
 
-    alias edf='nvim --cmd "cd ~/.dotfiles" ~/.dotfiles'
+    alias edf='nvim --cmd "cd ~/.dotfiles"'
     alias lg=lazygit
 
     eval "$(/opt/homebrew/bin/rtx activate zsh)"
