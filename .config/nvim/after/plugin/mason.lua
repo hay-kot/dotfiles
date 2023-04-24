@@ -1,9 +1,13 @@
 local utils = require("haykot.lib.utils")
 
-utils.guard_module({
+local ok = utils.guard_module({
   "mason",
   "mason-lspconfig",
 })
+
+if not ok then
+  return
+end
 
 
 local servers = {

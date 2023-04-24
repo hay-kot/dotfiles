@@ -1,6 +1,6 @@
 local utils = require("haykot.lib.utils")
 
-utils.guard_module({
+local ok = utils.guard_module({
   "lsp-zero",
   "copilot.suggestion",
   "cmp",
@@ -8,6 +8,9 @@ utils.guard_module({
   "lspconfig",
 })
 
+if not ok then
+  return
+end
 
 local lsp = require("lsp-zero")
 local copilot = require("copilot.suggestion")
