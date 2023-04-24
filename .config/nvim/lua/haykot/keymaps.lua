@@ -27,12 +27,6 @@ M.inoremap = bind("i")
 M.nnoremap("<leader>q", ":bd<CR>", { desc = "close buffer" })
 M.nnoremap("<leader>Q", ":bd!<CR>", { desc = "force close buffer" })
 
--- LSP Bindings
--- format
-M.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "format file" })
--- command Format
-vim.cmd([[command! Fmt execute 'lua vim.lsp.buf.format()']])
-
 -- set sbr to Split Buffer righ
 M.nnoremap("<leader>sbr", ":vsplit<CR>")
 

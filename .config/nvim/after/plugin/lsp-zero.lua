@@ -6,11 +6,14 @@ local ok = utils.guard_module({
   "cmp",
   "null-ls",
   "lspconfig",
+  "luasnip.loaders.from_vscode",
 })
 
 if not ok then
   return
 end
+
+local km = require("haykot.keymaps")
 
 local lsp = require("lsp-zero")
 local copilot = require("copilot.suggestion")
@@ -19,15 +22,49 @@ lsp.preset("recommended")
 lsp.on_attach(function(_, bufnr)
   lsp.default_keymaps({ buffer = bufnr })
 
-  local map = function(m, lhs, rhs)
-    local opts = { buffer = bufnr }
-    vim.keymap.set(m, lhs, rhs, opts)
-  end
+  km.nnoremap("gd", function()
+    vim.lsp.buf.definition()
+  end, { desc = "Go to definition" })
 
-  -- Keymap Overrides
-  --
-  map("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>")
-  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+  km.nnoremap("K", function()
+    vim.lsp.buf.hover()
+  end, { desc = "Show hover information" })
+
+  km.nnoremap("<leader>vws", function()
+    vim.lsp.buf.workspace_symbol()
+  end, { desc = "Search for symbols in workspace" })
+
+  km.nnoremap("<leader>vd", function()
+    vim.diagnostic.open_float()
+  end, { desc = "Open diagnostic float" })
+
+  km.nnoremap("[d", function()
+    vim.diagnostic.goto_next()
+  end, { desc = "Jump to next diagnostic" })
+
+  km.nnoremap("]d", function()
+    vim.diagnostic.goto_prev()
+  end, { desc = "Jump to previous diagnostic" })
+
+  km.nnoremap("<leader>vca", function()
+    vim.lsp.buf.code_action()
+  end, { desc = "Show code actions" })
+
+  km.nnoremap("<leader>vrr", function()
+    vim.lsp.buf.references()
+  end, { desc = "Find references" })
+
+  km.nnoremap("<leader>vrn", function()
+    vim.lsp.buf.rename()
+  end, { desc = "Rename symbol" })
+
+  km.inoremap("<C-h>", function()
+    vim.lsp.buf.signature_help()
+  end, { desc = "Show signature help" })
+
+  km.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "format file" })
+  -- command Format
+  vim.cmd([[command! Fmt execute 'lua vim.lsp.buf.format()']])
 end)
 
 local cmp = require("cmp")
@@ -58,13 +95,16 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings["<CR>"] = nil
 cmp_mappings["<C-m>"] = nil
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
 lsp.setup_nvim_cmp({
   sources = {
     --- These are the default sources for lsp-zero
-    { name = "nvim_lsp", keyword_length = 3 },
     { name = "path" },
-    { name = "buffer",   keyword_length = 3 },
-    { name = "luasnip",  keyword_length = 2 },
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
+    { name = "buffer",  keyword_length = 3 },
+    { name = "luasnip", keyword_length = 2 },
   },
   mapping = cmp_mappings,
 })
@@ -109,3 +149,6 @@ require("lspconfig").yamlls.setup({
     },
   },
 })
+
+-- Fix Undefined global 'vim'
+require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())

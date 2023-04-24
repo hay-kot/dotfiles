@@ -34,7 +34,7 @@ toggleterm.setup({
   },
 })
 
-function _G.set_terminal_keymaps()
+_G.set_terminal_keymaps = function()
   local opts = { noremap = true }
   vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
   vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
@@ -55,15 +55,12 @@ function ToggleLazyGit()
   lazygit:toggle()
 end
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>g",
-  "<cmd>lua ToggleLazyGit()<CR>",
-  { noremap = true, silent = true, desc = "toggle lazygit" }
-)
+km.nnoremap("<leader>g", function()
+  ToggleLazyGit()
+end, { desc = "open lazygit" })
 
--- Shared Default Terminal
-km.nmap("<leader>t", ":ToggleTerm<CR>")
+-- Global Default Terminal
+km.nnoremap("<leader>t", ":ToggleTerm<CR>", { desc = "toggle terminal" })
 
 -- Local Directory Terminal
 --
@@ -101,7 +98,7 @@ local current_dir = function()
   end
 end
 
-vim.keymap.set("n", "<leader>lt", function()
+km.nnoremap("<leader>lt", function()
   local dir = current_dir()
   cd_command(local_term, "", dir)
-end)
+end, { desc = "open local terminal" })

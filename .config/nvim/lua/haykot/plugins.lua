@@ -42,7 +42,7 @@ require("lazy").setup({
     "rmagatti/auto-session",
     config = function()
       require("auto-session").setup({
-        bypass_session_save_file_types = {"", "blank", "alpha", "NvimTree", "nofile"},
+        bypass_session_save_file_types = {"", "blank", "alpha", "NvimTree", "nofile", "Trouble"},
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
         pre_save_cmds = { "lua require'nvim-tree'.setup()", "tabdo NvimTreeClose" },
