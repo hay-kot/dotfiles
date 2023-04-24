@@ -1,3 +1,11 @@
+local utils = require("haykot.lib.utils")
+
+utils.guard_module({
+  "mason",
+  "mason-lspconfig",
+})
+
+
 local servers = {
   "pyright",
   "jsonls",

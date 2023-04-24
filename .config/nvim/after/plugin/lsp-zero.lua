@@ -1,7 +1,18 @@
+local utils = require("haykot.lib.utils")
+
+utils.guard_module({
+  "lsp-zero",
+  "copilot.suggestion",
+  "cmp",
+  "null-ls",
+  "lspconfig",
+})
+
+
 local lsp = require("lsp-zero")
 local copilot = require("copilot.suggestion")
-lsp.preset("recommended")
 
+lsp.preset("recommended")
 lsp.on_attach(function(_, bufnr)
   lsp.default_keymaps({ buffer = bufnr })
 
@@ -47,8 +58,8 @@ cmp_mappings["<C-m>"] = nil
 lsp.setup_nvim_cmp({
   sources = {
     --- These are the default sources for lsp-zero
-    { name = "path" },
     { name = "nvim_lsp", keyword_length = 3 },
+    { name = "path" },
     { name = "buffer",   keyword_length = 3 },
     { name = "luasnip",  keyword_length = 2 },
   },

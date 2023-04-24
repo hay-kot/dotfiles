@@ -5,7 +5,6 @@ end
 
 -- close on escape
 local actions = require("telescope.actions")
-
 local telescope_config = require("telescope.config")
 
 -- unpack depreciated in lua 5.2

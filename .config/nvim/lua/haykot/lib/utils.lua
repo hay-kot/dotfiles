@@ -20,4 +20,13 @@ M.find_first = function(root, files)
 	end
 end
 
+M.guard_module = function(modules)
+  for _, module in pairs(modules) do
+    if not pcall(require, module) then
+      return false
+    end
+  end
+  return true
+end
+
 return M
