@@ -130,7 +130,8 @@ end
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
-config.color_scheme = 'GruvboxDark'
+config.color_scheme = "GruvboxDark"
+config.line_height = 1.1
 config.font = wezterm.font("JetBrains Mono", { weight = "Regular" })
 config.font_size = 16
 
@@ -148,6 +149,14 @@ config.window_padding = {
   right = 0,
   top = 0,
   bottom = 0,
+}
+
+config.exit_behavior = "CloseOnCleanExit"
+config.clean_exit_codes = {
+  0,
+  127, -- Default of `exit`
+  130, -- Control-C
+  201, -- Exit code on docker-compose stack when called from neovim terminal (don't know why)
 }
 
 -- and finally, return the configuration to wezterm
