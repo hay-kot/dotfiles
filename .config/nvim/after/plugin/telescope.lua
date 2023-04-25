@@ -53,39 +53,39 @@ telescope.load_extension("fzf")
 local km = require("haykot.keymaps")
 km.nnoremap("<leader>ff", function()
   require("haykot.telescope").project_files()
-end)
+end, { desc = "find file" })
 
 -- Search Dotfiles from anywhere
 km.nnoremap("<leader>fd", function()
   require("haykot.telescope").dotfiles()
-end)
+end, { desc = "find dotfiles" })
 
 km.nnoremap("<leader>fm", function()
   require("haykot.telescope").taskfile("toggle")
-end)
+end , { desc = "run task or make cmd in term" })
 
 
 km.nnoremap("<leader>fn", function()
   require("haykot.telescope").taskfile("wezterm")
-end)
+end , { desc = "run task or make cmd in new tab" })
 
 -- Live Grep Search
 km.nnoremap("<leader>fg", function()
   require("telescope.builtin").live_grep()
-end)
+end, { desc = "find in files" })
 
 -- Search Current Open Buffers
 km.nnoremap("<leader>fb", function()
   require("telescope.builtin").buffers()
-end)
+end, { desc = "find buffers" })
 
 -- Search Help Tags
 km.nnoremap("<leader>fh", function()
   require("telescope.builtin").help_tags()
-end)
+end , { desc = "find help" })
 
 km.nnoremap("<leader>fib", function()
   require("telescope.builtin").live_grep({ search_dirs = { vim.fn.expand("%:p") } })
-end)
+end, { desc = "find in buffer" })
 
 
