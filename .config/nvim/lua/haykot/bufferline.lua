@@ -9,6 +9,7 @@ require("bufferline").setup({})
 local km = require("haykot.keymaps")
 km.nnoremap("<leader>bn", ":bnext <CR>")
 km.nnoremap("<leader>bp", ":bprev <CR>")
+km.nnoremap("<leader><tab>", ":BufferLineCycleNext <CR>")
 
 bufferline.setup({
 	options = {

@@ -21,11 +21,133 @@ M.dotfiles = function()
   })
 end
 
+local utils = require("haykot.lib.utils")
+
+local telescope_make = {
+  title = "Makefile",
+  has_file = function(project_dir)
+    local makefile = utils.find_first(project_dir, {
+      "Makefile",
+      "makefile",
+      "GNUmakefile",
+    })
+
+    if makefile == nil then
+      return nil
+    end
+
+    return makefile
+  end,
+  commands = function()
+    local cmd = vim.fn.system(
+    "make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\\/\\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u")
+
+    local lines = vim.split(cmd, "\n")
+
+    -- FIlter out makefile literal
+    local new_lines = {}
+    for _, line in pairs(lines) do
+      if line:lower() ~= "makefile" and line ~= "" then
+        table.insert(new_lines, line)
+      end
+    end
+
+    return new_lines
+  end,
+  preview = function(makefile, task_name)
+    local lines = vim.fn.system("bat -p --color=never " .. makefile .. " | rg --after-context 100 " .. task_name .. ":")
+
+    -- Split lines into a list
+    lines = vim.split(lines, "\n")
+
+    -- trim trailing lines after task definition
+    local new_lines = {}
+    for i, line in pairs(lines) do
+      if line:match("^%s*$") then
+        break
+      end
+      -- If line is a new task definition, break
+      -- `  go:run:` two spaces is important
+      if line:match("^%s%s%w+:") and i > 1 then
+        break
+      end
+
+      table.insert(new_lines, line)
+    end
+
+    return { lines = new_lines, filetype = "make" }
+  end,
+  cmd = function(makefile, task_name)
+    return "make " .. task_name
+  end,
+}
+
+local telescope_taskfile = {
+  title = "Taskfile",
+  has_file = function(project_dir)
+    local taskfile = utils.find_first(project_dir, {
+      "Taskfile.yaml",
+      "Taskfile.yml",
+      "taskfile.yaml",
+      "taskfile.yml",
+    })
+
+    if taskfile == nil then
+      return nil
+    end
+
+    return taskfile
+  end,
+  commands = function(taskfile)
+    -- Call task --list --json and get json output
+    local task_list = vim.fn.system("task --list --json --taskfile " .. taskfile)
+
+    -- Extract list of "tasks" from json
+    task_list = vim.fn.json_decode(task_list)["tasks"]
+
+    -- Create a list of task names
+    local task_names = {}
+    for _, task in pairs(task_list) do
+      table.insert(task_names, task["name"])
+    end
+
+    return task_names
+  end,
+  cmd = function(taskfile, task_name)
+    return "task " .. task_name .. " --taskfile \"" .. taskfile .. "\""
+  end,
+  preview = function(taskfile, task_name)
+    -- Get all lines from taskfile where task name is entry[1]
+    local task_lines =
+        vim.fn.system("bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. task_name .. ":")
+
+    -- Split lines into a list
+    task_lines = vim.split(task_lines, "\n")
+
+    -- trim trailing lines after task definition
+    local new_lines = {}
+    for i, line in pairs(task_lines) do
+      if line:match("^%s*$") then
+        break
+      end
+      -- If line is a new task definition, break
+      -- `  go:run:` two spaces is important
+      if line:match("^%s%s%w+:") and i > 1 then
+        break
+      end
+
+      table.insert(new_lines, line)
+    end
+
+    return { lines = new_lines, filetype = "yaml" }
+  end,
+}
+
 --- TaskFile function will search for a Taskfile in the current git project
 --- and open a telescope picker with the list of tasks. If no Taskfile is
 --- found, it will fallback to telescope-makefile.
-M.taskfile = function()
-  local utils = require("haykot.lib.utils")
+--- @param mode string: mode of operation (wezterm | toggle), defaults to toggle
+M.taskfile = function(mode)
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
   local conf = require("telescope.config").values
@@ -33,79 +155,69 @@ M.taskfile = function()
   local actions = require("telescope.actions")
   local previewers = require("telescope.previewers")
 
+  mode = mode or "toggle"
+
   local project_dir = vim.fn.system("git rev-parse --show-toplevel")
   if project_dir == "" or project_dir == nil then
     print("Error: Could not determine project directory.")
     return
   end
 
-  local taskfile = utils.find_first(project_dir:gsub("\n", ""), {
-    "Taskfile.yaml",
-    "Taskfile.yml",
-    "taskfile.yaml",
-    "taskfile.yml",
-  })
+  project_dir = project_dir:gsub("\n", "") 
 
-  if taskfile == nil then
-    -- Fallback to telescope-makefile
-    vim.cmd("Telescope make")
-    return
+  local file_path = nil
+  local commander = nil
+
+  local taskfile_path = telescope_taskfile.has_file(project_dir)
+  if taskfile_path ~= nil then
+    file_path = taskfile_path
+    commander = telescope_taskfile
+  else
+    local makefile_path = telescope_make.has_file(project_dir)
+
+    if makefile_path == nil then
+      print("Error: Could not find a Makefile or Taskfile.")
+      return
+    end
+
+    file_path = makefile_path
+    commander = telescope_make
   end
 
-  -- Call task --list --json and get json output
-  local task_list = vim.fn.system("task --list --json --taskfile " .. taskfile)
+  local task_names = commander.commands(file_path)
 
-  -- Extract list of "tasks" from json
-  task_list = vim.fn.json_decode(task_list)["tasks"]
-
-  -- Create a list of task names
-  local task_names = {}
-  for _, task in pairs(task_list) do
-    table.insert(task_names, task["name"])
-  end
-
+  -- Call task in viewable window. If the mode is toggle it uses to TermExec
+  -- command to open a terminal window and run the task. If the mode is
+  -- wezterm, it uses the wezterm cli spawn command to run the task in a
+  -- new wezterm tab. Note that the tab is terminated immidiately after the
+  -- task is finished, as far as I've found there's no way around this.
   local function call_task(task_name)
-    -- Call task in viewable window
-    vim.cmd("TermExec cmd=" .. "'task " .. task_name .. " --taskfile " .. taskfile .. "'")
+    local command = commander.cmd(file_path, task_name)
+
+    if mode == "toggle" then
+      vim.cmd("TermExec cmd=" .. "'" .. command .. "'")
+    elseif mode == "wezterm" then
+      print("wezterm cli spawn --cwd='" .. project_dir .. "' -- " .. command)
+      vim.fn.system("wezterm cli spawn --cwd='" .. project_dir .. "' -- " .. command)
+    end
   end
 
   local opts = {}
   pickers
       .new(opts, {
-        prompt_title = "Taskfile",
+        prompt_title = commander.title,
         finder = finders.new_table({ results = task_names }),
         sorter = conf.generic_sorter(opts),
         -- Previewer for taskfile shows only the valid task definition
-        -- currently supports tasks up to 100 lines, which is likely enough 
+        -- currently supports tasks up to 100 lines, which is likely enough
         -- for most use cases
         previewer = previewers.new_buffer_previewer({
           title = "Task",
           define_preview = function(self, entry, _)
-            -- Get all lines from taskfile where task name is entry[1]
-            local task_lines = vim.fn.system(
-              "bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. entry[1] .. ":"
-            )
+            local args = commander.preview(file_path, entry[1]) or {}
 
-            -- Split lines into a list
-            task_lines = vim.split(task_lines, "\n")
-
-            -- trim trailing lines after task definition
-            local new_lines = {}
-            for i, line in pairs(task_lines) do
-              if line:match("^%s*$") then
-                break
-              end
-              -- If line is a new task definition, break
-              -- `  go:run:` two spaces is important
-              if line:match("^%s%s%w+:") and i > 1 then
-                break
-              end
-
-              table.insert(new_lines, line)
-            end
-
-            vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, new_lines)
-            vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "yaml")
+            vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, args.lines)
+            vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", args.filetype)
           end,
         }),
         attach_mappings = function(prompt_bufnr, _)
@@ -115,6 +227,7 @@ M.taskfile = function()
             if not command then
               return
             end
+
             call_task(command[1])
           end)
           return true

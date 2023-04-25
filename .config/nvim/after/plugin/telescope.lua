@@ -44,7 +44,6 @@ telescope.setup({
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
-telescope.load_extension("make")
 
 -----------------------------------------
 -- Telescope keymaps
@@ -62,7 +61,12 @@ km.nnoremap("<leader>fd", function()
 end)
 
 km.nnoremap("<leader>fm", function()
-  require("haykot.telescope").taskfile()
+  require("haykot.telescope").taskfile("toggle")
+end)
+
+
+km.nnoremap("<leader>fn", function()
+  require("haykot.telescope").taskfile("wezterm")
 end)
 
 -- Live Grep Search

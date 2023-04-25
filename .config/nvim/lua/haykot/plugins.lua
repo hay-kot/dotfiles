@@ -30,7 +30,6 @@ require("lazy").setup({
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
   -- "simrat39/rust-tools.nvim",
   "akinsho/toggleterm.nvim",
-  "sopa0/telescope-makefile",
 
   {
     priority = 101,
@@ -47,7 +46,6 @@ require("lazy").setup({
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
         pre_save_cmds = { "lua require'nvim-tree'.setup()", "tabdo NvimTreeClose" },
         pre_restore_cmds = { function ()
-          print("Called")
           session_restored = true
         end}
       })
