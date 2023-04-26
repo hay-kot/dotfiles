@@ -38,13 +38,23 @@ local telescope_make = {
 
     return makefile
   end,
-  commands = function()
-    local cmd = vim.fn.system(
-    "make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\\/\\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u")
+  commands = function(makefile)
+    -- Adapted From
+    --    -> https://github.com/sopa0/telescope-makefile/blob/6e5b5767751dbf73ad4f126840dcf1abfc38e891/lua/telescope/_extensions/make.lua#L29-L33
+    local cmd_str = "make"
+        .. " -pRrq -C "
+        .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
+        .. [[ 2>/dev/null |
+                awk -F: '/^# Files/,/^# Finished Make data base/ {
+                    if ($1 == "# Not a target") skip = 1;
+                    if ($1 !~ "^[#.\t]") { if (!skip) {if ($1 !~ "^$")print $1}; skip=0 }
+                }' 2>/dev/null | sort -u ]]
+
+    local cmd = vim.fn.system(cmd_str)
 
     local lines = vim.split(cmd, "\n")
 
-    -- FIlter out makefile literal
+    -- filter out makefile literal
     local new_lines = {}
     for _, line in pairs(lines) do
       if line:lower() ~= "makefile" and line ~= "" then
@@ -55,7 +65,8 @@ local telescope_make = {
     return new_lines
   end,
   preview = function(makefile, task_name)
-    local lines = vim.fn.system("bat -p --color=never " .. makefile .. " | rg --after-context 100 " .. task_name .. ":")
+    local lines =
+        vim.fn.system("bat -p --color=never " .. makefile .. " | rg --after-context 100 " .. task_name .. ":")
 
     -- Split lines into a list
     lines = vim.split(lines, "\n")
@@ -114,7 +125,7 @@ local telescope_taskfile = {
     return task_names
   end,
   cmd = function(taskfile, task_name)
-    return "task " .. task_name .. " --taskfile \"" .. taskfile .. "\""
+    return "task " .. task_name .. ' --taskfile "' .. taskfile .. '"'
   end,
   preview = function(taskfile, task_name)
     -- Get all lines from taskfile where task name is entry[1]
@@ -163,7 +174,7 @@ M.taskfile = function(mode)
     return
   end
 
-  project_dir = project_dir:gsub("\n", "") 
+  project_dir = project_dir:gsub("\n", "")
 
   local file_path = nil
   local commander = nil
