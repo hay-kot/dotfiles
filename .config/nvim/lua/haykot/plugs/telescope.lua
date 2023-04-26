@@ -258,10 +258,6 @@ return {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
-        enabled = function()
-          -- Don't run fzf native on windows | I don't think this works
-          return vim.fn.has("win32") == 0
-        end,
       },
     },
     config = function()
@@ -270,7 +266,7 @@ return {
       local actions = require("telescope.actions")
       local telescope_config = require("telescope.config")
 
-      -- unpack depreciated in lua 5.2
+      -- unpack depreciated in lua 5.2 but still works 
       local vimgrep_args = { unpack(telescope_config.values.vimgrep_arguments) }
 
       -- Searches hidden directories and files by default
