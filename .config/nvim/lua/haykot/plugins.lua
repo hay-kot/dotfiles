@@ -41,13 +41,15 @@ require("lazy").setup({
     "rmagatti/auto-session",
     config = function()
       require("auto-session").setup({
-        bypass_session_save_file_types = {"", "blank", "alpha", "NvimTree", "nofile", "Trouble"},
+        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble" },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
         pre_save_cmds = { "lua require'nvim-tree'.setup()", "tabdo NvimTreeClose" },
-        pre_restore_cmds = { function ()
-          session_restored = true
-        end}
+        pre_restore_cmds = {
+          function()
+            session_restored = true
+          end,
+        },
       })
     end,
   },
@@ -60,7 +62,6 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       local function open_nvim_tree()
-        print(session_restored)
         if session_restored then
           return
         end
@@ -70,7 +71,6 @@ require("lazy").setup({
       vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
     end,
   },
-
 
   -- Which Key (Experimental, may remove)
   {
@@ -86,17 +86,18 @@ require("lazy").setup({
     end,
   },
 
+  -- Improve Vim UI
+  -- Mostly used for code action menu/select, but had some other nice
+  -- UI improvements as well
+  {
+    "stevearc/dressing.nvim",
+  },
+
   -- UI Elements for Search and cmd
+  -- Mostly used for the main command bar, not sure if there's anything else I use in this
   {
     "folke/noice.nvim",
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
-    },
+    dependencies = { "MunifTanjim/nui.nvim" },
     config = function()
       require("noice").setup({
         lsp = {
