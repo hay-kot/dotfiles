@@ -30,11 +30,11 @@ lsp.on_attach(function(_, bufnr)
     vim.lsp.buf.hover()
   end, { desc = "Show hover information" })
 
-  km.nnoremap("<leader>vws", function()
+  km.nnoremap("<leader>lws", function()
     vim.lsp.buf.workspace_symbol()
   end, { desc = "Search for symbols in workspace" })
 
-  km.nnoremap("<leader>vd", function()
+  km.nnoremap("<leader>ld", function()
     vim.diagnostic.open_float()
   end, { desc = "Open diagnostic float" })
 
@@ -46,15 +46,15 @@ lsp.on_attach(function(_, bufnr)
     vim.diagnostic.goto_prev()
   end, { desc = "Jump to previous diagnostic" })
 
-  km.nnoremap("<leader>vca", function()
+  km.nnoremap("<leader>lra", function()
     vim.lsp.buf.code_action()
   end, { desc = "Show code actions" })
 
-  km.nnoremap("<leader>vrr", function()
+  km.nnoremap("<leader>lfr", function()
     vim.lsp.buf.references()
   end, { desc = "Find references" })
 
-  km.nnoremap("<leader>vrn", function()
+  km.nnoremap("<leader>lr", function()
     vim.lsp.buf.rename()
   end, { desc = "Rename symbol" })
 
