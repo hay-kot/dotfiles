@@ -23,3 +23,6 @@ encrypt:
 
 decrypt:
 	ansible-vault decrypt --vault-password-file ./secrets/.vaultpass ./ansible/vars/vault.yml
+
+fmt/dotfiles:
+	stylua ./.config/nvim/
