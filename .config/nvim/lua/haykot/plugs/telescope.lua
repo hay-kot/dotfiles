@@ -42,9 +42,9 @@ local telescope_make = {
     -- Adapted From
     --    -> https://github.com/sopa0/telescope-makefile/blob/6e5b5767751dbf73ad4f126840dcf1abfc38e891/lua/telescope/_extensions/make.lua#L29-L33
     local cmd_str = "make"
-      .. " -pRrq -C "
-      .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
-      .. [[ 2>/dev/null |
+        .. " -pRrq -C "
+        .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
+        .. [[ 2>/dev/null |
                 awk -F: '/^# Files/,/^# Finished Make data base/ {
                     if ($1 == "# Not a target") skip = 1;
                     if ($1 !~ "^[#.\t]") { if (!skip) {if ($1 !~ "^$")print $1}; skip=0 }
@@ -129,7 +129,7 @@ local telescope_taskfile = {
   preview = function(taskfile, task_name)
     -- Get all lines from taskfile where task name is entry[1]
     local task_lines =
-      vim.fn.system("bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. task_name .. ":")
+        vim.fn.system("bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. task_name .. ":")
 
     -- Split lines into a list
     task_lines = vim.split(task_lines, "\n")
@@ -213,36 +213,139 @@ M.taskfile = function(mode)
 
   local opts = {}
   pickers
-    .new(opts, {
-      prompt_title = commander.title,
-      finder = finders.new_table({ results = task_names }),
-      sorter = conf.generic_sorter(opts),
-      -- Previewer for taskfile shows only the valid task definition
-      -- currently supports tasks up to 100 lines, which is likely enough
-      -- for most use cases
-      previewer = previewers.new_buffer_previewer({
-        title = "Task",
-        define_preview = function(self, entry, _)
-          local args = commander.preview(file_path, entry[1]) or {}
+      .new(opts, {
+        prompt_title = commander.title,
+        finder = finders.new_table({ results = task_names }),
+        sorter = conf.generic_sorter(opts),
+        -- Previewer for taskfile shows only the valid task definition
+        -- currently supports tasks up to 100 lines, which is likely enough
+        -- for most use cases
+        previewer = previewers.new_buffer_previewer({
+          title = "Task",
+          define_preview = function(self, entry, _)
+            local args = commander.preview(file_path, entry[1]) or {}
 
-          vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, args.lines)
-          vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", args.filetype)
+            vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, args.lines)
+            vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", args.filetype)
+          end,
+        }),
+        attach_mappings = function(prompt_bufnr, _)
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local command = action_state.get_selected_entry()
+            if not command then
+              return
+            end
+
+            call_task(command[1])
+          end)
+          return true
         end,
-      }),
-      attach_mappings = function(prompt_bufnr, _)
-        actions.select_default:replace(function()
-          actions.close(prompt_bufnr)
-          local command = action_state.get_selected_entry()
-          if not command then
-            return
-          end
-
-          call_task(command[1])
-        end)
-        return true
-      end,
-    })
-    :find()
+      })
+      :find()
 end
 
-return M
+-- Telescope Config
+return {
+  {
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.0", -- Fuzzy finder
+    dependencies = {
+      -- Nvim Utils
+      { "nvim-lua/plenary.nvim" },
+
+      -- Faster Fuzzy Searching
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        enabled = function()
+          -- Don't run fzf native on windows | I don't think this works
+          return vim.fn.has("win32") == 0
+        end,
+      },
+    },
+    config = function()
+      -- close on escape
+      local telescope = require("telescope")
+      local actions = require("telescope.actions")
+      local telescope_config = require("telescope.config")
+
+      -- unpack depreciated in lua 5.2
+      local vimgrep_args = { unpack(telescope_config.values.vimgrep_arguments) }
+
+      -- Searches hidden directories and files by default
+      -- with live_grep
+      table.insert(vimgrep_args, "--hidden")
+      table.insert(vimgrep_args, "--glob")
+      table.insert(vimgrep_args, "!.git/*")
+
+      telescope.setup({
+        defaults = {
+          sorting_strategy = "ascending",
+          vimgrep_arguments = vimgrep_args,
+          layout_config = {
+            prompt_position = "top",
+          },
+          prompt_prefix = " ",
+          mappings = {
+            i = {
+              ["<esc>"] = actions.close,
+            },
+          },
+        },
+        extensions = {
+          fzf = {
+            fuzzy = true,                   -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+          },
+        },
+      })
+
+      -- To get fzf loaded and working with telescope, you need to call
+      -- load_extension, somewhere after setup function:
+      telescope.load_extension("fzf")
+    end,
+    keys = {
+      { "<leader>ff", M.project_files, desc = "find file" },
+      { "<leader>fd", M.dotfiles,      desc = "find dotfiles" },
+      {
+        "<leader>fm",
+        function()
+          M.taskfile("toggle")
+        end,
+        desc = "run task/make in terminal",
+      },
+      {
+        "<leader>fn",
+        function()
+          M.taskfile("wezterm")
+        end,
+        desc = "run task/make in new wezterm tab",
+      },
+      {
+        "<leader>fg",
+        function()
+          require("telescope.builtin").live_grep()
+        end,
+        desc = "find in files",
+      },
+      {
+        "<leader>fb",
+        function()
+          require("telescope.builtin").buffers()
+        end,
+        desc = "find buffer",
+      },
+      {
+        "<leader>fib",
+        function()
+          require("telescope.builtin").live_grep({ search_dirs = { vim.fn.expand("%:p") } })
+        end,
+        desc = "find in buffer",
+      },
+    },
+  },
+}

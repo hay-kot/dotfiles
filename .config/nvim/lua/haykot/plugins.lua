@@ -221,23 +221,7 @@ require("lazy").setup({
   -- Git
   "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
 
-  -- Navigation
-  {
-    "nvim-telescope/telescope.nvim",
-    tag = "0.1.0", -- Fuzzy finder
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
-
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-    enabled = function()
-      -- Don't run fzf native on windows
-      return vim.fn.has("win32") == 0
-    end,
-  },
-
-  -- Pretty Things
+  require("haykot.plugs.telescope"),
 
   -- Comments
   "numToStr/Comment.nvim",

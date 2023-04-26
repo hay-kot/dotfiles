@@ -15,7 +15,7 @@ local WIDTH_RATIO = 0.6  -- You can change this too
 
 nvim_tree.setup({
   git = {
-    ignore = true,
+    ignore = false,
   },
   update_focused_file = {
     enable = true,
