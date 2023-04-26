@@ -1,6 +1,6 @@
 local ok, _ = pcall(require, "trouble")
 if not ok then
-	return
+  return
 end
 
 local km = require("haykot.keymaps")

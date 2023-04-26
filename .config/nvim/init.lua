@@ -5,7 +5,7 @@ require("haykot.options")
 -- the config, I just want my options and keymaps.
 local infra_server = os.getenv("INFRA_SERVER")
 if infra_server == "true" then
-	return
+  return
 end
 
 require("haykot.plugins")

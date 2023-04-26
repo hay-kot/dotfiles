@@ -25,4 +25,4 @@ decrypt:
 	ansible-vault decrypt --vault-password-file ./secrets/.vaultpass ./ansible/vars/vault.yml
 
 fmt/dotfiles:
-	stylua ./.config/nvim/
+	stylua --config-path=./.config/nvim/stylua.toml ./.config/nvim/
