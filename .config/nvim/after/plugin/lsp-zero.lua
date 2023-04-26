@@ -46,7 +46,7 @@ lsp.on_attach(function(_, bufnr)
     vim.diagnostic.goto_prev()
   end, { desc = "Jump to previous diagnostic" })
 
-  km.nnoremap("<leader>lra", function()
+  km.nnoremap("<leader>lca", function()
     vim.lsp.buf.code_action()
   end, { desc = "Show code actions" })
 
@@ -124,6 +124,9 @@ null_ls.setup({
     -- Go
     null_ls.builtins.formatting.gofumpt,
     null_ls.builtins.formatting.goimports,
+
+    -- YAML, JSON, XML, CSV
+    null_ls.builtins.formatting.yq,
   },
 })
 
