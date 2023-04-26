@@ -208,7 +208,6 @@ M.taskfile = function(mode)
     if mode == "toggle" then
       vim.cmd("TermExec cmd=" .. "'" .. command .. "'")
     elseif mode == "wezterm" then
-      print("wezterm cli spawn --cwd='" .. project_dir .. "' -- " .. command)
       vim.fn.system("wezterm cli spawn --cwd='" .. project_dir .. "' -- " .. command)
     end
   end
