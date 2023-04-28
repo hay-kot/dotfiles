@@ -76,6 +76,7 @@ SAVEHIST=10000 # save up to 50,000 lines in history. oh-my-zsh default is 10,000
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
 alias vim="nvim"
+alias v="nvim"
 alias rl="source ~/.zshrc"
 
 if which bat > /dev/null; then

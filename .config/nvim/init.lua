@@ -9,7 +9,5 @@ if infra_server == "true" then
 end
 
 require("haykot.plugins")
-require("haykot.theme")
-require("haykot.toggleterm")
 require("haykot.lualine")
 require("haykot.bufferline")

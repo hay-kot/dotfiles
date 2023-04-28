@@ -16,17 +16,18 @@ end
 
 ensure_lazy()
 
-
 require("lazy").setup({
   -- Base Plugins
   "nvim-lua/popup.nvim",   -- An implementation of the Popup API from vim in Neovim
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
   -- "simrat39/rust-tools.nvim",
-  "akinsho/toggleterm.nvim",
 
   {
     priority = 101,
     "morhetz/gruvbox",
+    config = function()
+      vim.cmd("colorscheme gruvbox")
+    end,
   },
 
   -- Auto Session Manager
@@ -71,6 +72,7 @@ require("lazy").setup({
   require("haykot.plugs.trouble"),
   require("haykot.plugs.dev-icons"),
   require("haykot.plugs.comments"),
+  require("haykot.plugs.toggleterm"),
 
   -- Improve Vim UI
   -- Mostly used for code action menu/select, but had some other nice
