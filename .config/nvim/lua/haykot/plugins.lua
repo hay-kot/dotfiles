@@ -70,6 +70,7 @@ require("lazy").setup({
   require("haykot.plugs.lsp-zero"),
   require("haykot.plugs.trouble"),
   require("haykot.plugs.dev-icons"),
+  require("haykot.plugs.comments"),
 
   -- Improve Vim UI
   -- Mostly used for code action menu/select, but had some other nice
@@ -160,13 +161,6 @@ require("lazy").setup({
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
-
-  "p00f/nvim-ts-rainbow",
-
   -- Git
   "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
-
-  -- Comments
-  "numToStr/Comment.nvim",
-  "JoosepAlviste/nvim-ts-context-commentstring",
 })

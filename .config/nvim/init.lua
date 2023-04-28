@@ -11,6 +11,5 @@ end
 require("haykot.plugins")
 require("haykot.theme")
 require("haykot.toggleterm")
-require("haykot.comment")
 require("haykot.lualine")
 require("haykot.bufferline")
