@@ -16,13 +16,6 @@ end
 
 ensure_lazy()
 
--- session_restored synchronizes the behavior of the auto-session plugin
--- and the nvim-tree plugin. The auto-session plugin will restore the
--- previous session on startup, but the nvim-tree plugin will open the
--- file explorer on startup. This variable is used to prevent the
--- nvim-tree plugin from opening the file explorer on startup if a
--- session is restored.
-local session_restored = false
 
 require("lazy").setup({
   -- Base Plugins
@@ -35,6 +28,7 @@ require("lazy").setup({
     priority = 101,
     "morhetz/gruvbox",
   },
+
   -- Auto Session Manager
   {
     priority = 100,
@@ -47,30 +41,14 @@ require("lazy").setup({
         pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose" },
         pre_restore_cmds = {
           function()
-            session_restored = true
+            require("haykot.lib.globals").session_restored = true
           end,
         },
       })
     end,
   },
 
-  {
-    priority = 99,
-    lazy = false,
-    "nvim-tree/nvim-tree.lua",
-    tag = "nightly", -- optional, updated every week. (see issue #1193)
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local function open_nvim_tree()
-        if session_restored then
-          return
-        end
-        require("nvim-tree.api").tree.open()
-      end
-
-      vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-    end,
-  },
+  require("haykot.plugs.nvim-tree"),
 
   -- Which Key (Experimental, may remove)
   {
@@ -88,7 +66,10 @@ require("lazy").setup({
 
   require("haykot.plugs.treesitter"),
   require("haykot.plugs.telescope"),
+  require("haykot.plugs.mason"),
   require("haykot.plugs.lsp-zero"),
+  require("haykot.plugs.trouble"),
+  require("haykot.plugs.dev-icons"),
 
   -- Improve Vim UI
   -- Mostly used for code action menu/select, but had some other nice
@@ -166,15 +147,6 @@ require("lazy").setup({
 
   -- Vim Test
   "hay-kot/vim-test",
-  -- LSP Zero
-  -- Trouble LSP Diagnostics
-  {
-    "folke/trouble.nvim",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require("trouble").setup({})
-    end,
-  },
 
   -- Tabs
   {
@@ -189,13 +161,10 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
-
   "p00f/nvim-ts-rainbow",
 
   -- Git
   "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
-
-
 
   -- Comments
   "numToStr/Comment.nvim",
