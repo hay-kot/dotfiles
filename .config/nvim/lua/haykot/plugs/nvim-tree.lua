@@ -103,16 +103,6 @@ return {
         },
       },
     })
-
-    -- This may need to be moved elsewhere?
-    local function open_nvim_tree()
-      if globals.session_restored then
-        return
-      end
-      require("nvim-tree.api").tree.open()
-    end
-
-    vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
   end,
   keys = {
     { "<leader>ee", ":NvimTreeToggle<cr>", desc = "toggle nvim tree" },
