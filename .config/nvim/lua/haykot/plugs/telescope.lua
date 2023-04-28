@@ -87,7 +87,7 @@ local telescope_make = {
 
     return { lines = new_lines, filetype = "make" }
   end,
-  cmd = function(makefile, task_name)
+  cmd = function(_, task_name)
     return "make " .. task_name
   end,
 }

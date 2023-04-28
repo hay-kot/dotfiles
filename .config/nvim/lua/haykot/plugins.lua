@@ -44,7 +44,7 @@ require("lazy").setup({
         bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble" },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
-        pre_save_cmds = { "lua require'nvim-tree'.setup()", "tabdo NvimTreeClose" },
+        pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose" },
         pre_restore_cmds = {
           function()
             session_restored = true
@@ -85,6 +85,10 @@ require("lazy").setup({
       })
     end,
   },
+
+  require("haykot.plugs.treesitter"),
+  require("haykot.plugs.telescope"),
+  require("haykot.plugs.lsp-zero"),
 
   -- Improve Vim UI
   -- Mostly used for code action menu/select, but had some other nice
@@ -163,32 +167,6 @@ require("lazy").setup({
   -- Vim Test
   "hay-kot/vim-test",
   -- LSP Zero
-  {
-    "VonHeikemen/lsp-zero.nvim",
-    dependencies = {
-      -- LSP Support
-      { "neovim/nvim-lspconfig" },
-      { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim" },
-
-      -- Autocompletion
-      { "hrsh7th/nvim-cmp" },
-      { "hrsh7th/cmp-buffer" },
-      { "hrsh7th/cmp-path" },
-      { "saadparwaiz1/cmp_luasnip" },
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-nvim-lua" },
-
-      -- Snippets
-      { "L3MON4D3/LuaSnip" },
-      -- Snippet Collection (Optional)
-      { "rafamadriz/friendly-snippets" },
-
-      -- Null LS (Optional)
-      { "jose-elias-alvarez/null-ls.nvim" },
-    },
-  },
-
   -- Trouble LSP Diagnostics
   {
     "folke/trouble.nvim",
@@ -211,17 +189,13 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-  },
 
   "p00f/nvim-ts-rainbow",
 
   -- Git
   "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
 
-  require("haykot.plugs.telescope"),
+
 
   -- Comments
   "numToStr/Comment.nvim",

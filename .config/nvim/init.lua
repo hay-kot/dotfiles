@@ -10,7 +10,6 @@ end
 
 require("haykot.plugins")
 require("haykot.theme")
-require("haykot.treesitter")
 require("haykot.toggleterm")
 require("haykot.comment")
 require("haykot.lualine")
