@@ -56,6 +56,7 @@ return {
       },
     })
 
+    ---@diagnostic disable-next-line: duplicate-set-field
     _G.set_terminal_keymaps = function()
       local opts = { noremap = true }
       vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
