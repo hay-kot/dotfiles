@@ -17,10 +17,11 @@ end
 ensure_lazy()
 
 require("lazy").setup({
-  -- Base Plugins
-  "nvim-lua/popup.nvim",   -- An implementation of the Popup API from vim in Neovim
-  "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
+  -- "nvim-lua/popup.nvim",   -- An implementation of the Popup API from vim in Neovim
   -- "simrat39/rust-tools.nvim",
+
+  -- Base Plugins
+  "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
 
   {
     priority = 101,
@@ -94,13 +95,13 @@ require("lazy").setup({
     config = function()
       require("noice").setup({
         lsp = {
-          hover = { enabled = false },
-          signature = { enabled = false },
+          hover = { enabled = true },
+          signature = { enabled = true },
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
           override = {
             ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
             ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
+            ["cmp.entry.get_documentation"] = false,
           },
         },
         -- you can enable a preset for easier configuration

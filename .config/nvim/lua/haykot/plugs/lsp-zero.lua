@@ -1,3 +1,19 @@
+--------------------------------------------
+-- Specific LSP Configs
+--------------------------------------------
+local function config_lsps(lsp)
+  require("lspconfig").yamlls.setup({
+    settings = {
+      yaml = {
+        keyOrdering = false, -- Disabled Ordered Fields Linting
+      },
+    },
+  })
+
+  -- Fix Undefined global 'vim'
+  require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+end
+
 return {
   "VonHeikemen/lsp-zero.nvim",
   dependencies = {
@@ -167,18 +183,6 @@ return {
       float = true,
     })
 
-    --------------------------------------------
-    -- Specific LSP Configs
-    --------------------------------------------
-    require("lspconfig").yamlls.setup({
-      settings = {
-        yaml = {
-          keyOrdering = false, -- Disabled Ordered Fields Linting
-        },
-      },
-    })
-
-    -- Fix Undefined global 'vim'
-    require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+    config_lsps(lsp)
   end,
 }
