@@ -205,6 +205,7 @@ M.taskfile = function(mode)
     local command = commander.cmd(file_path, task_name)
 
     if mode == "toggle" then
+      require("toggleterm") -- require toggleterm to ensure TermExec requires
       vim.cmd("TermExec cmd=" .. "'" .. command .. "'")
     elseif mode == "wezterm" then
       vim.fn.system("wezterm cli spawn --cwd='" .. project_dir .. "' -- " .. command)
