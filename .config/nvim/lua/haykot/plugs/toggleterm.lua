@@ -27,6 +27,7 @@ end
 
 return {
   "akinsho/toggleterm.nvim",
+  cmd = { "TermExec" },
   config = function()
     local toggleterm = require("toggleterm")
     local km = require("haykot.keymaps")

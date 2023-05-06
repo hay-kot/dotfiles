@@ -1,9 +1,8 @@
-local globals = require("haykot.lib.globals")
-
 return {
   priority = 99,
   lazy = true,
   "nvim-tree/nvim-tree.lua",
+  cmd = { "NvimTreeToggle", "NvimTreeOpen" },
   tag = "nightly", -- optional, updated every week. (see issue #1193)
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
