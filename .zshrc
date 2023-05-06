@@ -40,6 +40,11 @@ mac_config() {
     alias lg=lazygit
 
     eval "$(/opt/homebrew/bin/rtx activate zsh)"
+
+    export DOCKER_HOST=unix:///var/run/docker.sock
+
+    alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
+    alias lzd=lazydocker
 }
 
 ## MAC OS
