@@ -343,6 +343,27 @@ return {
         desc = "find in buffer",
       },
       {
+        "<leader>fr",
+        function()
+          require("telescope.builtin").lsp_references({})
+        end,
+        desc = "find lsp references",
+      },
+      {
+        "<leader>fq",
+        function ()
+          require("telescope.builtin").quickfix()
+        end,
+        desc = "find quickfix",
+      },
+      {
+        "<leader>fj",
+        function()
+          require("telescope.builtin").jumplist()
+        end,
+        desc = "find jumplist",
+      },
+      {
         "<leader>fd",
         function()
           local actions = require("telescope.actions")
