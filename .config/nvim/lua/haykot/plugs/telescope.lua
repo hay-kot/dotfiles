@@ -388,6 +388,20 @@ return {
         end,
         desc = "find directory",
       },
+      {
+        "<leader>fx",
+        function()
+          require("telescope.builtin").diagnostics()
+        end,
+        desc = "find trouble results",
+      },
+      {
+        "<leader>fbc",
+        function()
+          require("telescope.builtin").git_bcommits()
+        end,
+        desc = "find current buffer commits",
+      },
     },
   },
 }
