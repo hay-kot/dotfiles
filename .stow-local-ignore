@@ -11,3 +11,4 @@ pkgs
 makefile
 bin/*
 ansible/*
+.windows/*
