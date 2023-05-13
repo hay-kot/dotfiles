@@ -7,13 +7,18 @@ vim.opt.termguicolors = true
 require("bufferline").setup({})
 
 local km = require("haykot.keymaps")
-km.nnoremap("<leader>bn", ":bnext <CR>")
-km.nnoremap("<leader>bp", ":bprev <CR>")
-km.nnoremap("<leader><tab>", ":BufferLineCycleNext <CR>")
+km.nnoremap("<leader>bn", ":bnext <CR>", { desc = "next buffer" })
+km.nnoremap("<leader>bp", ":bprev <CR>", { desc = "previous buffer" })
+km.nnoremap("<leader><tab>", ":BufferLineCycleNext <CR>", { desc = "next buffer" })
+km.nnoremap("<leader>cbr", ":BufferLineCloseRight <CR>", { desc = "close right buffers" })
+km.nnoremap("<leader>cbl", ":BufferLineCloseLeft <CR>", { desc = "close left buffers" })
+km.nnoremap("<leader>cba", ":BufferLineCloseRight <CR> :BufferLineCloseLeft <CR>", { desc = "close all buffers except current" })
+km.nnoremap("<leader>bmr", ":BufferLineMoveNext <CR>", { desc = "move buffer right" })
+km.nnoremap("<leader>bml", ":BufferLineMovePrev <CR>", { desc = "move buffer left" })
 
 bufferline.setup({
   options = {
-    numbers = "none", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
+    numbers = "ordinal", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
     middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
     -- NOTE: this plugin is designed with this icon in mind,
     -- and so changing this is NOT recommended, this is intended

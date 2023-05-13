@@ -42,9 +42,9 @@ local telescope_make = {
     -- Adapted From
     --    -> https://github.com/sopa0/telescope-makefile/blob/6e5b5767751dbf73ad4f126840dcf1abfc38e891/lua/telescope/_extensions/make.lua#L29-L33
     local cmd_str = "make"
-      .. " -pRrq -C "
-      .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
-      .. [[ 2>/dev/null |
+        .. " -pRrq -C "
+        .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
+        .. [[ 2>/dev/null |
                 awk -F: '/^# Files/,/^# Finished Make data base/ {
                     if ($1 == "# Not a target") skip = 1;
                     if ($1 !~ "^[#.\t]") { if (!skip) {if ($1 !~ "^$")print $1}; skip=0 }
@@ -129,7 +129,7 @@ local telescope_taskfile = {
   preview = function(taskfile, task_name)
     -- Get all lines from taskfile where task name is entry[1]
     local task_lines =
-      vim.fn.system("bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. task_name .. ":")
+        vim.fn.system("bat -p --color=never " .. taskfile .. " | rg --after-context 100 " .. task_name .. ":")
 
     -- Split lines into a list
     task_lines = vim.split(task_lines, "\n")
@@ -214,36 +214,36 @@ M.taskfile = function(mode)
 
   local opts = {}
   pickers
-    .new(opts, {
-      prompt_title = commander.title,
-      finder = finders.new_table({ results = task_names }),
-      sorter = conf.generic_sorter(opts),
-      -- Previewer for taskfile shows only the valid task definition
-      -- currently supports tasks up to 100 lines, which is likely enough
-      -- for most use cases
-      previewer = previewers.new_buffer_previewer({
-        title = "Task",
-        define_preview = function(self, entry, _)
-          local args = commander.preview(file_path, entry[1]) or {}
+      .new(opts, {
+        prompt_title = commander.title,
+        finder = finders.new_table({ results = task_names }),
+        sorter = conf.generic_sorter(opts),
+        -- Previewer for taskfile shows only the valid task definition
+        -- currently supports tasks up to 100 lines, which is likely enough
+        -- for most use cases
+        previewer = previewers.new_buffer_previewer({
+          title = "Task",
+          define_preview = function(self, entry, _)
+            local args = commander.preview(file_path, entry[1]) or {}
 
-          vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, args.lines)
-          vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", args.filetype)
+            vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, args.lines)
+            vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", args.filetype)
+          end,
+        }),
+        attach_mappings = function(prompt_bufnr, _)
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local command = action_state.get_selected_entry()
+            if not command then
+              return
+            end
+
+            call_task(command[1])
+          end)
+          return true
         end,
-      }),
-      attach_mappings = function(prompt_bufnr, _)
-        actions.select_default:replace(function()
-          actions.close(prompt_bufnr)
-          local command = action_state.get_selected_entry()
-          if not command then
-            return
-          end
-
-          call_task(command[1])
-        end)
-        return true
-      end,
-    })
-    :find()
+      })
+      :find()
 end
 
 -- Telescope Config
@@ -292,10 +292,10 @@ return {
         },
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
         },
@@ -351,7 +351,7 @@ return {
       },
       {
         "<leader>fq",
-        function ()
+        function()
           require("telescope.builtin").quickfix()
         end,
         desc = "find quickfix",

@@ -3,7 +3,12 @@ return {
   "folke/trouble.nvim",
   dependencies = "nvim-tree/nvim-web-devicons",
   config = function()
-    require("trouble").setup({})
+    require("trouble").setup({
+      action_keys = {
+        jump = { "o", "<tab", },
+        jump_close = { "<CR>" },
+      },
+    })
   end,
   keys = {
     --    { "<leader>ff", M.project_files, desc = "find file" },

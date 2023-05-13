@@ -149,8 +149,40 @@ require("lazy").setup({
     end,
   },
 
-  -- Vim Test
-  "hay-kot/vim-test",
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-go",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-vim-test",
+    },
+    config = function()
+      require("neotest").setup({
+        library = { plugins = { "neotest" }, types = true },
+        adapters = {
+          require("neotest-go"),
+          require("neotest-python")({
+            dap = { justMyCode = false },
+          }),
+          require("neotest-vim-test")({
+            ignore_file_types = { "python", "vim", "lua" },
+          }),
+        },
+      })
+    end,
+    keys = {
+      {
+         "<leader>dt",
+        function ()
+          require("neotest").run.run()
+        end,
+        desc = "test nearest",
+      },
+    },
+  },
 
   -- Tabs
   {

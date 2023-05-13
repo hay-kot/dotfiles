@@ -2,7 +2,9 @@
 -- Specific LSP Configs
 --------------------------------------------
 local function config_lsps(lsp)
-  require("lspconfig").yamlls.setup({
+  local lspconfig = require("lspconfig")
+
+  lspconfig.yamlls.setup({
     settings = {
       yaml = {
         keyOrdering = false, -- Disabled Ordered Fields Linting
@@ -10,8 +12,31 @@ local function config_lsps(lsp)
     },
   })
 
+  --------------------------------------------
+  -- Javascript
+  lspconfig.eslint.setup({
+    settings = {
+      packageManager = "pnpm",
+    },
+    on_attach = function(_, bufnr)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        command = "EslintFixAll",
+      })
+    end,
+  })
+
+  -- Volar
+  lspconfig.volar.setup({
+    -- Disable formatting
+    on_attach = function(client)
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+  })
+
   -- Fix Undefined global 'vim'
-  require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+  lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 end
 
 return {
@@ -61,19 +86,22 @@ return {
 
     lsp.preset("recommended")
     lsp.on_attach(function(_, bufnr)
-      lsp.default_keymaps({ buffer = bufnr })
+      lsp.default_keymaps({
+        buffer = bufnr,
+        omit = { "gd" },
+      })
 
       km.nnoremap("gd", function()
-        vim.lsp.buf.definition()
-      end, { desc = "Go to definition" })
+        require("telescope.builtin").lsp_definitions()
+      end, { desc = "Go to definition", buffer = true })
 
       km.nnoremap("K", function()
         vim.lsp.buf.hover()
       end, { desc = "Show hover information" })
 
       km.nnoremap("<leader>lws", function()
-        vim.lsp.buf.workspace_symbol()
-      end, { desc = "Search for symbols in workspace" })
+        require("telescope.builtin").lsp_workspace_symbols()
+      end, { desc = "Search for symbols in workspace", buffer = true })
 
       km.nnoremap("<leader>ld", function()
         vim.diagnostic.open_float()
@@ -92,8 +120,12 @@ return {
       end, { desc = "Show code actions" })
 
       km.nnoremap("<leader>lfr", function()
-        vim.lsp.buf.references()
-      end, { desc = "Find references" })
+        require("telescope.builtin").lsp_references()
+      end, { desc = "Find references", buffer = true })
+
+      km.nnoremap("<leader>fs", function()
+        require("telescope.builtin").lsp_document_symbols()
+      end, { desc = "Show document symbols" })
 
       km.nnoremap("<leader>lr", function()
         vim.lsp.buf.rename()
@@ -109,6 +141,14 @@ return {
     end)
 
     local cmp = require("cmp")
+    cmp.setup({
+      sources = {
+        {
+          name = "nvim_lsp",
+          max_item_count = 100,
+        },
+      },
+    })
     local cmp_mappings = lsp.defaults.cmp_mappings({
       -- Configure Ctrl-Space to trigger completion
       ["<C-Space>"] = cmp.mapping.complete(),
@@ -121,6 +161,8 @@ return {
       ["<Tab>"] = cmp.mapping(function(fallback)
         if copilot.is_visible() then
           copilot.accept()
+        elseif cmp.visible() then
+          cmp.select_next_item()
         else
           fallback()
         end
@@ -154,12 +196,47 @@ return {
     local null_ls = require("null-ls")
     local null_opts = lsp.build_options("null-ls", {})
 
+    local eslint_configs = {
+      ".eslint.json",
+      ".eslintrc.js",
+      ".eslintrc",
+      "./frontend/.eslint.json",
+      "./frontend/.eslintrc.js",
+      "./frontend/.eslintrc",
+    }
+
+    local prettier_configs = {
+      ".prettierrc",
+      ".prettierrc.js",
+      ".prettierrc.json",
+      "./frontend/.prettierrc",
+      "./frontend/.prettierrc.js",
+      "./frontend/.prettierrc.json",
+    }
+
     null_ls.setup({
       debug = false,
       on_attach = null_opts.on_attach,
       sources = {
         null_ls.builtins.formatting.black,
-        null_ls.builtins.formatting.prettier,
+
+        -- JavaScript
+        null_ls.builtins.formatting.prettier.with({
+          condition = function(null_utils)
+            local has_eslint = null_utils.has_file(eslint_configs)
+            local has_prettier = null_utils.has_file(prettier_configs)
+
+            if has_prettier then
+              return true
+            elseif has_eslint then
+              return false
+            else
+              return true
+            end
+          end,
+        }),
+
+        -- Lua
         null_ls.builtins.formatting.stylua,
 
         -- Go
