@@ -3,7 +3,6 @@ if not status_ok then
   return
 end
 
-vim.opt.termguicolors = true
 require("bufferline").setup({})
 
 local km = require("haykot.keymaps")

@@ -5,6 +5,9 @@ local function file_exists(name)
   return f ~= nil and io.close(f)
 end
 
+
+local is_windows = nil
+
 M = {
   file_exists = file_exists,
   --- find_first searches for the first file in a list of files in a given directory
@@ -27,6 +30,17 @@ M = {
       end
     end
     return true
+  end,
+
+  windows = function()
+    if is_windows == nil then
+      if vim.loop.os_uname().sysname == "Windows_NT" then
+        is_windows = true
+      else
+        is_windows = false
+      end
+    end
+    return is_windows
   end,
 }
 

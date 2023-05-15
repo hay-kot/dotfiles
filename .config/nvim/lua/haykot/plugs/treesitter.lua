@@ -8,8 +8,8 @@ return {
     local configs = require("nvim-treesitter.configs")
 
     configs.setup({
-      ensure_installed = "all",      -- one of "all" or a list of languages
-      ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
+      ensure_installed = "all",
+      ignore_install = { "phpdoc", "tlaplus", "ruby" },
       highlight = {
         enable = true,               -- false will disable the whole extension
         disable = { "css" },         -- list of language that will be disabled

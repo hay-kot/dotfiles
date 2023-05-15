@@ -104,6 +104,12 @@ return {
     })
   end,
   keys = {
-    { "<leader>ee", ":NvimTreeToggle<cr>", desc = "toggle nvim tree" },
+    {
+      "<leader>ee",
+      function()
+        require("nvim-tree.api").tree.toggle()
+      end,
+      desc = "toggle nvim tree",
+    },
   },
 }

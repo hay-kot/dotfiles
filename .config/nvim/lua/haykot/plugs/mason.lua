@@ -2,17 +2,6 @@ return {
   "williamboman/mason.nvim",
   dependencies = { "williamboman/mason-lspconfig.nvim" },
   config = function()
-    local utils = require("haykot.lib.utils")
-
-    local ok = utils.guard_module({
-      "mason",
-      "mason-lspconfig",
-    })
-
-    if not ok then
-      return
-    end
-
     local servers = {
       "pyright",
       "jsonls",
@@ -35,7 +24,7 @@ return {
 
     require("mason-lspconfig").setup({
       ensure_installed = servers,
-      automatic_installation = true,
+      automatic_installation = false,
     })
   end,
 }
