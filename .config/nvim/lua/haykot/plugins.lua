@@ -24,10 +24,12 @@ require("lazy").setup({
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
 
   {
-    priority = 101,
     "morhetz/gruvbox",
+    priority = 1000,
     config = function()
-      vim.cmd("colorscheme gruvbox")
+      -- set sign column to #282828
+      vim.cmd([[let g:gruvbox_sign_column = "bg0"]])
+      vim.cmd([[colorscheme gruvbox]])
     end,
   },
 
@@ -175,8 +177,8 @@ require("lazy").setup({
     end,
     keys = {
       {
-         "<leader>dt",
-        function ()
+        "<leader>dt",
+        function()
           require("neotest").run.run()
         end,
         desc = "test nearest",
@@ -197,5 +199,10 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   -- Git
-  "airblade/vim-gitgutter", -- Shows a git diff in the gutter (sign column)
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end,
+  },
 })
