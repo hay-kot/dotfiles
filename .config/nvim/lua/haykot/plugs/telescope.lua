@@ -407,6 +407,21 @@ return {
         end,
         desc = "find current buffer commits",
       },
+      {
+        "<leader>flc",
+        function()
+          print("TODO: find last command")
+        end,
+        desc = "find last command and execute it with TermExec",
+      },
+      {
+        -- cmd + shift + p
+        "<leader>P",
+        function()
+          require("telescope.builtin").autocommands()
+        end,
+        desc = "find autocommands",
+      },
     },
   },
 }
