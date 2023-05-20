@@ -22,15 +22,58 @@ require("lazy").setup({
 
   -- Base Plugins
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
+  {
+    "sainnhe/gruvbox-material",
+    enabled = true,
+    priority = 1000,
+    config = function()
+      vim.o.background = "dark"
+      vim.g.gruvbox_material_background = "hard"
+      vim.cmd.colorscheme("gruvbox-material")
 
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "bg", fg = "#d8db92" })
+      vim.api.nvim_set_hl(0, "FloatBorder", { bg = "bg", fg = "#d8db92" })
+    end,
+  },
   {
     "morhetz/gruvbox",
     priority = 1000,
+    enabled = false,
     config = function()
       -- set sign column to #282828
       vim.cmd([[let g:gruvbox_sign_column = "bg0"]])
       vim.cmd([[colorscheme gruvbox]])
     end,
+  },
+
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  },
+
+  {
+    "windwp/nvim-autopairs",
+    config = function()
+      require("nvim-autopairs").setup({
+        disable_filetype = { "TelescopePrompt", "vim" },
+      })
+    end,
+  },
+
+  {
+    "nvim-pack/nvim-spectre",
+    config = function()
+      require("spectre").setup({ path = "*" })
+    end,
+    keys = {
+      {
+        "<leader>S",
+        "<cmd>lua require('spectre').open()<CR>",
+        { desc = "Open Spectre (find and replace)" },
+      },
+    },
   },
 
   -- Auto Session Manager
@@ -69,6 +112,7 @@ require("lazy").setup({
   },
 
   require("haykot.plugs.treesitter"),
+  require("haykot.plugs.lualine"),
   require("haykot.plugs.telescope"),
   require("haykot.plugs.mason"),
   require("haykot.plugs.lsp-zero"),
@@ -97,7 +141,7 @@ require("lazy").setup({
     config = function()
       require("noice").setup({
         lsp = {
-          hover = { enabled = true },
+          hover = { enabled = false },
           signature = { enabled = true },
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
           override = {

@@ -36,6 +36,7 @@ local options = {
   incsearch = true,
 }
 -- stylua: ignore end
+--
 
 vim.opt.shortmess:append("c")
 
@@ -45,6 +46,7 @@ end
 
 vim.cmd([[set whichwrap+=<,>,[,],h,l]])
 vim.cmd([[set iskeyword+=-]])
+vim.cmd([[let g:html_no_rendering=1]])
 vim.cmd([[let test#strategy = "toggleterm"]])
 
 -- vim-test settings for vim-test fork

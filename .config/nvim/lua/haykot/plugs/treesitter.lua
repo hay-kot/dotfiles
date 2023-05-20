@@ -3,6 +3,15 @@ return {
   build = ":TSUpdate",
   dependencies = {
     "p00f/nvim-ts-rainbow",
+
+    {
+      "nvim-treesitter/nvim-treesitter-context",
+      config = function()
+        require("treesitter-context").setup({
+          enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        })
+      end,
+    },
   },
   config = function()
     local configs = require("nvim-treesitter.configs")
@@ -11,8 +20,8 @@ return {
       ensure_installed = "all",
       ignore_install = { "phpdoc", "tlaplus", "ruby" },
       highlight = {
-        enable = true,               -- false will disable the whole extension
-        disable = { "css" },         -- list of language that will be disabled
+        enable = true,       -- false will disable the whole extension
+        disable = { "css" }, -- list of language that will be disabled
       },
       autopairs = {
         enable = true,
