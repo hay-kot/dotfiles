@@ -71,6 +71,7 @@ brew "libimagequant"
 brew "libmatio"
 brew "libproxy"
 brew "libspng"
+brew "mailhog"
 brew "mas"
 brew "mingw-w64"
 brew "mozjpeg"
@@ -113,7 +114,6 @@ brew "hay-kot/scaffold-tap/scaffold"
 brew "jdxcode/tap/rtx"
 brew "jesseduffield/lazydocker/lazydocker"
 brew "tinygo-org/tools/tinygo"
-cask "alacritty"
 cask "android-file-transfer", args: { appdir: "/Applications" }
 cask "android-sdk"
 cask "android-studio"
@@ -123,7 +123,6 @@ cask "basictex", args: { appdir: "/Applications" }
 cask "bettertouchtool"
 cask "bitwarden", args: { appdir: "/Applications" }
 cask "brave-browser", args: { appdir: "/Applications" }
-cask "caffeine"
 cask "chromedriver", args: { appdir: "/Applications" }
 cask "docker"
 cask "firefox", args: { appdir: "/Applications" }
