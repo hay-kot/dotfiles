@@ -71,6 +71,7 @@ brew "libimagequant"
 brew "libmatio"
 brew "libproxy"
 brew "libspng"
+brew "mage"
 brew "mailhog"
 brew "mas"
 brew "mingw-w64"
@@ -162,10 +163,8 @@ mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "Microsoft Remote Desktop", id: 1295203466
-mas "Microsoft To Do", id: 1274495053
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "PDF Reader Pro Lite", id: 919472673
 mas "Pixelmator Pro", id: 1289583905
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
