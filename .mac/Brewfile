@@ -118,7 +118,9 @@ brew "tinygo-org/tools/tinygo"
 cask "android-file-transfer", args: { appdir: "/Applications" }
 cask "android-sdk"
 cask "android-studio"
+cask "angry-ip-scanner"
 cask "authy", args: { appdir: "/Applications" }
+cask "balenaetcher"
 cask "bartender"
 cask "basictex", args: { appdir: "/Applications" }
 cask "bettertouchtool"
