@@ -23,9 +23,13 @@ M.vnoremap = bind("v")
 M.xnoremap = bind("x")
 M.inoremap = bind("i")
 
+-- "D+char" to delete until char backward
+M.nnoremap("D", "dT")
+
 -- Close Buffers
 M.nnoremap("<leader>q", ":bd<CR>", { desc = "close buffer" })
 M.nnoremap("<leader>Q", ":bd!<CR>", { desc = "force close buffer" })
+M.nnoremap("vab", "ggVG", { desc = "select all buffer" })
 
 -- set sbr to Split Buffer righ
 M.nnoremap("<leader>sbr", ":vsplit<CR>")
@@ -71,5 +75,42 @@ M.nnoremap("N", "Nzzzv")
 
 -- Keep Paste over from yanking to nvim register
 M.xnoremap("<leader>p", '"_dP')
+
+-- Wrap current line at 100 characters
+M.nnoremap("<leader>wl", function()
+  local line = vim.api.nvim_get_current_line()
+  local number = vim.api.nvim_win_get_cursor(0)[1]
+
+  if vim.fn.len(line) < 100 then
+    return
+  end
+
+  local lines = {}
+
+  local indent = string.match(line, "^%s*")
+  if vim.fn.len(indent) > 0 then
+    -- remove 1 indent form the line for some reason
+    indent = string.sub(indent, 1, vim.fn.len(indent) - 1)
+  end
+  print(vim.fn.len(indent))
+  local current_string = indent
+  local words = vim.fn.split(line, " ")
+
+  for _, word in ipairs(words) do
+    if vim.fn.len(word) + vim.fn.len(current_string) + 1 > 100 then
+      current_string = string.gsub(current_string, "%s+$", "")
+      table.insert(lines, current_string)
+      current_string = indent
+    end
+
+
+    current_string = current_string .. " " .. word
+  end
+
+  -- Ensure last string is added
+  table.insert(lines, current_string)
+
+  vim.api.nvim_buf_set_lines(0, number - 1, number, false, lines)
+end)
 
 return M

@@ -374,7 +374,14 @@ return {
           local actions = require("telescope.actions")
           local action_state = require("telescope.actions.state")
 
-          local function open_nvim_tree(prompt_bufnr, _)
+          local function open_nvim_tree(prompt_bufnr, map)
+            map("i", "<c-o>", function()
+              local selection = action_state.get_selected_entry()
+              -- Open in finder
+              vim.fn.system("open " .. selection.cwd .. "/" .. selection.value)
+              actions.close(prompt_bufnr)
+            end)
+
             actions.select_default:replace(function()
               local api = require("nvim-tree.api")
 
@@ -382,6 +389,8 @@ return {
               local selection = action_state.get_selected_entry()
               api.tree.open()
               api.tree.find_file(selection.cwd .. "/" .. selection.value)
+
+              -- Add map to ctrl-O
             end)
             return true
           end
@@ -406,6 +415,13 @@ return {
           require("telescope.builtin").git_bcommits()
         end,
         desc = "find current buffer commits",
+      },
+      {
+        "<leader>fc",
+        function()
+          require("telescope.builtin").git_status()
+        end,
+        desc = "find changed files",
       },
       {
         "<leader>flc",

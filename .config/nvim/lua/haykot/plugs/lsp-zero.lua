@@ -119,9 +119,9 @@ return {
         vim.lsp.buf.code_action()
       end, { desc = "Show code actions" })
 
-      km.nnoremap("<leader>lfr", function()
-        require("telescope.builtin").lsp_references()
-      end, { desc = "Find references", buffer = true })
+      --[[ km.nnoremap("<leader>lfr", function() ]]
+      --[[   require("telescope.builtin").lsp_references() ]]
+      --[[ end, { desc = "Find references", buffer = true }) ]]
 
       km.nnoremap("<leader>fs", function()
         require("telescope.builtin").lsp_document_symbols()

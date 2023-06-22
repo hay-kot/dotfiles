@@ -34,6 +34,7 @@ local options = {
   sidescrolloff = 8,
   hlsearch = false,
   incsearch = true,
+  colorcolumn = "100",
 }
 -- stylua: ignore end
 --

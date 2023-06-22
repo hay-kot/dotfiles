@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Check if the required arguments are provided
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <volume_id> <destination>"
+  exit 1
+fi
+
+# Assign arguments to variables
+volume_id=$1
+destination=$2
+
+# Create a temporary container to mount the volume
+container_id=$(docker create -v $volume_id:/source_data --name temp_container busybox)
+
+# Copy the data from the volume to the destination
+docker cp $container_id:/source_data $destination
+
+# Remove the temporary container
+docker rm $container_id
