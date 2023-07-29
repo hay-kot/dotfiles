@@ -21,15 +21,15 @@ disabled = true
 
 [golang]
 format = "[~ $symbol($version )]($style)"
-symbol = "\ufcd1 "
+symbol = " "
 
 [nodejs]
 format = "[~ $symbol($version )]($style)"
-symbol = "\uf898 "
+symbol = "󰎙 "
 
 [python]
 format = "[~ $symbol($version )]($style)"
-symbol = "\uf81f "
+symbol = " "
 
 [rust]
 format = "[~ $symbol($version )]($style)"
