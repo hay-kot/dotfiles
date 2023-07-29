@@ -3,10 +3,19 @@ return {
   dependencies = { "williamboman/mason-lspconfig.nvim" },
   config = function()
     local servers = {
-      "pyright",
-      "jsonls",
-      "html",
+      "eslint",
+      "golangci_lint_ls",
       "gopls",
+      "html",
+      "jsonls",
+      "pyright",
+      "tailwindcss",
+      "volar",
+      "tsserver",
+      "dockerls",
+      "docker_compose_language_service",
+      "ansiblels",
+      "ruff_lsp",
     }
 
     require("mason").setup({
