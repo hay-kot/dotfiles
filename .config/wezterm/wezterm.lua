@@ -140,7 +140,7 @@ config.font = wezterm.font({
 config.font_size = 16
 
 config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = true
+config.use_fancy_tab_bar = false
 
 config.window_frame = {
 	font = wezterm.font("JetBrains Mono", { weight = "Bold" }),

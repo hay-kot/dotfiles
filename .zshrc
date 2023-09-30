@@ -30,21 +30,20 @@ mac_config() {
     export GPG_TTY=$(tty)
     # Homebrew Path
     export PATH=/opt/homebrew/bin:$PATH
-    
     # Go
     export PATH="$HOME/Go/bin:$PATH"
-    
-    export NOTEBOOK_LOC="~/code/notebook"
-
+    # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
-    alias lg=lazygit
-
+    # Activate RTX
     eval "$(/opt/homebrew/bin/rtx activate zsh)"
 
     export DOCKER_HOST=unix:///var/run/docker.sock
-
     alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
     alias lzd=lazydocker
+    alias lg=lazygit
+
+    ## Default Mailpit Args
+    alias mockmail="mailpit --smtp-auth-accept-any --smtp-auth-allow-insecure"
 }
 
 ## MAC OS
@@ -91,8 +90,8 @@ if which bat > /dev/null; then
 fi
 
 if which exa > /dev/null; then
-    alias ls='exa --all'
-    alias l="exa --long --header --git --icons --all"
+    alias l='exa --all'
+    alias ls="exa --long --header --git --icons --all"
 else
     alias ls='ls -lah'
     alias l="ls -lah"
@@ -102,6 +101,8 @@ fi
 alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
 alias x="exit"
 alias k="k -h"						# show human readable filesizes, in kb, mb etc
+
+alias scf="scaffold"
 
 ###############################################################################
 #                         Alias Functions                                     #
@@ -166,5 +167,14 @@ alias rgnb="rg -- "
 # Gum Aliases
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
+alias gbc="git branch | cut -c 3- | fzf | xargs git checkout"
 
 eval "$(starship init zsh)"
+
+# pnpm
+export PNPM_HOME="/Users/hayden/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
