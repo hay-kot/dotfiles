@@ -103,7 +103,7 @@ return {
         require("telescope.builtin").lsp_workspace_symbols()
       end, { desc = "Search for symbols in workspace", buffer = true })
 
-      km.nnoremap("<leader>ld", function()
+      km.nnoremap("<leader>lx", function()
         vim.diagnostic.open_float()
       end, { desc = "Open diagnostic float" })
 
@@ -186,7 +186,7 @@ return {
         { name = "path" },
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
-        { name = "buffer",  keyword_length = 3 },
+        { name = "buffer", keyword_length = 3 },
         { name = "luasnip", keyword_length = 2 },
       },
       mapping = cmp_mappings,

@@ -250,7 +250,7 @@ end
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.0", -- Fuzzy finder
+    tag = "0.1.4", -- Fuzzy finder
     dependencies = {
       -- Nvim Utils
       { "nvim-lua/plenary.nvim" },

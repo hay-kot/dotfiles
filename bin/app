@@ -31,6 +31,15 @@ upgrade() {
     
     echo "Upgrading Pipx Installs"
     pipx upgrade-all
+
+    echo "Upgrade npm"
+    npm install -g npm
+
+    echo "Upgrade pnpm"
+    pnpm install -g pnpm
+
+    echo "Upgrade pip"
+    pip install --upgrade pip
 }
 
 sync() {
