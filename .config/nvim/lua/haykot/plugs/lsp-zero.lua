@@ -95,6 +95,14 @@ return {
         require("telescope.builtin").lsp_definitions()
       end, { desc = "Go to definition", buffer = true })
 
+      km.nnoremap("le", function()
+        vim.diagnostic.goto_next()
+      end, { desc = "Go to next diagnostic", buffer = true })
+
+      km.nnoremap("lE", function()
+        vim.diagnostic.goto_prev()
+      end, { desc = "Go to previous diagnostic", buffer = true })
+
       km.nnoremap("K", function()
         vim.lsp.buf.hover()
       end, { desc = "Show hover information" })
