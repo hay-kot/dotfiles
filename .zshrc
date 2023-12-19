@@ -89,9 +89,9 @@ if which bat > /dev/null; then
     alias cat="batcat"
 fi
 
-if which exa > /dev/null; then
-    alias l='exa --all'
-    alias ls="exa --long --header --git --icons --all"
+if which eza > /dev/null; then
+    alias l='eza --all'
+    alias ls="eza --long --header --git --icons --all"
 else
     alias ls='ls -lah'
     alias l="ls -lah"
