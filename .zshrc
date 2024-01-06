@@ -34,8 +34,10 @@ mac_config() {
     export PATH="$HOME/Go/bin:$PATH"
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
-    # Activate RTX
-    eval "$(/opt/homebrew/bin/rtx activate zsh)"
+    # Activate mise
+    eval "$(/opt/homebrew/bin/mise activate zsh)"
+    # rtx was renamed to mise so this is a temporary alias
+    alias rtx="mise"
 
     export DOCKER_HOST=unix:///var/run/docker.sock
     alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
