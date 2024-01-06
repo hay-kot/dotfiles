@@ -62,20 +62,6 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "nvim-pack/nvim-spectre",
-    config = function()
-      require("spectre").setup({ path = "*" })
-    end,
-    keys = {
-      {
-        "<leader>S",
-        "<cmd>lua require('spectre').open()<CR>",
-        { desc = "Open Spectre (find and replace)" },
-      },
-    },
-  },
-
   -- Auto Session Manager
   {
     priority = 100,
@@ -181,8 +167,6 @@ require("lazy").setup({
           },
         },
         filetypes = {
-          yaml = false,
-          markdown = false,
           help = false,
           gitcommit = false,
           gitrebase = false,
@@ -197,6 +181,7 @@ require("lazy").setup({
 
   {
     "nvim-neotest/neotest",
+    enabled = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -248,5 +233,24 @@ require("lazy").setup({
     config = function()
       require("gitsigns").setup()
     end,
+  },
+
+  -- Go
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+    keys = {
+      { "<leader>er", ":GoIfErr<cr>", desc = "insert err return" },
+    },
   },
 })

@@ -123,13 +123,13 @@ return {
         vim.diagnostic.goto_prev()
       end, { desc = "Jump to previous diagnostic" })
 
-      km.nnoremap("<leader>lca", function()
+      km.vnoremap("ca", function()
         vim.lsp.buf.code_action()
       end, { desc = "Show code actions" })
 
-      --[[ km.nnoremap("<leader>lfr", function() ]]
-      --[[   require("telescope.builtin").lsp_references() ]]
-      --[[ end, { desc = "Find references", buffer = true }) ]]
+      km.nnoremap("<leader>lca", function()
+        vim.lsp.buf.code_action()
+      end, { desc = "Show code actions" })
 
       km.nnoremap("<leader>fs", function()
         require("telescope.builtin").lsp_document_symbols()
@@ -163,7 +163,7 @@ return {
       -- Configure Ctrl-y to confirm completion
       ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
       -- Configure tab to select the first item in the completion, but not
-      -- interfer with github copilot
+      -- interfere with github copilot
       --
       -- TODO: Change up/down to C-n/C-p
       ["<Tab>"] = cmp.mapping(function(fallback)
@@ -253,12 +253,15 @@ return {
 
         -- YAML, JSON, XML, CSV
         null_ls.builtins.formatting.yq,
+
+        -- Typos
+        null_ls.builtins.diagnostics.typos
       },
     })
 
     lsp.setup()
 
-    -- Vim Diagnostics Setings (mostly care about virtual text)
+    -- Vim Diagnostics Settings (mostly care about virtual text)
     vim.diagnostic.config({
       virtual_text = true,
       signs = true,

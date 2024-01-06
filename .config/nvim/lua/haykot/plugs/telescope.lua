@@ -260,6 +260,9 @@ return {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
       },
+
+      -- Undo Search Plugin
+      { "debugloop/telescope-undo.nvim" },
     },
     config = function()
       -- close on escape
@@ -303,6 +306,7 @@ return {
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
+          undo = {},
         },
       })
 
@@ -314,6 +318,7 @@ return {
       -- To get fzf loaded and working with telescope, you need to call
       -- load_extension, somewhere after setup function:
       telescope.load_extension("fzf")
+      telescope.load_extension("undo")
     end,
     keys = {
       { "<leader>ff", M.project_files, desc = "find file" },
@@ -442,6 +447,14 @@ return {
           require("telescope.builtin").autocommands()
         end,
         desc = "find autocommands",
+      },
+      {
+        -- cmd + shift + p
+        "<leader>fu",
+        function()
+          require("telescope").extensions.undo.undo()
+        end,
+        desc = "find undos",
       },
     },
   },

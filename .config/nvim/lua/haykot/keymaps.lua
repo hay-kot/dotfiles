@@ -113,40 +113,4 @@ M.nnoremap("<leader>wl", function()
   vim.api.nvim_buf_set_lines(0, number - 1, number, false, lines)
 end)
 
-M.nnoremap("<leader>er", function()
-  local line = vim.api.nvim_get_current_line()
-  local number = vim.api.nvim_win_get_cursor(0)[1]
-  local lines = {}
-  local indent = string.match(line, "^%s*")
-  -- Insert the desired code block line by line
-  local err_block = {
-    line,
-    "if err != nil {",
-    "  return err",
-    "}",
-  }
-
-  -- Append the code block to the end of the lines
-  for i, err_line in ipairs(err_block) do
-    if not (i == 1) then
-      print("indenting")
-      err_line = indent .. err_line
-    end
-
-    table.insert(lines, err_line)
-  end
-
-  -- Convert all elements in the 'lines' table to strings
-  local string_lines = {}
-  for _, v in ipairs(lines) do
-    table.insert(string_lines, tostring(v))
-  end
-
-  -- Clear the current line and insert the new lines
-  vim.api.nvim_buf_set_lines(0, number - 1, number, false, string_lines)
-
-  -- Set Cursor after the err block at the end of the line
-  vim.api.nvim_win_set_cursor(0, { number + 2, vim.fn.len(indent) + 12 })
-end)
-
 return M
