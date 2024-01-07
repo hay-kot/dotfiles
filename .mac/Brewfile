@@ -151,6 +151,7 @@ cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
 cask "ngrok"
 cask "obsidian"
+cask "orbstack"
 cask "private-internet-access"
 cask "raycast"
 cask "rectangle-pro"
