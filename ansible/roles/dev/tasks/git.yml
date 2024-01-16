@@ -28,3 +28,10 @@
     value: "{{ git_global_ignore }}"
   when: git_global_ignore is defined
   tags: git
+
+- name: Set vim as Git Editor
+  git_config:
+    name: core.editor
+    scope: global
+    value: nvim
+  tags: git

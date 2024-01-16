@@ -52,7 +52,8 @@ git_global_ignore_content: |
 
   # Dev Runtime Conf Files #
   ##########################
-  *rtx.toml
+  *.rtx.toml
+  *.mise.toml
 
   # Logs and databases #
   ######################

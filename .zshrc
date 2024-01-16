@@ -46,6 +46,10 @@ mac_config() {
 
     ## Default Mailpit Args
     alias mockmail="mailpit --smtp-auth-accept-any --smtp-auth-allow-insecure"
+
+    mize() {
+      mise list | fzf | awk '{print $1 "@" $2}' | xargs mise use
+    }
 }
 
 ## MAC OS
@@ -91,7 +95,10 @@ if which bat > /dev/null; then
     alias cat="batcat"
 fi
 
-if which eza > /dev/null; then
+if which exa > /dev/null; then
+    alias l='exa --all'
+    alias ls="exa --long --header --git --icons --all"
+elif which eza > /dev/null; then
     alias l='eza --all'
     alias ls="eza --long --header --git --icons --all"
 else

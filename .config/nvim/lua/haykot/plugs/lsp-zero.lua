@@ -13,6 +13,29 @@ local function config_lsps(lsp)
   })
 
   --------------------------------------------
+  -- Bash
+  lspconfig.bashls.setup({
+    filetypes = { "sh", "zsh" },
+  })
+
+  --------------------------------------------
+  -- Html
+  lspconfig.html.setup({
+    init_options = {
+      configurationSection = { "html", "css", "javascript" },
+      embeddedLanguages = {
+        css = true,
+        javascript = true,
+      },
+      provideFormatter = false, -- fallback to null-ls/prettier
+    },
+    on_attach = function(_, bufnr)
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+  })
+
+  --------------------------------------------
   -- Javascript
   lspconfig.eslint.setup({
     settings = {
@@ -28,8 +51,8 @@ local function config_lsps(lsp)
 
   -- Volar
   lspconfig.volar.setup({
-    -- Disable formatting
     on_attach = function(client)
+      -- Disable formatting
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
     end,
@@ -143,7 +166,7 @@ return {
         vim.lsp.buf.signature_help()
       end, { desc = "Show signature help" })
 
-      km.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "format file" })
+      km.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", { desc = "format file" })
       -- command Format
       vim.cmd([[command! Fmt execute 'lua vim.lsp.buf.format()']])
     end)
@@ -255,7 +278,7 @@ return {
         null_ls.builtins.formatting.yq,
 
         -- Typos
-        null_ls.builtins.diagnostics.typos
+        null_ls.builtins.diagnostics.typos,
       },
     })
 
