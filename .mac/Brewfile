@@ -11,7 +11,6 @@ tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
-tap "jandedobbeleer/oh-my-posh"
 tap "jdxcode/tap"
 tap "jesseduffield/lazydocker"
 tap "osx-cross/arm"
@@ -99,10 +98,7 @@ brew "rustup-init"
 brew "starship"
 brew "stow"
 brew "stylua"
-brew "subversion"
-brew "tldr"
 brew "tmux"
-brew "tree"
 brew "ttyd", args: ["HEAD"]
 brew "typos-cli"
 brew "vhs"
@@ -120,14 +116,11 @@ brew "hay-kot/scaffold-tap/scaffold"
 brew "jesseduffield/lazydocker/lazydocker"
 brew "stripe/stripe-cli/stripe"
 brew "tinygo-org/tools/tinygo"
-cask "alacritty"
 cask "android-file-transfer", args: { appdir: "/Applications" }
 cask "android-studio"
 cask "angry-ip-scanner"
-cask "authy", args: { appdir: "/Applications" }
 cask "balenaetcher"
 cask "bartender"
-cask "basictex", args: { appdir: "/Applications" }
 cask "bettertouchtool"
 cask "bitwarden", args: { appdir: "/Applications" }
 cask "brave-browser", args: { appdir: "/Applications" }
@@ -139,13 +132,10 @@ cask "font-fira-code", args: { appdir: "/Applications" }
 cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "font-hack-nerd-font", args: { appdir: "/Applications" }
 cask "font-jetbrains-mono-nerd-font"
-cask "gitbutler"
-cask "goland"
 cask "google-chrome", args: { appdir: "/Applications" }
 cask "gpg-suite-no-mail"
 cask "home-assistant", args: { appdir: "/Applications" }
 cask "insomnia"
-cask "iterm2", args: { appdir: "/Applications" }
 cask "keyboard-cleaner"
 cask "microsoft-auto-update", args: { appdir: "/Applications" }
 cask "microsoft-office", args: { appdir: "/Applications" }
@@ -155,7 +145,6 @@ cask "orbstack"
 cask "private-internet-access"
 cask "raycast"
 cask "rectangle-pro"
-cask "rider"
 cask "signal"
 cask "slack", args: { appdir: "/Applications" }
 cask "spotify", args: { appdir: "/Applications" }
