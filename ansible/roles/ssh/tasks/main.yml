@@ -36,6 +36,7 @@
   community.general.ssh_config:
     group: "{{ main_group }}"
     user: "{{ item.user | default(ssh_config_default_user) }}"
+    remote_user: "{{ item.remote_user | default(ssh_config_default_user) }}"
     host: "{{ item.host }}"
     hostname: "{{ item.hostname }}"
     identity_file: "{{ item.identity_file | default(ssh_config_default_identity_file) }}"
