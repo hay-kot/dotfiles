@@ -1,3 +1,5 @@
+local km = require("haykot.keymaps")
+
 --------------------------------------------
 -- Specific LSP Configs
 --------------------------------------------
@@ -10,6 +12,51 @@ local function config_lsps(lsp)
         keyOrdering = false, -- Disabled Ordered Fields Linting
       },
     },
+  })
+
+  --------------------------------------------
+  -- Go
+  lspconfig.gopls.setup({
+    on_attach = function(client)
+      -- Lua function
+      local function IfErr()
+        local bpos = vim.fn.wordcount().cursor_bytes
+        local content = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+        -- Run the external command with "iferr" and capture the output
+        local out = vim.fn.systemlist("iferr -pos " .. bpos, content)
+
+        -- Check if there are any errors
+        if #out == 1 then
+          print("IfErr() -> no err found")
+          return
+        end
+
+        local current_line, current_col = unpack(vim.api.nvim_win_get_cursor(0))
+
+        -- Get the current line's indentation
+        local current_indent = vim.fn.indent(current_line)
+
+        -- Construct the indented multiline text
+        local indented_text = {}
+        for _, line in ipairs(out) do
+          table.insert(indented_text, string.rep(" ", current_indent) .. line)
+        end
+
+        table.insert(indented_text, "")
+
+        -- Move the cursor to the line below the current line
+        vim.api.nvim_win_set_cursor(0, { current_line + 1, 0 })
+
+        -- Insert the indented multiline text at the current cursor position
+        vim.api.nvim_put(indented_text, "", false, true)
+
+        -- Move the cursor to the end of the last line of the inserted text
+        vim.api.nvim_win_set_cursor(0, { current_line + #out, current_col + #indented_text[#indented_text] })
+      end
+
+      km.nnoremap("<leader>er", IfErr, { desc = "Run iferr" })
+    end,
   })
 
   --------------------------------------------
@@ -101,8 +148,6 @@ return {
     if not ok then
       return
     end
-
-    local km = require("haykot.keymaps")
 
     local lsp = require("lsp-zero")
     local copilot = require("copilot.suggestion")
