@@ -98,9 +98,11 @@ fi
 if which exa > /dev/null; then
     alias l='exa --all'
     alias ls="exa --long --header --git --icons --all"
+    alias tree="exa --tree --level=3"
 elif which eza > /dev/null; then
     alias l='eza --all'
     alias ls="eza --long --header --git --icons --all"
+    alias tree="eza --tree --level=3"
 else
     alias ls='ls -lah'
     alias l="ls -lah"
