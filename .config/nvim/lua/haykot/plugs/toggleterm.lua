@@ -82,7 +82,7 @@ return {
   end,
   keys = {
     {
-      "<leader>g",
+      "<leader>gg",
       function()
         lazygit:toggle()
       end,
