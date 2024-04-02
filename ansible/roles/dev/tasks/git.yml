@@ -35,3 +35,21 @@
     scope: global
     value: nvim
   tags: git
+
+- name: Set git aliases
+  git_config:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    scope: global
+  loop:
+    - { key: "alias.aliases", value: "!git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort" }
+    - { key: "alias.st",      value: "status" }
+    # Delete local branches that no longer exist on the remote
+    - { key: "alias.gone",    value: "!git fetch -p && git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D" }
+
+- name: Setup git rerere
+  git_config:
+    name: rerere.enabled
+    scope: global
+    value: true
+  tags: git
