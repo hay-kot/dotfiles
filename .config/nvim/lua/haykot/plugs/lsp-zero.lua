@@ -1,116 +1,8 @@
 local km = require("haykot.keymaps")
 
---------------------------------------------
--- Specific LSP Configs
---------------------------------------------
-local function config_lsps(lsp)
-  local lspconfig = require("lspconfig")
-
-  lspconfig.yamlls.setup({
-    settings = {
-      yaml = {
-        keyOrdering = false, -- Disabled Ordered Fields Linting
-      },
-    },
-  })
-
-  --------------------------------------------
-  -- Go
-  lspconfig.gopls.setup({
-    on_attach = function(client)
-      -- Lua function
-      local function IfErr()
-        local bpos = vim.fn.wordcount().cursor_bytes
-        local content = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-
-        -- Run the external command with "iferr" and capture the output
-        local out = vim.fn.systemlist("iferr -pos " .. bpos, content)
-
-        -- Check if there are any errors
-        if #out == 1 then
-          print("IfErr() -> no err found")
-          return
-        end
-
-        local current_line, current_col = unpack(vim.api.nvim_win_get_cursor(0))
-
-        -- Get the current line's indentation
-        local current_indent = vim.fn.indent(current_line)
-
-        -- Construct the indented multiline text
-        local indented_text = {}
-        for _, line in ipairs(out) do
-          table.insert(indented_text, string.rep(" ", current_indent) .. line)
-        end
-
-        table.insert(indented_text, "")
-
-        -- Move the cursor to the line below the current line
-        vim.api.nvim_win_set_cursor(0, { current_line + 1, 0 })
-
-        -- Insert the indented multiline text at the current cursor position
-        vim.api.nvim_put(indented_text, "", false, true)
-
-        -- Move the cursor to the end of the last line of the inserted text
-        vim.api.nvim_win_set_cursor(0, { current_line + #out, current_col + #indented_text[#indented_text] })
-      end
-
-      km.nnoremap("<leader>er", IfErr, { desc = "Run iferr" })
-    end,
-  })
-
-  --------------------------------------------
-  -- Bash
-  lspconfig.bashls.setup({
-    filetypes = { "sh", "zsh" },
-  })
-
-  --------------------------------------------
-  -- Html
-  lspconfig.html.setup({
-    init_options = {
-      configurationSection = { "html", "css", "javascript" },
-      embeddedLanguages = {
-        css = true,
-        javascript = true,
-      },
-      provideFormatter = false, -- fallback to null-ls/prettier
-    },
-    on_attach = function(_, bufnr)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false
-    end,
-  })
-
-  --------------------------------------------
-  -- Javascript
-  lspconfig.eslint.setup({
-    settings = {
-      packageManager = "pnpm",
-    },
-    on_attach = function(_, bufnr)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        command = "EslintFixAll",
-      })
-    end,
-  })
-
-  -- Volar
-  lspconfig.volar.setup({
-    on_attach = function(client)
-      -- Disable formatting
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false
-    end,
-  })
-
-  -- Fix Undefined global 'vim'
-  lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
-end
-
 return {
   "VonHeikemen/lsp-zero.nvim",
+  branch = "v3.x",
   dependencies = {
     -- LSP Support
     { "neovim/nvim-lspconfig" },
@@ -131,7 +23,7 @@ return {
     { "rafamadriz/friendly-snippets" },
 
     -- Null LS (Optional)
-    { "jose-elias-alvarez/null-ls.nvim" },
+    { "nvimtools/none-ls.nvim" },
   },
   config = function()
     local utils = require("haykot.lib.utils")
@@ -217,56 +109,49 @@ return {
     end)
 
     local cmp = require("cmp")
+    local cmp_format = lsp.cmp_format()
+
     cmp.setup({
+      formatting = cmp_format,
+      mapping = cmp.mapping.preset.insert({
+        -- Required or else it will drive you crazy
+        ["<CR>"] = nil,
+        ["<C-m>"] = nil,
+        -- scroll up and down the documentation window
+        ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-d>"] = cmp.mapping.scroll_docs(4),
+        -- Configure Ctrl-Space to trigger completion
+        ["<C-Space>"] = cmp.mapping.complete(),
+        -- Configure Ctrl-y to confirm completion
+        ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
+        -- Configure tab to select the first item in the completion, but not
+        -- interfere with github copilot
+        --
+        -- TODO: Change up/down to C-n/C-p
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if copilot.is_visible() then
+            copilot.accept()
+          elseif cmp.visible() then
+            cmp.select_next_item()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      }),
       sources = {
-        {
-          name = "nvim_lsp",
-          max_item_count = 100,
-        },
+        { name = "nvim_lsp", max_item_count = 100 },
+        { name = "buffer" },
+        { name = "path" },
+        { name = "luasnip" },
+      },
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body)
+        end,
       },
     })
-    local cmp_mappings = lsp.defaults.cmp_mappings({
-      -- Configure Ctrl-Space to trigger completion
-      ["<C-Space>"] = cmp.mapping.complete(),
-      -- Configure Ctrl-y to confirm completion
-      ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
-      -- Configure tab to select the first item in the completion, but not
-      -- interfere with github copilot
-      --
-      -- TODO: Change up/down to C-n/C-p
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if copilot.is_visible() then
-          copilot.accept()
-        elseif cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-      }),
-    })
-
-    -- Reset CR to nil
-    --
-    -- Required or else it will drive you crazy
-    cmp_mappings["<CR>"] = nil
-    cmp_mappings["<C-m>"] = nil
 
     require("luasnip.loaders.from_vscode").lazy_load()
-
-    lsp.setup_nvim_cmp({
-      sources = {
-        --- These are the default sources for lsp-zero
-        { name = "path" },
-        { name = "nvim_lsp" },
-        { name = "nvim_lua" },
-        { name = "buffer", keyword_length = 3 },
-        { name = "luasnip", keyword_length = 2 },
-      },
-      mapping = cmp_mappings,
-    })
 
     -- LSP Zero null-ls
     local null_ls = require("null-ls")
@@ -324,6 +209,9 @@ return {
 
         -- Typos
         null_ls.builtins.diagnostics.typos,
+
+        -- Sql Formatter
+        null_ls.builtins.formatting.sqlfmt,
       },
     })
 
@@ -338,7 +226,5 @@ return {
       severity_sort = false,
       float = true,
     })
-
-    config_lsps(lsp)
   end,
 }
