@@ -236,7 +236,7 @@ require("lazy").setup({
       km = require("haykot.keymaps")
 
       km.nnoremap("<leader>gp", ":Gitsigns preview_hunk<CR>", { desc = "git status" })
-      km.nnoremap("<leader>gt", ":gitsigns toggle_current_line_blame<cr>", { desc = "git toggle current line blame" })
+      km.nnoremap("<leader>gb", ":gitsigns toggle_current_line_blame<cr>", { desc = "git toggle current line blame" })
       km.vnoremap("<leader>gs", ":Gitsigns stage_hunk<CR>", { desc = "stage hunk" })
       km.vnoremap("<leader>gus", ":Gitsigns undo_stage_hunk<CR>", { desc = "undo stage hunk" })
     end,
