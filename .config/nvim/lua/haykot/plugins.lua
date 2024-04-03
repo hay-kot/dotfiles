@@ -230,15 +230,39 @@ require("lazy").setup({
   -- Git
   {
     "lewis6991/gitsigns.nvim",
+    lazy = false,
     config = function()
       require("gitsigns").setup()
-
-      km = require("haykot.keymaps")
-
-      km.nnoremap("<leader>gp", ":Gitsigns preview_hunk<CR>", { desc = "git status" })
-      km.nnoremap("<leader>gb", ":gitsigns toggle_current_line_blame<cr>", { desc = "git toggle current line blame" })
-      km.vnoremap("<leader>gs", ":Gitsigns stage_hunk<CR>", { desc = "stage hunk" })
-      km.vnoremap("<leader>gus", ":Gitsigns undo_stage_hunk<CR>", { desc = "undo stage hunk" })
     end,
+    keys = {
+      {
+        "<leader>gs",
+        function()
+          require("gitsigns").stage_hunk()
+        end,
+        desc = "stage hunk",
+      },
+      {
+        "<leader>gus",
+        function()
+          require("gitsigns").undo_stage_hunk()
+        end,
+        desc = "undo stage hunk",
+      },
+      {
+        "<leader>gp",
+        function()
+          require("gitsigns").preview_hunk()
+        end,
+        desc = "git status",
+      },
+      {
+        "<leader>gb",
+        function()
+          require("gitsigns").toggle_current_line_blame()
+        end,
+        desc = "git toggle current line blame",
+      },
+    },
   },
 })
