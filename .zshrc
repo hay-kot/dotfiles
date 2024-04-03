@@ -32,6 +32,8 @@ mac_config() {
     export PATH=/opt/homebrew/bin:$PATH
     # Go
     export PATH="$HOME/Go/bin:$PATH"
+    # tmuxifier
+    export PATH="$HOME/.tmuxifier/bin:$PATH"
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
     # Activate mise
@@ -57,7 +59,6 @@ if (( AM_MAC > 0)); then;
     mac_config;
 fi
 
-export TERM="xterm-256color"
 export DEFAULT_USER="$(whoami)"
 DISABLE_AUTO_TITLE="true"
 
