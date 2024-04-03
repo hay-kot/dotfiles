@@ -49,7 +49,12 @@ return {
         --------------------------------------------
         -- Vue / Typescript
         volar = function()
-          require("lspconfig").volar.setup({})
+          require("lspconfig").volar.setup({
+            on_attach = function(client)
+              client.server_capabilities.documentFormattingProvider = false
+              client.server_capabilities.documentRangeFormattingProvider = false
+            end,
+          })
         end,
         tsserver = function()
           local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path()
