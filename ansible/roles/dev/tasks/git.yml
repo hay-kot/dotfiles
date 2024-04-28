@@ -45,7 +45,10 @@
     - { key: "alias.aliases", value: "!git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort" }
     - { key: "alias.st",      value: "status" }
     # Delete local branches that no longer exist on the remote
-    - { key: "alias.gone",    value: "!git fetch -p && git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D" }
+    - { key: "alias.gone",  value: "!git fetch -p && git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D" }
+    # Return the name of the main branch  
+    - { key: "alias.gmm",   value: "!git checkout $(git_main_branch) && git pull && git checkout - && git merge main"}
+    - { key: "alias.grm",   value: "!git checkout $(git_main_branch) && git pull && git checkout - && git rebase main"}
 
 - name: Setup git rerere
   git_config:
