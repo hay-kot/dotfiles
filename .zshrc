@@ -36,6 +36,7 @@ mac_config() {
     export PATH="$HOME/.tmuxifier/bin:$PATH"
     # repomgr
     export REPOMGR_CONFIG="$HOME/.config/repomgr/repomgr.toml"
+    alias rpm="repomgr" 
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
     # Activate mise
