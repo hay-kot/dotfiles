@@ -129,6 +129,8 @@ return {
         --
         -- TODO: Change up/down to C-n/C-p
         ["<Tab>"] = cmp.mapping(function(fallback)
+
+          copilot.accept()
           if copilot.is_visible() then
             copilot.accept()
           elseif cmp.visible() then
@@ -203,9 +205,6 @@ return {
         -- Go
         null_ls.builtins.formatting.gofumpt,
         null_ls.builtins.formatting.goimports,
-
-        -- YAML, JSON, XML, CSV
-        null_ls.builtins.formatting.yq,
 
         -- Typos
         null_ls.builtins.diagnostics.typos,
