@@ -293,7 +293,10 @@ return {
                 require("telescope.actions").select_default(prompt_bufnr)
                 require("telescope.builtin").resume()
               end,
-              ["<C-q>"] = actions.send_to_qflist,
+              ["<C-q>"] = function(prompt_bufnr) 
+                actions.smart_send_to_qflist(prompt_bufnr)  
+                actions.open_qflist() 
+              end,
               ["<esc>"] = actions.close,
             },
           },
