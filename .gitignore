@@ -8,3 +8,6 @@ gofind.json
 .venv
 .vaultpass
 .config/lazygit/state.yml
+repomgr.env
+repomgr.db
+repomgr.log
