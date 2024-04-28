@@ -1,0 +1,31 @@
+# when running a command arguments are passed to the shell
+# via the -c flag. I haven't been able to get it to work without
+# a shell, so this the implementation is a bit hacky
+shell = "zsh"
+dotenvs = ["./repomgr.env"]
+
+[logs]
+file = "./repomgr.log"
+level = "info"
+color = false          # ignored if json
+format = "text"        # text or json
+
+[database]
+file = "./repomgr.db"
+params = "_pragma=busy_timeout=2000&_pragma=journal_mode=WAL&_fk=1"
+
+[key_bindings]
+"ctrl+f" = { cmd = "open '{{ .CloneDir }}'", desc = "open cloned folder", mode = "background" }
+"ctrl+k" = { cmd = "open '{{ .Repo.HTMLURL }}/pulls'", desc = "open prs", mode = "background" }
+"ctrl+g" = { cmd = "lazygit --path={{ .CloneDir }}", desc = "lazygit", mode = "interactive" }
+"ctrl+e" = { cmd = "cd {{ .CloneDir }} && nvim {{ .CloneDir }}", desc = "nvim", mode = "interactive" }
+
+[[sources]]
+type = "github"
+username = "hay-kot"
+token = "env:REPOMGR_GH_TOKEN"
+
+[clone_directories]
+# default directory for cloing if no matchers are found
+default = "~/code/repos/{{ .Repo.Name }}"
+matchers = []
