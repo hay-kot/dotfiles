@@ -34,6 +34,8 @@ mac_config() {
     export PATH="$HOME/Go/bin:$PATH"
     # tmuxifier
     export PATH="$HOME/.tmuxifier/bin:$PATH"
+    # repomgr
+    export REPOMGR_CONFIG="$HOME/.config/repomgr/repomgr.toml"
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
     # Activate mise
@@ -82,7 +84,7 @@ export MARKER_KEY_NEXT_PLACEHOLDER="\C-b"   # change maker key binding from Ctr+
 export PATH=$PATH:~/.quickzsh/todo/bin    # using alias doesn't properly work
 
 autoload -U compinit && compinit
-SAVEHIST=10000 # save up to 50,000 lines in history. oh-my-zsh default is 10,000
+SAVEHIST=20000 # save up to 50,000 lines in history. oh-my-zsh default is 10,000
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
