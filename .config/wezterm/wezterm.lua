@@ -131,7 +131,7 @@ end
 
 -- For example, changing the color scheme:
 config.color_scheme = "GruvboxDark"
-config.line_height = 1.1
+config.line_height = 1.18
 config.font = wezterm.font({
 	family = "JetBrains Mono",
 	weight = "Regular",
