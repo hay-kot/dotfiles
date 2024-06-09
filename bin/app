@@ -38,8 +38,8 @@ upgrade() {
     echo "Upgrade pnpm"
     pnpm install -g pnpm
 
-    echo "Upgrade pip"
-    pip install --upgrade pip
+    # echo "Upgrade pip"
+    # pip3 install --upgrade pip
 }
 
 sync() {
