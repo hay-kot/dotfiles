@@ -250,7 +250,7 @@ end
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.4", -- Fuzzy finder
+    tag = "0.1.7", -- Fuzzy finder
     dependencies = {
       -- Nvim Utils
       { "nvim-lua/plenary.nvim" },
@@ -295,7 +295,6 @@ return {
               end,
               ["<C-q>"] = function(prompt_bufnr) 
                 actions.smart_send_to_qflist(prompt_bufnr)  
-                actions.open_qflist() 
               end,
               ["<esc>"] = actions.close,
             },

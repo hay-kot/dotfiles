@@ -105,7 +105,7 @@ return {
               },
               provideFormatter = false, -- fallback to null-ls/prettier
             },
-            on_attach = function(_, bufnr)
+            on_attach = function(client, bufnr)
               client.server_capabilities.documentFormattingProvider = false
               client.server_capabilities.documentRangeFormattingProvider = false
             end,

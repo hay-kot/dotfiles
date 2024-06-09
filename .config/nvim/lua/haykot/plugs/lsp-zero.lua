@@ -206,8 +206,6 @@ return {
         null_ls.builtins.formatting.gofumpt,
         null_ls.builtins.formatting.goimports,
 
-        -- Typos
-        null_ls.builtins.diagnostics.typos,
 
         -- Sql Formatter
         null_ls.builtins.formatting.sqlfmt,

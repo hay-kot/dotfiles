@@ -17,9 +17,6 @@ end
 ensure_lazy()
 
 require("lazy").setup({
-  -- "nvim-lua/popup.nvim",   -- An implementation of the Popup API from vim in Neovim
-  -- "simrat39/rust-tools.nvim",
-
   -- Base Plugins
   "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
   {
@@ -218,7 +215,7 @@ require("lazy").setup({
   -- Tabs
   {
     "akinsho/bufferline.nvim",
-    version = "v3.*",
+    version = "v4.*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
