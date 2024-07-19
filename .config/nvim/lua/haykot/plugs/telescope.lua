@@ -45,10 +45,10 @@ local telescope_make = {
       .. " -pRrq -C "
       .. vim.fn.shellescape(vim.fn.fnamemodify(makefile, ":h"))
       .. [[ 2>/dev/null |
-                awk -F: '/^# Files/,/^# Finished Make data base/ {
-                    if ($1 == "# Not a target") skip = 1;
-                    if ($1 !~ "^[#.\t]") { if (!skip) {if ($1 !~ "^$")print $1}; skip=0 }
-                }' 2>/dev/null | sort -u ]]
+              awk -F: '/^# Files/,/^# Finished Make data base/ {
+                  if ($1 == "# Not a target") skip = 1;
+                  if ($1 !~ "^[#.\t]") { if (!skip) {if ($1 !~ "^$")print $1}; skip=0 }
+              }' 2>/dev/null | sort -u ]]
 
     local cmd = vim.fn.system(cmd_str)
 
@@ -293,8 +293,8 @@ return {
                 require("telescope.actions").select_default(prompt_bufnr)
                 require("telescope.builtin").resume()
               end,
-              ["<C-q>"] = function(prompt_bufnr) 
-                actions.smart_send_to_qflist(prompt_bufnr)  
+              ["<C-q>"] = function(prompt_bufnr)
+                actions.smart_send_to_qflist(prompt_bufnr)
               end,
               ["<esc>"] = actions.close,
             },
@@ -324,6 +324,14 @@ return {
     end,
     keys = {
       { "<leader>ff", M.project_files, desc = "find file" },
+      {
+        "<leader>fl",
+        function()
+          -- open last picker
+          require("telescope.builtin").resume()
+        end,
+        desc = "resumes last telescope window",
+      },
       {
         "<leader>fm",
         function()
