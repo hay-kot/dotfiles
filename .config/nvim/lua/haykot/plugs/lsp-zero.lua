@@ -127,18 +127,33 @@ return {
         -- Configure tab to select the first item in the completion, but not
         -- interfere with github copilot
         --
-        -- TODO: Change up/down to C-n/C-p
         ["<Tab>"] = cmp.mapping(function(fallback)
-
-          copilot.accept()
-          if copilot.is_visible() then
-            copilot.accept()
+          if require("copilot.suggestion").is_visible() then
+            require("copilot.suggestion").accept()
           elseif cmp.visible() then
-            cmp.select_next_item()
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+          --[[ elseif luasnip.expandable() then ]]
+          --[[   luasnip.expand() ]]
+          --[[ elseif has_words_before() then ]]
+          --[[   cmp.complete() ]]
           else
             fallback()
           end
-        end, { "i", "s" }),
+        end, {
+          "i",
+          "s",
+        }),
+        -- TODO: Change up/down to C-n/C-p
+        --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
+        --[[   copilot.accept() ]]
+        --[[   if copilot.is_visible() then ]]
+        --[[     copilot.accept() ]]
+        --[[   elseif cmp.visible() then ]]
+        --[[     cmp.select_next_item() ]]
+        --[[   else ]]
+        --[[     fallback() ]]
+        --[[   end ]]
+        --[[ end, { "i", "s" }), ]]
       }),
       sources = {
         { name = "nvim_lsp", max_item_count = 100 },
@@ -206,9 +221,8 @@ return {
         null_ls.builtins.formatting.gofumpt,
         null_ls.builtins.formatting.goimports,
 
-
         -- Sql Formatter
-        null_ls.builtins.formatting.sqlfmt,
+        null_ls.builtins.formatting.sql_formatter.with({ command = { "sleek" } }),
       },
     })
 

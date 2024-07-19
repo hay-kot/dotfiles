@@ -148,6 +148,14 @@ require("lazy").setup({
   {
     "zbirenbaum/copilot.lua",
     config = function()
+      vim.keymap.set("i", "<tab>", function()
+        if require("copilot.suggestion").is_visible() then
+          require("copilot.suggestion").accept()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, false, true), "n", false)
+        end
+      end, { desc = "super tab" })
+
       require("copilot").setup({
         enabled = true,
         suggestion = {
@@ -155,7 +163,7 @@ require("lazy").setup({
           auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<M-l>",
+            accept = false,
             accept_word = false,
             accept_line = false,
             next = "<M-]>",
