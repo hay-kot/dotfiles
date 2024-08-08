@@ -33,3 +33,6 @@ symbol = " "
 
 [rust]
 format = "[~ $symbol($version )]($style)"
+
+[gcloud]
+format = ""
