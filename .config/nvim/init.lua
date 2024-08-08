@@ -1,4 +1,5 @@
 require("haykot.keymaps")
+require("haykot.autocommands")
 require("haykot.options")
 
 -- If we're running on an infrastructure server, I don't care about the rest of
