@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+# Function to generate a random 5-character alphanumeric string
+generate_random_string() {
+    openssl rand -base64 6 | tr -dc A-Za-z0-9 | head -c 5
+}
+
+# Check if the required commands are provided
+if [ "$#" -eq 2 ]; then
+    CONTAINER_NAME=$1
+    PORT=$2
+elif [ "$#" -eq 1 ]; then
+    CONTAINER_NAME=$1
+    PORT=5432
+else
+    # Generate a default container name
+    DEFAULT_CONTAINER_NAME="pg_$(generate_random_string)"
+    
+    # Prompt for the container name with a default value
+    CONTAINER_NAME=$(gum input --value "$DEFAULT_CONTAINER_NAME" --placeholder "Enter container name" --header="Container Name")
+
+    # Prompt for the port with a default value of 5432
+    PORT=$(gum input --value "5432" --placeholder "Enter port number" --header="Port")
+fi
+
+docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD=postgres -d -p "$PORT:5432" postgres
