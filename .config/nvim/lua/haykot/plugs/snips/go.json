@@ -1,0 +1,16 @@
+{
+  "single import": {
+    "prefix": "im",
+    "body": "import \"${1:package}\"",
+    "description": "Snippet for import statement"
+  },
+  "Controller Function": {
+    "prefix": "handler-err",
+    "body": [
+      "func (c *${1:Controller}) ${2} (w http.ResponseWriter, r *http.Request) error {",
+      "  ${3}",
+      "}"
+    ],
+    "description": "Go function for controller endpoint with customizable name and body"
+  }
+}

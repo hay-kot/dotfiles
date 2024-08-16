@@ -18,9 +18,43 @@ return {
     { "hrsh7th/cmp-nvim-lua" },
 
     -- Snippets
-    { "L3MON4D3/LuaSnip" },
-    -- Snippet Collection (Optional)
-    { "rafamadriz/friendly-snippets" },
+    {
+      "L3MON4D3/LuaSnip",
+      version = "v2.*",
+      config = function()
+        -- log to local file
+        ls = require("luasnip")
+        ls.log.set_loglevel("debug")
+
+        -- Map "Ctrl + p" (in insert mode)
+        -- to expand snippet and jump through fields.
+        vim.api.nvim_set_keymap(
+          "i",
+          "<Tab>",
+          "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'",
+          { expr = true, silent = true }
+        )
+        vim.api.nvim_set_keymap("i", "<S-Tab>", "<cmd>lua require'luasnip'.jump(-1)<CR>", { silent = true })
+        vim.api.nvim_set_keymap("s", "<Tab>", "<cmd>lua require('luasnip').jump(1)<CR>", { silent = true })
+        vim.api.nvim_set_keymap("s", "<S-Tab>", "<cmd>lua require('luasnip').jump(-1)<CR>", { silent = true })
+
+        require("luasnip.loaders.from_vscode").lazy_load({
+          exclude = { "go" },
+        })
+
+        require("luasnip.loaders.from_vscode").lazy_load({
+          paths = {
+            "~/.config/nvim/lua/haykot/plugs/snips",
+          },
+        })
+
+        vim.notify("LuaSnip loaded", vim.log.levels.INFO)
+      end,
+      lazy = false,
+      dependencies = {
+        { "rafamadriz/friendly-snippets" },
+      },
+    },
 
     -- Null LS (Optional)
     { "nvimtools/none-ls.nvim" },
@@ -132,10 +166,6 @@ return {
             require("copilot.suggestion").accept()
           elseif cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-          --[[ elseif luasnip.expandable() then ]]
-          --[[   luasnip.expand() ]]
-          --[[ elseif has_words_before() then ]]
-          --[[   cmp.complete() ]]
           else
             fallback()
           end
@@ -143,23 +173,12 @@ return {
           "i",
           "s",
         }),
-        -- TODO: Change up/down to C-n/C-p
-        --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
-        --[[   copilot.accept() ]]
-        --[[   if copilot.is_visible() then ]]
-        --[[     copilot.accept() ]]
-        --[[   elseif cmp.visible() then ]]
-        --[[     cmp.select_next_item() ]]
-        --[[   else ]]
-        --[[     fallback() ]]
-        --[[   end ]]
-        --[[ end, { "i", "s" }), ]]
       }),
       sources = {
         { name = "nvim_lsp", max_item_count = 100 },
+        { name = "luasnip" },
         { name = "buffer" },
         { name = "path" },
-        { name = "luasnip" },
       },
       snippet = {
         expand = function(args)
@@ -167,8 +186,6 @@ return {
         end,
       },
     })
-
-    require("luasnip.loaders.from_vscode").lazy_load()
 
     -- LSP Zero null-ls
     local null_ls = require("null-ls")
