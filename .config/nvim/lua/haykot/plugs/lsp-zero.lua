@@ -47,8 +47,6 @@ return {
             "~/.config/nvim/lua/haykot/plugs/snips",
           },
         })
-
-        vim.notify("LuaSnip loaded", vim.log.levels.INFO)
       end,
       lazy = false,
       dependencies = {

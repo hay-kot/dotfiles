@@ -10,6 +10,10 @@ return {
         require("treesitter-context").setup({
           enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
         })
+
+        vim.api.nvim_create_user_command("ToggleTreeSitterContext", function()
+          require("treesitter-context").toggle()
+        end, { range = false, nargs = 0, desc = "Toggle TreeSitter Context" })
       end,
     },
   },
@@ -20,7 +24,7 @@ return {
       ensure_installed = "all",
       ignore_install = { "phpdoc", "tlaplus", "ruby" },
       highlight = {
-        enable = true,       -- false will disable the whole extension
+        enable = true, -- false will disable the whole extension
         disable = { "css" }, -- list of language that will be disabled
       },
       autopairs = {
