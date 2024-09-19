@@ -29,8 +29,8 @@ upgrade() {
     echo "Running Brew Upgrades"
     brew update && brew upgrade
     
-    echo "Upgrading Pipx Installs"
-    pipx upgrade-all
+    echo "Upgrading uv tool Installs"
+    uv tool upgrade --all
 
     echo "Upgrade npm"
     npm install -g npm
