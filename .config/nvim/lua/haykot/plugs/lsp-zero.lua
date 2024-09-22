@@ -144,6 +144,7 @@ return {
     local cmp_format = lsp.cmp_format()
 
     cmp.setup({
+      preselect = "none",
       formatting = cmp_format,
       mapping = cmp.mapping.preset.insert({
         -- Required or else it will drive you crazy
