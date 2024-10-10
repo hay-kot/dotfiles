@@ -33,23 +33,17 @@ require("lazy").setup({
     end,
   },
   {
-    "morhetz/gruvbox",
+    "folke/tokyonight.nvim",
+    lazy = false,
     priority = 1000,
-    enabled = false,
-    config = function()
-      -- set sign column to #282828
-      vim.cmd([[let g:gruvbox_sign_column = "bg0"]])
-      vim.cmd([[colorscheme gruvbox]])
-    end,
+    opts = {},
   },
-
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
   },
-
   {
     "windwp/nvim-autopairs",
     config = function()
@@ -224,12 +218,6 @@ require("lazy").setup({
   {
     "akinsho/bufferline.nvim",
     version = "v4.*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
-
-  -- Status Line
-  {
-    "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   -- Git

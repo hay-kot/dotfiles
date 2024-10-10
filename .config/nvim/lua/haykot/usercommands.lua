@@ -40,3 +40,17 @@ end, { range = true, desc = "Converts the selected paragraph tags into an ordere
 vim.api.nvim_create_user_command("HtmlConvertParaToUl", function()
   html_convert_para_to_list("ul")
 end, { range = true, desc = "Converts the selected paragraph tags into an unordered list" })
+
+vim.api.nvim_create_user_command("FinderReveal", function()
+  local file_path = vim.fn.expand("%:p")
+  local cmd = string.format("open -R %s", file_path)
+  vim.fn.system(cmd)
+end, { range = false, nargs = 0, desc = "Reveal the current file in Finder" })
+
+vim.api.nvim_create_user_command("ThemeTokyonight", function()
+  vim.cmd("colorscheme tokyonight")
+end, { range = false, nargs = 0, desc = "Set the color scheme to tokyonight" })
+
+vim.api.nvim_create_user_command("ThemeGruvboxMaterial", function()
+  vim.cmd("colorscheme gruvbox-material")
+end, { range = false, nargs = 0, desc = "Set the color scheme to gruvbox-material" })
