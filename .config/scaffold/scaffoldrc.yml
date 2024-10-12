@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://hay-kot.github.io/scaffold/schema.scaffoldrc.json
+settings:
+  theme: scaffold
+  run_hooks: prompt
+  log_file: ./scaffold.log
+  log_level: info
+defaults:
+  full_name: Hayden Kotelman
+  github_email: hay-kot@pm.me
+  github_username: hay-kot
+  gomod: github.com/hay-kot/
+  name: Hayden
+aliases:
+  gocli: https://github.com/hay-kot/scaffold-go-cli
+  gopkg: https://github.com/hay-kot/scaffold-go-pkg
+shorts:
+  gh: https://github.com
+  gl: https://gitlab.com

@@ -11,3 +11,4 @@ gofind.json
 repomgr.env
 repomgr.db
 repomgr.log
+*.log
