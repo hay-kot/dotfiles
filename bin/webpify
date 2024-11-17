@@ -1,4 +1,6 @@
 #!/bin/bash
+set +e
+set +x
 
 # Ensure ImageMagick is installed
 if ! command -v magick &> /dev/null; then
@@ -9,28 +11,30 @@ fi
 # Supported image formats
 SUPPORTED_FORMATS=("png" "jpg" "jpeg" "bmp" "tiff" "gif")
 
-# Loop through all files in the current directory
-for file in *; do
+# Use provided path or default to the current directory
+DIR="${1:-.}"
+
+# Loop through all files in the specified directory
+for file in "$DIR"/*; do
     # Get the file extension and convert it to lowercase
     extension="${file##*.}"
     extension_lower=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
-    
+
     # Check if the file is an image
     if [[ " ${SUPPORTED_FORMATS[@]} " =~ " ${extension_lower} " ]]; then
         # Define the output filename
         output_filename="${file%.*}.webp"
-        
+
         # Check the width of the image
         width=$(identify -format "%w" "$file")
-        
+
         # Resize if width is greater than 1600 pixels
         if [ "$width" -gt 1600 ]; then
             magick "$file" -resize 1600x "$output_filename"
         else
             magick "$file" "$output_filename"
         fi
-        
+
         echo "Converted $file to $output_filename"
     fi
 done
-
