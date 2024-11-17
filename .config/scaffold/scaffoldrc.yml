@@ -3,7 +3,6 @@
 settings:
   theme: scaffold
   run_hooks: prompt
-  log_file: ./scaffold.log
   log_level: info
 defaults:
   full_name: Hayden Kotelman
