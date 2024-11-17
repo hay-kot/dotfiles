@@ -33,33 +33,6 @@ return {
         update_in_insert = false, -- Update diagnostics in insert mode.
         always_visible = true,    -- Show diagnostics even if there are none.
       }
-      local copilot = function()
-        local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
-        if #buf_clients == 0 then
-          return "LSP Inactive"
-        end
-
-        --[[ local buf_ft = vim.bo.filetype ]]
-        local buf_client_names = {}
-        --[[ local copilot_active = false ]]
-
-        -- add client
-        for _, client in pairs(buf_clients) do
-          if client.name ~= "null-ls" and client.name ~= "copilot" then
-            table.insert(buf_client_names, client.name)
-          end
-
-          --[[ if client.name == "copilot" then ]]
-          --[[   copilot_active = true ]]
-          --[[ end ]]
-        end
-
-        --[[ if copilot_active then ]]
-        --[[   return lvim.icons.git.Octoface ]]
-        --[[ end ]]
-        return ""
-      end
-
       local filetype = function()
         return vim.bo.filetype
       end
@@ -93,7 +66,6 @@ return {
           lualine_b = { { "filename", path = 1 } },
           lualine_c = { diagnostics },
           lualine_x = { location },
-          lualine_y = { copilot, filetype },
           lualine_z = { "progress" },
         },
       })
