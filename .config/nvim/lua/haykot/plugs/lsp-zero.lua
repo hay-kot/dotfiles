@@ -62,7 +62,7 @@ return {
 
     local ok = utils.guard_module({
       "lsp-zero",
-      "copilot.suggestion",
+      -- "copilot.suggestion",
       "cmp",
       "null-ls",
       "lspconfig",
@@ -74,7 +74,7 @@ return {
     end
 
     local lsp = require("lsp-zero")
-    local copilot = require("copilot.suggestion")
+    -- local copilot = require("copilot.suggestion")
 
     lsp.preset("recommended")
     lsp.on_attach(function(_, bufnr)
@@ -142,6 +142,7 @@ return {
 
     local cmp = require("cmp")
     local cmp_format = lsp.cmp_format()
+    local cmp_action = require("lsp-zero").cmp_action()
 
     cmp.setup({
       preselect = "none",
@@ -159,19 +160,21 @@ return {
         ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
         -- Configure tab to select the first item in the completion, but not
         -- interfere with github copilot
+        ["<Tab>"] = cmp_action.luasnip_supertab(),
+        ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
         --
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if require("copilot.suggestion").is_visible() then
-            require("copilot.suggestion").accept()
-          elseif cmp.visible() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-          else
-            fallback()
-          end
-        end, {
-          "i",
-          "s",
-        }),
+        --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
+        --[[   if require("copilot.suggestion").is_visible() then ]]
+        --[[     require("copilot.suggestion").accept() ]]
+        --[[   elseif cmp.visible() then ]]
+        --[[     cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert }) ]]
+        --[[   else ]]
+        --[[     fallback() ]]
+        --[[   end ]]
+        --[[ end, { ]]
+        --[[   "i", ]]
+        --[[   "s", ]]
+        --[[ }), ]]
       }),
       sources = {
         { name = "nvim_lsp", max_item_count = 100 },
