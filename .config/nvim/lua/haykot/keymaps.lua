@@ -27,9 +27,11 @@ M.inoremap = bind("i")
 M.nnoremap("D", "dT")
 
 -- Close Buffers
+--[[ Disabled and instead using folke/snacks.nvim
 M.nnoremap("<leader>q", ":bd<CR>", { desc = "close buffer" })
-M.nnoremap("<leader>Q", ":bd!<CR>", { desc = "force close buffer" })
-M.nnoremap("vab", "ggVG", { desc = "select all buffer" })
+--]]
+M.nnoremap("<leader>Q", ":bd<CR>", { desc = "close buffer and split" })
+M.nnoremap("vab", "ggVG", { desc = "select all buffer contents" })
 
 -- set sbr to Split Buffer righ
 M.nnoremap("<leader>sbr", ":vsplit<CR>")

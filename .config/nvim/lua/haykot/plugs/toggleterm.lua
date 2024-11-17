@@ -1,5 +1,3 @@
--- Lazy Loaded lazygit termina variable. Initialized in config setup method
-local lazygit = nil
 local local_term = nil
 
 local cd_command = function(term, cmd, dir)
@@ -41,8 +39,7 @@ return {
       on_open = function()
         km.keymap("t", "<Esc>", ":ToggleTerm<CR>")
       end,
-      on_close = function()
-      end,
+      on_close = function() end,
       start_in_insert = true,
       persist_size = true,
       direction = "float",
@@ -68,26 +65,8 @@ return {
     end
 
     vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-
-    local Terminal = require("toggleterm.terminal").Terminal
-
-    lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
-
-    local_term = Terminal:new({
-      -- whatever options you want, EXCEPT:
-      -- DO NOT supply `cmd`. We have to modify it and send directly.
-      size = 80,
-      close_on_exit = true,
-    })
   end,
   keys = {
-    {
-      "<leader>gg",
-      function()
-        lazygit:toggle()
-      end,
-      desc = "toggle lazygit",
-    },
     { "<leader>t", ":ToggleTerm<CR>", desc = "toggle terminal" },
     {
       "<leader>lt",
