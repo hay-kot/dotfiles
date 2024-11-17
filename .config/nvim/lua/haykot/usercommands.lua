@@ -54,3 +54,16 @@ end, { range = false, nargs = 0, desc = "Set the color scheme to tokyonight" })
 vim.api.nvim_create_user_command("ThemeGruvboxMaterial", function()
   vim.cmd("colorscheme gruvbox-material")
 end, { range = false, nargs = 0, desc = "Set the color scheme to gruvbox-material" })
+
+vim.api.nvim_create_user_command("TrimTrailingWhitespace", function()
+  local line_count = vim.api.nvim_buf_line_count(0)
+
+  for i = 0, line_count - 1 do
+    local line = vim.api.nvim_buf_get_lines(0, i, i + 1, false)[1]
+    local trimmed_line = string.gsub(line, "%s+$", "")
+
+    if line ~= trimmed_line then
+      vim.api.nvim_buf_set_lines(0, i, i + 1, false, { trimmed_line })
+    end
+  end
+end, { desc = "Trim trailing whitespace from all lines in the current file" })
