@@ -170,6 +170,8 @@ return {
 
               local km = require("haykot.keymaps")
               km.nnoremap("<leader>er", IfErr, { desc = "Run iferr" })
+
+              km.nnoremap("<leader>lat", ":GoAddTag<CR>")
             end,
           })
         end,
