@@ -24,6 +24,7 @@ is_mac() {
 is_mac
 
 mac_config() {
+    export EDITOR=nvim
     # Set Lazygit Config Dir
     export XDG_CONFIG_HOME="$HOME/.config"
     # GPG Keys
@@ -36,6 +37,7 @@ mac_config() {
     export PATH="$HOME/.tmuxifier/bin:$PATH"
     # repomgr
     export REPOMGR_CONFIG="$HOME/.config/repomgr/repomgr.toml"
+    export DIRWATCH_CONFIG="$HOME/.config/dirwatch/dirwatch.toml"
     alias rpm="repomgr" 
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
