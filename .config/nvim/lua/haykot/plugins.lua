@@ -141,6 +141,7 @@ require("lazy").setup({
 
   {
     "zbirenbaum/copilot.lua",
+    enabled = false,
     config = function()
       vim.keymap.set("i", "<tab>", function()
         if require("copilot.suggestion").is_visible() then
@@ -179,39 +180,26 @@ require("lazy").setup({
   },
 
   {
-    "nvim-neotest/neotest",
-    enabled = false,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-go",
-      "nvim-neotest/neotest-python",
-      "nvim-neotest/neotest-vim-test",
     },
     config = function()
-      require("neotest").setup({
-        library = { plugins = { "neotest" }, types = true },
-        adapters = {
-          require("neotest-go"),
-          require("neotest-python")({
-            dap = { justMyCode = false },
-          }),
-          require("neotest-vim-test")({
-            ignore_file_types = { "python", "vim", "lua" },
-          }),
-        },
+      require("go").setup({
+        tag_options = "",
+        tag_transform = "camelcase",
+        lsp_semantic_highlights = false,
+        textobjects = false,
       })
+
+      -- disable sql colorizer
+      -- https://github.com/ray-x/go.nvim/issues/360#issuecomment-2456754303
+      vim.treesitter.query.set("go", "injections", "")
     end,
-    keys = {
-      {
-        "<leader>dt",
-        function()
-          require("neotest").run.run()
-        end,
-        desc = "test nearest",
-      },
-    },
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
 
   -- Tabs
