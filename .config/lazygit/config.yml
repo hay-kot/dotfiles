@@ -1,4 +1,8 @@
+os:
+  # fix gitlab issue with escape characters.
+  # https://github.com/jesseduffield/lazygit/issues/3064
+  openLink: open "$(echo "{{link}}" | sed 's/%2F/\//g')"
 gui:
-  showIcons: true  
+  showIcons: true
 services:
   gitea.kotel.app: gitea:gitea.kotel.app
