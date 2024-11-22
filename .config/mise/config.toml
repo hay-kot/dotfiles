@@ -1,0 +1,5 @@
+[tools]
+node = "22"
+
+[settings]
+experimental = true
