@@ -1,11 +1,7 @@
 {
   "If err != nil": {
     "prefix": "if-err",
-    "body": [
-      "if err != nil {",
-      "  ${1:return err}",
-      "}"
-    ],
+    "body": ["if err != nil {", "  ${1:return err}", "}"],
     "description": "Go if statement for error handling"
   },
   "Controller Function": {
@@ -19,65 +15,85 @@
   },
   "Require No Error": {
     "prefix": "rne",
-    "body": [
-      "require.NoError(t, err)"
-    ],
+    "body": ["require.NoError(t, err)"],
     "description": "Testify shorthand for require no error"
   },
   "defer close w/ Error": {
     "prefix": "defer-close-err",
-    "body": [
-      "defer func() { _ = ${1:close()} }()"
-    ],
+    "body": ["defer func() { _ = ${1:close()} }()"],
     "description": "Go close statement for error handling"
   },
   "ctx context.Context": {
     "prefix": "ctx",
-    "body": [
-      "ctx context.Context"
-    ],
+    "body": ["ctx context.Context"],
     "description": "Go context.Context variable declaration"
   },
   "For Range": {
     "prefix": "for",
-    "body": [
-      "for _, ${1:v} := range ${2:values} {",
-      "  $0",
-      "}"
-    ]
+    "body": ["for _, ${1:v} := range ${2:values} {", "  $0", "}"]
   },
   "For Loop": {
     "prefix": "fori",
-    "body": [
-      "for i := range ${1:values} {",
-      "  $0",
-      "}"
-    ]
+    "body": ["for i := range ${1:values} {", "  $0", "}"]
   },
   "Goroutine anonymous func": {
     "prefix": "gofunc",
-    "body": [
-      "go func(){",
-      "  $0",
-      "}()"
-    ]
+    "body": ["go func(){", "  $0", "}()"]
   },
   "Switch": {
     "prefix": "switch",
-    "body": [
-      "switch ${1:var} {",
-      "case ${2:condition}:",
-      "  $0",
-      "}"
-    ]
+    "body": ["switch ${1:var} {", "case ${2:condition}:", "  $0", "}"]
   },
   "Naked Switch": {
     "prefix": "switch-naked",
+    "body": ["switch {", "case ${1:condition}:", "  $0", "}"]
+  },
+  "Go Main with Error Handling": {
+    "prefix": "mainerr",
     "body": [
-      "switch {",
-      "case ${1:condition}:",
-      "  $0",
+      "package main",
+      "",
+      "import \"log\"",
+      "",
+      "func main() {",
+      "\terr := run()",
+      "\tif err != nil {",
+      "\t\tlog.Fatalf(\"failed to run program, %s\", err.Error())",
+      "\t}",
+      "}",
+      "",
+      "func run() error {",
+      "\treturn nil",
       "}"
-    ]
+    ],
+    "description": "Go main function with error handling using log.Fatalf"
+  },
+
+  "Go Main with Zerolog": {
+    "prefix": "mainerr-zerolog",
+    "body": [
+      "package main",
+      "",
+      "import (",
+      "\t\"github.com/rs/zerolog\"",
+      "\t\"github.com/rs/zerolog/log\"",
+      "\t\"os\"",
+      ")",
+      "",
+      "func main() {",
+      "\tzerolog.TimeFieldFormat = zerolog.TimeFormatUnix",
+      "\tlog.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})",
+      "",
+      "\terr := run()",
+      "\tif err != nil {",
+      "\t\tlog.Fatal().Err(err).Msg(\"failed to run program\")",
+      "\t}",
+      "}",
+      "",
+      "func run() error {",
+      "\treturn nil",
+      "}"
+    ],
+    "description": "Go main function with zerolog for structured logging"
   }
 }
