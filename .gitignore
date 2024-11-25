@@ -5,6 +5,7 @@
 gofind.json
 .env
 .env.local
+secrets/.env.*
 .venv
 .vaultpass
 .config/lazygit/state.yml
@@ -12,3 +13,4 @@ repomgr.env
 repomgr.db
 repomgr.log
 *.log
+
