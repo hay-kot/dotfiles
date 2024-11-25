@@ -19,7 +19,7 @@ for file in "$@"; do
         echo "File '$file' not found."
         continue
     fi
-    
+
     # Get file extension in lowercase
     extension=$(echo "${file##*.}" | tr '[:upper:]' '[:lower:]')
 
@@ -28,13 +28,13 @@ for file in "$@"; do
         echo "Skipping '$file': Not a HEIC file."
         continue
     fi
-    
+
     # Get filename without extension
     filename="${file%.*}"
 
     # Convert HEIC to JPEG
     convert "$file" "${filename}.jpg"
-    
+
     # Check if conversion was successful
     if [ $? -eq 0 ]; then
         echo "Conversion successful: '$file' -> '${filename}.jpg'"
