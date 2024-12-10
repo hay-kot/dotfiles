@@ -58,6 +58,8 @@ require("lazy").setup({
     priority = 100,
     "rmagatti/auto-session",
     config = function()
+      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
       require("auto-session").setup({
         bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble" },
         log_level = "error",
@@ -265,12 +267,48 @@ require("lazy").setup({
       },
     },
     keys = {
-      { "<leader>q", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-      { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
-      { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse" },
-      { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
-      { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+      {
+        "<leader>q",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>gb",
+        function()
+          Snacks.git.blame_line()
+        end,
+        desc = "Git Blame Line",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Git Browse",
+      },
+      {
+        "<leader>gf",
+        function()
+          Snacks.lazygit.log_file()
+        end,
+        desc = "Lazygit Current File History",
+      },
+      {
+        "<leader>gl",
+        function()
+          Snacks.lazygit.log()
+        end,
+        desc = "Lazygit Log (cwd)",
+      },
     },
   },
 })
