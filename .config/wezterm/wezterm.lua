@@ -62,7 +62,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
 	if tab.is_active then
 		background = colors.tab_bg_active
-		foreground = "#83A598"
+		foreground = "#859A99"
 	elseif hover then
 		-- maybe set hover styles
 	end
@@ -70,10 +70,13 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 	local edge_foreground = background
 	local process_name = tab.active_pane.foreground_process_name
 	local pane_title = tab.active_pane.title
+	local assigned_title = tab.tab_title
 	local exec_name = basename(process_name):gsub("%.exe$", "")
 	local title_with_icon
 
-	if exec_name == "pwsh" then
+	if assigned_title ~= "" then
+		title_with_icon = SHELL_ICON .. " " .. assigned_title
+	elseif exec_name == "pwsh" then
 		title_with_icon = PS_ICON .. " PS"
 	elseif exec_name == "cmd" then
 		title_with_icon = CMD_ICON .. " CMD"
