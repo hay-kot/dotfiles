@@ -14,7 +14,7 @@ return {
       "dockerls",
       "docker_compose_language_service",
       "ansiblels",
-      "ruff_lsp",
+      "ruff",
     }
 
     require("mason").setup({
