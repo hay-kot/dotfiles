@@ -3,6 +3,7 @@
 # ansible to run.
 - name: "Mac OS Developer Setup"
   hosts: localhost
+  gather_facts: false
   no_log: false
   vars:
     main_group: "20"

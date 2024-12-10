@@ -6,6 +6,7 @@
     - eslint
     - typescript
     - ts-node
+    - pnpm
   tags:
     - install
     - node
