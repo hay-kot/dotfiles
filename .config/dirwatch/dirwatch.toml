@@ -15,3 +15,9 @@ dirs = ["~/Downloads"]
 events = ["create", "write", "remove", "rename"]
 matches = ["*.HEIC", "*.heic"]
 exec = "{{ .Vars.scriptbin }}/heic2jpeg '{{ .Path }}'"
+
+[[watchers]]
+dirs = ["~/Documents/Paperless"]
+events = ["create", "write"]
+matches = ["*.PDF", "*.pdf"]
+exec = "{{ .Vars.scriptbin }}/upload-to-paperless '{{ .Path }}'"
