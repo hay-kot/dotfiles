@@ -19,7 +19,7 @@
     "description": "Testify shorthand for require no error"
   },
   "defer close w/ Error": {
-    "prefix": "defer-close-err",
+    "prefix": "deferCloseErr",
     "body": ["defer func() { _ = ${1:close()} }()"],
     "description": "Go close statement for error handling"
   },
@@ -68,7 +68,6 @@
     ],
     "description": "Go main function with error handling using log.Fatalf"
   },
-
   "Go Main with Zerolog": {
     "prefix": "mainerr-zerolog",
     "body": [
@@ -95,5 +94,34 @@
       "}"
     ],
     "description": "Go main function with zerolog for structured logging"
+  },
+  "Check If Path Exists": {
+    "prefix": "ifPathExists",
+    "body": [
+      "if _, err := os.Stat(${1:}); errors.Is(err, os.ErrNotExist) {",
+      "  // ${2:} does not exist",
+      "}"
+    ],
+    "description": "Check if a path exists using os.Stat and errors.Is."
+  },
+  "Go Table Test Template": {
+    "prefix": "tableTest",
+    "body": [
+      "type tcase struct {",
+      "  name string",
+      "  ${2:// Add more fields here}",
+      "}",
+      "",
+      "cases := []tcase{",
+      "  // Add test cases here",
+      "}",
+      "",
+      "for _, tt := range cases {",
+      "  t.Run(tt.name, func(t *testing.T) {",
+      "    ${3:// Test logic here}",
+      "  })",
+      "}"
+    ],
+    "description": "Template for Go table-driven tests."
   }
 }
