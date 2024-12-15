@@ -58,23 +58,7 @@ return {
     { "nvimtools/none-ls.nvim" },
   },
   config = function()
-    local utils = require("haykot.lib.utils")
-
-    local ok = utils.guard_module({
-      "lsp-zero",
-      -- "copilot.suggestion",
-      "cmp",
-      "null-ls",
-      "lspconfig",
-      "luasnip.loaders.from_vscode",
-    })
-
-    if not ok then
-      return
-    end
-
     local lsp = require("lsp-zero")
-    -- local copilot = require("copilot.suggestion")
 
     lsp.preset("recommended")
     lsp.on_attach(function(_, bufnr)
@@ -162,19 +146,6 @@ return {
         -- interfere with github copilot
         ["<Tab>"] = cmp_action.luasnip_supertab(),
         ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
-        --
-        --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
-        --[[   if require("copilot.suggestion").is_visible() then ]]
-        --[[     require("copilot.suggestion").accept() ]]
-        --[[   elseif cmp.visible() then ]]
-        --[[     cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert }) ]]
-        --[[   else ]]
-        --[[     fallback() ]]
-        --[[   end ]]
-        --[[ end, { ]]
-        --[[   "i", ]]
-        --[[   "s", ]]
-        --[[ }), ]]
       }),
       sources = {
         { name = "nvim_lsp", max_item_count = 100 },

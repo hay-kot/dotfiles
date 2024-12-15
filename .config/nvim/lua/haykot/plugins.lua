@@ -142,46 +142,6 @@ require("lazy").setup({
   },
 
   {
-    "zbirenbaum/copilot.lua",
-    enabled = false,
-    config = function()
-      vim.keymap.set("i", "<tab>", function()
-        if require("copilot.suggestion").is_visible() then
-          require("copilot.suggestion").accept()
-        else
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, false, true), "n", false)
-        end
-      end, { desc = "super tab" })
-
-      require("copilot").setup({
-        enabled = true,
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          debounce = 75,
-          keymap = {
-            accept = false,
-            accept_word = false,
-            accept_line = false,
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-        filetypes = {
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ["*"] = true,
-        },
-      })
-    end,
-  },
-
-  {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
       "neovim/nvim-lspconfig",
