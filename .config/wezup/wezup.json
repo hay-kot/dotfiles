@@ -9,6 +9,10 @@
       "cmd": "task go:run"
     },
     {
+      "pane_title": "rcp.ingredients",
+      "cmd": "task go:ingredients"
+    },
+    {
       "pane_title": "rcp.ui",
       "cmd": "task ui:dev"
     }
