@@ -67,3 +67,9 @@ vim.api.nvim_create_user_command("TrimTrailingWhitespace", function()
     end
   end
 end, { desc = "Trim trailing whitespace from all lines in the current file" })
+
+-- Define a user command to toggle text wrapping
+vim.api.nvim_create_user_command("ToggleWrap", function()
+  vim.opt_local.wrap = not vim.opt_local.wrap:get()
+  print("Wrap is now " .. (vim.opt_local.wrap:get() and "enabled" or "disabled"))
+end, {})
