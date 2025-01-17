@@ -91,7 +91,3 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
 #sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-# Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain InitialKeyRepeat -int 5
-defaults write NSGlobalDomain KeyRepeat -int 1
