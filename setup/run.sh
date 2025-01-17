@@ -7,19 +7,19 @@ filters=()
 dry="0"
 
 center_text() {
-  local string=" $1 "       # Add spaces around the input string
-  local width=$(tput cols)  # Get terminal width
-  local string_length=${#string}
-  local total_length=$((width - string_length))
-  local left_length=$((total_length / 2))
-  local right_length=$((total_length - left_length))
+  local task="TASK"
+  local string=" [$1] "       # Add brackets around the input string
+  local width=$(tput cols)    # Get terminal width
+  local prefix="${task}${string}"
+  local prefix_length=${#prefix}
+  local total_length=$((width - prefix_length))
+  local dashes_length=$((total_length > 0 ? total_length : 0)) # Prevent negative lengths
 
-  # Build the separator lines
-  local left_side=$(printf "%*s" $left_length | tr ' ' '-')
-  local right_side=$(printf "%*s" $right_length | tr ' ' '-')
+  # Generate the dashes
+  local dashes=$(printf "%*s" $dashes_length | tr ' ' '-')
 
-  # Print the centered string
-  echo "${left_side}${string}${right_side}"
+  # Print the final output
+  echo "${prefix}${dashes}"
 }
 
 # Function to display help text
@@ -78,12 +78,14 @@ log() {
 execute() {
   # Usage
   center_text "$@"
+  echo ""
   if [[ $dry == "1" ]]; then
-    center_text "End (Dry)"
+    echo "Dry..."
+    echo ""
     return
   else
     "$@"
-    center_text "End"
+    echo ""
   fi
 }
 

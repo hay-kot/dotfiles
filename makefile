@@ -17,6 +17,7 @@ init:
 	chmod +x ./setup/**/*.sh
 
 playbook:
+	./setup/run.sh .*
 	ansible-playbook ansible/playbook.yml --vault-password-file ./secrets/.vaultpass --ask-become-pass
 
 encrypt:
