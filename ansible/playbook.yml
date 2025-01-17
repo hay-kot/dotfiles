@@ -16,4 +16,3 @@
   roles:
     - "ssh"
     - "secrets"
-    - "dev"
