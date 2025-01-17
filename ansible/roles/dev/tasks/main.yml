@@ -1,5 +1,0 @@
----
-- include_tasks: directories.yml
-- include_tasks: git.yml
-- include_tasks: node.yml
-- include_tasks: repositories.yml
