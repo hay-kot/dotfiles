@@ -14,6 +14,7 @@ init:
 	chmod +x ~/.dotfiles/ansible/git-init.sh
 	cd ansible && ./git-init.sh
 	chmod +x ~/.dotfiles/bin/*
+	chmod +x ./setup/**/*.sh
 
 playbook:
 	ansible-playbook ansible/playbook.yml --vault-password-file ./secrets/.vaultpass --ask-become-pass
