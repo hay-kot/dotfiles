@@ -29,9 +29,9 @@ return {
           info = "I",
           hint = "H",
         },
-        colored = false,          -- Displays diagnostics status in color if set to true.
+        colored = false, -- Displays diagnostics status in color if set to true.
         update_in_insert = false, -- Update diagnostics in insert mode.
-        always_visible = true,    -- Show diagnostics even if there are none.
+        always_visible = true, -- Show diagnostics even if there are none.
       }
       local filetype = function()
         return vim.bo.filetype

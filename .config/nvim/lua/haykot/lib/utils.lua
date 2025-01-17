@@ -5,7 +5,6 @@ local function file_exists(name)
   return f ~= nil and io.close(f)
 end
 
-
 local is_windows = nil
 
 M = {

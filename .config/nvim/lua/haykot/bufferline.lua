@@ -11,7 +11,11 @@ km.nnoremap("<leader>bp", ":bprev <CR>", { desc = "previous buffer" })
 km.nnoremap("<leader><tab>", ":BufferLineCycleNext <CR>", { desc = "next buffer" })
 km.nnoremap("<leader>cbr", ":BufferLineCloseRight <CR>", { desc = "close right buffers" })
 km.nnoremap("<leader>cbl", ":BufferLineCloseLeft <CR>", { desc = "close left buffers" })
-km.nnoremap("<leader>cbo", ":BufferLineCloseRight <CR> :BufferLineCloseLeft <CR>", { desc = "close all buffers except current" })
+km.nnoremap(
+  "<leader>cbo",
+  ":BufferLineCloseRight <CR> :BufferLineCloseLeft <CR>",
+  { desc = "close all buffers except current" }
+)
 km.nnoremap("<leader>cba", ":%bd <CR>", { desc = "close all buffers" })
 km.nnoremap("<leader>bmr", ":BufferLineMoveNext <CR>", { desc = "move buffer right" })
 km.nnoremap("<leader>bml", ":BufferLineMovePrev <CR>", { desc = "move buffer left" })
