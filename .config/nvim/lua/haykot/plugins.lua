@@ -271,4 +271,6 @@ require("lazy").setup({
       },
     },
   },
+
+  "grafana/vim-alloy",
 })
