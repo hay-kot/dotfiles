@@ -45,7 +45,7 @@ upgrade() {
 sync() {
     echo "Dumping brew file..."
     
-    brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
+    brew bundle dump --force --all --file=./.mac/Brewfile
     
     ## Commit and Push ##
     git -C ~/.dotfiles diff --exit-code -s .mac/Brewfile
