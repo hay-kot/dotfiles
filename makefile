@@ -3,9 +3,9 @@ xcode:
 	xcode-select --install || true
 
 init:
-	chmod +x ~/.dotfiles/ansible/git-init.sh
+	chmod +x ./ansible/git-init.sh
 	cd ansible && ./git-init.sh
-	chmod +x ~/.dotfiles/bin/*
+	chmod +x ./bin/*
 	chmod +x ./setup/**/*.sh
 
 playbook:
