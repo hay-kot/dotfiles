@@ -38,7 +38,7 @@ mac_config() {
     # repomgr
     export REPOMGR_CONFIG="$HOME/.config/repomgr/repomgr.toml"
     export DIRWATCH_CONFIG="$HOME/.config/dirwatch/dirwatch.toml"
-    alias rpm="repomgr" 
+    alias rpm="repomgr"
     # Auto Edit Dotfiles and Change Directories
     alias edf='nvim --cmd "cd ~/.dotfiles"'
     # Activate mise

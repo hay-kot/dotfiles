@@ -28,7 +28,7 @@ restore() {
 upgrade() {
     echo "Running Brew Upgrades"
     brew update && brew upgrade
-    
+
     echo "Upgrading uv tool Installs"
     uv tool upgrade --all
 
@@ -36,7 +36,7 @@ upgrade() {
     npm install -g npm
 
     echo "Upgrade pnpm"
-    pnpm install -g pnpm
+    pnpm self-update
 
     # echo "Upgrade pip"
     # pip3 install --upgrade pip
@@ -44,22 +44,21 @@ upgrade() {
 
 sync() {
     echo "Dumping brew file..."
-    
-    brew bundle dump --force --all --file=./.mac/Brewfile
-    
+    brew bundle dump --force --all --file=~/.dotfiles/.mac/Brewfile
+
     ## Commit and Push ##
     git -C ~/.dotfiles diff --exit-code -s .mac/Brewfile
-    
+
     if (( $? > 0 )); then
         git -C ~/.dotfiles add .mac/Brewfile
         git -C ~/.dotfiles commit -m "auto: brew-sync"
         git -C ~/.dotfiles push origin main
-        
+
         echo "Synced Brewfile!"
     else
         echo "No changes to Brewfile."
     fi
-    
+
     echo "Done!"
 }
 
