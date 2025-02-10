@@ -1,2 +1,2 @@
-My Dotfiles. 
+My Dotfiles.
 

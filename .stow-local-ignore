@@ -12,3 +12,5 @@ makefile
 bin/*
 ansible/*
 .windows/*
+files/*
+.taplo.toml

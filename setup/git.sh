@@ -15,7 +15,7 @@ git config --global user.email 64056131+hay-kot@users.noreply.github.com
 # Git Global Ignore File
 
 echo "git: copy global git ignore"
-cp ../files/global.gitignore $HOME/.gitignore_global
+cp ./files/global.gitignore $HOME/.gitignore_global
 
 echo "git: setting core.excludesFile to $HOME/.gitignore_global"
 git config --global core.excludesFile "$HOME/.gitignore_global"

@@ -1,0 +1,195 @@
+[exec]
+shell = "/bin/bash"
+scripts = [
+  { path = "./setup/mac.dock.sh", tags = ["mac", "setup"] },
+  { path = "./setup/mac.preferences.sh", tags = ["mac", "setup"] },
+  { path = "./setup/git.sh", tags = ["git"] },
+  { path = "./setup/dirs.sh", tags = ["dirs"] },
+  { path = "./setup/node.sh", tags = ["node"] },
+  { path = "./setup/brew.grafana.sh", tags = ["brew", "grafana"] },
+  { path = "./setup/brew.personal.sh", tags = ["brew", "personal"] },
+  { path = "./setup/env.grafana.sh", tags = ["grafana", "env"] },
+  { path = "./setup/env.personal.sh", tags = ["personal", "env"] },
+]
+
+[brew.grafana]
+outfile = "./setup/brew.grafana.sh"
+includes = ["all"]
+brews = [
+  "grafana/grafana/alloy",
+]
+taps = [
+  "grafana/grafana",
+]
+casks = [
+  "1password",
+]
+mas = []
+
+[brew.personal]
+outfile = "./setup/brew.personal.sh"
+includes = ["all"]
+taps = [
+  "hay-kot/dirwatch-tap",
+  "hay-kot/flint-tap",
+  "axllent/apps",         # mailpit
+  "ariga/tap",            # atlas cli
+  "stripe/stripe-cli",
+  "tinygo-org/tools",
+]
+brews = [
+  "autorestic",
+  "bitwarden-cli",
+  "caddy",
+  "flyctl",
+  "ipython",
+  "mailpit",
+  "rustup",
+  "vhs",
+  "hugo",
+  "gping",
+
+  "tinygo-org/tools/tinygo",
+  "stripe/stripe-cli/stripe",
+
+  # python
+  "poetry",
+  "uv",
+
+  # personal programs
+  "flint",
+  "hay-kot/dirwatch-tap/dirwatch",
+]
+casks = [
+  "orbstack",
+  "private-internet-access",
+  "microsoft-auto-update",
+  "microsoft-office",
+  "steam",
+  "spotify",
+  "transmit",
+  "home-assistant",
+  "discord",
+  "balenaetcher",
+]
+
+[brew.all]
+taps = [
+  "homebrew/bundle",
+  "homebrew/cask",
+  "homebrew/core",
+  "homebrew/services",
+  "dagger/tap",
+  "go-task/tap",
+  "hay-kot/gotmpl-tap",
+  "hay-kot/scaffold-tap",
+  "jdxcode/tap",              # mise
+  "jesseduffield/lazydocker",
+  "osx-cross/arm",
+  "osx-cross/avr",
+]
+brews = [
+  "age",
+  "ansible",
+  "ansible-lint",
+  "apr-util",
+  "atlas",
+  "bash",
+  "bat",
+  "bfg",
+  "btop",
+  "cfitsio",
+  "cmake",
+  "coreutils",
+  "crf++",
+  "ctop",
+  "dagger",
+  "docker",
+  "editorconfig-checker",
+  "eza",
+  "fd",
+  "fftw",
+  "fx",
+  "fzf",
+  "gh",
+  "git-lfs",
+  "gnupg",
+  "go-task/tap/go-task",
+  "gofumpt",
+  "golang-migrate",
+  "golangci-lint",
+  "goose",
+  "goreleaser",
+  "gum",
+  "hay-kot/gotmpl-tap/gotmpl",
+  "hay-kot/scaffold-tap/scaffold",
+  "hyperfine",
+  "ilmbase",
+  "imagemagick",
+  "jesseduffield/lazydocker/lazydocker",
+  "jq",
+  "lazygit",
+  "libexif",
+  "libgit2@1.7",
+  "libgsf",
+  "libimagequant",
+  "libmatio",
+  "libproxy",
+  "libspng",
+  "mage",
+  "mas",
+  "mingw-w64",
+  "mise",
+  "mozjpeg",
+  "neovim",
+  "nss",
+  "openslide",
+  "orc",
+  "pinentry-mac",
+  "pnpm",
+  "pre-commit",
+  "ripgrep",
+  "sqlc",
+  "sqlfmt",
+  "starship",
+  "stow",
+  "stylua",
+  "tmux",
+  "ttyd",
+  "typos-cli",
+  "wget",
+  "wireguard-go",
+  "yank",
+  "yq",
+  "zlib",
+  "zsh-autosuggestions",
+]
+casks = [
+  "bitwarden",
+  "brave-browser",
+  "chromedriver",
+  "docker",
+  "firefox",
+  "font-fira-code",
+  "font-fira-code-nerd-font",
+  "font-hack-nerd-font",
+  "font-jetbrains-mono-nerd-font",
+  "google-chrome",
+  "google-cloud-sdk",
+  "gpg-suite-no-mail",
+  "insomnia",
+  "jordanbaird-ice",
+  "keyboard-cleaner",
+  "obsidian",
+  "raycast",
+  "rectangle-pro",
+  "signal",
+  "slack",
+  "sublime-text",
+  "tableplus",
+  "visual-studio-code",
+  "vlc",
+  "wezterm",
+  "yubico-yubikey-manager",
+  "zoom",
+]
