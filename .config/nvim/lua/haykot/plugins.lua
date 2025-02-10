@@ -271,6 +271,14 @@ require("lazy").setup({
       },
     },
   },
-
-  "grafana/vim-alloy",
+  {
+    "grafana/vim-alloy",
+    lazy = true,
+    ft = { "alloy" },
+  },
+  {
+    "google/vim-jsonnet",
+    lazy = true,
+    ft = "jsonnet",
+  },
 })
