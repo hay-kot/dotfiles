@@ -1,0 +1,4 @@
+[formatting]
+indent_tables = true
+inline_table_expand = false
+array_auto_collapse = false
