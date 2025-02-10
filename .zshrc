@@ -10,10 +10,12 @@ export PATH=$PATH:$HOME/.dotfiles/bin
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-export ENVAULT_FILE=~/.dotfiles/secrets/.env.local
-export ENVAULT_CONFG=~/.dotfiles/secrets/genv-config.json
-
 AM_MAC=0
+
+# Load environment variables from ~/.env.local if the file exists
+if [[ -f "$HOME/.shell.env" ]]; then
+    export $(grep -v '^#' "$HOME/.shell.env" | xargs)
+fi
 
 is_mac() {
     if [[ $OSTYPE == 'darwin'* ]]; then
@@ -40,7 +42,9 @@ mac_config() {
     export DIRWATCH_CONFIG="$HOME/.config/dirwatch/dirwatch.toml"
     alias rpm="repomgr"
     # Auto Edit Dotfiles and Change Directories
-    alias edf='nvim --cmd "cd ~/.dotfiles"'
+    edf() {
+        nvim --cmd "cd $DOTFILES_DIR"
+    }
     # Activate mise
     eval "$(/opt/homebrew/bin/mise activate zsh)"
     # rtx was renamed to mise so this is a temporary alias
@@ -103,11 +107,11 @@ fi
 
 if which exa > /dev/null; then
     alias l='exa --all'
-    alias ls="exa --long --header --git --icons --all"
+    alias ls="exa --long --header --git --icons --all --group-directories-first"
     alias tree="exa --tree --level=3"
 elif which eza > /dev/null; then
     alias l='eza --all'
-    alias ls="eza --long --header --git --icons --all"
+    alias ls="eza --long --header --git --icons --all --group-directories-first"
     alias tree="eza --tree --level=3"
 else
     alias ls='ls -lah'
@@ -119,8 +123,6 @@ alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip add
 alias x="exit"
 alias k="k -h"						# show human readable filesizes, in kb, mb etc
 
-alias scf="scaffold"
-
 ###############################################################################
 #                         Alias Functions                                     #
 ###############################################################################
@@ -131,7 +133,7 @@ repos() {
         cd "`gofind find repos`"
         return
     fi
-    
+
     cd ~/code/repos/$1
 }
 
