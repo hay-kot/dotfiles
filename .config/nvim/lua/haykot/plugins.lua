@@ -225,8 +225,25 @@ require("lazy").setup({
       lazygit = {
         configure = true,
       },
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            },
+          },
+        },
+      },
     },
     keys = {
+      {
+        "<leader><space>",
+        function()
+          Snacks.picker.smart()
+        end,
+        desc = "Smart Find Files",
+      },
+
       {
         "<leader>q",
         function()
