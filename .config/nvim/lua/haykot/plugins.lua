@@ -250,10 +250,9 @@ require("lazy").setup({
       {
         "<leader>ff",
         function()
-          local ok = pcall(Snacks.picker.git_files())
-          if not ok then
-            Snacks.picker.files()
-          end
+          Snacks.picker.git_files({
+            untracked = true,
+          })
         end,
         desc = "Smart Find Files",
       },

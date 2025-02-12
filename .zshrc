@@ -4,18 +4,18 @@ plugins=(
     zsh-autosuggestions
 )
 
-export PATH=$PATH:$HOME/.dotfiles/bin
+# Load environment variables from ~/.env.local if the file exists
+if [[ -f "$HOME/.shell.env" ]]; then
+    export $(grep -v '^#' "$HOME/.shell.env" | xargs)
+fi
+
+export PATH=$PATH:$DOTFILES_DIR/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 AM_MAC=0
-
-# Load environment variables from ~/.env.local if the file exists
-if [[ -f "$HOME/.shell.env" ]]; then
-    export $(grep -v '^#' "$HOME/.shell.env" | xargs)
-fi
 
 is_mac() {
     if [[ $OSTYPE == 'darwin'* ]]; then
