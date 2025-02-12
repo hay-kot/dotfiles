@@ -226,6 +226,17 @@ require("lazy").setup({
         configure = true,
       },
       picker = {
+        layout = {
+          layout = {
+            backdrop = false,
+          },
+        },
+        formatters = {
+          file = {
+            truncate = 70,
+            filename_first = true,
+          },
+        },
         win = {
           input = {
             keys = {
@@ -237,11 +248,86 @@ require("lazy").setup({
     },
     keys = {
       {
-        "<leader><space>",
+        "<leader>ff",
         function()
-          Snacks.picker.smart()
+          local ok = pcall(Snacks.picker.git_files())
+          if not ok then
+            Snacks.picker.files()
+          end
         end,
         desc = "Smart Find Files",
+      },
+      {
+        "<leader>fl",
+        function()
+          Snacks.picker.resume()
+        end,
+        desc = "resumes last telescope window",
+      },
+      {
+        "<leader>fj",
+        function()
+          Snacks.picker.jumps()
+        end,
+        desc = "search just list",
+      },
+      {
+        "<leader>fr",
+        function()
+          Snacks.picker.lsp_references()
+        end,
+        desc = "find lsp references",
+      },
+      {
+        "<leader>fq",
+        function()
+          Snacks.picker.qflist()
+        end,
+        desc = "find quickfix",
+      },
+      {
+        "<leader>fb",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "find buffer",
+      },
+      {
+        "<leader>fib",
+        function()
+          Snacks.picker.lines()
+        end,
+        desc = "find in buffer",
+      },
+      {
+        "<leader>fx",
+        function()
+          Snacks.picker.diagnostics()
+        end,
+        desc = "find trouble results",
+      },
+      {
+        "<leader>fg",
+        function()
+          Snacks.picker.grep({
+            cmd = "rg",
+          })
+        end,
+        desc = "find in files",
+      },
+      {
+        "<leader>fc",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "find changed files",
+      },
+      {
+        "<leader>fp",
+        function()
+          Snacks.picker.pickers()
+        end,
+        desc = "find changed files",
       },
 
       {

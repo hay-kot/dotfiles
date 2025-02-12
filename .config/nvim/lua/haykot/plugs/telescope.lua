@@ -323,71 +323,6 @@ return {
       telescope.load_extension("undo")
     end,
     keys = {
-      { "<leader>ff", M.project_files, desc = "find file" },
-      {
-        "<leader>fl",
-        function()
-          -- open last picker
-          require("telescope.builtin").resume()
-        end,
-        desc = "resumes last telescope window",
-      },
-      {
-        "<leader>fm",
-        function()
-          M.taskfile("toggle")
-        end,
-        desc = "run task/make in terminal",
-      },
-      {
-        "<leader>fn",
-        function()
-          M.taskfile("wezterm")
-        end,
-        desc = "run task/make in new wezterm tab",
-      },
-      {
-        "<leader>fg",
-        function()
-          require("telescope.builtin").live_grep()
-        end,
-        desc = "find in files",
-      },
-      {
-        "<leader>fb",
-        function()
-          require("telescope.builtin").buffers()
-        end,
-        desc = "find buffer",
-      },
-      {
-        "<leader>fib",
-        function()
-          require("telescope.builtin").live_grep({ search_dirs = { vim.fn.expand("%:p") } })
-        end,
-        desc = "find in buffer",
-      },
-      {
-        "<leader>fr",
-        function()
-          require("telescope.builtin").lsp_references({})
-        end,
-        desc = "find lsp references",
-      },
-      {
-        "<leader>fq",
-        function()
-          require("telescope.builtin").quickfix()
-        end,
-        desc = "find quickfix",
-      },
-      {
-        "<leader>fj",
-        function()
-          require("telescope.builtin").jumplist()
-        end,
-        desc = "find jumplist",
-      },
       {
         "<leader>fd",
         function()
@@ -421,50 +356,6 @@ return {
           })
         end,
         desc = "find directory",
-      },
-      {
-        "<leader>fx",
-        function()
-          require("telescope.builtin").diagnostics()
-        end,
-        desc = "find trouble results",
-      },
-      {
-        "<leader>fbc",
-        function()
-          require("telescope.builtin").git_bcommits()
-        end,
-        desc = "find current buffer commits",
-      },
-      {
-        "<leader>fc",
-        function()
-          require("telescope.builtin").git_status()
-        end,
-        desc = "find changed files",
-      },
-      {
-        "<leader>flc",
-        function()
-          print("TODO: find last command")
-        end,
-        desc = "find last command and execute it with TermExec",
-      },
-      {
-        -- cmd + shift + p
-        "<leader>P",
-        function()
-          require("telescope.builtin").autocommands()
-        end,
-        desc = "find autocommands",
-      },
-      {
-        -- cmd + shift + p
-        "<leader>fu",
-        function()
-          require("telescope").extensions.undo.undo()
-        end,
-        desc = "find undos",
       },
     },
   },
