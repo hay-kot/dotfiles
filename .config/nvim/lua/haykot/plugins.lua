@@ -338,11 +338,11 @@ require("lazy").setup({
         desc = "Git Blame Line",
       },
       {
-        "<leader>gB",
+        "<leader>go",
         function()
-          Snacks.gitbrowse()
+          Snacks.gitbrowse.open({})
         end,
-        desc = "Git Browse",
+        desc = "open git remote",
       },
       {
         "<leader>gf",
