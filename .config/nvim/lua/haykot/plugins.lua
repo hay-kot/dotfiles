@@ -18,7 +18,7 @@ ensure_lazy()
 
 require("lazy").setup({
   -- Base Plugins
-  "nvim-lua/plenary.nvim", -- Useful lua functions used ny lots of plugins
+  "nvim-lua/plenary.nvim", -- Useful lua functions used by lots of plugins
   {
     "sainnhe/gruvbox-material",
     enabled = true,
@@ -360,6 +360,7 @@ require("lazy").setup({
       },
     },
   },
+
   {
     "grafana/vim-alloy",
     lazy = true,
