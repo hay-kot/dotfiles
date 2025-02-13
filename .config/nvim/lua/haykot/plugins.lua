@@ -239,9 +239,16 @@ require("lazy").setup({
       {
         "<leader>ff",
         function()
-          Snacks.picker.git_files({
-            untracked = true,
+          Snacks.picker.files({
+            cmd = "rg",
+            hidden = false,
+            ignored = false,
+            args = { "--follow", "--glob", "!.git/*" },
           })
+
+          --[[ Snacks.picker.git_files({ ]]
+          --[[   untracked = true, ]]
+          --[[ }) ]]
         end,
         desc = "Smart Find Files",
       },
