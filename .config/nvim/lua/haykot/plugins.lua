@@ -100,18 +100,6 @@ require("lazy").setup({
   require("haykot.plugs.comments"),
   require("haykot.plugs.toggleterm"),
 
-  -- Improve Vim UI
-  -- Mostly used for code action menu/select, but had some other nice
-  -- UI improvements as well
-  {
-    "stevearc/dressing.nvim",
-    config = function()
-      require("dressing").setup({
-        input = { enabled = false },
-      })
-    end,
-  },
-
   -- UI Elements for Search and cmd
   -- Mostly used for the main command bar, not sure if there's anything else I use in this
   {
@@ -217,6 +205,7 @@ require("lazy").setup({
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
+      input = { enabled = true },
       bigfile = { enabled = true },
       quickfile = { enabled = true },
       notifier = { enabled = false },
@@ -308,9 +297,7 @@ require("lazy").setup({
       {
         "<leader>fg",
         function()
-          Snacks.picker.grep({
-            cmd = "rg",
-          })
+          Snacks.picker.grep({ cmd = "rg", args = { "--hidden" } })
         end,
         desc = "find in files",
       },
