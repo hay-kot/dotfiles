@@ -65,6 +65,15 @@ return {
     end
 
     vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+
+    local Terminal = require("toggleterm.terminal").Terminal
+
+    local_term = Terminal:new({
+      -- whatever options you want, EXCEPT:
+      -- DO NOT supply `cmd`. We have to modify it and send directly.
+      size = 80,
+      close_on_exit = true,
+    })
   end,
   keys = {
     { "<leader>t", ":ToggleTerm<CR>", desc = "toggle terminal" },
