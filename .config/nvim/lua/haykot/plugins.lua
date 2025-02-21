@@ -45,6 +45,7 @@ require("lazy").setup({
     end,
   },
   {
+    enabled = false,
     "windwp/nvim-autopairs",
     config = function()
       require("nvim-autopairs").setup({
@@ -74,8 +75,6 @@ require("lazy").setup({
     end,
   },
 
-  require("haykot.plugs.nvim-tree"),
-
   -- Which Key (Experimental, may remove)
   {
     "folke/which-key.nvim",
@@ -92,13 +91,11 @@ require("lazy").setup({
 
   require("haykot.plugs.treesitter"),
   require("haykot.plugs.lualine"),
-  require("haykot.plugs.telescope"),
   require("haykot.plugs.mason"),
   require("haykot.plugs.lsp-zero"),
   require("haykot.plugs.trouble"),
   require("haykot.plugs.dev-icons"),
   require("haykot.plugs.comments"),
-  require("haykot.plugs.toggleterm"),
 
   -- UI Elements for Search and cmd
   -- Mostly used for the main command bar, not sure if there's anything else I use in this
@@ -202,6 +199,16 @@ require("lazy").setup({
     priority = 1000,
     lazy = false,
     opts = {
+      terminal = {
+        win = {
+          position = "float",
+          backdrop = false,
+          height = 0.9,
+          width = 0.9,
+          border = "rounded",
+        },
+        auto_close = true,
+      },
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
@@ -215,6 +222,13 @@ require("lazy").setup({
         configure = true,
       },
       picker = {
+        sources = {
+          explorer = {
+            hidden = true,
+            auto_close = true,
+            layout = { preset = "vertical", preview = false },
+          },
+        },
         layout = {
           layout = {
             backdrop = false,
@@ -237,6 +251,32 @@ require("lazy").setup({
     },
     keys = {
       {
+        "<leader>t",
+        function()
+          Snacks.terminal.toggle()
+        end,
+        desc = "resume last picker",
+      },
+      {
+        "<leader>lt",
+        function()
+          -- regular files have empty string for buftype
+          local is_file = vim.api.nvim_buf_get_option(0, "buftype") == ""
+          if is_file then
+            local filename = vim.api.nvim_buf_get_name(0)
+            Snacks.terminal.toggle(vim.fs.dirname(filename))
+          end
+        end,
+        desc = "resume last picker",
+      },
+      {
+        "<leader>ee",
+        function()
+          Snacks.explorer.reveal()
+        end,
+        desc = "toggle snacks explorer",
+      },
+      {
         "<leader>ff",
         function()
           Snacks.picker.files({
@@ -253,7 +293,7 @@ require("lazy").setup({
         function()
           Snacks.picker.resume()
         end,
-        desc = "resumes last telescope window",
+        desc = "resume last picker",
       },
       {
         "<leader>fj",
@@ -360,6 +400,56 @@ require("lazy").setup({
           Snacks.lazygit.log()
         end,
         desc = "Lazygit Log (cwd)",
+      },
+      {
+        "gd",
+        function()
+          Snacks.picker.lsp_definitions()
+        end,
+        desc = "Goto Definition",
+      },
+      {
+        "gD",
+        function()
+          Snacks.picker.lsp_declarations()
+        end,
+        desc = "Goto Declaration",
+      },
+      {
+        "gr",
+        function()
+          Snacks.picker.lsp_references()
+        end,
+        nowait = true,
+        desc = "References",
+      },
+      {
+        "gI",
+        function()
+          Snacks.picker.lsp_implementations()
+        end,
+        desc = "Goto Implementation",
+      },
+      {
+        "gy",
+        function()
+          Snacks.picker.lsp_type_definitions()
+        end,
+        desc = "Goto T[y]pe Definition",
+      },
+      {
+        "<leader>fs",
+        function()
+          Snacks.picker.lsp_symbols()
+        end,
+        desc = "LSP Symbols",
+      },
+      {
+        "<leader>fws",
+        function()
+          Snacks.picker.lsp_workspace_symbols()
+        end,
+        desc = "LSP Workspace Symbols",
       },
     },
   },

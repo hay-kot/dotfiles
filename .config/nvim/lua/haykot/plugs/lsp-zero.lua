@@ -67,10 +67,6 @@ return {
         omit = { "gd" },
       })
 
-      km.nnoremap("gd", function()
-        require("telescope.builtin").lsp_definitions()
-      end, { desc = "Go to definition", buffer = true })
-
       km.nnoremap("le", function()
         vim.diagnostic.goto_next()
       end, { desc = "Go to next diagnostic", buffer = true })
@@ -82,10 +78,6 @@ return {
       km.nnoremap("K", function()
         vim.lsp.buf.hover()
       end, { desc = "Show hover information" })
-
-      km.nnoremap("<leader>lws", function()
-        require("telescope.builtin").lsp_workspace_symbols()
-      end, { desc = "Search for symbols in workspace", buffer = true })
 
       km.nnoremap("<leader>lx", function()
         vim.diagnostic.open_float()
@@ -99,17 +91,9 @@ return {
         vim.diagnostic.goto_prev()
       end, { desc = "Jump to previous diagnostic" })
 
-      km.vnoremap("ca", function()
-        vim.lsp.buf.code_action()
-      end, { desc = "Show code actions" })
-
       km.nnoremap("<leader>lca", function()
         vim.lsp.buf.code_action()
       end, { desc = "Show code actions" })
-
-      km.nnoremap("<leader>fs", function()
-        require("telescope.builtin").lsp_document_symbols()
-      end, { desc = "Show document symbols" })
 
       km.nnoremap("<leader>lr", function()
         vim.lsp.buf.rename()
