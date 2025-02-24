@@ -132,6 +132,8 @@ return {
         ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
       }),
       sources = {
+        -- Copilot Source
+        { name = "copilot", group_index = 2 },
         { name = "nvim_lsp", max_item_count = 100 },
         { name = "luasnip" },
         { name = "buffer" },

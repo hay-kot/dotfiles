@@ -225,6 +225,7 @@ require("lazy").setup({
         sources = {
           explorer = {
             hidden = true,
+            ignored = true,
             auto_close = true,
             layout = { preset = "vertical", preview = false },
           },
@@ -463,5 +464,22 @@ require("lazy").setup({
     "google/vim-jsonnet",
     lazy = true,
     ft = "jsonnet",
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
   },
 })
