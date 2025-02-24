@@ -62,7 +62,7 @@ require("lazy").setup({
       vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       require("auto-session").setup({
-        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble" },
+        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble", "dapui", "dap" },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
         pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose" },
@@ -138,6 +138,8 @@ require("lazy").setup({
         tag_transform = "camelcase",
         lsp_semantic_highlights = false,
         textobjects = false,
+        dap_debug_keymap = true,
+        icons = false -- { breakpoint = "🧘", currentpos = "🏃" }, -- set to false to disable
       })
 
       -- disable sql colorizer
@@ -147,6 +149,15 @@ require("lazy").setup({
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+    keys = {
+      {
+        "<leader>gdb",
+        function()
+            vim.api.nvim_command("silent! GoDebug")
+        end,
+        desc = "Debug: Set Breakpoint",
+      },
+    },
   },
 
   -- Tabs
@@ -481,5 +492,82 @@ require("lazy").setup({
         panel = { enabled = false },
       })
     end,
+  },
+
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      {
+        "rcarriga/nvim-dap-ui", -- UI for dap
+        dependencies = {
+          "nvim-neotest/nvim-nio",
+        },
+        config = function()
+          local dapui = require("dapui")
+          local dap = require("dap")
+
+          dapui.setup({
+            icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
+          })
+
+          -- Change breakpoint icons
+          vim.api.nvim_set_hl(0, "DapBreak", { fg = "#e51400" })
+          vim.api.nvim_set_hl(0, "DapStop", { fg = "#ffcc00" })
+          local breakpoint_icons = vim.g.have_nerd_font
+              and {
+                Breakpoint = "",
+                BreakpointCondition = "",
+                BreakpointRejected = "",
+                LogPoint = "",
+                Stopped = "",
+              }
+            or {
+              Breakpoint = "●",
+              BreakpointCondition = "⊜",
+              BreakpointRejected = "⊘",
+              LogPoint = "◆",
+              Stopped = "⭔",
+            }
+          for type, icon in pairs(breakpoint_icons) do
+            local tp = "Dap" .. type
+            local hl = (type == "Stopped") and "DapStop" or "DapBreak"
+            vim.fn.sign_define(tp, { text = icon, texthl = hl })
+          end
+
+          local onend = function()
+            dapui.close()
+
+            -- Need to terminate the session to drop keybindings set by
+            vim.api.nvim_command("silent! GoDebug -s")
+          end
+
+          dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+          dap.listeners.before.event_terminated["dapui_config"] = onend
+          dap.listeners.before.event_exited["dapui_config"] = onend
+        end,
+      },
+      "theHamsta/nvim-dap-virtual-text", -- Virtual text support
+    },
+    config = function()
+      require("nvim-dap-virtual-text").setup({
+        show_stop_reason = true,
+        commented = false,
+      })
+    end,
+    keys = {
+      {
+        "<leader>pt",
+        function()
+          require("dapui").toggle()
+        end,
+      },
+      {
+        "<leader>B",
+        function()
+          require("dap").toggle_breakpoint()
+        end,
+        desc = "Debug: Set Breakpoint",
+      },
+    },
   },
 })
