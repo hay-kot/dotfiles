@@ -67,11 +67,11 @@ return {
         omit = { "gd" },
       })
 
-      km.nnoremap("le", function()
+      km.nnoremap("<leader>le", function()
         vim.diagnostic.goto_next()
       end, { desc = "Go to next diagnostic", buffer = true })
 
-      km.nnoremap("lE", function()
+      km.nnoremap("<leader>lE", function()
         vim.diagnostic.goto_prev()
       end, { desc = "Go to previous diagnostic", buffer = true })
 
