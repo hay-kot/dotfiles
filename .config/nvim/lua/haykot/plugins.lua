@@ -139,7 +139,7 @@ require("lazy").setup({
         lsp_semantic_highlights = false,
         textobjects = false,
         dap_debug_keymap = true,
-        icons = false -- { breakpoint = "🧘", currentpos = "🏃" }, -- set to false to disable
+        icons = false, -- { breakpoint = "🧘", currentpos = "🏃" }, -- set to false to disable
       })
 
       -- disable sql colorizer
@@ -153,7 +153,7 @@ require("lazy").setup({
       {
         "<leader>gdb",
         function()
-            vim.api.nvim_command("silent! GoDebug")
+          vim.api.nvim_command("silent! GoDebug")
         end,
         desc = "Debug: Set Breakpoint",
       },
