@@ -127,4 +127,5 @@ brew install --cask yubico-yubikey-manager
 brew install --cask zoom
 brew install --cask 1password
 brew install --cask google-cloud-sdk
+brew install --cask goland
 

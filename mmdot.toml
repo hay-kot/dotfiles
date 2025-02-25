@@ -28,6 +28,7 @@ taps = [
 casks = [
   "1password",
   "google-cloud-sdk",
+  "goland",
 ]
 mas = []
 
