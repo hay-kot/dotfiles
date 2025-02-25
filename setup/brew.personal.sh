@@ -58,6 +58,9 @@ brew install ilmbase
 brew install imagemagick
 brew install jesseduffield/lazydocker/lazydocker
 brew install jq
+brew install k9s
+brew install kubernetes-cli
+brew install kustomize
 brew install lazygit
 brew install libexif
 brew install libgit2@1.7

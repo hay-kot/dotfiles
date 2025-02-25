@@ -16,13 +16,18 @@ scripts = [
 outfile = "./setup/brew.grafana.sh"
 includes = ["all"]
 brews = [
-  "grafana/grafana/alloy",
+  "tanka",
+  "jsonnet-bundler",
+  "awscli",
+  "hashicorp/tap/terraform",
 ]
 taps = [
+  "hashicorp/tap",
   "grafana/grafana",
 ]
 casks = [
   "1password",
+  "google-cloud-sdk",
 ]
 mas = []
 
@@ -128,6 +133,9 @@ brews = [
   "imagemagick",
   "jesseduffield/lazydocker/lazydocker",
   "jq",
+  "k9s",
+  "kubernetes-cli",
+  "kustomize",
   "lazygit",
   "libexif",
   "libgit2@1.7",

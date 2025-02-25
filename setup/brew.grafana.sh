@@ -11,6 +11,7 @@ brew tap jdxcode/tap
 brew tap jesseduffield/lazydocker
 brew tap osx-cross/arm
 brew tap osx-cross/avr
+brew tap hashicorp/tap
 brew tap grafana/grafana
 
 # Installing Homebrew Packages
@@ -53,6 +54,9 @@ brew install ilmbase
 brew install imagemagick
 brew install jesseduffield/lazydocker/lazydocker
 brew install jq
+brew install k9s
+brew install kubernetes-cli
+brew install kustomize
 brew install lazygit
 brew install libexif
 brew install libgit2@1.7
@@ -88,7 +92,10 @@ brew install yank
 brew install yq
 brew install zlib
 brew install zsh-autosuggestions
-brew install grafana/grafana/alloy
+brew install tanka
+brew install jsonnet-bundler
+brew install awscli
+brew install hashicorp/tap/terraform
 
 # Installing Homebrew Casks
 brew install --cask bitwarden
@@ -119,4 +126,5 @@ brew install --cask wezterm
 brew install --cask yubico-yubikey-manager
 brew install --cask zoom
 brew install --cask 1password
+brew install --cask google-cloud-sdk
 
