@@ -219,7 +219,6 @@ require("lazy").setup({
           border = "rounded",
         },
         auto_close = true,
-        interactive = true,
       },
       -- your configuration comes here
       -- or leave it empty to use the default settings
