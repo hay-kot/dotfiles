@@ -219,6 +219,7 @@ require("lazy").setup({
           border = "rounded",
         },
         auto_close = true,
+        interactive = true,
       },
       -- your configuration comes here
       -- or leave it empty to use the default settings
@@ -276,7 +277,9 @@ require("lazy").setup({
           local is_file = vim.api.nvim_buf_get_option(0, "buftype") == ""
           if is_file then
             local filename = vim.api.nvim_buf_get_name(0)
-            Snacks.terminal.toggle(vim.fs.dirname(filename))
+            Snacks.terminal.toggle(nil, {
+              cwd = vim.fs.dirname(filename),
+            })
           end
         end,
         desc = "resume last picker",
