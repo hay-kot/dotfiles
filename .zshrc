@@ -1,8 +1,45 @@
 # ============================================================================
-# ZSH Plugin
-plugins=(
-    zsh-autosuggestions
-)
+# Auto Init Plugin Manager
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+zinit light zsh-users/zsh-syntax-highlighting # syntax highlighting
+zinit light zsh-users/zsh-completions         # completions
+zinit light zsh-users/zsh-autosuggestions     # auto-suggest history
+zinit light Aloxaf/fzf-tab                    # fzf tab completion
+
+# End ========================================================================
+
+autoload -U compinit && compinit
+
+zinit cdreplay -q
+
+# up / down arrow history-search
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '→' autosuggest-accept
+
+# For zsh with zsh-autosuggestions
+#
+HISTSIZE=20000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':completion:*:*:make:*' tag-order 'targets'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # Load environment variables from ~/.env.local if the file exists
 if [[ -f "$HOME/.shell.env" ]]; then
@@ -10,10 +47,6 @@ if [[ -f "$HOME/.shell.env" ]]; then
 fi
 
 export PATH=$PATH:$DOTFILES_DIR/bin
-
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
 
 AM_MAC=0
 
@@ -82,16 +115,7 @@ NPM_PACKAGES="${HOME}/.npm"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPS="--extended"
-
-export MARKER_KEY_NEXT_PLACEHOLDER="\C-b"   # change maker key binding from Ctr+t to Ctr+b
-
-[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
-
-export PATH=$PATH:~/.quickzsh/todo/bin    # using alias doesn't properly work
-
-autoload -U compinit && compinit
-SAVEHIST=20000 # save up to 50,000 lines in history. oh-my-zsh default is 10,000
+export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60% "
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
@@ -161,13 +185,13 @@ fh() {
 alias cz="cd \$(fd --type directory | fzf)"
 
 # Magic .env file loading function
-if [ -f ~/.dotfiles/secrets/.env.local ]; then
-    if [[ -s ~/.dotfiles/secrets/.env.local ]]; then
-        export $(cat ~/.dotfiles/secrets/.env.local | xargs)
+if [ -f $DOTFILES_DIR/secrets/.env.local ]; then
+    if [[ -s $DOTFILES_DIR/secrets/.env.local ]]; then
+        export $(cat $DOTFILES_DIR/secrets/.env.local | xargs)
     fi
 else
-    mkdir -p ~/.dotfiles/secrets
-    touch ~/.dotfiles/secrets/.env.local
+    mkdir -p $DOTFILES_DIR/secrets
+    touch $DOTFILES_DIR/secrets/.env.local
 fi
 
 alias rgnb="rg -- "
@@ -187,3 +211,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 export PATH="/opt/homebrew/sbin:$PATH"
+
+
+# Custom Completions
+PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
