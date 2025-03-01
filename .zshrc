@@ -211,7 +211,6 @@ esac
 # pnpm end
 export PATH="/opt/homebrew/sbin:$PATH"
 
-
 # Custom Completions
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
 
