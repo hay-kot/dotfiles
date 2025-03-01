@@ -23,11 +23,12 @@ return {
           info = "Statusline",
           hint = "Statusline",
         },
+
         symbols = {
-          error = "" .. " ",
-          warn = "" .. " ",
-          info = "I",
-          hint = "H",
+          error = "󰅚 " .. " ",
+          warn = "󰀪 " .. " ",
+          info = "󰋽 " .. " ",
+          hint = "󰌶 " .. " ",
         },
         colored = false, -- Displays diagnostics status in color if set to true.
         update_in_insert = false, -- Update diagnostics in insert mode.

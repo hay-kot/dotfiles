@@ -135,4 +135,4 @@ vim.api.nvim_create_user_command("AlignStructTags", function(opts)
 
   -- Replace the lines in the buffer
   vim.api.nvim_buf_set_lines(0, start_line, end_line + 1, false, new_lines)
-end, { range = true, desc = "Align Go struct tags", })
+end, { range = true, desc = "Align Go struct tags" })
