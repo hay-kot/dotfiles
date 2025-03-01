@@ -22,7 +22,6 @@ bindkey '^[[B' history-search-forward
 bindkey '→' autosuggest-accept
 
 # For zsh with zsh-autosuggestions
-#
 HISTSIZE=20000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
@@ -215,3 +214,7 @@ export PATH="/opt/homebrew/sbin:$PATH"
 
 # Custom Completions
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
+
+# Load system local zshconfig if exists
+[[ -f "$HOME/.system.zshrc" ]] && source "$HOME/.system.zshrc"
+
