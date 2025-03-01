@@ -32,6 +32,7 @@
 ##########################
 *.rtx.toml
 *.mise.toml
+mise.toml
 
 # Logs and databases #
 ######################
