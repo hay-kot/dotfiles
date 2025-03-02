@@ -6,7 +6,6 @@ set -e
 set -o pipefail
 # Treat unset variables as an error when substituting
 set -u
-
 # Adding Homebrew Taps
 brew tap homebrew/bundle
 brew tap homebrew/cask
@@ -52,8 +51,10 @@ brew install \
   fx \
   fzf \
   gh \
+  git \
   git-lfs \
   gnupg \
+  go \
   go-task/tap/go-task \
   gofumpt \
   golang-migrate \
@@ -85,6 +86,7 @@ brew install \
   mise \
   mozjpeg \
   neovim \
+  node \
   nss \
   openslide \
   orc \
@@ -120,7 +122,7 @@ brew install \
   stripe/stripe-cli/stripe \
   poetry \
   uv \
-  flint \
+  hay-kot/flint-tap/flint \
   hay-kot/dirwatch-tap/dirwatch
 
 # Installing Homebrew Casks

@@ -47,8 +47,10 @@ brew install \
   fx \
   fzf \
   gh \
+  git \
   git-lfs \
   gnupg \
+  go \
   go-task/tap/go-task \
   gofumpt \
   golang-migrate \
@@ -80,6 +82,7 @@ brew install \
   mise \
   mozjpeg \
   neovim \
+  node \
   nss \
   openslide \
   orc \
