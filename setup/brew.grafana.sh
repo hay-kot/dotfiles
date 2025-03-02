@@ -1,3 +1,11 @@
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+# Exit if any command in a pipeline fails (not just the last one)
+set -o pipefail
+# Treat unset variables as an error when substituting
+set -u
 # Adding Homebrew Taps
 brew tap homebrew/bundle
 brew tap homebrew/cask
@@ -15,117 +23,119 @@ brew tap hashicorp/tap
 brew tap grafana/grafana
 
 # Installing Homebrew Packages
-brew install age
-brew install ansible
-brew install ansible-lint
-brew install apr-util
-brew install atlas
-brew install bash
-brew install bat
-brew install bfg
-brew install btop
-brew install cfitsio
-brew install cmake
-brew install coreutils
-brew install crf++
-brew install ctop
-brew install dagger
-brew install docker
-brew install editorconfig-checker
-brew install eza
-brew install fd
-brew install fftw
-brew install fx
-brew install fzf
-brew install gh
-brew install git-lfs
-brew install gnupg
-brew install go-task/tap/go-task
-brew install gofumpt
-brew install golang-migrate
-brew install golangci-lint
-brew install goose
-brew install goreleaser
-brew install gum
-brew install hay-kot/gotmpl-tap/gotmpl
-brew install hay-kot/scaffold-tap/scaffold
-brew install hyperfine
-brew install ilmbase
-brew install imagemagick
-brew install jesseduffield/lazydocker/lazydocker
-brew install jq
-brew install k9s
-brew install kubernetes-cli
-brew install kustomize
-brew install lazygit
-brew install libexif
-brew install libgit2@1.7
-brew install libgsf
-brew install libimagequant
-brew install libmatio
-brew install libproxy
-brew install libspng
-brew install mage
-brew install mas
-brew install mingw-w64
-brew install mise
-brew install mozjpeg
-brew install neovim
-brew install nss
-brew install openslide
-brew install orc
-brew install pinentry-mac
-brew install pnpm
-brew install pre-commit
-brew install ripgrep
-brew install sqlc
-brew install sqlfmt
-brew install starship
-brew install stow
-brew install stylua
-brew install tmux
-brew install ttyd
-brew install typos-cli
-brew install wget
-brew install wireguard-go
-brew install yank
-brew install yq
-brew install zlib
-brew install zsh-autosuggestions
-brew install tanka
-brew install jsonnet-bundler
-brew install awscli
-brew install hashicorp/tap/terraform
+brew install \
+  age \
+  ansible \
+  ansible-lint \
+  apr-util \
+  atlas \
+  bash \
+  bat \
+  bfg \
+  btop \
+  cfitsio \
+  cmake \
+  coreutils \
+  crf++ \
+  ctop \
+  dagger \
+  docker \
+  editorconfig-checker \
+  eza \
+  fd \
+  fftw \
+  fx \
+  fzf \
+  gh \
+  git-lfs \
+  gnupg \
+  go-task/tap/go-task \
+  gofumpt \
+  golang-migrate \
+  golangci-lint \
+  goose \
+  goreleaser \
+  gum \
+  hay-kot/gotmpl-tap/gotmpl \
+  hay-kot/scaffold-tap/scaffold \
+  hyperfine \
+  ilmbase \
+  imagemagick \
+  jesseduffield/lazydocker/lazydocker \
+  jq \
+  k9s \
+  kubernetes-cli \
+  kustomize \
+  lazygit \
+  libexif \
+  libgit2@1.7 \
+  libgsf \
+  libimagequant \
+  libmatio \
+  libproxy \
+  libspng \
+  mage \
+  mas \
+  mingw-w64 \
+  mise \
+  mozjpeg \
+  neovim \
+  nss \
+  openslide \
+  orc \
+  pinentry-mac \
+  pnpm \
+  pre-commit \
+  ripgrep \
+  sqlc \
+  sqlfmt \
+  starship \
+  stow \
+  stylua \
+  tmux \
+  ttyd \
+  typos-cli \
+  wget \
+  wireguard-go \
+  yank \
+  yq \
+  zlib \
+  zsh-autosuggestions \
+  tanka \
+  jsonnet-bundler \
+  awscli \
+  hashicorp/tap/terraform
 
 # Installing Homebrew Casks
-brew install --cask bitwarden
-brew install --cask brave-browser
-brew install --cask chromedriver
-brew install --cask docker
-brew install --cask firefox
-brew install --cask font-fira-code
-brew install --cask font-fira-code-nerd-font
-brew install --cask font-hack-nerd-font
-brew install --cask font-jetbrains-mono-nerd-font
-brew install --cask google-chrome
-brew install --cask google-cloud-sdk
-brew install --cask gpg-suite-no-mail
-brew install --cask insomnia
-brew install --cask jordanbaird-ice
-brew install --cask keyboard-cleaner
-brew install --cask obsidian
-brew install --cask raycast
-brew install --cask rectangle-pro
-brew install --cask signal
-brew install --cask slack
-brew install --cask sublime-text
-brew install --cask tableplus
-brew install --cask visual-studio-code
-brew install --cask vlc
-brew install --cask wezterm
-brew install --cask yubico-yubikey-manager
-brew install --cask zoom
-brew install --cask 1password
-brew install --cask google-cloud-sdk
-brew install --cask goland
+brew install --cask \
+  bitwarden \
+  brave-browser \
+  chromedriver \
+  docker \
+  firefox \
+  font-fira-code \
+  font-fira-code-nerd-font \
+  font-hack-nerd-font \
+  font-jetbrains-mono-nerd-font \
+  google-chrome \
+  google-cloud-sdk \
+  gpg-suite-no-mail \
+  insomnia \
+  jordanbaird-ice \
+  keyboard-cleaner \
+  obsidian \
+  raycast \
+  rectangle-pro \
+  signal \
+  slack \
+  sublime-text \
+  tableplus \
+  visual-studio-code \
+  vlc \
+  wezterm \
+  yubico-yubikey-manager \
+  zoom \
+  1password \
+  google-cloud-sdk \
+  goland
 
