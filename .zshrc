@@ -215,5 +215,5 @@ export PATH="/opt/homebrew/sbin:$PATH"
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
 
 # Load system local zshconfig if exists
-[[ -f "$HOME/.system.zshrc" ]] && source "$HOME/.system.zshrc"
+[[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
 
