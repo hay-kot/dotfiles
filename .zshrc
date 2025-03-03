@@ -199,6 +199,7 @@ alias rgnb="rg -- "
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
 alias gbc="git branch | cut -c 3- | fzf | xargs git checkout"
+alias k="kubectl"
 
 eval "$(starship init zsh)"
 
@@ -216,4 +217,3 @@ PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
 
 # Load system local zshconfig if exists
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
-
