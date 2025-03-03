@@ -16,10 +16,13 @@ scripts = [
 outfile = "./setup/brew.grafana.sh"
 includes = ["all"]
 brews = [
-  "tanka",
-  "jsonnet-bundler",
   "awscli",
   "hashicorp/tap/terraform",
+  "jsonnet",
+  "jsonnet-bundler",
+  "shellcheck",
+  "tanka",
+  "helm",
 ]
 taps = [
   "hashicorp/tap",
@@ -29,6 +32,7 @@ casks = [
   "1password",
   "google-cloud-sdk",
   "goland",
+  "tuple",
 ]
 mas = []
 
@@ -48,42 +52,39 @@ brews = [
   "bitwarden-cli",
   "caddy",
   "flyctl",
-  "ipython",
   "mailpit",
   "rustup",
   "vhs",
   "hugo",
-  "gping",
 
   "tinygo-org/tools/tinygo",
   "stripe/stripe-cli/stripe",
 
   # python
   "poetry",
-  "uv",
 
   # personal programs
   "hay-kot/flint-tap/flint",
   "hay-kot/dirwatch-tap/dirwatch",
 ]
 casks = [
-  "orbstack",
-  "private-internet-access",
+  "balenaetcher",
+  "discord",
+  "home-assistant",
   "microsoft-auto-update",
   "microsoft-office",
-  "steam",
+  "orbstack",
+  "private-internet-access",
+  "signal",
   "spotify",
+  "steam",
   "transmit",
-  "home-assistant",
-  "discord",
-  "balenaetcher",
+  "yubico-yubikey-manager",
 ]
 
 [brew.all]
 taps = [
   "homebrew/bundle",
-  "homebrew/cask",
-  "homebrew/core",
   "homebrew/services",
   "dagger/tap",
   "go-task/tap",
@@ -128,12 +129,13 @@ brews = [
   "golangci-lint",
   "goose",
   "goreleaser",
+  "gping",
   "gum",
   "hay-kot/gotmpl-tap/gotmpl",
   "hay-kot/scaffold-tap/scaffold",
   "hyperfine",
-  "ilmbase",
   "imagemagick",
+  "ipython",
   "jesseduffield/lazydocker/lazydocker",
   "jq",
   "k9s",
@@ -169,6 +171,7 @@ brews = [
   "tmux",
   "ttyd",
   "typos-cli",
+  "uv",
   "wget",
   "wireguard-go",
   "yank",
@@ -181,6 +184,7 @@ casks = [
   "brave-browser",
   "chromedriver",
   "docker",
+  "cleanshot",
   "firefox",
   "font-fira-code",
   "font-fira-code-nerd-font",
@@ -195,13 +199,11 @@ casks = [
   "obsidian",
   "raycast",
   "rectangle-pro",
-  "signal",
   "slack",
   "sublime-text",
   "tableplus",
   "visual-studio-code",
   "vlc",
   "wezterm",
-  "yubico-yubikey-manager",
   "zoom",
 ]

@@ -8,8 +8,6 @@ set -o pipefail
 set -u
 # Adding Homebrew Taps
 brew tap homebrew/bundle
-brew tap homebrew/cask
-brew tap homebrew/core
 brew tap homebrew/services
 brew tap dagger/tap
 brew tap go-task/tap
@@ -57,12 +55,13 @@ brew install \
   golangci-lint \
   goose \
   goreleaser \
+  gping \
   gum \
   hay-kot/gotmpl-tap/gotmpl \
   hay-kot/scaffold-tap/scaffold \
   hyperfine \
-  ilmbase \
   imagemagick \
+  ipython \
   jesseduffield/lazydocker/lazydocker \
   jq \
   k9s \
@@ -98,16 +97,20 @@ brew install \
   tmux \
   ttyd \
   typos-cli \
+  uv \
   wget \
   wireguard-go \
   yank \
   yq \
   zlib \
   zsh-autosuggestions \
-  tanka \
-  jsonnet-bundler \
   awscli \
-  hashicorp/tap/terraform
+  hashicorp/tap/terraform \
+  jsonnet \
+  jsonnet-bundler \
+  shellcheck \
+  tanka \
+  helm
 
 # Installing Homebrew Casks
 brew install --cask \
@@ -115,6 +118,7 @@ brew install --cask \
   brave-browser \
   chromedriver \
   docker \
+  cleanshot \
   firefox \
   font-fira-code \
   font-fira-code-nerd-font \
@@ -129,16 +133,15 @@ brew install --cask \
   obsidian \
   raycast \
   rectangle-pro \
-  signal \
   slack \
   sublime-text \
   tableplus \
   visual-studio-code \
   vlc \
   wezterm \
-  yubico-yubikey-manager \
   zoom \
   1password \
   google-cloud-sdk \
-  goland
+  goland \
+  tuple
 

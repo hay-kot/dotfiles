@@ -8,8 +8,6 @@ set -o pipefail
 set -u
 # Adding Homebrew Taps
 brew tap homebrew/bundle
-brew tap homebrew/cask
-brew tap homebrew/core
 brew tap homebrew/services
 brew tap dagger/tap
 brew tap go-task/tap
@@ -61,12 +59,13 @@ brew install \
   golangci-lint \
   goose \
   goreleaser \
+  gping \
   gum \
   hay-kot/gotmpl-tap/gotmpl \
   hay-kot/scaffold-tap/scaffold \
   hyperfine \
-  ilmbase \
   imagemagick \
+  ipython \
   jesseduffield/lazydocker/lazydocker \
   jq \
   k9s \
@@ -102,6 +101,7 @@ brew install \
   tmux \
   ttyd \
   typos-cli \
+  uv \
   wget \
   wireguard-go \
   yank \
@@ -112,16 +112,13 @@ brew install \
   bitwarden-cli \
   caddy \
   flyctl \
-  ipython \
   mailpit \
   rustup \
   vhs \
   hugo \
-  gping \
   tinygo-org/tools/tinygo \
   stripe/stripe-cli/stripe \
   poetry \
-  uv \
   hay-kot/flint-tap/flint \
   hay-kot/dirwatch-tap/dirwatch
 
@@ -131,6 +128,7 @@ brew install --cask \
   brave-browser \
   chromedriver \
   docker \
+  cleanshot \
   firefox \
   font-fira-code \
   font-fira-code-nerd-font \
@@ -145,23 +143,23 @@ brew install --cask \
   obsidian \
   raycast \
   rectangle-pro \
-  signal \
   slack \
   sublime-text \
   tableplus \
   visual-studio-code \
   vlc \
   wezterm \
-  yubico-yubikey-manager \
   zoom \
-  orbstack \
-  private-internet-access \
+  balenaetcher \
+  discord \
+  home-assistant \
   microsoft-auto-update \
   microsoft-office \
-  steam \
+  orbstack \
+  private-internet-access \
+  signal \
   spotify \
+  steam \
   transmit \
-  home-assistant \
-  discord \
-  balenaetcher
+  yubico-yubikey-manager
 
