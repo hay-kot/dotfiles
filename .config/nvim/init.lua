@@ -10,4 +10,5 @@ if infra_server == "true" then
 end
 
 require("haykot.plugins")
+require("haykot.project-setup").setup()
 require("haykot.bufferline")
