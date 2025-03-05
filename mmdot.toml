@@ -1,16 +1,34 @@
 [exec]
 shell = "/bin/bash"
+
+[bundles.dev]
 scripts = [
-  { path = "./setup/mac.dock.sh", tags = ["mac", "setup"] },
-  { path = "./setup/mac.preferences.sh", tags = ["mac", "setup"] },
   { path = "./setup/git.sh", tags = ["git"] },
   { path = "./setup/dirs.sh", tags = ["dirs"] },
   { path = "./setup/node.sh", tags = ["node"] },
+]
+
+[bundles.mac]
+scripts = [
+  { path = "./setup/mac.dock.sh", tags = ["mac", "setup"] },
+  { path = "./setup/mac.preferences.sh", tags = ["mac", "setup"] },
+]
+
+[bundles.grafana]
+scripts = [
   { path = "./setup/brew.grafana.sh", tags = ["brew", "grafana"] },
-  { path = "./setup/brew.personal.sh", tags = ["brew", "personal"] },
   { path = "./setup/env.grafana.sh", tags = ["grafana", "env"] },
+]
+
+[bundles.personal]
+scripts = [
+  { path = "./setup/brew.personal.sh", tags = ["brew", "personal"] },
   { path = "./setup/env.personal.sh", tags = ["personal", "env"] },
 ]
+
+[actions]
+personal = { bundles = ["mac", "dev", "personal"] }
+grafana = { bundles = ["mac", "dev", "grafana"] }
 
 [brew.grafana]
 outfile = "./setup/brew.grafana.sh"
