@@ -23,11 +23,18 @@ return {
       "./frontend/.prettierrc.json",
     }
 
+    local feature = require("haykot.lib.features")
+
+    -- Only use gofumpt on personal laptop - work uses
+    -- standard gofmt.
+    local goformatter = null_ls.builtins.formatting.gofmt
+    if feature.enabled("gofumpt", false) then
+      goformatter = null_ls.builtins.formatting.gofumpt
+    end
+
     null_ls.setup({
       debug = false,
       sources = {
-        null_ls.builtins.formatting.black,
-
         -- JavaScript
         null_ls.builtins.formatting.prettier.with({
           condition = function(null_utils)
@@ -48,7 +55,7 @@ return {
         null_ls.builtins.formatting.stylua,
 
         -- Go
-        null_ls.builtins.formatting.gofumpt,
+        goformatter,
         null_ls.builtins.formatting.goimports,
 
         -- Sql Formatter
