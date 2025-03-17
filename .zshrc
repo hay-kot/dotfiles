@@ -45,6 +45,11 @@ if [[ -f "$HOME/.shell.env" ]]; then
     export $(grep -v '^#' "$HOME/.shell.env" | xargs)
 fi
 
+# Set $DOTFILES_DIR to ~/.dotfiles if not already set
+if [[ -z "$DOTFILES_DIR" ]]; then
+    export DOTFILES_DIR="$HOME/.dotfiles"
+fi
+
 export PATH=$PATH:$DOTFILES_DIR/bin
 
 AM_MAC=0
