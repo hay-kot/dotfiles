@@ -1,7 +1,11 @@
 {
   "If err != nil": {
     "prefix": "if-err",
-    "body": ["if err != nil {", "  ${1:return err}", "}"],
+    "body": [
+      "if err != nil {",
+      "  ${1:return err}",
+      "}"
+    ],
     "description": "Go if statement for error handling"
   },
   "Controller Function": {
@@ -15,38 +19,66 @@
   },
   "Require No Error": {
     "prefix": "rne",
-    "body": ["require.NoError(t, err)"],
+    "body": [
+      "require.NoError(t, err)"
+    ],
     "description": "Testify shorthand for require no error"
   },
   "defer close w/ Error": {
     "prefix": "deferCloseErr",
-    "body": ["defer func() { _ = ${1:close()} }()"],
+    "body": [
+      "defer func() { _ = ${1:close()} }()"
+    ],
     "description": "Go close statement for error handling"
   },
   "ctx context.Context": {
     "prefix": "ctx",
-    "body": ["ctx context.Context"],
+    "body": [
+      "ctx context.Context"
+    ],
     "description": "Go context.Context variable declaration"
   },
   "For Range": {
     "prefix": "for",
-    "body": ["for _, ${1:v} := range ${2:values} {", "  $0", "}"]
+    "body": [
+      "for _, ${1:v} := range ${2:values} {",
+      "  $0",
+      "}"
+    ]
   },
   "For Loop": {
     "prefix": "fori",
-    "body": ["for i := range ${1:values} {", "  $0", "}"]
+    "body": [
+      "for i := range ${1:values} {",
+      "  $0",
+      "}"
+    ]
   },
   "Goroutine anonymous func": {
     "prefix": "gofunc",
-    "body": ["go func(){", "  $0", "}()"]
+    "body": [
+      "go func(){",
+      "  $0",
+      "}()"
+    ]
   },
   "Switch": {
     "prefix": "switch",
-    "body": ["switch ${1:var} {", "case ${2:condition}:", "  $0", "}"]
+    "body": [
+      "switch ${1:var} {",
+      "case ${2:condition}:",
+      "  $0",
+      "}"
+    ]
   },
   "Naked Switch": {
     "prefix": "switch-naked",
-    "body": ["switch {", "case ${1:condition}:", "  $0", "}"]
+    "body": [
+      "switch {",
+      "case ${1:condition}:",
+      "  $0",
+      "}"
+    ]
   },
   "Go Main with Error Handling": {
     "prefix": "mainerr",
@@ -123,5 +155,10 @@
       "}"
     ],
     "description": "Template for Go table-driven tests."
+  },
+  "HTTP handler parameters": {
+    "prefix": "httpargs",
+    "body": "w http.ResponseWriter, r *http.Request",
+    "description": "Insert standard HTTP handler function parameters"
   }
 }
