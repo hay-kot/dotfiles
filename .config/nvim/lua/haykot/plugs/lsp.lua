@@ -30,7 +30,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
 
     -- Useful status updates for LSP.
-    { "j-hui/fidget.nvim", opts = {} },
+    { "j-hui/fidget.nvim",   opts = {} },
 
     -- Autocompletion - lsp
     { "hrsh7th/cmp-nvim-lsp" },
@@ -120,19 +120,6 @@ return {
       },
     })
 
-    -- I don't know why this is also necessary :(
-    -- See: https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#change-diagnostic-symbols-in-the-sign-column-gutter
-    local signs = {
-      { name = "DiagnosticSignError", text = "󰅚 " },
-      { name = "DiagnosticSignWarn", text = "󰀪 " },
-      { name = "DiagnosticSignInfo", text = "󰋽 " },
-      { name = "DiagnosticSignHint", text = "󰌶 " },
-    }
-
-    for _, sign in ipairs(signs) do
-      vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-    end
-
     -- LSP servers and clients are able to communicate to each other what features they support.
     --  By default, Neovim doesn't support everything that is in the LSP specification.
     --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -221,8 +208,8 @@ return {
       -- --------------------------------------------------------
       ts_ls = function()
         local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path()
-          .. "/node_modules/@vue/language-server"
-          .. "/node_modules/@vue/typescript-plugin"
+            .. "/node_modules/@vue/language-server"
+            .. "/node_modules/@vue/typescript-plugin"
 
         return {
           init_options = {
@@ -275,6 +262,44 @@ return {
           client.server_capabilities.documentFormattingProvider = false
           client.server_capabilities.documentRangeFormattingProvider = false
         end,
+      },
+
+      -- Patch init options to support v1 & v2
+      golangci_lint_ls = {
+        init_options = (function()
+          local pipe = io.popen("golangci-lint version --short 2>/dev/null")
+          if pipe == nil then
+            return {}
+          end
+
+          local version = pipe:read("*a")
+          pipe:close()
+
+          local major_version = tonumber(version:match("^v?(%d+)%."))
+          if major_version and major_version >= 2 then
+            return {
+              command = {
+                "golangci-lint",
+                "run",
+                "--output.json.path",
+                "stdout",
+                "--show-stats=false",
+                "--issues-exit-code=1",
+              },
+            }
+          else
+            -- Default v1 config - NOTE: major_version is nil for v1 since --short is an invalid flag
+            return {
+              command = {
+                "golangci-lint",
+                "run",
+                "--output-format=json",
+                "--issues-exit-code=1",
+              },
+            }
+          end
+          return {}
+        end)(),
       },
     }
 
