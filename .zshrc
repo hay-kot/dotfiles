@@ -203,8 +203,16 @@ alias rgnb="rg -- "
 # Gum Aliases
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
-alias gbc="git branch | cut -c 3- | fzf | xargs git checkout"
 alias k="kubectl"
+gbc() {
+    if [ $# -eq 0 ]; then
+        # No arguments provided, do the fuzzy branch selection
+        git branch | cut -c 3- | fzf | xargs git checkout
+    else
+        # Arguments provided, create and checkout the new branch
+        git checkout -b "$@"
+    fi
+}
 
 eval "$(starship init zsh)"
 
