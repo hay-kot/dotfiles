@@ -82,6 +82,16 @@ mac_config() {
     edf() {
         nvim --cmd "cd $DOTFILES_DIR"
     }
+
+    # pnpm
+    export PNPM_HOME="/Users/hayden/Library/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+    # pnpm end
+    export PATH="/opt/homebrew/sbin:$PATH"
+
     # Activate mise
     eval "$(/opt/homebrew/bin/mise activate zsh)"
     # rtx was renamed to mise so this is a temporary alias
@@ -215,15 +225,6 @@ gbc() {
 }
 
 eval "$(starship init zsh)"
-
-# pnpm
-export PNPM_HOME="/Users/hayden/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-export PATH="/opt/homebrew/sbin:$PATH"
 
 # Custom Completions
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
