@@ -37,6 +37,7 @@ return {
       sources = {
         -- JavaScript
         null_ls.builtins.formatting.prettier.with({
+          extra_filetypes = { "json5" }, -- Add JSON5 to the default filetypes
           condition = function(null_utils)
             local has_eslint = null_utils.has_file(eslint_configs)
             local has_prettier = null_utils.has_file(prettier_configs)
