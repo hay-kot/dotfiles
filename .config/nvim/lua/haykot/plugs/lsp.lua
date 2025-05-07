@@ -30,7 +30,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
 
     -- Useful status updates for LSP.
-    { "j-hui/fidget.nvim",   opts = {} },
+    { "j-hui/fidget.nvim", opts = {} },
 
     -- Autocompletion - lsp
     { "hrsh7th/cmp-nvim-lsp" },
@@ -208,8 +208,8 @@ return {
       -- --------------------------------------------------------
       ts_ls = function()
         local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path()
-            .. "/node_modules/@vue/language-server"
-            .. "/node_modules/@vue/typescript-plugin"
+          .. "/node_modules/@vue/language-server"
+          .. "/node_modules/@vue/typescript-plugin"
 
         return {
           init_options = {
@@ -298,8 +298,38 @@ return {
               },
             }
           end
-          return {}
         end)(),
+      },
+
+      harper_ls = {
+        settings = {
+          ["harper-ls"] = {
+            userDictPath = "~/.config/nvim/lua/haykot/plugs/dict/dict.txt",
+            fileDictPath = "",
+            linters = {
+              SpellCheck = true,
+              SpelledNumbers = false,
+              AnA = true,
+              SentenceCapitalization = true,
+              UnclosedQuotes = true,
+              WrongQuotes = false,
+              LongSentences = false,
+              RepeatedWords = true,
+              Spaces = true,
+              Matcher = true,
+              CorrectNumberSuffix = false,
+            },
+            codeActions = {
+              ForceStable = false,
+            },
+            markdown = {
+              IgnoreLinkTitle = false,
+            },
+            diagnosticSeverity = "hint",
+            isolateEnglish = false,
+            dialect = "American",
+          },
+        },
       },
     }
 
