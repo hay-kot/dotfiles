@@ -2,8 +2,15 @@ JAEGER
 NaN
 Recipinned
 etc
+godoc
+gofmt
+gofumpt
+json
+json5
 nolint
+recipinned
 unmarshal
+v1
 webhook
 webhooks
 zerologlint
