@@ -30,7 +30,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
 
     -- Useful status updates for LSP.
-    { "j-hui/fidget.nvim", opts = {} },
+    { "j-hui/fidget.nvim",   opts = {} },
 
     -- Autocompletion - lsp
     { "hrsh7th/cmp-nvim-lsp" },
@@ -95,7 +95,7 @@ return {
     -- See :help vim.diagnostic.Opts
     vim.diagnostic.config({
       severity_sort = true,
-      float = { border = "rounded", source = "if_many" },
+      float = { border = "rounded", source = false },
       underline = { severity = vim.diagnostic.severity.ERROR },
       signs = {
         text = {
@@ -106,7 +106,7 @@ return {
         },
       },
       virtual_text = {
-        source = "if_many",
+        source = false,
         spacing = 2,
         format = function(diagnostic)
           local diagnostic_message = {
@@ -208,8 +208,8 @@ return {
       -- --------------------------------------------------------
       ts_ls = function()
         local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path()
-          .. "/node_modules/@vue/language-server"
-          .. "/node_modules/@vue/typescript-plugin"
+            .. "/node_modules/@vue/language-server"
+            .. "/node_modules/@vue/typescript-plugin"
 
         return {
           init_options = {
@@ -232,7 +232,7 @@ return {
           },
         }
       end,
-      volar = {
+      vue_ls = {
         on_attach = function(client, bufnr)
           client.server_capabilities.documentFormattingProvider = false
           client.server_capabilities.documentRangeFormattingProvider = false
