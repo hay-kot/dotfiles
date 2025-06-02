@@ -146,10 +146,11 @@ return {
             packageManager = "pnpm",
           },
           on_attach = function(_, bufnr)
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              buffer = bufnr,
-              command = "EslintFixAll",
-            })
+            -- To slow now need to look into this
+            --[[ vim.api.nvim_create_autocmd("BufWritePre", { ]]
+            --[[   buffer = bufnr, ]]
+            --[[   command = "EslintFixAll", ]]
+            --[[ }) ]]
           end,
         },
         html = {
