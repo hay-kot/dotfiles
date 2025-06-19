@@ -1,5 +1,14 @@
 [tools]
+# Go Tools
+"go:github.com/abice/go-enum" = "latest"
+
+# Personal Go Tools
+"go:github.com/hay-kot/mmdot" = "HEAD"
+"go:github.com/hay-kot/gofind" = "HEAD"
+
+# Environments
 node = "22"
 
 [settings]
 experimental = true
+idiomatic_version_file_enable_tools = ["python"]
