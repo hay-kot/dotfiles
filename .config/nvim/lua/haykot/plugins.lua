@@ -28,8 +28,8 @@ require("lazy").setup({
       vim.g.gruvbox_material_background = "hard"
       vim.cmd.colorscheme("gruvbox-material")
 
-      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "bg", fg = "#d8db92" })
-      vim.api.nvim_set_hl(0, "FloatBorder", { bg = "bg", fg = "#d8db92" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#2A3132", fg = "#d8db92" })
+      vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#2A3132", fg = "#d8db92" })
     end,
   },
   {
@@ -115,11 +115,11 @@ require("lazy").setup({
         },
         -- you can enable a preset for easier configuration
         presets = {
-          bottom_search = false, -- use a classic bottom cmdline for search
-          command_palette = true, -- position the cmdline and popupmenu together
+          bottom_search = false,        -- use a classic bottom cmdline for search
+          command_palette = true,       -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false,       -- add a border to hover docs and signature help
         },
       })
     end,
@@ -258,13 +258,13 @@ require("lazy").setup({
                 LogPoint = "",
                 Stopped = "",
               }
-            or {
-              Breakpoint = "●",
-              BreakpointCondition = "⊜",
-              BreakpointRejected = "⊘",
-              LogPoint = "◆",
-              Stopped = "⭔",
-            }
+              or {
+                Breakpoint = "●",
+                BreakpointCondition = "⊜",
+                BreakpointRejected = "⊘",
+                LogPoint = "◆",
+                Stopped = "⭔",
+              }
           for type, icon in pairs(breakpoint_icons) do
             local tp = "Dap" .. type
             local hl = (type == "Stopped") and "DapStop" or "DapBreak"
