@@ -20,16 +20,26 @@ require("lazy").setup({
   -- Base Plugins
   "nvim-lua/plenary.nvim", -- Useful lua functions used by lots of plugins
   {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+
+    config = function()
+      vim.cmd([[colorscheme tokyonight-night]])
+    end,
+  },
+  {
     "sainnhe/gruvbox-material",
     enabled = true,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
       vim.g.gruvbox_material_background = "hard"
-      vim.cmd.colorscheme("gruvbox-material")
 
       vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#2A3132", fg = "#d8db92" })
       vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#2A3132", fg = "#d8db92" })
+      -- vim.cmd.colorscheme("gruvbox-material")
     end,
   },
   {
