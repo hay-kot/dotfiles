@@ -34,11 +34,11 @@ require("lazy").setup({
     enabled = true,
     priority = 1000,
     config = function()
-      vim.o.background = "dark"
-      vim.g.gruvbox_material_background = "hard"
+      -- vim.o.background = "dark"
+      -- vim.g.gruvbox_material_background = "hard"
 
-      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#2A3132", fg = "#d8db92" })
-      vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#2A3132", fg = "#d8db92" })
+      -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#2A3132", fg = "#d8db92" })
+      -- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#2A3132", fg = "#d8db92" })
       -- vim.cmd.colorscheme("gruvbox-material")
     end,
   },

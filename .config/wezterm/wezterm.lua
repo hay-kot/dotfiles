@@ -1,125 +1,211 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
-local colors = {
-	-- Red
-	red = "#FB4934",
-	tab_bg_inactive = "#1C1C1C",
-	tab_bg_active = "#202325",
-}
+-- Theme toggle: set to true for Tokyo Night, false for Gruvbox
+local USE_TOKYO_NIGHT = true
+
+-- Tokyo Night color scheme
+local function get_tokyonight_colors()
+  return {
+    -- Main colors
+    foreground = "#c0caf5",
+    background = "#1a1b26",
+    cursor_bg = "#c0caf5",
+    cursor_border = "#c0caf5",
+    cursor_fg = "#1a1b26",
+    selection_bg = "#283457",
+    selection_fg = "#c0caf5",
+    split = "#7aa2f7",
+    compose_cursor = "#ff9e64",
+    scrollbar_thumb = "#292e42",
+
+    -- ANSI colors
+    ansi = {
+      "#15161e", -- black
+      "#f7768e", -- red
+      "#9ece6a", -- green
+      "#e0af68", -- yellow
+      "#7aa2f7", -- blue
+      "#bb9af7", -- magenta
+      "#7dcfff", -- cyan
+      "#a9b1d6", -- white
+    },
+    brights = {
+      "#414868", -- bright black
+      "#f7768e", -- bright red
+      "#9ece6a", -- bright green
+      "#e0af68", -- bright yellow
+      "#7aa2f7", -- bright blue
+      "#bb9af7", -- bright magenta
+      "#7dcfff", -- bright cyan
+      "#c0caf5", -- bright white
+    },
+
+    -- Tab bar colors
+    tab_bar = {
+      background = "#1a1b26",
+      inactive_tab_edge = "#16161e",
+      active_tab = {
+        bg_color = "#7aa2f7",
+        fg_color = "#16161e",
+      },
+      inactive_tab = {
+        bg_color = "#292e42",
+        fg_color = "#545c7e",
+      },
+      inactive_tab_hover = {
+        bg_color = "#292e42",
+        fg_color = "#7aa2f7",
+      },
+      new_tab = {
+        bg_color = "#1a1b26",
+        fg_color = "#7aa2f7",
+      },
+      new_tab_hover = {
+        bg_color = "#1a1b26",
+        fg_color = "#7aa2f7",
+        intensity = "Bold",
+      },
+    },
+  }
+end
+
+-- Get tab colors based on theme
+local function get_tab_colors()
+  if USE_TOKYO_NIGHT then
+    return {
+      red = "#f7768e",
+      tab_bg_inactive = "#292e42",
+      tab_bg_active = "#7aa2f7",
+    }
+  else
+    -- Gruvbox colors
+    return {
+      red = "#FB4934",
+      tab_bg_inactive = "#1C1C1C",
+      tab_bg_active = "#202325",
+    }
+  end
+end
+
+local colors = get_tab_colors()
 
 -- Equivalent to POSIX basename(3)
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
 local function basename(s)
-	return string.gsub(s, "(.*[/\\])(.*)", "%2")
+  return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
-local ADMIN_ICON = utf8.char(0xf49c)
+local SOLID_LEFT_ARROW = utf8.char(0xe0ba)
+local SOLID_LEFT_MOST = utf8.char(0x2588)
+local SOLID_RIGHT_ARROW = utf8.char(0xe0bc)
 
-local CMD_ICON = utf8.char(0xe62a)
 local PS_ICON = utf8.char(0xe70f)
-local WSL_ICON = utf8.char(0xf83c)
 
-local VIM_ICON = utf8.char(0xe62b)
-local PAGER_ICON = utf8.char(0xf718)
-local FUZZY_ICON = utf8.char(0xf0b0)
+local NVIM_ICON = utf8.char(0xe7c5) -- Neovim
 local HOURGLASS_ICON = utf8.char(0xf252)
 
-local PYTHON_ICON = utf8.char(0xf820)
-local NODE_ICON = utf8.char(0xe74e)
-local DENO_ICON = utf8.char(0xe628)
 local SHELL_ICON = utf8.char(0xe795)
+local TASK_RUNNING_ICON = utf8.char(0xf085)
 
 local SUB_IDX = {
-	"₁",
-	"₂",
-	"₃",
-	"₄",
-	"₅",
-	"₆",
-	"₇",
-	"₈",
-	"₉",
-	"₁₀",
-	"₁₁",
-	"₁₂",
-	"₁₃",
-	"₁₄",
-	"₁₅",
-	"₁₆",
-	"₁₇",
-	"₁₈",
-	"₁₉",
-	"₂₀",
+  "₁",
+  "₂",
+  "₃",
+  "₄",
+  "₅",
+  "₆",
+  "₇",
+  "₈",
+  "₉",
+  "₁₀",
+  "₁₁",
+  "₁₂",
+  "₁₃",
+  "₁₄",
+  "₁₅",
+  "₁₆",
+  "₁₇",
+  "₁₈",
+  "₁₉",
+  "₂₀",
 }
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local edge_background = colors.tab_bg_active
-	local background = colors.tab_bg_active
-	local foreground = "#A89984"
-	local dim_foreground = "#FABD2F"
+  local edge_background = colors.tab_bg_active
+  local background = colors.tab_bg_inactive
+  local foreground, dim_foreground
 
-	if tab.is_active then
-		background = colors.tab_bg_active
-		foreground = "#859A99"
-	elseif hover then
-		-- maybe set hover styles
-	end
+  if USE_TOKYO_NIGHT then
+    local tokyo = get_tokyonight_colors()
+    foreground = tokyo.ansi[8]
+    dim_foreground = tokyo.split
+    edge_background = tokyo.background
+  else
+    foreground = "#A89984"   -- Gruvbox foreground
+    dim_foreground = "#FABD2F" -- Gruvbox yellow
+  end
 
-	local edge_foreground = background
-	local process_name = tab.active_pane.foreground_process_name
-	local pane_title = tab.active_pane.title
-	local assigned_title = tab.tab_title
-	local exec_name = basename(process_name):gsub("%.exe$", "")
-	local title_with_icon
+  if tab.is_active then
+    background = colors.tab_bg_active
+    if USE_TOKYO_NIGHT then
+      foreground = "#16161e" -- Dark foreground for active tab (Tokyo Night)
+    else
+      foreground = "#859A99" -- Gruvbox active tab foreground
+    end
+  elseif hover then
+    if USE_TOKYO_NIGHT then
+      foreground = "#7aa2f7" -- Blue on hover (Tokyo Night)
+    else
+      -- Gruvbox hover styles can be added here if desired
+    end
+  end
 
-	if assigned_title ~= "" then
-		title_with_icon = SHELL_ICON .. " " .. assigned_title
-	elseif exec_name == "pwsh" then
-		title_with_icon = PS_ICON .. " PS"
-	elseif exec_name == "cmd" then
-		title_with_icon = CMD_ICON .. " CMD"
-	elseif exec_name == "wsl" or exec_name == "wslhost" then
-		title_with_icon = WSL_ICON .. " WSL"
-	elseif exec_name == "nvim" then
-		-- Vim icon needs extra space!
-		title_with_icon = VIM_ICON .. " " .. pane_title:gsub("^(%S+)%s+(%d+/%d+) %- nvim", " %2 %1")
-	elseif exec_name == "bat" or exec_name == "less" or exec_name == "moar" then
-		title_with_icon = PAGER_ICON .. " " .. exec_name:upper()
-	elseif exec_name == "fzf" or exec_name == "hs" or exec_name == "peco" then
-		title_with_icon = FUZZY_ICON .. " " .. exec_name:upper()
-	elseif exec_name == "python" or exec_name == "hiss" then
-		title_with_icon = PYTHON_ICON .. " " .. exec_name
-	elseif exec_name == "node" then
-		title_with_icon = NODE_ICON .. " " .. exec_name:upper()
-	elseif exec_name == "deno" then
-		title_with_icon = DENO_ICON .. " " .. exec_name:upper()
-	elseif exec_name == "zsh" or exec_name == "bash" or exec_name == "fish" then
-		title_with_icon = SHELL_ICON .. " " .. exec_name
-	else
-		title_with_icon = HOURGLASS_ICON .. " " .. exec_name
-	end
-	if pane_title:match("^Administrator: ") then
-		title_with_icon = title_with_icon .. " " .. ADMIN_ICON
-	end
+  local edge_foreground = background
+  local process_name = tab.active_pane.foreground_process_name
+  local pane_title = tab.active_pane.title
+  local assigned_title = tab.tab_title
+  local exec_name = basename(process_name):gsub("%.exe$", "")
+  local title_with_icon
 
-	local id = SUB_IDX[tab.tab_index + 1]
-	local title = " " .. wezterm.truncate_right(title_with_icon, max_width) .. " "
+  if assigned_title ~= "" then
+    title_with_icon = SHELL_ICON .. " " .. assigned_title
+  elseif exec_name == "pwsh" then
+    title_with_icon = PS_ICON .. " PS"
+  elseif exec_name == "task" then
+    title_with_icon = TASK_RUNNING_ICON .. " Task"
+  elseif exec_name == "nvim" then
+    title_with_icon = NVIM_ICON .. " " .. pane_title:gsub("^(%S+)%s+(%d+/%d+) %- nvim", " %2 %1")
+  elseif exec_name == "zsh" or exec_name == "bash" or exec_name == "fish" then
+    title_with_icon = SHELL_ICON .. " " .. exec_name
+  else
+    title_with_icon = HOURGLASS_ICON .. " " .. exec_name
+  end
 
-	return {
-		{ Attribute = { Intensity = "Bold" } },
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Background = { Color = background } },
-		{ Foreground = { Color = foreground } },
-		{ Text = id },
-		{ Text = title },
-		{ Foreground = { Color = dim_foreground } },
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Attribute = { Intensity = "Normal" } },
-	}
+  local left_arrow = SOLID_LEFT_ARROW
+  if tab.tab_index == 0 then
+    left_arrow = SOLID_LEFT_MOST
+  end
+
+  local id = SUB_IDX[tab.tab_index + 1]
+  local title = " " .. wezterm.truncate_right(title_with_icon, max_width) .. " "
+
+  return {
+    { Attribute = { Intensity = "Bold" } },
+    { Background = { Color = edge_background } },
+    { Foreground = { Color = edge_foreground } },
+    { Text = left_arrow },
+    { Background = { Color = background } },
+    { Foreground = { Color = foreground } },
+    { Text = id },
+    { Text = title },
+    { Foreground = { Color = dim_foreground } },
+    { Background = { Color = edge_background } },
+    { Foreground = { Color = edge_foreground } },
+    { Text = SOLID_RIGHT_ARROW },
+    { Attribute = { Intensity = "Normal" } },
+  }
 end)
 
 -- This table will hold the configuration.
@@ -128,42 +214,48 @@ local config = {}
 -- In newer versions of wezterm, use the config_builder which will
 -- help provide clearer error messages
 if wezterm.config_builder then
-	config = wezterm.config_builder()
+  config = wezterm.config_builder()
 end
--- This is where you actually apply your config choices
 
--- For example, changing the color scheme:
-config.color_scheme = "GruvboxDark"
+-- Apply colors based on theme selection
+if USE_TOKYO_NIGHT then
+  config.colors = get_tokyonight_colors()
+else
+  config.color_scheme = "GruvboxDark"
+end
+
+-- Font configuration
 config.line_height = 1.18
 config.font = wezterm.font({
-	family = "JetBrains Mono",
-	weight = "Regular",
-	harfbuzz_features = { "calt=0", "clig=0", "liga=0" }, -- Disable Ligatures
+  family = "JetBrains Mono",
+  weight = "Regular",
+  harfbuzz_features = { "calt=0", "clig=0", "liga=0" }, -- Disable Ligatures
 })
 config.font_size = 16
 
+-- Tab configuration
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 
 config.window_frame = {
-	font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
-	font_size = 14,
+  font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
+  font_size = 14,
 }
 
 -- Set Padding to Zero
 config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
 }
 
 config.exit_behavior = "CloseOnCleanExit"
 config.clean_exit_codes = {
-	0,
-	127, -- Default of `exit`
-	130, -- Control-C
-	201, -- Exit code on docker-compose stack when called from neovim terminal (don't know why)
+  0,
+  127, -- Default of `exit`
+  130, -- Control-C
+  201, -- Exit code on docker-compose stack when called from neovim terminal (don't know why)
 }
 
 -- and finally, return the configuration to wezterm
