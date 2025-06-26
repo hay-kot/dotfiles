@@ -97,7 +97,8 @@ require("lazy").setup({
   require("haykot.plugs.lualine"),
 
   -- Lsp Stuff
-  require("haykot.plugs.cmp"),
+  -- require("haykot.plugs.cmp"),
+  require("haykot.plugs.blink"),
   require("haykot.plugs.lsp"),
   require("haykot.plugs.null-ls"),
 
@@ -115,11 +116,11 @@ require("lazy").setup({
       require("noice").setup({
         lsp = {
           hover = { enabled = false },
-          signature = { enabled = true },
+          signature = { enabled = false },
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
           override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+            ["vim.lsp.util.stylize_markdown"] = false,
             ["cmp.entry.get_documentation"] = false,
           },
         },
@@ -224,19 +225,31 @@ require("lazy").setup({
     ft = "jsonnet",
   },
   {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
-        suggestion = { enabled = false },
+        suggestion = { enabled = true },
         panel = { enabled = false },
+        filetypes = {
+          markdown = true,
+          help = true,
+        },
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "BlinkCmpMenuOpen",
+        callback = function()
+          vim.b.copilot_suggestion_hidden = true
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "BlinkCmpMenuClose",
+        callback = function()
+          vim.b.copilot_suggestion_hidden = false
+        end,
       })
     end,
   },
