@@ -115,4 +115,16 @@ M.nnoremap("<leader>wl", function()
   vim.api.nvim_buf_set_lines(0, number - 1, number, false, lines)
 end)
 
+vim.keymap.set("n", "<leader>cf", function()
+  local filepath = vim.fn.expand("%:p")
+  if filepath == "" then
+    print("No file currently open")
+    return
+  end
+
+  local cmd = string.format([[osascript -e 'set the clipboard to POSIX file "%s"']], filepath)
+  vim.fn.system(cmd)
+  print("File copied to clipboard: " .. vim.fn.expand("%:t"))
+end, { desc = "Copy current file to clipboard" })
+
 return M
