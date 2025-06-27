@@ -6,7 +6,7 @@
 "go:github.com/abice/go-enum" = "latest"
 
 # Personal Go Tools
-"go:github.com/hay-kot/mmdot" = "HEAD"
+"go:github.com/hay-kot/mmdot" = "latest"
 "go:github.com/hay-kot/gofind" = "HEAD"
 
 # Environments
