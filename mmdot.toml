@@ -102,8 +102,6 @@ casks = [
 
 [brew.all]
 taps = [
-  "homebrew/bundle",
-  "homebrew/services",
   "dagger/tap",
   "go-task/tap",
   "hay-kot/gotmpl-tap",

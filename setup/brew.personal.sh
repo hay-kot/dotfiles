@@ -7,8 +7,6 @@ set -o pipefail
 # Treat unset variables as an error when substituting
 set -u
 # Adding Homebrew Taps
-brew tap homebrew/bundle
-brew tap homebrew/services
 brew tap dagger/tap
 brew tap go-task/tap
 brew tap hay-kot/gotmpl-tap
