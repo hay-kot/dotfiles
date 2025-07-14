@@ -29,12 +29,12 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
 
     -- Useful status updates for LSP.
-    { "j-hui/fidget.nvim",              opts = {} },
+    { "j-hui/fidget.nvim", opts = {} },
 
     -- Autocompletion - lsp
     -- { "hrsh7th/cmp-nvim-lsp" },
 
-    'saghen/blink.cmp'
+    "saghen/blink.cmp",
   },
   config = function()
     -- Configure server capabilities and setup
@@ -46,7 +46,7 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
       -- can be opts table or a function that returns options.
       local servers = {
         clangd = {},
