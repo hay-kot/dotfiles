@@ -57,7 +57,7 @@ vim.api.nvim_create_user_command("ClaudeBuffers", claude_with_buffers, {
 })
 
 -- Create CaludeFiles UserCommand for open buffers only
-vim.api.nvim_create_user_command("CaludeFiles", function(opts)
+vim.api.nvim_create_user_command("ClaudeFiles", function(opts)
   local files = {}
 
   -- Get all listed buffers (all open files, not just active)
