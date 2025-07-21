@@ -1,0 +1,20 @@
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(make test)",
+      "Bash(make build)",
+      "Bash(make format)",
+      "Bash(make fmt)",
+      "Bash(make lint)",
+      "Bash(task go:*)",
+      "Bash(task ui:*)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "OTEL_METRICS_EXPORTER": "otlp"
+  }
+}
