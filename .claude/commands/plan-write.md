@@ -5,6 +5,8 @@ description: write a plan for whatever task the AI is going to work on.
 
 ## Overview
 
+Task: #$ARGUMENTS
+
 Analyze the repository context and create a detailed plan for the specified task. Save this plan to `PLAN.local.md` in the repository root.
 
 ## Required Plan Structure
@@ -49,3 +51,4 @@ Analyze the repository context and create a detailed plan for the specified task
 5. Be specific about file paths and code locations
 6. Prioritize incremental steps that can be validated independently
 7. Ensure that tests are written at each step of the process
+8. Do not put time constraints or estimates in your work plan

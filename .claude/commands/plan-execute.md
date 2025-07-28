@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(git commit:*), Bash(git add:*)
+allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(git commit:*), Bash(git add:*), Bash(git checkout:*)
 description: executes a plan previously written to the repo
 ---
 
