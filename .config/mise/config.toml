@@ -4,6 +4,7 @@
 
 # Go Tools
 "go:github.com/abice/go-enum" = "latest"
+"go:github.com/Zxilly/go-size-analyzer/cmd/gsa" = "latest"
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "latest"
