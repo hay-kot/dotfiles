@@ -6,6 +6,9 @@
 "go:github.com/abice/go-enum" = "latest"
 "go:github.com/Zxilly/go-size-analyzer/cmd/gsa" = "latest"
 
+# Grafana Tools
+"go:github.com/grafana/mcp-grafana/cmd/mcp-grafana" = "latest"
+
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "latest"
 "go:github.com/hay-kot/gofind" = "HEAD"

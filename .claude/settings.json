@@ -19,13 +19,11 @@
       "Bash(gh repo view:*)",
       "Bash(gh issue view:*)",
       "Bash(gh pr view:*)",
-      "Bash(go test:*)",
       "Bash(fd:*)",
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(rg:*)",
       "Bash(grep:*)",
-      "Bash(golangci-lint run:*)",
       "Bash(diff:*)",
       "Bash(git log:*)",
       "Bash(git status:*)",
@@ -33,10 +31,11 @@
       "Bash(git show:*)",
       "Bash(git branch:*)",
       "Bash(go doc:*)",
-      "Bash(godoc:*)",
       "Bash(go list:*)",
       "Bash(go mod graph:*)",
-      "Bash(go test:*)"
+      "Bash(go test:*)",
+      "Bash(golangci-lint run:*)",
+      "Bash(godoc:*)"
     ]
   },
   "feedbackSurveyState": {
