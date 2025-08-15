@@ -1,6 +1,7 @@
 [tools]
 # Go Team Tools
 "go:golang.org/x/perf/cmd/benchstat" = "latest"
+"go:golang.org/x/tools/cmd/deadcode" = "latest"
 
 # Go Tools
 "go:github.com/abice/go-enum" = "latest"
