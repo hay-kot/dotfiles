@@ -56,6 +56,13 @@ return {
   },
   keys = {
     {
+      "<leader>far",
+      function()
+        Snacks.terminal.toggle("scooter")
+      end,
+      desc = "find and replace (interactive)",
+    },
+    {
       "<leader>t",
       function()
         Snacks.terminal.toggle()
