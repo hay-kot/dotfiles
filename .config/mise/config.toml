@@ -12,7 +12,7 @@
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "latest"
-"go:github.com/hay-kot/gofind" = "HEAD"
+"go:github.com/hay-kot/gofind" = "v0.3.2"
 
 # Environments
 node = "22"
