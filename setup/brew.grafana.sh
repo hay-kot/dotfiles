@@ -87,6 +87,7 @@ brew install \
   pnpm \
   pre-commit \
   ripgrep \
+  scooter \
   sqlc \
   sqlfmt \
   starship \
