@@ -6,6 +6,7 @@
 # Go Tools
 "go:github.com/abice/go-enum" = "latest"
 "go:github.com/Zxilly/go-size-analyzer/cmd/gsa" = "latest"
+"go:github.com/caarlos0/svu/v3" = "v3.2.3"
 
 # Grafana Tools
 "go:github.com/grafana/mcp-grafana/cmd/mcp-grafana" = "latest"
