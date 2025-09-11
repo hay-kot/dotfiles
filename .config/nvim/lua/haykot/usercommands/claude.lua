@@ -105,3 +105,44 @@ vim.api.nvim_create_user_command("ClaudeFiles", function(opts)
 end, {
   desc = "Copy open buffer file paths with @<filepath> syntax to clipboard for Claude Code",
 })
+
+-- Create ClaudeFile UserCommand for active buffer only
+vim.api.nvim_create_user_command("ClaudeFile", function(opts)
+  local files = {}
+
+  -- Get only the current/active buffer
+  local current_buf = vim.api.nvim_get_current_buf()
+  local bufname = vim.api.nvim_buf_get_name(current_buf)
+
+  -- Only include if it's an actual file (not empty buffer or special buffer)
+  if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
+    -- Get relative path from cwd
+    local relative_path = vim.fn.fnamemodify(bufname, ":.")
+    table.insert(files, relative_path)
+  end
+
+  -- Format files with @<filepath> syntax
+  local formatted_files = {}
+  for _, file in ipairs(files) do
+    table.insert(formatted_files, "@" .. file)
+  end
+
+  -- Join with ', ' and copy to clipboard
+  local clipboard_content = table.concat(formatted_files, ", ")
+
+  -- Copy to system clipboard
+  vim.fn.setreg("+", clipboard_content)
+
+  -- Also copy to unnamed register
+  vim.fn.setreg('"', clipboard_content)
+
+  -- Print confirmation message
+  if #files > 0 then
+    print("Copied active buffer file path to clipboard in Claude Code format")
+    print("Content: " .. clipboard_content)
+  else
+    print("No valid file in active buffer")
+  end
+end, {
+  desc = "Copy active buffer file path with @<filepath> syntax to clipboard for Claude Code",
+})
