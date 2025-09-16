@@ -224,6 +224,29 @@ gbc() {
     fi
 }
 
+k9z() {
+  local context namespace cmd
+
+  # Select context
+  context=$(kubectl config get-contexts -o name | fzf --prompt="Select context: ")
+  [[ -z "$context" ]] && return 1
+
+  # Select namespace (default if empty)
+  namespace=$(kubectl get ns --context "$context" -o jsonpath='{.items[*].metadata.name}' \
+    | tr ' ' '\n' | fzf --prompt="Select namespace (default if empty): ")
+  [[ -z "$namespace" ]] && namespace="default"
+
+  # Build final command
+  cmd="k9s --context \"$context\" --namespace \"$namespace\""
+
+  # Add to history (zsh way)
+  print -s "$cmd"
+
+  # Run it
+  echo "$cmd"
+  eval "$cmd"
+}
+
 eval "$(starship init zsh)"
 
 # Custom Completions
