@@ -144,13 +144,13 @@ if which bat > /dev/null; then
 fi
 
 if which exa > /dev/null; then
-    alias l='exa --all'
-    alias ls="exa --long --header --git --icons --all --group-directories-first"
-    alias tree="exa --tree --level=3"
+    alias l='exa --no-git --all'
+    alias ls="exa --no-git --long --header --git --icons --all --group-directories-first"
+    alias tree="exa --no-git --tree --level=3"
 elif which eza > /dev/null; then
-    alias l='eza --all'
-    alias ls="eza --long --header --git --icons --all --group-directories-first"
-    alias tree="eza --tree --level=3"
+    alias l='eza --no-git --all'
+    alias ls="eza --no-git --long --header --git --icons --all --group-directories-first"
+    alias tree="eza --no-git --tree --level=3"
 else
     alias ls='ls -lah'
     alias l="ls -lah"
