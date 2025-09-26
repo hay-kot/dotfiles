@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Usage:
+#   ./prmd.sh                 # uses current branch PR
+#   ./prmd.sh <PR-URL>        # uses explicit PR URL
+#
+#   Generate markdown links for PRs to put in slack
+set -euo pipefail
+
+if [[ $# -eq 1 ]]; then
+  url="$1"
+  # Extract owner, repo, PR number from URL
+  if [[ "$url" =~ github.com/([^/]+)/([^/]+)/pull/([0-9]+) ]]; then
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+    pr_number="${BASH_REMATCH[3]}"
+  else
+    echo "Invalid GitHub PR URL: $url" >&2
+    exit 1
+  fi
+  # Fetch PR metadata using GitHub API
+  json="$(gh api "repos/$owner/$repo/pulls/$pr_number")"
+  title="$(jq -r '.title' <<<"$json")"
+  additions="$(jq -r '.additions' <<<"$json")"
+  deletions="$(jq -r '.deletions' <<<"$json")"
+else
+  # No URL provided, use current branch PR
+  repo=$(basename -s .git "$(git config --get remote.origin.url)")
+  out=$(gh pr view --json title,additions,deletions,url --jq '.title + "|" + (.additions|tostring) + "|" + (.deletions|tostring) + "|" + .url')
+  IFS='|' read -r title additions deletions url <<< "$out"
+fi
+
+# Format Markdown/Slack link
+text="[$repo] $title \`(+${additions}, -${deletions})\`"
+result="[$text]($url)"
+echo "$result"
+
+# Copy to clipboard if on macOS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "$result" | pbcopy
+    echo "Copied to clipboard!" >&2
+fi
