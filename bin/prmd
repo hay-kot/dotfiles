@@ -52,5 +52,4 @@ echo -e "$result"
 # Copy to clipboard if on macOS
 if [[ "$OSTYPE" == "darwin"* ]]; then
     echo -e "$result" | pbcopy
-    echo "Copied to clipboard!" >&2
 fi
