@@ -129,7 +129,7 @@ NPM_PACKAGES="${HOME}/.npm"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60% "
+export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60% --color=fg:#c0caf5,bg:#1a1b26,hl:#7aa2f7 --color=fg+:#c0caf5,bg+:#292e42,hl+:#7dcfff --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7aa2f7 --color=marker:#9ece6a,spinner:#7aa2f7,header:#9ece6a"
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
@@ -210,9 +210,24 @@ fi
 
 alias rgnb="rg -- "
 
-# Gum Aliases
+
+# Tokyo Night theme colors for gum
+export GUM_SPIN_SPINNER_FOREGROUND="#7aa2f7"  # Tokyo Night blue
+export GUM_SPIN_TITLE_FOREGROUND="#c0caf5"    # Tokyo Night foreground
+export GUM_CHOOSE_CURSOR_FOREGROUND="#7aa2f7" # Tokyo Night blue
+export GUM_CHOOSE_ITEM_FOREGROUND="#c0caf5"   # Tokyo Night foreground
+export GUM_CHOOSE_SELECTED_FOREGROUND="#16161e" # Tokyo Night dark
+export GUM_CHOOSE_SELECTED_BACKGROUND="#7aa2f7" # Tokyo Night blue
+export GUM_INPUT_CURSOR_FOREGROUND="#7aa2f7"  # Tokyo Night blue
+export GUM_INPUT_PROMPT_FOREGROUND="#c0caf5"  # Tokyo Night foreground
+export GUM_FILTER_INDICATOR_FOREGROUND="#7aa2f7" # Tokyo Night blue
+export GUM_FILTER_MATCH_FOREGROUND="#f7768e"  # Tokyo Night red
+export GUM_CONFIRM_PROMPT_FOREGROUND="#c0caf5" # Tokyo Night foreground
+export GUM_CONFIRM_SELECTED_FOREGROUND="#9ece6a" # Tokyo Night green
+export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
+
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
-alias checkout-pr="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
+alias checkout-pr="gh pr list | cut -f1,2 | fzf | cut -f1 | xargs gh pr checkout"
 alias k="kubectl"
 gbc() {
     if [ $# -eq 0 ]; then
