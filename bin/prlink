@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Usage:
-#   ./prmd.sh                 # uses current branch PR (markdown)
-#   ./prmd.sh --plain         # uses current branch PR (plain text)
-#   ./prmd.sh <PR-URL>        # uses explicit PR URL (markdown)
-#   ./prmd.sh --plain <PR-URL> # uses explicit PR URL (plain text)
+#   ./prlink.sh                 # uses current branch PR (markdown)
+#   ./prlink.sh --plain         # uses current branch PR (plain text)
+#   ./prlink.sh <PR-URL>        # uses explicit PR URL (markdown)
+#   ./prlink.sh --plain <PR-URL> # uses explicit PR URL (plain text)
 #
 #   Generate markdown or plain text links for PRs to share
 set -euo pipefail
