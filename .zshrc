@@ -175,6 +175,10 @@ repos() {
     cd ~/code/repos/$1
 }
 
+notebooks() {
+    cd "`gofind find notebooks`"
+}
+
 
 # Make and CD into directory
 mkcd() {

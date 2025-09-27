@@ -1,11 +1,12 @@
 {
   "default": "repos",
   "commands": {
-    "docker": {
+    "notebooks": {
       "roots": [
-        "~/docker"
+        "~/Code/notebook",
+        "~/Library/Mobile Documents/iCloud~md~obsidian/Documents"
       ],
-      "match": "docker-compose*"
+      "match": ".obsidian"
     },
     "repos": {
       "roots": [
