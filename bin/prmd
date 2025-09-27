@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 # Usage:
-#   ./prmd.sh                 # uses current branch PR
-#   ./prmd.sh <PR-URL>        # uses explicit PR URL
+#   ./prmd.sh                 # uses current branch PR (markdown)
+#   ./prmd.sh --plain         # uses current branch PR (plain text)
+#   ./prmd.sh <PR-URL>        # uses explicit PR URL (markdown)
+#   ./prmd.sh --plain <PR-URL> # uses explicit PR URL (plain text)
 #
-#   Generate markdown links for PRs to put in slack
+#   Generate markdown or plain text links for PRs to share
 set -euo pipefail
+
+# Check for --plain flag
+plain=false
+if [[ $# -ge 1 ]] && [[ "$1" == "--plain" ]]; then
+  plain=true
+  shift
+fi
 
 if [[ $# -eq 1 ]]; then
   url="$1"
@@ -18,24 +27,30 @@ if [[ $# -eq 1 ]]; then
     exit 1
   fi
   # Fetch PR metadata using GitHub API
-  json="$(gh api "repos/$owner/$repo/pulls/$pr_number")"
+  json="$(gum spin --spinner dot --title "Fetching PR metadata..." -- gh api "repos/$owner/$repo/pulls/$pr_number")"
   title="$(jq -r '.title' <<<"$json")"
   additions="$(jq -r '.additions' <<<"$json")"
   deletions="$(jq -r '.deletions' <<<"$json")"
 else
   # No URL provided, use current branch PR
   repo=$(basename -s .git "$(git config --get remote.origin.url)")
-  out=$(gh pr view --json title,additions,deletions,url --jq '.title + "|" + (.additions|tostring) + "|" + (.deletions|tostring) + "|" + .url')
+  out=$(gum spin --spinner dot --title "Fetching current branch PR..." -- gh pr view --json title,additions,deletions,url --jq '.title + "|" + (.additions|tostring) + "|" + (.deletions|tostring) + "|" + .url')
   IFS='|' read -r title additions deletions url <<< "$out"
 fi
 
-# Format Markdown/Slack link
-text="[$repo] $title \`(+${additions}, -${deletions})\`"
-result="[$text]($url)"
-echo "$result"
+# Format output based on plain flag
+if [[ "$plain" == "true" ]]; then
+  # Plain text format for text messages
+  result="[$repo] $title (+${additions}, -${deletions})\n$url"
+else
+  # Markdown/Slack format
+  text="[$repo] $title \`(+${additions}, -${deletions})\`"
+  result="[$text]($url)"
+fi
+echo -e "$result"
 
 # Copy to clipboard if on macOS
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "$result" | pbcopy
+    echo -e "$result" | pbcopy
     echo "Copied to clipboard!" >&2
 fi
