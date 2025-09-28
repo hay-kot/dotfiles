@@ -179,6 +179,11 @@ notebooks() {
     cd "`gofind find notebooks`"
 }
 
+obs() {
+    local vault_path=$(gofind find notebooks)
+    open "obsidian://open?path=${vault_path}"
+}
+
 
 # Make and CD into directory
 mkcd() {
