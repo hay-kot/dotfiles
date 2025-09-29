@@ -3,6 +3,7 @@
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
   },
+  "outputStyle": "direct-concise",
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
