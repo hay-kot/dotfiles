@@ -1,0 +1,46 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  MMDOT_CMD: mmdot --config=./mmdot.yml
+
+tasks:
+  fmt:
+    desc: formats neovim files
+    cmds:
+      - stylua --config-path="./.config/nvim/stylua.toml" ./.config/nvim/
+
+  xcode:
+    desc: setups software update and enables xcode
+    cmds:
+      - sudo softwareupdate -i -a
+      - xcode-select --install || true
+      - sudo xcodebuild -license accept
+
+  setup:
+    desc: runs pre-setup steps for dotfiles configuraton
+    silent: true
+    cmds:
+      - echo "✓ Enable Running Bin"
+      - chmod +x ./bin/*
+      - echo "✓ Enable Running Setups Scripts"
+      - chmod +x ./setup/*.sh
+
+  # ---------------------------------------------------------
+  ## mmdot
+
+  encrypt:
+    desc: encrypt vault using mmdot
+    cmds:
+      - "{{ .MMDOT_CMD }} encrypt"
+
+  decrypt:
+    desc: encrypt vault using mmdot
+    cmds:
+      - "{{ .MMDOT_CMD }} decrypt"
+
+  run:
+    desc: run mmdot run
+    cmds:
+      - "{{ .MMDOT_CMD }} run {{ .CLI_ARGS }}"

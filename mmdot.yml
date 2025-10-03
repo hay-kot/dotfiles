@@ -1,0 +1,238 @@
+groups:
+  personal:
+    tags: [personal]
+  grafana:
+    tags: [grafana]
+
+variables:
+  var_files:
+    - ./mmdot/vault.yml?vault=true
+
+templates:
+  - name: Host File Template
+    tags: [personal]
+    template: |-
+      {{- range $key, $value := .homelab_ssh_config }}
+      Host {{ $key }}
+      {{- range $k2, $v2 := $value }}
+          {{ $k2 }} {{ $v2 }}
+      {{- end }}
+      {{ end -}}
+    output: ~/.mmdot/homelab_ssh_config
+    perm: "0600"
+  - name: Secrets File
+    tags: [personal]
+    template: |-
+      {{ range $key, $value := .personal_env_secrets }}
+      {{ $key }}={{ $value }}
+      {{ end }}
+    output: secrets/.env.local
+    perm: "0600"
+
+exec:
+  shell: /bin/bash
+  scripts:
+    # dev
+    - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
+    - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
+    - { path: "./setup/node.sh", tags: ["grafana", "personal", "node"] }
+
+    # mac
+    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    - { path: "./setup/mac.preferences.sh", tags: ["grafana","personal", "mac", "setup"] }
+
+    # grafana
+    - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
+    - { path: "./setup/env.grafana.sh", tags: ["grafana", "env"] }
+
+    # personal
+    - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
+    - { path: "./setup/env.personal.sh", tags: ["personal", "env"] }
+    - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
+
+brew:
+  grafana:
+    outfile: ./setup/brew.grafana.sh
+    includes:
+      - all
+    brews:
+      - awscli
+      - hashicorp/tap/terraform
+      - jsonnet
+      - jsonnet-bundler
+      - shellcheck
+      - tanka
+      - helm
+    taps:
+      - hashicorp/tap
+      - grafana/grafana
+    casks:
+      - 1password
+      - google-cloud-sdk
+      - goland
+      - tuple
+    mas: []
+  personal:
+    outfile: ./setup/brew.personal.sh
+    includes:
+      - all
+    taps:
+      - hay-kot/dirwatch-tap
+      - hay-kot/flint-tap
+      - axllent/apps
+      - ariga/tap
+      - stripe/stripe-cli
+      - tinygo-org/tools
+    brews:
+      - autorestic
+      - bitwarden-cli
+      - caddy
+      - flyctl
+      - mailpit
+      - rustup
+      - vhs
+      - hugo
+      - tinygo-org/tools/tinygo
+      - stripe/stripe-cli/stripe
+      - poetry
+      - hay-kot/flint-tap/flint
+      - hay-kot/dirwatch-tap/dirwatch
+    casks:
+      - balenaetcher
+      - discord
+      - home-assistant
+      - microsoft-auto-update
+      - microsoft-office
+      - orbstack
+      - private-internet-access
+      - signal
+      - spotify
+      - steam
+      - transmit
+      - yubico-yubikey-manager
+  all:
+    taps:
+      - dagger/tap
+      - go-task/tap
+      - hay-kot/gotmpl-tap
+      - hay-kot/scaffold-tap
+      - jdxcode/tap
+      - jesseduffield/lazydocker
+      - osx-cross/arm
+      - osx-cross/avr
+    brews:
+      - age
+      - ansible
+      - ansible-lint
+      - apr-util
+      - atlas
+      - bash
+      - bat
+      - bfg
+      - btop
+      - cfitsio
+      - cmake
+      - coreutils
+      - crf++
+      - ctop
+      - dagger
+      - docker
+      - editorconfig-checker
+      - eza
+      - fd
+      - fftw
+      - fx
+      - fzf
+      - gh
+      - git
+      - git-lfs
+      - gnupg
+      - go
+      - go-task/tap/go-task
+      - gofumpt
+      - golang-migrate
+      - golangci-lint
+      - goose
+      - goreleaser
+      - gping
+      - gum
+      - hay-kot/gotmpl-tap/gotmpl
+      - hay-kot/scaffold-tap/scaffold
+      - hyperfine
+      - imagemagick
+      - ipython
+      - jesseduffield/lazydocker/lazydocker
+      - jq
+      - k9s
+      - kubernetes-cli
+      - kustomize
+      - lazygit
+      - libexif
+      - libgit2@1.7
+      - libgsf
+      - libimagequant
+      - libmatio
+      - libproxy
+      - libspng
+      - mage
+      - mas
+      - mingw-w64
+      - mise
+      - mozjpeg
+      - neovim
+      - node
+      - nss
+      - openslide
+      - orc
+      - pinentry-mac
+      - pnpm
+      - pre-commit
+      - ripgrep
+      - scooter
+      - sqlc
+      - sqlfmt
+      - starship
+      - stow
+      - stylua
+      - tmux
+      - ttyd
+      - typos-cli
+      - uv
+      - wget
+      - wireguard-go
+      - yank
+      - yq
+      - zlib
+      - zsh-autosuggestions
+    casks:
+      - bitwarden
+      - brave-browser
+      - chromedriver
+      - docker
+      - cleanshot
+      - firefox
+      - font-fira-code
+      - font-fira-code-nerd-font
+      - font-hack-nerd-font
+      - font-jetbrains-mono-nerd-font
+      - google-chrome
+      - google-cloud-sdk
+      - gpg-suite-no-mail
+      - insomnia
+      - jordanbaird-ice
+      - keyboard-cleaner
+      - obsidian
+      - raycast
+      - rectangle-pro
+      - slack
+      - sublime-text
+      - tableplus
+      - visual-studio-code
+      - vlc
+      - wezterm
+      - zoom
+
+age:
+  identity_file: ~/.age/mmdot_mbp_personal
+  recipients:
+    - age1t5ky59uskhjgajsmsf0gwvhe2y58lxhrlmvmf8ue9u4edf62x3lq84h8sg
