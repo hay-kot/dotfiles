@@ -1,7 +1,0 @@
-ssh_config_enabled: true
-ssh_config_default_user: root
-ssh_config_default_port: 22
-ssh_config_default_identity_file: ~/.ssh/id_rsa
-
-ssh_config: []
-ssh_keys: []
