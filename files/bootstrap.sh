@@ -28,15 +28,6 @@ install_homebrew() {
   fi
 }
 
-install_oh_my_zsh() {
-  if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Oh-My-ZSH not found. Installing Oh-My-ZSH..."
-    sh -c "$(curl -fsSL $OH_MY_ZSH_INSTALL_URL)"
-  else
-    echo "Oh-My-ZSH is already installed. Skipping installation."
-  fi
-}
-
 install_go_and_mmdot() {
   echo "Installing Go via Homebrew..."
   $BREW_PATH install go || { echo "Error: Failed to install Go."; exit 1; }
@@ -49,7 +40,6 @@ install_go_and_mmdot() {
 echo "Starting setup script..."
 
 install_homebrew
-install_oh_my_zsh
 install_go_and_mmdot
 
 echo "Setup complete!"
