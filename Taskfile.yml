@@ -20,12 +20,18 @@ tasks:
 
   setup:
     desc: runs pre-setup steps for dotfiles configuraton
-    silent: true
     cmds:
-      - echo "✓ Enable Running Bin"
       - chmod +x ./bin/*
-      - echo "✓ Enable Running Setups Scripts"
       - chmod +x ./setup/*.sh
+      - chmod +x ./files/bootstrap.sh
+      - ./files/bootstrap.sh
+      - mise install
+
+  stow:
+    desc: runs stow command with arguments
+    cmds:
+      - stow -t ~/ .
+
 
   # ---------------------------------------------------------
   ## mmdot

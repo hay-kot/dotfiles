@@ -1,45 +1,79 @@
 #!/bin/bash
-
 # Exit on errors
 set -e
 
 # Variables
 HOMEBREW_INSTALL_URL="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-OH_MY_ZSH_INSTALL_URL="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-GO_PACKAGE_URL="https://github.com/hay-kot/mmdot"
 BREW_PATH="/opt/homebrew/bin/brew"
-GO_PATH="/opt/homebrew/bin/go"
+
+# Color codes for better output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
 # Functions
+log_info() {
+  echo -e "${GREEN}[INFO]${NC} $1"
+}
+
+log_warn() {
+  echo -e "${YELLOW}[WARN]${NC} $1"
+}
+
+log_error() {
+  echo -e "${RED}[ERROR]${NC} $1"
+}
+
 install_homebrew() {
   if ! command -v brew &> /dev/null; then
-    echo "Homebrew not found. Installing Homebrew..."
+    log_info "Homebrew not found. Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL_URL)"
-
+    
     # Validate installation
     if command -v brew &> /dev/null; then
-      echo "Homebrew installed successfully!"
+      log_info "Homebrew installed successfully!"
     else
-      echo "Error: Homebrew installation failed. Exiting."
+      log_error "Homebrew installation failed. Exiting."
       exit 1
     fi
   else
-    echo "Homebrew is already installed. Skipping installation."
+    log_info "Homebrew is already installed. Skipping installation."
   fi
 }
 
-install_go_and_mmdot() {
-  echo "Installing Go via Homebrew..."
-  $BREW_PATH install go || { echo "Error: Failed to install Go."; exit 1; }
-
-  echo "Installing mmdot CLI..."
-  $GO_PATH install "$GO_PACKAGE_URL" || { echo "Error: Failed to install mmdot CLI."; exit 1; }
+install_brew_package() {
+  local package_name=$1
+  local tap=$2
+  
+  # Add tap if provided
+  if [ -n "$tap" ]; then
+    if ! $BREW_PATH tap | grep -q "^${tap}$"; then
+      log_info "Adding tap: $tap"
+      $BREW_PATH tap "$tap" || { log_error "Failed to add tap $tap"; exit 1; }
+    fi
+  fi
+  
+  # Check if package is already installed
+  if $BREW_PATH list "$package_name" &> /dev/null; then
+    log_info "$package_name is already installed. Skipping."
+  else
+    log_info "Installing $package_name..."
+    $BREW_PATH install "$package_name" || { log_error "Failed to install $package_name"; exit 1; }
+    log_info "$package_name installed successfully!"
+  fi
 }
 
 # Script execution
-echo "Starting setup script..."
+log_info "Starting setup script..."
 
+# Install Homebrew
 install_homebrew
-install_go_and_mmdot
 
-echo "Setup complete!"
+# Install Task
+install_brew_package "go-task" "go-task/tap"
+
+# Install mise
+install_brew_package "mise"
+
+log_info "Setup complete!"
