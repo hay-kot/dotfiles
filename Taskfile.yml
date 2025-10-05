@@ -3,7 +3,7 @@
 version: "3"
 
 vars:
-  MMDOT_CMD: mmdot --config=./mmdot.yml
+  MMDOT_CMD: mmdot --log-level=info
 
 tasks:
   fmt:

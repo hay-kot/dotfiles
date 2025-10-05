@@ -1,8 +1,6 @@
-groups:
-  personal:
-    tags: [personal]
-  grafana:
-    tags: [grafana]
+macros:
+  personal: '"personal" in tags'
+  grafana: '"grafana" in tags'
 
 variables:
   var_files:
