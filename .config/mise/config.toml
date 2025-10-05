@@ -13,7 +13,7 @@
 "go:github.com/grafana/mcp-grafana/cmd/mcp-grafana" = "latest"
 
 # Personal Go Tools
-"go:github.com/hay-kot/mmdot" = "v0.2.0"
+"go:github.com/hay-kot/mmdot" = "v0.3.0"
 "go:github.com/hay-kot/gofind" = "v0.3.2"
 
 # Environments
