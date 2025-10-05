@@ -9,7 +9,7 @@ sudo -v
 ###############################################################################
 
 # Set the icon size of Dock items to 72 pixels
-defaults write com.apple.dock tilesize -int 72
+defaults write com.apple.dock tilesize -int 52
 
 #"Setting Dock to auto-hide and removing the auto-hiding delay"
 defaults write com.apple.dock autohide -bool true
