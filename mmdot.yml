@@ -77,7 +77,6 @@ brew:
     taps:
       - hay-kot/dirwatch-tap
       - hay-kot/flint-tap
-      - axllent/apps
       - ariga/tap
       - stripe/stripe-cli
       - tinygo-org/tools
