@@ -3,7 +3,6 @@
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
   },
-  "outputStyle": "direct-concise",
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -39,7 +38,8 @@
       "Bash(godoc:*)"
     ]
   },
-  "alwaysThinkingEnabled": false,
+  "outputStyle": "direct-concise",
+  "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
   }
