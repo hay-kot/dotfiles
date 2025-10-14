@@ -70,9 +70,6 @@ log_info "Starting setup script..."
 # Install Homebrew
 install_homebrew
 
-# Install Task
-install_brew_package "go-task" "go-task/tap"
-
 # Install mise
 install_brew_package "mise"
 

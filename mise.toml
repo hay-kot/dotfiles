@@ -1,0 +1,48 @@
+# mise.toml
+# Converted from Taskfile.yml (https://taskfile.dev)
+
+[env]
+MMDOT_CMD = "mmdot --log-level=info"
+
+[tasks.fmt]
+description = "formats neovim files"
+run = """
+stylua --config-path="./.config/nvim/stylua.toml" ./.config/nvim/
+"""
+
+[tasks.xcode]
+description = "setups software update and enables xcode"
+run = """
+sudo softwareupdate -i -a
+xcode-select --install || true
+sudo xcodebuild -license accept
+"""
+
+[tasks.setup]
+description = "runs pre-setup steps for dotfiles configuraton"
+run = """
+chmod +x ./bin/*
+chmod +x ./setup/*.sh
+chmod +x ./files/bootstrap.sh
+./files/bootstrap.sh
+mise install
+"""
+
+[tasks.stow]
+description = "runs stow command with arguments"
+run = "stow -t ~/ ."
+
+# ---------------------------------------------------------
+# mmdot
+
+[tasks.encrypt]
+description = "encrypt vault using mmdot"
+run = '{{ get_env(name="MMDOT_CMD", default="") }} encrypt'
+
+[tasks.decrypt]
+description = "decrypt vault using mmdot"
+run = '{{ get_env(name="MMDOT_CMD", default="") }} decrypt'
+
+[tasks.mmdot]
+description = "run mmdot run"
+run = '{{ get_env(name="MMDOT_CMD", default="") }} run'
