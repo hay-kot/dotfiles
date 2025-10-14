@@ -2,7 +2,7 @@
 # -------------------------------------------------------
 # Environments
 
-node = "22"
+node = "24"
 bun = "latest"
 rust = "latest"
 
@@ -42,8 +42,9 @@ rust = "latest"
 "cargo:sleek" = "latest"
 
 [settings]
-experimental = true
 idiomatic_version_file_enable_tools = ["python"]
+experimental = true
+lockfile = true
 
 [settings.npm]
 # use bun as the package manager for 'npm' register

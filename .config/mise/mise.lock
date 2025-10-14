@@ -1,0 +1,71 @@
+[[tools.bun]]
+version = "1.3.0"
+backend = "core:bun"
+
+[[tools."cargo:sleek"]]
+version = "0.5.0"
+backend = "cargo:sleek"
+
+[[tools."go:github.com/Zxilly/go-size-analyzer/cmd/gsa"]]
+version = "1.10.0"
+backend = "go:github.com/Zxilly/go-size-analyzer/cmd/gsa"
+
+[[tools."go:github.com/abice/go-enum"]]
+version = "0.9.1"
+backend = "go:github.com/abice/go-enum"
+
+[[tools."go:github.com/caarlos0/svu/v3"]]
+version = "3.2.4"
+backend = "go:github.com/caarlos0/svu/v3"
+
+[[tools."go:github.com/grafana/mcp-grafana/cmd/mcp-grafana"]]
+version = "0.6.2"
+backend = "go:github.com/grafana/mcp-grafana/cmd/mcp-grafana"
+
+[[tools."go:github.com/hay-kot/gofind"]]
+version = "v0.3.2"
+backend = "go:github.com/hay-kot/gofind"
+
+[[tools."go:github.com/hay-kot/mmdot"]]
+version = "v0.3.0"
+backend = "go:github.com/hay-kot/mmdot"
+
+[[tools."go:github.com/homeport/dyff/cmd/dyff"]]
+version = "v1"
+backend = "go:github.com/homeport/dyff/cmd/dyff"
+
+[[tools."go:golang.org/x/perf/cmd/benchstat"]]
+version = "latest"
+backend = "go:golang.org/x/perf/cmd/benchstat"
+
+[[tools."go:golang.org/x/tools/cmd/deadcode"]]
+version = "0.38.0"
+backend = "go:golang.org/x/tools/cmd/deadcode"
+
+[[tools."npm:eslint"]]
+version = "9.37.0"
+backend = "npm:eslint"
+
+[[tools."npm:pnpm"]]
+version = "10.18.3"
+backend = "npm:pnpm"
+
+[[tools."npm:prettier"]]
+version = "3.6.2"
+backend = "npm:prettier"
+
+[[tools."npm:ts-node"]]
+version = "10.9.2"
+backend = "npm:ts-node"
+
+[[tools."npm:typescript"]]
+version = "5.9.3"
+backend = "npm:typescript"
+
+[[tools."npm:yarn"]]
+version = "1.22.22"
+backend = "npm:yarn"
+
+[[tools.rust]]
+version = "1.90.0"
+backend = "core:rust"

@@ -46,3 +46,8 @@ run = '{{ get_env(name="MMDOT_CMD", default="") }} decrypt'
 [tasks.mmdot]
 description = "run mmdot run"
 run = '{{ get_env(name="MMDOT_CMD", default="") }} run'
+
+[tasks.lock]
+description = "run mise lock"
+dir = "./.config/mise/"
+run = "mise lock"
