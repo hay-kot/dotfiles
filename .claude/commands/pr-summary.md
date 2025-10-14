@@ -24,10 +24,17 @@ Include this section only for complex changes that need explanation. Describe:
 
 Use mermaid diagrams sparingly, only when they clarify complex flows.
 
-**Guidelines:**
+Example:
+Instead of something like:
 
-- Keep total description under 200 words
-- Avoid implementation details obvious from the code
-- Focus on reviewer context, not commit-by-commit changes
-- Use present tense ("Adds X" not "Added X")
-- Use markdown as a format
+> Update user authentication flow to handle new validation rules
+>
+> This extends validation checks from login-only to both login and registration, preparing for broader testing across supported workflows.
+
+Write:
+Add validation rules to registration flow
+
+Keep PR summaries proportional to the size of the change:
+
+- Small one-line changes → one-line PR summary message.
+- Larger features → a few lines describing what was added and why.
