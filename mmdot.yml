@@ -33,7 +33,6 @@ exec:
     # dev
     - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
-    - { path: "./setup/node.sh", tags: ["grafana", "personal", "node"] }
 
     # mac
     - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }

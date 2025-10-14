@@ -1,4 +1,24 @@
 [tools]
+# -------------------------------------------------------
+# Environments
+
+node = "22"
+bun = "latest"
+rust = "latest"
+
+# -------------------------------------------------------
+# npm
+
+"npm:prettier" = "latest"
+"npm:eslint" = "latest"
+"npm:typescript" = "latest"
+"npm:ts-node" = "latest"
+"npm:pnpm" = "latest"
+"npm:yarn" = "latest"
+
+# -------------------------------------------------------
+# Go
+
 # Go Team Tools
 "go:golang.org/x/perf/cmd/benchstat" = "latest"
 "go:golang.org/x/tools/cmd/deadcode" = "latest"
@@ -16,10 +36,15 @@
 "go:github.com/hay-kot/mmdot" = "v0.3.0"
 "go:github.com/hay-kot/gofind" = "v0.3.2"
 
-# Environments
-node = "22"
-bun = "latest"
+# -------------------------------------------------------
+# Rust
+
+"cargo:sleek" = "latest"
 
 [settings]
 experimental = true
 idiomatic_version_file_enable_tools = ["python"]
+
+[settings.npm]
+# use bun as the package manager for 'npm' register
+bun = true
