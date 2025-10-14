@@ -18,6 +18,7 @@
 
 # Environments
 node = "22"
+bun = "latest"
 
 [settings]
 experimental = true
