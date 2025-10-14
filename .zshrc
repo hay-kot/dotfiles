@@ -278,3 +278,4 @@ PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
 
 # Load system local zshconfig if exists
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
