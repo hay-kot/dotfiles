@@ -41,6 +41,7 @@ rust = "latest"
 # Rust
 
 "cargo:sleek" = "latest"
+"cargo:scooter" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
