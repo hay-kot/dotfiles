@@ -15,6 +15,7 @@ rust = "latest"
 "npm:ts-node" = "latest"
 "npm:pnpm" = "latest"
 "npm:yarn" = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
 
 # -------------------------------------------------------
 # Go
