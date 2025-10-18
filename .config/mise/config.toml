@@ -37,17 +37,20 @@ rust = "latest"
 "go:github.com/hay-kot/mmdot" = "v0.3.0"
 "go:github.com/hay-kot/gofind" = "v0.3.2"
 
+# github: will download pre-built binaries and is go-releaser compatible
+"github:hay-kot/scaffold" = "latest"
+
 # -------------------------------------------------------
 # Rust
 
-"cargo:sleek" = "latest"
-"cargo:scooter" = "latest"
+"cargo:sleek" = "latest" # sql formatter
+"cargo:scooter" = "latest" # find and replace mechanism
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
 experimental = true
 lockfile = true
 
-[settings.npm]
-# use bun as the package manager for 'npm' register
-bun = true
+  [settings.npm]
+  # use bun as the package manager for 'npm' register
+  bun = true

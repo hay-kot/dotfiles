@@ -13,3 +13,4 @@ repomgr.db
 repomgr.log
 *.log
 
+.config/zed/prompts/
