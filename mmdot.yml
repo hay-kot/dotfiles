@@ -47,7 +47,7 @@ exec:
     - { path: "./setup/env.personal.sh", tags: ["personal", "env"] }
     - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
 
-brew:
+brews:
   grafana:
     outfile: ./setup/brew.grafana.sh
     includes:
@@ -68,6 +68,7 @@ brew:
       - google-cloud-sdk
       - goland
       - tuple
+      - slack
     mas: []
   personal:
     outfile: ./setup/brew.personal.sh
@@ -111,7 +112,6 @@ brew:
       - dagger/tap
       - go-task/tap
       - hay-kot/gotmpl-tap
-      - hay-kot/scaffold-tap
       - jdxcode/tap
       - jesseduffield/lazydocker
       - osx-cross/arm
@@ -153,7 +153,6 @@ brew:
       - gping
       - gum
       - hay-kot/gotmpl-tap/gotmpl
-      - hay-kot/scaffold-tap/scaffold
       - hyperfine
       - imagemagick
       - ipython
@@ -184,7 +183,6 @@ brew:
       - pnpm
       - pre-commit
       - ripgrep
-      - scooter
       - sqlc
       - sqlfmt
       - starship
@@ -212,7 +210,6 @@ brew:
       - font-hack-nerd-font
       - font-jetbrains-mono-nerd-font
       - google-chrome
-      - google-cloud-sdk
       - gpg-suite-no-mail
       - insomnia
       - jordanbaird-ice
@@ -220,12 +217,12 @@ brew:
       - obsidian
       - raycast
       - rectangle-pro
-      - slack
       - sublime-text
       - tableplus
       - visual-studio-code
       - vlc
       - wezterm
+      - zed
       - zoom
 
 age:

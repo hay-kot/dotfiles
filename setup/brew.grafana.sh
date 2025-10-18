@@ -10,7 +10,6 @@ set -u
 brew tap dagger/tap
 brew tap go-task/tap
 brew tap hay-kot/gotmpl-tap
-brew tap hay-kot/scaffold-tap
 brew tap jdxcode/tap
 brew tap jesseduffield/lazydocker
 brew tap osx-cross/arm
@@ -56,7 +55,6 @@ brew install \
   gping \
   gum \
   hay-kot/gotmpl-tap/gotmpl \
-  hay-kot/scaffold-tap/scaffold \
   hyperfine \
   imagemagick \
   ipython \
@@ -87,7 +85,6 @@ brew install \
   pnpm \
   pre-commit \
   ripgrep \
-  scooter \
   sqlc \
   sqlfmt \
   starship \
@@ -124,7 +121,6 @@ brew install --cask \
   font-hack-nerd-font \
   font-jetbrains-mono-nerd-font \
   google-chrome \
-  google-cloud-sdk \
   gpg-suite-no-mail \
   insomnia \
   jordanbaird-ice \
@@ -132,15 +128,16 @@ brew install --cask \
   obsidian \
   raycast \
   rectangle-pro \
-  slack \
   sublime-text \
   tableplus \
   visual-studio-code \
   vlc \
   wezterm \
+  zed \
   zoom \
   1password \
   google-cloud-sdk \
   goland \
-  tuple
+  tuple \
+  slack
 
