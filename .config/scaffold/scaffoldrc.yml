@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://hay-kot.github.io/scaffold/schema.scaffoldrc.json
 settings:
-  theme: scaffold
+  theme: tokyo-night
   run_hooks: prompt
   log_level: info
 defaults:

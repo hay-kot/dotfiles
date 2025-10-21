@@ -18,5 +18,12 @@
       "match": ".git"
     }
   },
-  "cache": "~/.cache/gofind/"
+  "cache": "~/.cache/gofind/",
+  "theme": {
+    "prompt": "#7aa2f7",
+    "selected_indicator": "#f7768e",
+    "secondary_text": "#545c7e",
+    "primary_text": "#c0caf5",
+    "selection_background": "#283457"
+  }
 }
