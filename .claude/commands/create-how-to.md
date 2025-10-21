@@ -1,7 +1,7 @@
 ---
 ---
 
-Generate a full Obsidian “How-To” document based on the engineering workflow template. Use the conversation with the user for what to generate. If not enough context is provided ask the engineer for more details.
+**Instructions for the CLI / Engineer:**
 
 1. **Prompt for Workflow Details**
    - Ask the user for:
@@ -10,10 +10,20 @@ Generate a full Obsidian “How-To” document based on the engineering workflow
      - Key commands, steps, and notes
      - Slack context or external references
 
-_only if required_
+   _Only ask for missing information if needed._
 
 2. **Generate Markdown File**
-   - Structure it using the How-To template:
+   - Use the `add-how-to` CLI to create the file:
+
+     ```bash
+     add-how-to "Workflow Title" -
+     ```
+
+   - The CLI will create the Markdown file in `$OBSIDIAN_HOW_TO_DIR`.
+   - Keep the document as brief and clear as possible.
+   - Your target audience is engineers who work on these systems.
+
+3. **Structure the Markdown using this template**
 
 ```markdown
 ---
@@ -27,17 +37,15 @@ updated: YYYY-MM-DD
 
 # How To [Workflow Title]
 
-## 🧭 Overview
+## Overview
 
 Goal: Describe what this guide helps achieve.
 
-## 🧩 Prerequisites
+## Prerequisites
 
-- [ ] Access requirements
-- [ ] Installed tools
-- [ ] Links to internal/external docs
+- [ ] Requires Time Access
 
-## ⚙️ Steps
+## Steps
 
 ### 1. Prepare
 
@@ -45,23 +53,11 @@ Goal: Describe what this guide helps achieve.
 
 ### 3. Verify
 
-## 🧠 Notes & Gotchas
+## Notes & Gotchas
 
 Add common issues, Slack conversations, or troubleshooting tips.
 
-## 💬 Slack Threads / Team Conversations
-
-Paste or summarize relevant context.
-
-## 🌐 External Resources
+## External Resources
 
 List useful references or documentation links.
-
-## 🔗 Related How-To’s
-
-List related internal guides.
-
-## 🏁 Summary
-
-State what success looks like and next steps.
 ```

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# add_howto.sh — create a markdown note in your Obsidian "how-to" vault
+
+# Exit on error or undefined variables
+set -euo pipefail
+
+# Ensure $OBSIDIAN_HOW_TO_DIR is set
+if [ -z "${OBSIDIAN_HOW_TO_DIR:-}" ]; then
+  echo "Error: OBSIDIAN_HOW_TO_DIR is not set."
+  exit 1
+fi
+
+# Check arguments
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 \"Title of Note\" \"Markdown content or - for stdin\""
+  exit 1
+fi
+
+title="$1"
+content="$2"
+
+# Sanitize title → filename (lowercase, hyphens, alphanumeric only)
+filename="$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr -cs '[:alnum:]' '-' | sed 's/^-//;s/-$//').md"
+filepath="$OBSIDIAN_HOW_TO_DIR/$filename"
+
+# If content is "-", read from stdin
+if [ "$content" = "-" ]; then
+  echo "Reading markdown content from stdin... (Ctrl+D to finish)"
+  content="$(cat)"
+fi
+
+# Write markdown file
+cat > "$filepath" <<EOF
+# $title
+
+$content
+EOF
+
+echo "✅ Created: $filepath"
