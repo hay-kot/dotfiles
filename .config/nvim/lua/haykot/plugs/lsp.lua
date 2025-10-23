@@ -186,12 +186,11 @@ return {
             if major_version and major_version >= 2 then
               return {
                 command = {
-                  "golangci-lint",
-                  "run",
-                  "--output.json.path",
-                  "stdout",
+                  "golangci-lint", "run",
                   "--show-stats=false",
                   "--issues-exit-code=1",
+                  "--output.json.path", "stdout",   -- JSON goes to stdout (LS parses this)
+                  "--output.text.path", "stderr",   -- force text to stderr (ignored by LS)
                 },
               }
             else
