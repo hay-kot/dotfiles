@@ -26,5 +26,19 @@
       "pane_title": "pc.ui",
       "cmd": "task ui:dev"
     }
+  ],
+  "hookfeed": [
+    {
+      "pane_title": "hf.docker",
+      "cmd": "task svc"
+    },
+    {
+      "pane_title": "hf.server",
+      "cmd": "task run"
+    },
+    {
+      "pane_title": "hf.ui",
+      "cmd": "task ui:dev"
+    }
   ]
 }
