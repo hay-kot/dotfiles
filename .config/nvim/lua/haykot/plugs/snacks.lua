@@ -97,7 +97,7 @@ return {
           cmd = "rg",
           hidden = true,
           ignored = false,
-          args = { "--follow", "--glob", "!.git/*" },
+          args = { "--follow", "--glob", "!.git/*", "--glob", "!**/vendor/*" },
         })
       end,
       desc = "Smart Find Files",
@@ -154,7 +154,7 @@ return {
     {
       "<leader>fg",
       function()
-        Snacks.picker.grep({ cmd = "rg", args = { "--hidden" } })
+        Snacks.picker.grep({ cmd = "rg", args = { "--hidden", "--glob", "!**/vendor/*" } })
       end,
       desc = "find in files",
     },
