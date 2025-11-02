@@ -219,7 +219,7 @@ end
 
 -- Apply colors based on theme selection
 if USE_TOKYO_NIGHT then
-  config.colors = get_tokyonight_colors()
+  config.color_scheme = "tokyonight_night"
 else
   config.color_scheme = "GruvboxDark"
 end

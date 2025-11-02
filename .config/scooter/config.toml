@@ -1,0 +1,7 @@
+[editor_open]
+command = "vim %file +%line"
+
+[preview]
+syntax_highlighting = true
+# https://github.com/folke/tokyonight.nvim/blob/main/extras/sublime/tokyonight_night.tmTheme
+syntax_highlighting_theme = 'tokyonight_night'

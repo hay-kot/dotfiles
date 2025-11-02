@@ -129,7 +129,33 @@ NPM_PACKAGES="${HOME}/.npm"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60% --color=fg:#c0caf5,bg:#1a1b26,hl:#7aa2f7 --color=fg+:#c0caf5,bg+:#292e42,hl+:#7dcfff --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7aa2f7 --color=marker:#9ece6a,spinner:#7aa2f7,header:#9ece6a"
+
+
+# Theme https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_night.sh
+export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60%"
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+  --highlight-line \
+  --info=inline-right \
+  --ansi \
+  --layout=reverse \
+  --border=none \
+  --color=bg+:#283457 \
+  --color=bg:#16161e \
+  --color=border:#27a1b9 \
+  --color=fg:#c0caf5 \
+  --color=gutter:#16161e \
+  --color=header:#ff9e64 \
+  --color=hl+:#2ac3de \
+  --color=hl:#2ac3de \
+  --color=info:#545c7e \
+  --color=marker:#ff007c \
+  --color=pointer:#ff007c \
+  --color=prompt:#2ac3de \
+  --color=query:#c0caf5:regular \
+  --color=scrollbar:#27a1b9 \
+  --color=separator:#ff9e64 \
+  --color=spinner:#ff007c \
+"
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
@@ -148,6 +174,7 @@ if which exa > /dev/null; then
     alias ls="exa --long --header --git --icons --all --group-directories-first"
     alias tree="exa --tree --level=3"
 elif which eza > /dev/null; then
+    export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza/
     alias l='eza --no-git --all'
     alias ls="eza --no-git --long --header --git --icons --all --group-directories-first"
     alias tree="eza --no-git --tree --level=3"
