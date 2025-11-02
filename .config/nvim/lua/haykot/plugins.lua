@@ -199,7 +199,7 @@ require("lazy").setup({
         desc = "undo stage hunk",
       },
       {
-        "<leader>gp",
+        "<leader>gt",
         function()
           require("gitsigns").preview_hunk()
         end,
