@@ -237,7 +237,9 @@ alias cz="cd \$(fd --type directory | fzf)"
 # Magic .env file loading function
 if [ -f $DOTFILES_DIR/secrets/.env.local ]; then
     if [[ -s $DOTFILES_DIR/secrets/.env.local ]]; then
-        export $(cat $DOTFILES_DIR/secrets/.env.local | xargs)
+        set -a
+        source $DOTFILES_DIR/secrets/.env.local
+        set +a
     fi
 else
     mkdir -p $DOTFILES_DIR/secrets
