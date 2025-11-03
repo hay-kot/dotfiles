@@ -108,6 +108,8 @@ local HOURGLASS_ICON = utf8.char(0xf252)
 
 local SHELL_ICON = utf8.char(0xe795)
 local TASK_RUNNING_ICON = utf8.char(0xf085)
+local CPU_ICON = utf8.char(0xf4bc)
+local RAM_ICON = utf8.char(0xf233)
 
 local SUB_IDX = {
   "₁",
@@ -206,6 +208,61 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     { Text = SOLID_RIGHT_ARROW },
     { Attribute = { Intensity = "Normal" } },
   }
+end)
+
+-- Get CPU and RAM usage
+local function get_system_usage()
+  local success, stdout, stderr = wezterm.run_child_process({
+    'sh', '-c',
+    'top -l 1 | awk \'/CPU usage/ {print $3} /PhysMem/ {print $2}\' | sed \'s/%//\''
+  })
+
+  if success then
+    local lines = {}
+    for line in stdout:gmatch("[^\r\n]+") do
+      table.insert(lines, line:match("^%s*(.-)%s*$") or "0")
+    end
+    local cpu_raw = lines[1] or "0"
+    local cpu = string.format("%.1f", tonumber(cpu_raw) or 0)
+    local ram = lines[2] or "0M"
+    return cpu, ram
+  end
+  return "0.0", "0M"
+end
+
+-- Display CPU and RAM usage in right status area with caching
+wezterm.on('update-status', function(window, pane)
+  local now = os.time()
+  local cache_duration = 5  -- Update every 5 seconds
+
+  -- Initialize cache if needed
+  if not wezterm.GLOBAL.system_cache then
+    wezterm.GLOBAL.system_cache = {
+      cpu = "0",
+      ram = "0M",
+      last_update = 0
+    }
+  end
+
+  -- Update cache if stale
+  if now - wezterm.GLOBAL.system_cache.last_update >= cache_duration then
+    local cpu, ram = get_system_usage()
+    wezterm.GLOBAL.system_cache.cpu = cpu
+    wezterm.GLOBAL.system_cache.ram = ram
+    wezterm.GLOBAL.system_cache.last_update = now
+  end
+
+  local stat_color
+  if USE_TOKYO_NIGHT then
+    stat_color = "#737aa2"  -- Tokyo Night subtle gray
+  else
+    stat_color = "#a89984"  -- Gruvbox muted foreground
+  end
+
+  window:set_right_status(wezterm.format({
+    { Foreground = { Color = stat_color } },
+    { Text = ' ' .. wezterm.GLOBAL.system_cache.cpu .. '% | ' .. wezterm.GLOBAL.system_cache.ram .. ' ' },
+  }))
 end)
 
 -- This table will hold the configuration.
