@@ -1,0 +1,9 @@
+hosts:
+  - name: Zues
+    host: ssh://zues
+  - name: Sidecar
+    host: ssh://sidecar
+  - name: Frigate
+    host: ssh://nvr
+  - name: Recipinned
+    host: ssh://recipinned
