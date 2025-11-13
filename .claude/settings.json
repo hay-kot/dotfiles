@@ -38,7 +38,7 @@
       "Bash(godoc:*)"
     ]
   },
-  "alwaysThinkingEnabled": true,
+  "alwaysThinkingEnabled": false,
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
   }
