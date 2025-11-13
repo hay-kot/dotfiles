@@ -1,0 +1,91 @@
+# Tokyo Night theme for k9s
+# Matches the Tokyonight color scheme used across other tools
+
+k9s:
+  body:
+    fgColor: "#c0caf5"
+    bgColor: "#1a1b26"
+    logoColor: "#7aa2f7"
+
+  prompt:
+    fgColor: "#c0caf5"
+    bgColor: "#1a1b26"
+    suggestColor: "#7aa2f7"
+
+  info:
+    fgColor: "#7dcfff"
+    sectionColor: "#c0caf5"
+
+  dialog:
+    fgColor: "#c0caf5"
+    bgColor: "#1a1b26"
+    buttonFgColor: "#1a1b26"
+    buttonBgColor: "#7aa2f7"
+    buttonFocusFgColor: "#1a1b26"
+    buttonFocusBgColor: "#bb9af7"
+    labelFgColor: "#e0af68"
+    fieldFgColor: "#c0caf5"
+
+  frame:
+    border:
+      fgColor: "#7aa2f7"
+      focusColor: "#bb9af7"
+    menu:
+      fgColor: "#c0caf5"
+      keyColor: "#bb9af7"
+      numKeyColor: "#7aa2f7"
+    crumbs:
+      fgColor: "#1a1b26"
+      bgColor: "#7aa2f7"
+      activeColor: "#e0af68"
+    status:
+      newColor: "#7dcfff"
+      modifyColor: "#7aa2f7"
+      addColor: "#9ece6a"
+      errorColor: "#f7768e"
+      highlightColor: "#bb9af7"
+      killColor: "#545c7e"
+      completedColor: "#565f89"
+    title:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      highlightColor: "#bb9af7"
+      counterColor: "#7aa2f7"
+      filterColor: "#7dcfff"
+
+  views:
+    charts:
+      bgColor: "#1a1b26"
+      dialBgColor: "#292e42"
+      defaultDialColors:
+        - "#7aa2f7"
+        - "#bb9af7"
+      defaultChartColors:
+        - "#7aa2f7"
+        - "#bb9af7"
+    table:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      cursorFgColor: "#1a1b26"
+      cursorBgColor: "#7aa2f7"
+      markColor: "#e0af68"
+      header:
+        fgColor: "#bb9af7"
+        bgColor: "#1a1b26"
+        sorterColor: "#7dcfff"
+    xray:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      cursorColor: "#7aa2f7"
+      graphicColor: "#7aa2f7"
+      showIcons: false
+    yaml:
+      keyColor: "#7aa2f7"
+      colonColor: "#89ddff"
+      valueColor: "#9ece6a"
+    logs:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      indicator:
+        fgColor: "#7aa2f7"
+        bgColor: "#1a1b26"
