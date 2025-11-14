@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Usage:
+#   ghpr                    # edit current branch PR
+#   ghpr <PR-NUMBER>        # edit specific PR by number
+#
+# Edit GitHub PR title and description in Neovim
+set -euo pipefail
+
+# Get PR number
+pr_number=""
+if [[ $# -eq 1 ]]; then
+  pr_number="$1"
+fi
+
+# Fetch current PR info
+if [[ -z "$pr_number" ]]; then
+  pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json number,title,body)
+else
+  pr_json=$(gum spin --spinner dot --title "Fetching PR #$pr_number..." -- gh pr view "$pr_number" --json number,title,body)
+fi
+
+original_title=$(jq -r '.title' <<<"$pr_json" | tr -d '\r')
+original_body=$(jq -r '.body // ""' <<<"$pr_json" | tr -d '\r')
+pr_number=$(jq -r '.number' <<<"$pr_json")
+
+# Create temp file with current content
+tmpfile=$(mktemp)
+trap "rm -f $tmpfile" EXIT
+
+cat > "$tmpfile" << EOF
+title: $original_title
+---
+$original_body
+EOF
+
+# Open in Neovim
+nvim "$tmpfile"
+
+# Parse edited content
+new_title=""
+new_body=""
+in_body=false
+
+while IFS= read -r line; do
+  if [[ "$in_body" == "false" ]]; then
+    if [[ "$line" == "---" ]]; then
+      in_body=true
+    elif [[ "$line" =~ ^title:\ (.+)$ ]]; then
+      new_title="${BASH_REMATCH[1]}"
+    fi
+  else
+    if [[ -z "$new_body" ]]; then
+      new_body="$line"
+    else
+      new_body="$new_body"$'\n'"$line"
+    fi
+  fi
+done < "$tmpfile"
+
+# Trim trailing newlines from body
+new_body=$(echo "$new_body" | sed -e :a -e '/^\n*$/{ $d; N; ba' -e '}')
+
+# Check if anything changed
+if [[ "$new_title" == "$original_title" ]] && [[ "$new_body" == "$original_body" ]]; then
+  echo "No changes made"
+  exit 0
+fi
+
+# Update PR
+if [[ "$new_title" != "$original_title" ]]; then
+  gum spin --spinner dot --title "Updating title..." -- gh pr edit "$pr_number" --title "$new_title"
+  echo "Updated title"
+fi
+
+if [[ "$new_body" != "$original_body" ]]; then
+  gum spin --spinner dot --title "Updating body..." -- gh pr edit "$pr_number" --body "$new_body"
+  echo "Updated body"
+fi
+
+echo "PR #$pr_number updated"
