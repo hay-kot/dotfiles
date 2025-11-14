@@ -2,17 +2,78 @@
 # Usage:
 #   ghpr                    # edit current branch PR
 #   ghpr <PR-NUMBER>        # edit specific PR by number
+#   ghpr labels             # edit labels for current branch PR
+#   ghpr labels <PR-NUMBER> # edit labels for specific PR
 #
-# Edit GitHub PR title and description in Neovim
+# Edit GitHub PR title, description, or labels
 set -euo pipefail
 
-# Get PR number
+# Parse arguments
+mode="edit"
 pr_number=""
-if [[ $# -eq 1 ]]; then
+
+if [[ $# -ge 1 ]] && [[ "$1" == "labels" ]]; then
+  mode="labels"
+  shift
+  if [[ $# -eq 1 ]]; then
+    pr_number="$1"
+  fi
+elif [[ $# -eq 1 ]]; then
   pr_number="$1"
 fi
 
-# Fetch current PR info
+# Handle labels mode
+if [[ "$mode" == "labels" ]]; then
+  # Fetch PR info and repo labels
+  if [[ -z "$pr_number" ]]; then
+    pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json number,labels)
+  else
+    pr_json=$(gum spin --spinner dot --title "Fetching PR #$pr_number..." -- gh pr view "$pr_number" --json number,labels)
+  fi
+
+  pr_number=$(jq -r '.number' <<<"$pr_json")
+  current_labels=$(jq -r '.labels[].name' <<<"$pr_json")
+
+  # Fetch all available labels in repo
+  all_labels=$(gum spin --spinner dot --title "Fetching repository labels..." -- gh label list --json name --jq '.[].name')
+
+  # Build gum choose command with pre-selected labels
+  choose_args=()
+  while IFS= read -r label; do
+    choose_args+=("$label")
+  done <<< "$all_labels"
+
+  selected_args=()
+  while IFS= read -r label; do
+    [[ -n "$label" ]] && selected_args+=("--selected=$label")
+  done <<< "$current_labels"
+
+  # Show gum choose for label selection
+  if ! selected_labels=$(gum choose --no-limit "${selected_args[@]}" "${choose_args[@]}"); then
+    echo "Cancelled"
+    exit 0
+  fi
+
+  # Update PR labels
+  if [[ -z "$selected_labels" ]]; then
+    # Remove all labels
+    if [[ -n "$current_labels" ]]; then
+      gum spin --spinner dot --title "Removing all labels..." -- gh pr edit "$pr_number" --remove-label "$(echo "$current_labels" | tr '\n' ',')"
+      echo "All labels removed from PR #$pr_number"
+    else
+      echo "No changes made"
+    fi
+  else
+    # Update with selected labels
+    label_list=$(echo "$selected_labels" | tr '\n' ',' | sed 's/,$//')
+    gum spin --spinner dot --title "Updating labels..." -- gh pr edit "$pr_number" --add-label "$label_list"
+    echo "Updated labels for PR #$pr_number"
+  fi
+
+  exit 0
+fi
+
+# Edit mode: Fetch current PR info
 if [[ -z "$pr_number" ]]; then
   pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json number,title,body)
 else
