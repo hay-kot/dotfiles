@@ -8,6 +8,17 @@
 # Edit GitHub PR title, description, or labels
 set -euo pipefail
 
+# Helper function to fetch PR info
+fetch_pr() {
+  local pr_arg="$1"
+  local fields="$2"
+  if [[ -z "$pr_arg" ]]; then
+    gh pr view --json "$fields"
+  else
+    gh pr view "$pr_arg" --json "$fields"
+  fi
+}
+
 # Parse arguments
 mode="edit"
 pr_number=""
@@ -25,12 +36,7 @@ fi
 # Handle labels mode
 if [[ "$mode" == "labels" ]]; then
   # Fetch PR info and repo labels
-  if [[ -z "$pr_number" ]]; then
-    pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json number,labels)
-  else
-    pr_json=$(gum spin --spinner dot --title "Fetching PR #$pr_number..." -- gh pr view "$pr_number" --json number,labels)
-  fi
-
+  pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- fetch_pr "$pr_number" "number,labels")
   pr_number=$(jq -r '.number' <<<"$pr_json")
   current_labels=$(jq -r '.labels[].name' <<<"$pr_json")
 
@@ -49,7 +55,13 @@ if [[ "$mode" == "labels" ]]; then
   done <<< "$current_labels"
 
   # Show gum choose for label selection
-  if ! selected_labels=$(gum choose --no-limit "${selected_args[@]}" "${choose_args[@]}"); then
+  if [[ ${#selected_args[@]} -gt 0 ]]; then
+    selected_labels=$(gum choose --no-limit "${selected_args[@]}" "${choose_args[@]}" || true)
+  else
+    selected_labels=$(gum choose --no-limit "${choose_args[@]}" || true)
+  fi
+
+  if [[ -z "$selected_labels" ]] && [[ ${#selected_args[@]} -eq 0 ]]; then
     echo "Cancelled"
     exit 0
   fi
@@ -73,14 +85,24 @@ if [[ "$mode" == "labels" ]]; then
   exit 0
 fi
 
-# Edit mode: Fetch current PR info
-if [[ -z "$pr_number" ]]; then
-  pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json number,title,body)
-else
-  pr_json=$(gum spin --spinner dot --title "Fetching PR #$pr_number..." -- gh pr view "$pr_number" --json number,title,body)
+# Edit mode: Fetch current PR info or handle creation
+pr_exists=true
+if ! pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- fetch_pr "$pr_number" "number,title,body" 2>&1); then
+  # No PR exists, will create new one
+  pr_exists=false
+
+  # Try to find PR template using fd (case insensitive, include hidden)
+  template_body=""
+  if template_path=$(fd -t f -i -H 'pull_request_template.md' . 2>/dev/null | head -1); then
+    [[ -n "$template_path" ]] && template_body=$(cat "$template_path")
+  fi
+
+  pr_json=$(jq -n --arg body "$template_body" '{number:null,title:"",body:$body}')
 fi
 
-pr_number=$(jq -r '.number' <<<"$pr_json")
+if [[ "$pr_exists" == true ]]; then
+  pr_number=$(jq -r '.number' <<<"$pr_json")
+fi
 
 # Convert to markdown with frontmatter (strip carriage returns from gh output)
 original_md=$(jq '{title: (.title | gsub("\r"; "")), "$body": ((.body // "") | gsub("\r"; ""))}' <<<"$pr_json" | mdparse)
@@ -107,15 +129,34 @@ if [[ "$new_title" == "$original_title" ]] && [[ "$new_body" == "$original_body"
   exit 0
 fi
 
-# Update PR
-if [[ "$new_title" != "$original_title" ]]; then
-  gum spin --spinner dot --title "Updating title..." -- gh pr edit "$pr_number" --title "$new_title"
-  echo "Updated title"
-fi
+# Handle creation vs update
+if [[ "$pr_exists" == false ]]; then
+  # Creating a new PR
+  if [[ -z "$new_title" ]]; then
+    echo "Error: PR title cannot be empty"
+    exit 1
+  fi
 
-if [[ "$new_body" != "$original_body" ]]; then
-  gum spin --spinner dot --title "Updating body..." -- gh pr edit "$pr_number" --body "$new_body"
-  echo "Updated body"
-fi
+  # Confirm creation
+  gum confirm "Create PR: $new_title?" || {
+    echo "Cancelled"
+    exit 0
+  }
 
-echo "PR #$pr_number updated"
+  # Create the PR
+  pr_url=$(gum spin --spinner dot --title "Creating PR..." -- gh pr create --title "$new_title" --body "$new_body")
+  echo "Created PR: $pr_url"
+else
+  # Updating existing PR
+  if [[ "$new_title" != "$original_title" ]]; then
+    gum spin --spinner dot --title "Updating title..." -- gh pr edit "$pr_number" --title "$new_title"
+    echo "Updated title"
+  fi
+
+  if [[ "$new_body" != "$original_body" ]]; then
+    gum spin --spinner dot --title "Updating body..." -- gh pr edit "$pr_number" --body "$new_body"
+    echo "Updated body"
+  fi
+
+  echo "PR #$pr_number updated"
+fi
