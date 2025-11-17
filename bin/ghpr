@@ -8,6 +8,13 @@
 # Edit GitHub PR title, description, or labels
 set -euo pipefail
 
+# Debug logging function (enabled with GHPR_DEBUG=1 or GHPR_DEBUG=true)
+debug() {
+  if [[ "${GHPR_DEBUG:-0}" == "1" ]] || [[ "${GHPR_DEBUG:-0}" == "true" ]]; then
+    echo "[DEBUG] $*" >&2
+  fi
+}
+
 # Helper function to fetch PR info
 fetch_pr() {
   local pr_arg="$1"
@@ -87,14 +94,31 @@ fi
 
 # Edit mode: Fetch current PR info or handle creation
 pr_exists=true
-if ! pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- fetch_pr "$pr_number" "number,title,body" 2>&1); then
-  # No PR exists, will create new one
+debug "Fetching PR info..."
+
+# Temporarily disable exit on error for PR fetch
+set +e
+if [[ -z "$pr_number" ]]; then
+  pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view --json "number,title,body")
+else
+  pr_json=$(gum spin --spinner dot --title "Fetching PR..." -- gh pr view "$pr_number" --json "number,title,body")
+fi
+fetch_exit_code=$?
+set -e
+
+debug "fetch_pr exit code: $fetch_exit_code"
+
+# Check if pr_json is valid JSON
+if [[ $fetch_exit_code -ne 0 ]] || ! echo "$pr_json" | jq empty 2>/dev/null; then
+  # No PR exists or fetch failed, will create new one
   pr_exists=false
+  debug "No PR found or invalid JSON, creating new one"
 
   # Try to find PR template using fd (case insensitive, include hidden)
   template_body=""
   if template_path=$(fd -t f -i -H 'pull_request_template.md' . 2>/dev/null | head -1); then
     [[ -n "$template_path" ]] && template_body=$(cat "$template_path")
+    debug "Found PR template: $template_path"
   fi
 
   pr_json=$(jq -n --arg body "$template_body" '{number:null,title:"",body:$body}')
@@ -102,26 +126,52 @@ fi
 
 if [[ "$pr_exists" == true ]]; then
   pr_number=$(jq -r '.number' <<<"$pr_json")
+  debug "Fetched PR #$pr_number"
 fi
 
+debug "pr_json: $pr_json"
+
 # Convert to markdown with frontmatter (strip carriage returns from gh output)
-original_md=$(jq '{title: (.title | gsub("\r"; "")), "$body": ((.body // "") | gsub("\r"; ""))}' <<<"$pr_json" | mdparse)
+jq_output=$(jq '{title: (.title | gsub("\r"; "")), "$body": ((.body // "") | gsub("\r"; ""))}' <<<"$pr_json")
+debug "jq output: $jq_output"
+
+original_md=$(echo "$jq_output" | mdparse)
+debug "mdparse output length: ${#original_md}"
+debug "mdparse output first 200 chars: ${original_md:0:200}"
 
 # Create temp file with current content
 tmpfile=$(mktemp)
 trap "rm -f $tmpfile" EXIT
 echo "$original_md" > "$tmpfile"
 
+debug "Temp file: $tmpfile"
+debug "Temp file contents:"
+if [[ "${GHPR_DEBUG:-0}" == "1" ]] || [[ "${GHPR_DEBUG:-0}" == "true" ]]; then
+  cat "$tmpfile" >&2
+fi
+
 # Open in Neovim
 nvim "$tmpfile"
 
+debug "After nvim, temp file contents:"
+if [[ "${GHPR_DEBUG:-0}" == "1" ]] || [[ "${GHPR_DEBUG:-0}" == "true" ]]; then
+  cat "$tmpfile" >&2
+fi
+
 # Parse edited content back to JSON
 edited_json=$(mdparse "$tmpfile")
+debug "edited_json: $edited_json"
+
 new_title=$(jq -r '.title' <<<"$edited_json")
 new_body=$(jq -r '."$body" // ""' <<<"$edited_json")
 
 original_title=$(jq -r '.title' <<<"$pr_json")
 original_body=$(jq -r '.body // ""' <<<"$pr_json")
+
+debug "Comparison - original_title: '$original_title'"
+debug "Comparison - new_title: '$new_title'"
+debug "Comparison - original_body length: ${#original_body}"
+debug "Comparison - new_body length: ${#new_body}"
 
 # Check if anything changed
 if [[ "$new_title" == "$original_title" ]] && [[ "$new_body" == "$original_body" ]]; then
