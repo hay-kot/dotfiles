@@ -7,3 +7,5 @@ hosts:
     host: ssh://nvr
   - name: Recipinned
     host: ssh://recipinned
+  - name: Gitea Runner
+    host: ssh://gitea
