@@ -80,46 +80,26 @@ else
   pr_json=$(gum spin --spinner dot --title "Fetching PR #$pr_number..." -- gh pr view "$pr_number" --json number,title,body)
 fi
 
-original_title=$(jq -r '.title' <<<"$pr_json" | tr -d '\r')
-original_body=$(jq -r '.body // ""' <<<"$pr_json" | tr -d '\r')
 pr_number=$(jq -r '.number' <<<"$pr_json")
+
+# Convert to markdown with frontmatter (strip carriage returns from gh output)
+original_md=$(jq '{title: (.title | gsub("\r"; "")), "$body": ((.body // "") | gsub("\r"; ""))}' <<<"$pr_json" | mdparse)
 
 # Create temp file with current content
 tmpfile=$(mktemp)
 trap "rm -f $tmpfile" EXIT
-
-cat > "$tmpfile" << EOF
-title: $original_title
----
-$original_body
-EOF
+echo "$original_md" > "$tmpfile"
 
 # Open in Neovim
 nvim "$tmpfile"
 
-# Parse edited content
-new_title=""
-new_body=""
-in_body=false
+# Parse edited content back to JSON
+edited_json=$(mdparse "$tmpfile")
+new_title=$(jq -r '.title' <<<"$edited_json")
+new_body=$(jq -r '."$body" // ""' <<<"$edited_json")
 
-while IFS= read -r line; do
-  if [[ "$in_body" == "false" ]]; then
-    if [[ "$line" == "---" ]]; then
-      in_body=true
-    elif [[ "$line" =~ ^title:\ (.+)$ ]]; then
-      new_title="${BASH_REMATCH[1]}"
-    fi
-  else
-    if [[ -z "$new_body" ]]; then
-      new_body="$line"
-    else
-      new_body="$new_body"$'\n'"$line"
-    fi
-  fi
-done < "$tmpfile"
-
-# Trim trailing newlines from body
-new_body=$(echo "$new_body" | sed -e :a -e '/^\n*$/{ $d; N; ba' -e '}')
+original_title=$(jq -r '.title' <<<"$pr_json")
+original_body=$(jq -r '.body // ""' <<<"$pr_json")
 
 # Check if anything changed
 if [[ "$new_title" == "$original_title" ]] && [[ "$new_body" == "$original_body" ]]; then

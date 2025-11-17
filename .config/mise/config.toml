@@ -36,6 +36,7 @@ rust = "latest"
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "v0.3.0"
+"go:github.com/hay-kot/mdparse" = "v0.1.0"
 "github:hay-kot/gofind" = "v0.4.1"
 "github:hay-kot/scaffold" = "v0.11.0"
 
