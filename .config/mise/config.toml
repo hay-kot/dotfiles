@@ -32,7 +32,7 @@ rust = "latest"
 "go:github.com/caarlos0/svu/v3" = "latest"
 
 # Grafana Tools
-"go:github.com/grafana/mcp-grafana/cmd/mcp-grafana" = "latest"
+"github:grafana/mcp-grafana" = "v0.7.9"
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "v0.3.0"
