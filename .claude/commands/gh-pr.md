@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh pr:*)
+allowed-tools: Bash(gh pr:*), Bash(gh api:*)
 ---
 
 Fetch comments in pr #$ARGUMENTS and review them and their contents. Make a plan on how to fix these and present them for review.
@@ -12,10 +12,10 @@ Quick reference for extracting PR comments using GitHub CLI with `jq` for parsin
 
 ```bash
 # Get all inline code review comments for a specific PR
-gh api repos/:owner/:repo/pulls/<PR-NUMBER>/comments
+gh api repos/:owner/:repo/pulls/<PR-NUMBER>/comments --paginate
 
 # For a specific repository
-gh api repos/OWNER/REPO/pulls/<PR-NUMBER>/comments
+gh api repos/OWNER/REPO/pulls/<PR-NUMBER>/comments --paginate
 ```
 
 ## Formatting Comments with jq
