@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Usage:
+#   ./issuelink.sh 123                    # single issue from current repo
+#   ./issuelink.sh 123 456 789            # multiple issues from current repo
+#   ./issuelink.sh <ISSUE-URL>            # single issue from explicit URL
+#   ./issuelink.sh <URL1> <URL2>          # multiple issues from URLs
+#   ./issuelink.sh 123 <URL> 456          # mix of numbers and URLs
+#
+#   Generate markdown list of GitHub issues to share
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: issuelink <issue-number-or-url> [issue-number-or-url...]" >&2
+  exit 1
+fi
+
+# Detect current repo for issue numbers
+current_owner=""
+current_repo=""
+if git rev-parse --git-dir > /dev/null 2>&1; then
+  origin_url=$(git config --get remote.origin.url 2>/dev/null || echo "")
+  if [[ "$origin_url" =~ github.com[:/]([^/]+)/([^/\.]+) ]]; then
+    current_owner="${BASH_REMATCH[1]}"
+    current_repo="${BASH_REMATCH[2]}"
+  fi
+fi
+
+results=()
+
+for arg in "$@"; do
+  if [[ "$arg" =~ ^[0-9]+$ ]]; then
+    # Plain number - use current repo
+    if [[ -z "$current_owner" || -z "$current_repo" ]]; then
+      echo "Error: Not in a git repo or no GitHub remote found for issue #$arg" >&2
+      exit 1
+    fi
+    owner="$current_owner"
+    repo="$current_repo"
+    issue_number="$arg"
+    url="https://github.com/$owner/$repo/issues/$issue_number"
+  elif [[ "$arg" =~ github.com/([^/]+)/([^/]+)/issues/([0-9]+) ]]; then
+    # Full GitHub issue URL
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+    issue_number="${BASH_REMATCH[3]}"
+    url="$arg"
+  else
+    echo "Invalid argument: $arg (expected issue number or GitHub issue URL)" >&2
+    exit 1
+  fi
+
+  # Fetch issue metadata using GitHub API
+  json=$(gum spin --spinner dot --title "Fetching issue #$issue_number..." -- gh api "repos/$owner/$repo/issues/$issue_number")
+  title=$(jq -r '.title' <<<"$json")
+  state=$(jq -r '.state' <<<"$json")
+
+  # Format: - [repo] title (#number) [state]
+  state_badge=""
+  if [[ "$state" == "closed" ]]; then
+    state_badge=" ✓"
+  fi
+
+  text="[$repo] $title (#${issue_number})${state_badge}"
+  result="- [$text]($url)"
+  results+=("$result")
+done
+
+# Join results with newlines
+output=$(printf '%s\n' "${results[@]}")
+echo "$output"
+
+# Copy to clipboard if on macOS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "$output" | pbcopy
+fi
