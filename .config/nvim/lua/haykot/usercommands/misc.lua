@@ -94,4 +94,22 @@ vim.api.nvim_create_user_command("AlignStructTags", function(opts)
   vim.api.nvim_buf_set_lines(0, start_line, end_line + 1, false, new_lines)
 end, { range = true, desc = "Align Go struct tags" })
 
--- Add this to your Neovim configuration (init.lua or a plugin file)
+-- Open markdown preview using glow in a floating Snacks terminal
+vim.api.nvim_create_user_command("OpenPreview", function()
+	local file_path = vim.fn.expand("%:p")
+	if vim.bo.filetype ~= "markdown" then
+		vim.notify("OpenPreview only works with markdown files", vim.log.levels.ERROR)
+		return
+	end
+
+	local width = 100
+	Snacks.terminal("glow -p -w " .. width .. " " .. vim.fn.shellescape(file_path), {
+		interactive = true,
+		win = {
+			position = "float",
+			height = 0.9,
+			width = width + 4, -- extra padding for border
+			border = "rounded",
+		},
+	})
+end, { desc = "Open markdown preview with glow" })
