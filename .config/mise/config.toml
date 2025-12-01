@@ -23,7 +23,7 @@ rust = "latest"
 # Go Team Tools
 "go:golang.org/x/perf/cmd/benchstat" = "latest"
 "go:golang.org/x/tools/cmd/deadcode" = "latest"
-"github:amir20/dtop" = "v0.4.3"
+"github:amir20/dtop" = "v0.5.0"
 
 # Go Tools
 "go:github.com/abice/go-enum" = "latest"
