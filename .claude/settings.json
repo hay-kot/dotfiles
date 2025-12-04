@@ -3,6 +3,7 @@
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
   },
+  "gitAttribution": false,
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -37,7 +38,7 @@
       "Bash(go test:*)",
       "Bash(golangci-lint run:*)",
       "Bash(godoc:*)",
-      "Bash(jq:*)",
+      "Bash(jq:*)"
     ]
   },
   "alwaysThinkingEnabled": false,
