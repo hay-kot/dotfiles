@@ -11,12 +11,20 @@ commands:
     - git pull
 
 hooks:
-  - pattern: "**/hay-kot/recipinned"
+  - pattern: ".*/grafana/.*"
     commands:
       - mise trust
+  - pattern: ".*/hay-kot/.*"
+    commands:
+      - mise trust
+  - pattern: ".*/hay-kot/recipinned"
+    commands:
       - task dep:sync
 
 keybindings:
   o:
     help: open in finder
     sh: "open {{ .Path }}"
+  enter:
+    help: open in weaterm
+    sh: "wezterm cli spawn --cwd '{{ .Path }}'"
