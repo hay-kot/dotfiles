@@ -12,13 +12,13 @@ commands:
     - git pull
 
 hooks:
-  - pattern: ".*/grafana/.*"
+  - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
-  - pattern: ".*/hay-kot/.*"
+  - pattern: ".*[:/]hay-kot/.*"
     commands:
       - mise trust
-  - pattern: ".*/hay-kot/recipinned"
+  - pattern: ".*[:/]hay-kot/recipinned"
     commands:
       - task dep:sync
 
