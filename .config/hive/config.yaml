@@ -24,9 +24,6 @@ hooks:
       - task dep:sync
 
 keybindings:
-  o:
-    help: open in finder
-    sh: "open {{ .Path }}"
   enter:
     help: open in weaterm
     sh: "wezterm cli spawn --cwd '{{ .Path }}'"
