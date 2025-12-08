@@ -40,6 +40,11 @@ We build production code together. I handle implementation details while you gui
 **Multiple agents:** Split complex tasks - one for tests, one for implementation
 **Batch similar work:** Group related file edits together
 
+## Git Standards
+
+**Branch Naming:** For repos that are apart of the 'grafana' org, use a `hay-kot/` prefix for all branches. Otherwise use `feat/`, `chore/` style branch semantics.
+**Commit Messages:** Commit messages should be clear and concise. We should not add extra words or unnecessary explanations. You should assume that those reading the commits and code have a good understand of the codebase and code in general.
+
 ## Go Development Standards
 
 ### Required Patterns
