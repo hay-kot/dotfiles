@@ -41,6 +41,7 @@
       "Bash(go list:*)",
       "Bash(go mod graph:*)",
       "Bash(go test:*)",
+      "Bash(go build:*)",
       "Bash(golangci-lint run:*)",
       "Bash(godoc:*)",
       "Bash(jq:*)"
