@@ -1,4 +1,5 @@
 ---
+allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*)
 description: Research codebase comprehensively using parallel sub-agents
 model: opus
 ---

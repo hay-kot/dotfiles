@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*)
+allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(gh pr:*)
 description: Reviews the local changes in the branch
 ---
 
