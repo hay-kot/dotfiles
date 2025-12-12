@@ -22,6 +22,7 @@ hooks:
   - pattern: ".*[:/]hay-kot/recipinned"
     commands:
       - task dep:sync
+      - task pc:install
 
 keybindings:
   enter:
