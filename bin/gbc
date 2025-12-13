@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# No args - interactive branch selection with fzf
+if [[ $# -eq 0 ]]; then
+    # Get local branches
+    local_branches=$(git for-each-ref --format='%(refname:short)' refs/heads/)
+
+    # Get remote-only branches
+    remote_branches=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | sed 's|^origin/||')
+    remote_only=""
+    for branch in $remote_branches; do
+        [[ "$branch" == "HEAD" ]] && continue
+        if ! echo "$local_branches" | grep -qx "$branch"; then
+            remote_only+="$branch"$'\n'
+        fi
+    done
+
+    # Find max branch name length for alignment
+    max_len=0
+    for branch in $local_branches; do
+        (( ${#branch} > max_len )) && max_len=${#branch}
+    done
+    for branch in $remote_only; do
+        [[ -z "$branch" ]] && continue
+        (( ${#branch} > max_len )) && max_len=${#branch}
+    done
+
+    # Build aligned list
+    branches=""
+    for branch in $local_branches; do
+        printf -v line "%-${max_len}s  [local]" "$branch"
+        branches+="$line"$'\n'
+    done
+    for branch in $remote_only; do
+        [[ -z "$branch" ]] && continue
+        printf -v line "%-${max_len}s  [remote]" "$branch"
+        branches+="$line"$'\n'
+    done
+
+    # Select with fzf
+    selected=$(echo -n "$branches" | fzf --prompt="branch> ") || exit 0
+    target=$(echo "$selected" | awk '{print $1}')
+else
+    target="$1"
+fi
+
+# PR number - delegate to gh
+if [[ "$target" =~ ^[0-9]+$ ]]; then
+    exec gh pr checkout "$target"
+fi
+
+# Local branch exists - just switch
+if git show-ref --verify --quiet "refs/heads/$target"; then
+    exec git switch "$target"
+fi
+
+# Remote branch exists - fetch and switch (creates tracking branch)
+if git ls-remote --exit-code --heads origin "$target" >/dev/null 2>&1; then
+    git fetch origin "$target"
+    exec git switch "$target"
+fi
+
+# Doesn't exist anywhere - create from HEAD
+exec git switch -c "$target"
