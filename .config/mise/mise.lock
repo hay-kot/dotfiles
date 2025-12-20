@@ -1,10 +1,39 @@
 [[tools.bun]]
 version = "1.3.0"
 backend = "core:bun"
+"platforms.macos-arm64" = { checksum = "blake3:58ff76650b967e1a14eec5e6992b41aec9e5a4a96020f81fdebbc41a713ec821"}
+
+[[tools."cargo:scooter"]]
+version = "0.8.4"
+backend = "cargo:scooter"
 
 [[tools."cargo:sleek"]]
 version = "0.5.0"
 backend = "cargo:sleek"
+
+[[tools."github:amir20/dtop"]]
+version = "v0.5.0"
+backend = "github:amir20/dtop"
+
+[[tools."github:grafana/mcp-grafana"]]
+version = "0.7.9"
+backend = "github:grafana/mcp-grafana"
+
+[[tools."github:hay-kot/gofind"]]
+version = "v0.4.1"
+backend = "github:hay-kot/gofind"
+
+[[tools."github:hay-kot/hive"]]
+version = "0.5.1"
+backend = "github:hay-kot/hive"
+
+[[tools."github:hay-kot/scaffold"]]
+version = "0.12.0"
+backend = "github:hay-kot/scaffold"
+
+[[tools."github:sxyazi/yazi"]]
+version = "25.5.31"
+backend = "github:sxyazi/yazi"
 
 [[tools."go:github.com/Zxilly/go-size-analyzer/cmd/gsa"]]
 version = "1.10.0"
@@ -26,6 +55,10 @@ backend = "go:github.com/grafana/mcp-grafana/cmd/mcp-grafana"
 version = "v0.3.2"
 backend = "go:github.com/hay-kot/gofind"
 
+[[tools."go:github.com/hay-kot/mdparse"]]
+version = "v0.1.0"
+backend = "go:github.com/hay-kot/mdparse"
+
 [[tools."go:github.com/hay-kot/mmdot"]]
 version = "v0.3.0"
 backend = "go:github.com/hay-kot/mmdot"
@@ -41,6 +74,10 @@ backend = "go:golang.org/x/perf/cmd/benchstat"
 [[tools."go:golang.org/x/tools/cmd/deadcode"]]
 version = "0.38.0"
 backend = "go:golang.org/x/tools/cmd/deadcode"
+
+[[tools."npm:@anthropic-ai/claude-code"]]
+version = "2.0.54"
+backend = "npm:@anthropic-ai/claude-code"
 
 [[tools."npm:eslint"]]
 version = "9.37.0"
