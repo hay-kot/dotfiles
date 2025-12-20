@@ -3,7 +3,18 @@ allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(git c
 description: executes a plan previously written to the repo
 ---
 
-Read PLAN.local.md to understand your task Ensure you're on a feature branch; create one if needed For each plan step:
+# Execute Plan
+
+Execute a plan from `.haykot/plans/`.
+
+## Process
+
+1. If a specific plan file is provided as an argument, use that file
+2. Otherwise, find the latest plan in `.haykot/plans/` (sorted by filename, which uses YYYY-MM-DD prefix)
+3. Read the plan fully to understand your task
+4. Ensure you're on a feature branch; create one if needed
+
+For each plan step:
 
 - Mark step as "IN PROGRESS" in the plan
 - Implement the necessary changes

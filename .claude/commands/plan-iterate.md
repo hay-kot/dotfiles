@@ -5,7 +5,9 @@ description: Review and iterate on an existing task plan, discussing trade-offs 
 
 ## Overview
 
-Review the existing `PLAN.local.md` file in the repository root, analyze its quality and completeness, and collaborate with the user to improve it through discussion of trade-offs and design decisions.
+Review an existing plan from `.haykot/plans/`, analyze its quality and completeness, and collaborate with the user to improve it through discussion of trade-offs and design decisions.
+
+If a specific plan file is provided as an argument, use that file. Otherwise, find the latest plan in `.haykot/plans/` (sorted by filename, which uses YYYY-MM-DD prefix).
 
 ## Review Process
 
@@ -90,7 +92,7 @@ Structure your review as:
 
 ## Instructions
 
-1. Read `PLAN.local.md` thoroughly before making any assessments
+1. Read the plan file thoroughly before making any assessments
 2. Explore relevant parts of the codebase to validate your understanding
 3. **Ask your questions before proposing changes**—user input should shape your recommendations
 4. Be specific in your questions; avoid generic queries

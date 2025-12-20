@@ -6,6 +6,8 @@
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
+      "Bash(ctx init)",
+      "Bash(ctx ls)",
       "Bash(npm run lint)",
       "Bash(npm run test:*)",
       "Bash(make test)",
@@ -51,7 +53,8 @@
     "code-review@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true
+    "pr-review-toolkit@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
   "gitAttribution": false,

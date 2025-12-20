@@ -75,6 +75,10 @@ backend = "go:golang.org/x/perf/cmd/benchstat"
 version = "0.38.0"
 backend = "go:golang.org/x/tools/cmd/deadcode"
 
+[[tools.node]]
+version = "25.2.1"
+backend = "core:node"
+
 [[tools."npm:@anthropic-ai/claude-code"]]
 version = "2.0.54"
 backend = "npm:@anthropic-ai/claude-code"

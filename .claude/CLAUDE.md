@@ -11,6 +11,10 @@ We build production code together. I handle implementation details while you gui
 3. **Implement** - Build with tests and error handling
 4. **Validate** - ALWAYS run formatters, linters, and tests after implementation
 
+## Generated Assets
+
+Store generated markdown files (plans, context, notes) in `.haykot/` when available. This symlinks to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`. Use `ctx init` to create the symlink if it doesn't exist.
+
 ## Code Organization
 
 **Keep functions small and focused:**

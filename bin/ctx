@@ -1,0 +1,181 @@
+#!/usr/bin/env bash
+# Usage:
+#   ctx init   - create .haykot symlink and repo folder structure
+#   ctx open   - open context directory in editor
+#   ctx prune  - delete files older than 3 months
+#   ctx ls     - show context tree using eza
+#
+# Manages LLM context files, plans, and other assets
+set -euo pipefail
+
+# Base directory for all context data
+CTX_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/haykotllm"
+
+# Ensure base directory exists
+ensure_base() {
+  mkdir -p "$CTX_BASE"
+}
+
+# Get git repo root or empty string
+get_repo_root() {
+  git rev-parse --show-toplevel 2>/dev/null || echo ""
+}
+
+# Get repo owner/name from remote origin
+get_repo_path() {
+  local remote
+  remote=$(git remote get-url origin 2>/dev/null || echo "")
+
+  if [[ -z "$remote" ]]; then
+    echo ""
+    return
+  fi
+
+  # Handle SSH: git@github.com:owner/repo.git
+  # Handle HTTPS: https://github.com/owner/repo.git
+  echo "$remote" | sed -E 's#^(git@[^:]+:|https?://[^/]+/)##' | sed 's/\.git$//'
+}
+
+# Get context directory for current repo
+get_ctx_dir() {
+  local repo_path
+  repo_path=$(get_repo_path)
+
+  if [[ -z "$repo_path" ]]; then
+    echo ""
+    return
+  fi
+
+  echo "$CTX_BASE/$repo_path"
+}
+
+# Check if in repo root
+in_repo_root() {
+  local root
+  root=$(get_repo_root)
+  [[ -n "$root" ]] && [[ "$PWD" == "$root" ]]
+}
+
+# Initialize context for current repo
+cmd_init() {
+  ensure_base
+
+  local repo_root ctx_dir repo_path
+  repo_root=$(get_repo_root)
+
+  if [[ -z "$repo_root" ]]; then
+    echo "Error: not in a git repository"
+    exit 1
+  fi
+
+  repo_path=$(get_repo_path)
+  if [[ -z "$repo_path" ]]; then
+    echo "Error: no remote origin configured"
+    exit 1
+  fi
+
+  ctx_dir="$CTX_BASE/$repo_path"
+
+  # Create context directory
+  mkdir -p "$ctx_dir"
+  echo "Created: $ctx_dir"
+
+  # Create symlink at repo root
+  local symlink="$repo_root/.haykot"
+
+  if [[ -L "$symlink" ]]; then
+    rm "$symlink"
+  elif [[ -e "$symlink" ]]; then
+    echo "Error: $symlink exists and is not a symlink"
+    exit 1
+  fi
+
+  ln -s "$ctx_dir" "$symlink"
+  echo "Linked: .haykot -> $ctx_dir"
+}
+
+# Open context directory in editor
+cmd_open() {
+  ensure_base
+
+  local ctx_dir
+  ctx_dir=$(get_ctx_dir)
+
+  if [[ -z "$ctx_dir" ]]; then
+    echo "Error: not in a git repository with remote origin"
+    exit 1
+  fi
+
+  if [[ ! -d "$ctx_dir" ]]; then
+    echo "Error: context not initialized. Run 'ctx init' first"
+    exit 1
+  fi
+
+  exec "${EDITOR:-nvim}" "$ctx_dir"
+}
+
+# Delete files older than 3 months
+cmd_prune() {
+  ensure_base
+
+  local ctx_dir
+  ctx_dir=$(get_ctx_dir)
+
+  if [[ -z "$ctx_dir" ]]; then
+    echo "Error: not in a git repository with remote origin"
+    exit 1
+  fi
+
+  if [[ ! -d "$ctx_dir" ]]; then
+    echo "No context directory to prune"
+    exit 0
+  fi
+
+  echo "Pruning files older than 3 months in: $ctx_dir"
+  find "$ctx_dir" -type f -mtime +90 -print -delete
+}
+
+# List context tree
+cmd_ls() {
+  ensure_base
+
+  local ctx_dir
+  ctx_dir=$(get_ctx_dir)
+
+  if [[ -z "$ctx_dir" ]]; then
+    echo "Error: not in a git repository with remote origin"
+    exit 1
+  fi
+
+  if [[ ! -d "$ctx_dir" ]]; then
+    echo "No context directory. Run 'ctx init' first"
+    exit 0
+  fi
+
+  exec eza --tree "$ctx_dir"
+}
+
+# Main dispatch
+case "${1:-}" in
+  init)
+    cmd_init
+    ;;
+  open)
+    cmd_open
+    ;;
+  prune)
+    cmd_prune
+    ;;
+  ls)
+    cmd_ls
+    ;;
+  "")
+    echo "Usage: ctx <init|open|prune|ls>"
+    exit 1
+    ;;
+  *)
+    echo "Unknown command: $1"
+    echo "Usage: ctx <init|open|prune|ls>"
+    exit 1
+    ;;
+esac
