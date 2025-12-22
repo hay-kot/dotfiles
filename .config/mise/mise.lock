@@ -24,8 +24,9 @@ version = "v0.4.1"
 backend = "github:hay-kot/gofind"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.5.1"
+version = "0.6.0"
 backend = "github:hay-kot/hive"
+"platforms.macos-arm64" = { checksum = "sha256:1e4e94c4b095e35a19d9a7d58ff2841862b5994be40aedcd800e14b14baef783", url = "https://github.com/hay-kot/hive/releases/download/v0.6.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/hive/releases/assets/331853773"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.12.0"
