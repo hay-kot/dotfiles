@@ -2,6 +2,7 @@
 # -------------------------------------------------------
 # Environments
 
+go = "latest"
 node = "25"
 bun = "latest"
 rust = "latest"
