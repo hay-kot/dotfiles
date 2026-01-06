@@ -11,10 +11,23 @@ backend = "cargo:scooter"
 version = "0.5.0"
 backend = "cargo:sleek"
 
+[[tools."github:Zxilly/go-size-analyzer"]]
+version = "1.10.2"
+backend = "github:Zxilly/go-size-analyzer"
+
+[[tools."github:abice/go-enum"]]
+version = "0.9.2"
+backend = "github:abice/go-enum"
+
 [[tools."github:amir20/dtop"]]
 version = "0.5.0"
 backend = "github:amir20/dtop"
 "platforms.macos-arm64" = { checksum = "sha256:997afcd3a54f958edec0e2ad1036d90bdd2658a871da80e5b730bbfb92983fb3", url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-apple-darwin.tar.gz", url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691914"}
+
+[[tools."github:caarlos0/svu"]]
+version = "3.3.0"
+backend = "github:caarlos0/svu"
+"platforms.macos-arm64" = { checksum = "sha256:d32d3b793fae1ec86af6d8d423fc21a63dc1b17e531a2076cddb8630bded9f31", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_darwin_all.tar.gz", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461897"}
 
 [[tools."github:grafana/mcp-grafana"]]
 version = "0.7.9"
@@ -34,9 +47,18 @@ backend = "github:hay-kot/hive"
 version = "0.12.0"
 backend = "github:hay-kot/scaffold"
 
+[[tools."github:homeport/dyff"]]
+version = "1.10.2"
+backend = "github:homeport/dyff"
+"platforms.macos-arm64" = { checksum = "sha256:e0fbf178fd700101f0e9c1c6d8a725090c8c18505fe19688ec0daead1e9d4fdd", url = "https://github.com/homeport/dyff/releases/download/v1.10.2/dyff_1.10.2_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/281205313"}
+
 [[tools."github:sxyazi/yazi"]]
 version = "25.5.31"
 backend = "github:sxyazi/yazi"
+
+[[tools."github:thomasschafer/scooter"]]
+version = "0.8.4"
+backend = "github:thomasschafer/scooter"
 
 [[tools.go]]
 version = "1.25.3"

@@ -24,13 +24,13 @@ rust = "latest"
 # Go Team Tools
 "go:golang.org/x/perf/cmd/benchstat" = "latest"
 "go:golang.org/x/tools/cmd/deadcode" = "latest"
-"github:amir20/dtop" = "v0.5.0"
 
 # Go Tools
-"go:github.com/abice/go-enum" = "latest"
-"go:github.com/Zxilly/go-size-analyzer/cmd/gsa" = "latest"
-"go:github.com/homeport/dyff/cmd/dyff" = "v1"
-"go:github.com/caarlos0/svu/v3" = "latest"
+"github:abice/go-enum" = "latest"
+"github:Zxilly/go-size-analyzer" = "latest"
+"github:homeport/dyff" = "v1"               # yaml differ 
+"github:caarlos0/svu" = "latest"
+"github:amir20/dtop" = "v0.5.0"             # docker tui
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "v0.3.0"
@@ -42,9 +42,9 @@ rust = "latest"
 # -------------------------------------------------------
 # Rust
 
-"github:sxyazi/yazi" = "v25.5.31"
-"cargo:sleek" = "latest"   # sql formatter
-"cargo:scooter" = "latest" # find and replace mechanism
+"github:sxyazi/yazi" = "v25.5.31"         # file explorer tui
+"github:thomasschafer/scooter" = "latest" # find and replace mechanism
+"cargo:sleek" = "latest"                  # sql formatter
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]

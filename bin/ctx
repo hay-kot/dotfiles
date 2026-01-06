@@ -3,7 +3,7 @@
 #   ctx init   - create .haykot symlink and repo folder structure
 #   ctx open   - open context directory in editor
 #   ctx prune  - delete files older than 3 months
-#   ctx ls     - show context tree using eza
+#   ctx ls     - list files in @path format for Claude references
 #
 # Manages LLM context files, plans, and other assets
 set -euo pipefail
@@ -135,12 +135,13 @@ cmd_prune() {
   find "$ctx_dir" -type f -mtime +90 -print -delete
 }
 
-# List context tree
+# List context files in @path format
 cmd_ls() {
   ensure_base
 
-  local ctx_dir
+  local ctx_dir repo_root
   ctx_dir=$(get_ctx_dir)
+  repo_root=$(get_repo_root)
 
   if [[ -z "$ctx_dir" ]]; then
     echo "Error: not in a git repository with remote origin"
@@ -152,7 +153,12 @@ cmd_ls() {
     exit 0
   fi
 
-  exec eza --tree "$ctx_dir"
+  # Output files with @.haykot/... prefix for easy copy-paste
+  find "$ctx_dir" -type f | while read -r file; do
+    # Get path relative to ctx_dir and prefix with .haykot
+    rel_path="${file#"$ctx_dir"/}"
+    echo "@.haykot/$rel_path"
+  done
 }
 
 # Main dispatch
