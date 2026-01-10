@@ -48,9 +48,9 @@ version = "0.12.0"
 backend = "github:hay-kot/scaffold"
 
 [[tools."github:homeport/dyff"]]
-version = "1.10.2"
+version = "1.10.3"
 backend = "github:homeport/dyff"
-"platforms.macos-arm64" = { checksum = "sha256:e0fbf178fd700101f0e9c1c6d8a725090c8c18505fe19688ec0daead1e9d4fdd", url = "https://github.com/homeport/dyff/releases/download/v1.10.2/dyff_1.10.2_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/281205313"}
+"platforms.macos-arm64" = { checksum = "sha256:1c81bac7467c51de621328f53d9bf47b25ff0073724f844b5bf93fb4430ed7b5", url = "https://github.com/homeport/dyff/releases/download/v1.10.3/dyff_1.10.3_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/332530704"}
 
 [[tools."github:sxyazi/yazi"]]
 version = "25.5.31"
@@ -61,8 +61,9 @@ version = "0.8.4"
 backend = "github:thomasschafer/scooter"
 
 [[tools.go]]
-version = "1.25.3"
+version = "1.25.5"
 backend = "core:go"
+"platforms.macos-arm64" = { checksum = "sha256:bed8ebe824e3d3b27e8471d1307f803fc6ab8e1d0eb7a4ae196979bd9b801dd3", url = "https://dl.google.com/go/go1.25.5.darwin-arm64.tar.gz"}
 
 [[tools."go:github.com/Zxilly/go-size-analyzer/cmd/gsa"]]
 version = "1.10.2"
