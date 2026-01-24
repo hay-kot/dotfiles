@@ -113,7 +113,6 @@ brew install \
   hugo \
   tinygo-org/tools/tinygo \
   stripe/stripe-cli/stripe \
-  poetry \
   hay-kot/flint-tap/flint \
   hay-kot/dirwatch-tap/dirwatch
 
@@ -121,6 +120,7 @@ brew install \
 brew install --cask \
   bitwarden \
   brave-browser \
+  claude-code \
   chromedriver \
   docker \
   cleanshot \
@@ -150,10 +150,10 @@ brew install --cask \
   microsoft-auto-update \
   microsoft-office \
   orbstack \
-  private-internet-access \
   signal \
-  spotify \
   steam \
   transmit \
-  yubico-yubikey-manager
+  yubico-yubikey-manager \
+  proton-drive \
+  protonvpn
 

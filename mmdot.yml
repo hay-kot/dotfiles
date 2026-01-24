@@ -35,8 +35,8 @@ exec:
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
 
     # mac
-    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }
-    - { path: "./setup/mac.preferences.sh", tags: ["grafana","personal", "mac", "setup"] }
+    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"], }
+    - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"], }
 
     # grafana
     - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
@@ -91,7 +91,6 @@ brews:
       - hugo
       - tinygo-org/tools/tinygo
       - stripe/stripe-cli/stripe
-      - poetry
       - hay-kot/flint-tap/flint
       - hay-kot/dirwatch-tap/dirwatch
     casks:
@@ -101,12 +100,13 @@ brews:
       - microsoft-auto-update
       - microsoft-office
       - orbstack
-      - private-internet-access
       - signal
-      - spotify
       - steam
       - transmit
       - yubico-yubikey-manager
+      - proton-drive
+      - protonvpn
+
   all:
     taps:
       - dagger/tap
@@ -201,6 +201,7 @@ brews:
     casks:
       - bitwarden
       - brave-browser
+      - claude-code
       - chromedriver
       - docker
       - cleanshot
