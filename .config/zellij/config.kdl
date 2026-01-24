@@ -148,6 +148,14 @@ keybinds clear-defaults=true {
         bind "Alt l" { MoveFocusOrTab "right"; }
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
+        bind "Alt t" { NewTab; SwitchToMode "normal"; }
+        bind "Alt f" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "normal"
+        }
         bind "Ctrl q" { Quit; }
     }
     shared_except "locked" "move" {
@@ -273,7 +281,7 @@ load_plugins {
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-theme "gruvbox-dark"
+theme "tokyo-night"
  
 // Choose the base input mode of zellij.
 // Default: normal

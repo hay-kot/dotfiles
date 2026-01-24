@@ -1,0 +1,31 @@
+#!/bin/bash
+
+conffile="$HOME/.config/wezup/wezup.json"
+cwdirname=$(basename "$(pwd)")
+
+# Read the configuration and filter entries matching the current working directory
+contents=$(jq --arg dir "$cwdirname" '.[$dir]' "$conffile")
+
+# If no matching entry, print error and exit early
+if [ "$contents" = "null" ] || [ -z "$contents" ]; then
+    echo "Error: No matching entry found for directory '$cwdirname' in $conffile"
+    exit 1
+fi
+
+# Iterate through the array of tabs
+echo "$contents" | jq -c '.[]' | while read -r tab; do
+    tab_title=$(echo "$tab" | jq -r '.pane_title')
+    cmd=$(echo "$tab" | jq -r '.cmd // empty')
+
+    # Create new tab with name
+    zellij action new-tab --name "$tab_title"
+
+    # If there's a command, write it and execute
+    if [ -n "$cmd" ]; then
+        zellij action write-chars "$cmd"
+        zellij action write 10  # Send Enter key
+    fi
+done
+
+# Go back to first tab
+zellij action go-to-tab 1

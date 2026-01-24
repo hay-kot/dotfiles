@@ -267,6 +267,20 @@ export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | fzf | cut -f1 | xargs gh pr checkout"
 alias k="kubectl"
+
+# Zellij session picker (attach to existing)
+zj() {
+    local session
+    session=$(zellij list-sessions 2>/dev/null | fzf --ansi --prompt="Session: " | awk '{print $1}')
+    [[ -z "$session" ]] && return 0
+    zellij attach "$session"
+}
+
+# Zellij new named session (defaults to current directory name)
+zn() {
+    local name="${1:-$(basename $PWD)}"
+    zellij attach --create "$name"
+}
 k9z() {
   local context namespace cmd
 
