@@ -3,7 +3,7 @@
 #   ctx init   - create .haykot symlink and repo folder structure
 #   ctx open   - open context directory in editor
 #   ctx prune  - delete files older than 3 months
-#   ctx ls [-t]- list files (indented by depth, -t shows modified time)
+#   ctx ls     - list files grouped by directory with modified time
 #   ctx clean  - interactively select files to delete (requires gum)
 #   ctx repair - fix .haykot if it's a directory instead of a symlink
 #
@@ -138,19 +138,11 @@ cmd_prune() {
 }
 
 # List context files with indented paths
-# Usage: cmd_ls [-t|--time]
 cmd_ls() {
   ensure_base
 
-  local ctx_dir show_time=false
+  local ctx_dir
   ctx_dir=$(get_ctx_dir)
-
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      -t|--time) show_time=true; shift ;;
-      *) shift ;;
-    esac
-  done
 
   if [[ -z "$ctx_dir" ]]; then
     echo "Error: not in a git repository with remote origin"
@@ -196,12 +188,8 @@ cmd_ls() {
     fi
 
     full_path="@.haykot/$rel_path"
-    if [[ "$show_time" == true ]]; then
-      mod_time=$(stat -f '%Sm' -t '%b %d' "$file" 2>/dev/null || echo "")
-      printf "  %-${max_len}s  %s\n" "$full_path" "$mod_time"
-    else
-      echo "  $full_path"
-    fi
+    mod_time=$(stat -f '%Sm' -t '%b %d' "$file" 2>/dev/null || echo "")
+    printf "  %-${max_len}s  %s\n" "$full_path" "$mod_time"
   done <<< "$files"
 }
 
@@ -335,7 +323,7 @@ case "${1:-}" in
     cmd_prune
     ;;
   ls)
-    cmd_ls "${@:2}"
+    cmd_ls
     ;;
   clean)
     cmd_clean
