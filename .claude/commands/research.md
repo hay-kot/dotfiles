@@ -10,7 +10,9 @@ You are tasked with conducting comprehensive research across the codebase to ans
 
 ## Context Directory
 
-Research documents are stored in `.haykot/research/` which is part of the context directory managed by `ctx`. If `.haykot/` doesn't exist, run `ctx init` to create it.
+Research documents are stored in `.haykot/research/` which is part of the context directory managed by `ctx`.
+
+**IMPORTANT:** `.haykot` must be a symlink, not a directory. If it doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`.
 
 ## Initial Setup:
 
@@ -59,7 +61,8 @@ Then wait for the user's research query.
 
 5. **Gather metadata for the research document:**
    - Generate all relevant metadata
-   - Ensure `.haykot/research/` directory exists (create if needed)
+   - If `.haykot/` doesn't exist, run `ctx init` first (NEVER mkdir - it must be a symlink)
+   - After the symlink exists, create the `research/` subdirectory if needed
    - Filename: `.haykot/research/YYYY-MM-DD-ENG-XXXX-description.md`
      - Format: `YYYY-MM-DD-ENG-XXXX-description.md` where:
        - YYYY-MM-DD is today's date

@@ -9,7 +9,9 @@ You are tasked with creating detailed implementation plans through an interactiv
 
 ## Context Directory
 
-Plans and research are stored in `.haykot/` which symlinks to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`. If `.haykot/` doesn't exist, run `ctx init` to create it.
+Plans and research are stored in `.haykot/` which symlinks to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`.
+
+**IMPORTANT:** `.haykot` must be a symlink, not a directory. If it doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`.
 
 ## Initial Response
 
@@ -172,8 +174,8 @@ Once aligned on approach:
 After structure approval:
 
 1. **Write the plan** to `.haykot/plans/YYYY-MM-DD-ENG-XXXX-description.md`
-   - Ensure `.haykot/` exists (run `ctx init` if not)
-   - Create `.haykot/plans/` directory if needed
+   - If `.haykot/` doesn't exist, run `ctx init` first (NEVER use `mkdir` - it must be a symlink)
+   - After the symlink exists, create the `plans/` subdirectory if needed
    - Format: `YYYY-MM-DD-ENG-XXXX-description.md` where:
      - YYYY-MM-DD is today's date
      - ENG-XXXX is the ticket number (omit if no ticket)

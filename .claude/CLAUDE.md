@@ -13,7 +13,12 @@ We build production code together. I handle implementation details while you gui
 
 ## Generated Assets
 
-Store generated markdown files (plans, context, notes) in `.haykot/` when available. This symlinks to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`. Use `ctx init` to create the symlink if it doesn't exist.
+Store generated markdown files (plans, context, notes) in `.haykot/` when available.
+
+**IMPORTANT:** `.haykot` must ONLY be a symlink, NEVER a regular directory.
+- If `.haykot/` doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`
+- After the symlink exists, subdirectories (`plans/`, `research/`, etc.) can be created normally
+- The symlink points to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`
 
 ## Code Organization
 
