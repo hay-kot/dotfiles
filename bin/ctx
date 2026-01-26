@@ -3,7 +3,9 @@
 #   ctx init   - create .haykot symlink and repo folder structure
 #   ctx open   - open context directory in editor
 #   ctx prune  - delete files older than 3 months
-#   ctx ls     - list files in @path format for Claude references
+#   ctx ls [-t]- list files (indented by depth, -t shows modified time)
+#   ctx clean  - interactively select files to delete (requires gum)
+#   ctx repair - fix .haykot if it's a directory instead of a symlink
 #
 # Manages LLM context files, plans, and other assets
 set -euo pipefail
@@ -135,13 +137,20 @@ cmd_prune() {
   find "$ctx_dir" -type f -mtime +90 -print -delete
 }
 
-# List context files in @path format
+# List context files with indented paths
+# Usage: cmd_ls [-t|--time]
 cmd_ls() {
   ensure_base
 
-  local ctx_dir repo_root
+  local ctx_dir show_time=false
   ctx_dir=$(get_ctx_dir)
-  repo_root=$(get_repo_root)
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -t|--time) show_time=true; shift ;;
+      *) shift ;;
+    esac
+  done
 
   if [[ -z "$ctx_dir" ]]; then
     echo "Error: not in a git repository with remote origin"
@@ -153,12 +162,165 @@ cmd_ls() {
     exit 0
   fi
 
-  # Output files with @.haykot/... prefix for easy copy-paste
-  find "$ctx_dir" -type f | while read -r file; do
-    # Get path relative to ctx_dir and prefix with .haykot
+  # Collect files
+  local files
+  files=$(find "$ctx_dir" -type f ! -name '.DS_Store' 2>/dev/null | sort)
+
+  if [[ -z "$files" ]]; then
+    echo ".haykot/ (empty)"
+    exit 0
+  fi
+
+  # Find max path length for alignment
+  local max_len=0
+  while read -r file; do
     rel_path="${file#"$ctx_dir"/}"
-    echo "@.haykot/$rel_path"
-  done
+    full_path="@.haykot/$rel_path"
+    (( ${#full_path} > max_len )) && max_len=${#full_path}
+  done <<< "$files"
+
+  # Print files grouped by directory
+  local current_dir=""
+  while read -r file; do
+    rel_path="${file#"$ctx_dir"/}"
+    dir=$(dirname "$rel_path")
+
+    # Print directory header when directory changes
+    if [[ "$dir" != "$current_dir" ]]; then
+      if [[ "$dir" == "." ]]; then
+        echo ".haykot/"
+      else
+        echo "$dir/"
+      fi
+      current_dir="$dir"
+    fi
+
+    full_path="@.haykot/$rel_path"
+    if [[ "$show_time" == true ]]; then
+      mod_time=$(stat -f '%Sm' -t '%b %d' "$file" 2>/dev/null || echo "")
+      printf "  %-${max_len}s  %s\n" "$full_path" "$mod_time"
+    else
+      echo "  $full_path"
+    fi
+  done <<< "$files"
+}
+
+# Interactively select and delete files
+cmd_clean() {
+  ensure_base
+
+  if ! command -v gum &>/dev/null; then
+    echo "Error: gum is required. Install with: brew install gum"
+    exit 1
+  fi
+
+  local ctx_dir
+  ctx_dir=$(get_ctx_dir)
+
+  if [[ -z "$ctx_dir" ]]; then
+    echo "Error: not in a git repository with remote origin"
+    exit 1
+  fi
+
+  if [[ ! -d "$ctx_dir" ]]; then
+    echo "No context directory. Run 'ctx init' first"
+    exit 0
+  fi
+
+  # Get list of files
+  local files
+  files=$(find "$ctx_dir" -type f | sort)
+
+  if [[ -z "$files" ]]; then
+    echo "No files in context directory"
+    exit 0
+  fi
+
+  # Use gum to select files (show relative paths for readability)
+  local selected
+  selected=$(echo "$files" | while read -r f; do
+    echo "${f#"$ctx_dir"/}"
+  done | gum choose --no-limit --header "Select files to delete:")
+
+  if [[ -z "$selected" ]]; then
+    echo "No files selected"
+    exit 0
+  fi
+
+  # Confirm deletion
+  echo "Files to delete:"
+  echo "$selected" | sed 's/^/  /'
+
+  if gum confirm "Delete these files?"; then
+    echo "$selected" | while read -r rel; do
+      rm "$ctx_dir/$rel"
+      echo "Deleted: $rel"
+    done
+  else
+    echo "Cancelled"
+  fi
+}
+
+# Repair .haykot if it's a directory instead of symlink
+cmd_repair() {
+  ensure_base
+
+  local repo_root repo_path ctx_dir haykot
+  repo_root=$(get_repo_root)
+
+  if [[ -z "$repo_root" ]]; then
+    echo "Error: not in a git repository"
+    exit 1
+  fi
+
+  repo_path=$(get_repo_path)
+  if [[ -z "$repo_path" ]]; then
+    echo "Error: no remote origin configured"
+    exit 1
+  fi
+
+  haykot="$repo_root/.haykot"
+  ctx_dir="$CTX_BASE/$repo_path"
+
+  # Check if .haykot exists
+  if [[ ! -e "$haykot" ]]; then
+    echo "No .haykot found. Run 'ctx init' to create one."
+    exit 0
+  fi
+
+  # Already a symlink - nothing to repair
+  if [[ -L "$haykot" ]]; then
+    echo ".haykot is already a symlink -> $(readlink "$haykot")"
+    exit 0
+  fi
+
+  # Must be a directory to repair
+  if [[ ! -d "$haykot" ]]; then
+    echo "Error: .haykot exists but is not a directory or symlink"
+    exit 1
+  fi
+
+  echo "Found .haykot as directory, converting to symlink..."
+  echo "  Source: $haykot"
+  echo "  Target: $ctx_dir"
+
+  # Create target directory
+  mkdir -p "$ctx_dir"
+
+  # Move contents to target
+  if [[ -n "$(ls -A "$haykot" 2>/dev/null)" ]]; then
+    echo "Moving contents..."
+    # Use cp + rm instead of mv to handle merging with existing files
+    cp -r "$haykot"/* "$ctx_dir"/ 2>/dev/null || true
+    cp -r "$haykot"/.[!.]* "$ctx_dir"/ 2>/dev/null || true
+  fi
+
+  # Remove the directory
+  rm -rf "$haykot"
+
+  # Create symlink
+  ln -s "$ctx_dir" "$haykot"
+  echo "Repaired: .haykot -> $ctx_dir"
 }
 
 # Main dispatch
@@ -173,15 +335,21 @@ case "${1:-}" in
     cmd_prune
     ;;
   ls)
-    cmd_ls
+    cmd_ls "${@:2}"
+    ;;
+  clean)
+    cmd_clean
+    ;;
+  repair)
+    cmd_repair
     ;;
   "")
-    echo "Usage: ctx <init|open|prune|ls>"
+    echo "Usage: ctx <init|open|prune|ls|clean|repair>"
     exit 1
     ;;
   *)
     echo "Unknown command: $1"
-    echo "Usage: ctx <init|open|prune|ls>"
+    echo "Usage: ctx <init|open|prune|ls|clean|repair>"
     exit 1
     ;;
 esac
