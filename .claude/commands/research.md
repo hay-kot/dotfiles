@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*)
+allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Web Search
 description: Research codebase comprehensively using parallel sub-agents
 model: opus
 ---
