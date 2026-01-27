@@ -29,6 +29,9 @@ hooks:
     commands:
       - task dep:sync
       - task pc:install
+  - pattern: ".*[:/]hay-kot/mealie"
+    commands:
+      - task setup
 
 keybindings:
   enter:
