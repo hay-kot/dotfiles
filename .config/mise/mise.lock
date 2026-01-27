@@ -13,7 +13,7 @@ backend = "cargo:sleek"
 
 [[tools."forgejo:gitea/tea"]]
 version = "0.11.1"
-backend = "forgejo:gitea/tea[api_url=https://gitea.com/api/v1]"
+backend = "forgejo:gitea/tea"
 "platforms.macos-arm64" = { checksum = "sha256:1494fc312ecfc9c3ce50e340b155aa1830dee26d4c967599bf7ecd870cc38f5e", url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-darwin-arm64", url_api = "https://gitea.com/attachments/c3f3bbc7-be92-45ab-b37d-f00bb9869350"}
 
 [[tools."github:Zxilly/go-size-analyzer"]]
@@ -27,9 +27,8 @@ backend = "github:abice/go-enum"
 "platforms.macos-arm64" = { checksum = "sha256:94bb64c966baa51cbfd17c81b455b5d0e7e6dbd7e7e7c16cd3f65d6a5a2888dd", url = "https://github.com/abice/go-enum/releases/download/v0.9.2/go-enum_Darwin_arm64", url_api = "https://api.github.com/repos/abice/go-enum/releases/assets/305592765"}
 
 [[tools."github:amir20/dtop"]]
-version = "0.5.0"
+version = "v0.5.0"
 backend = "github:amir20/dtop"
-"platforms.macos-arm64" = { checksum = "sha256:997afcd3a54f958edec0e2ad1036d90bdd2658a871da80e5b730bbfb92983fb3", url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-apple-darwin.tar.gz", url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691914"}
 
 [[tools."github:caarlos0/svu"]]
 version = "3.3.0"
@@ -41,9 +40,8 @@ version = "0.7.9"
 backend = "github:grafana/mcp-grafana"
 
 [[tools."github:hay-kot/gofind"]]
-version = "0.4.1"
+version = "v0.4.1"
 backend = "github:hay-kot/gofind"
-"platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
 version = "v0.7.0"
@@ -94,11 +92,11 @@ version = "v0.3.2"
 backend = "go:github.com/hay-kot/gofind"
 
 [[tools."go:github.com/hay-kot/mdparse"]]
-version = "0.1.0"
+version = "v0.1.0"
 backend = "go:github.com/hay-kot/mdparse"
 
 [[tools."go:github.com/hay-kot/mmdot"]]
-version = "0.3.0"
+version = "v0.3.0"
 backend = "go:github.com/hay-kot/mmdot"
 
 [[tools."go:github.com/homeport/dyff/cmd/dyff"]]
