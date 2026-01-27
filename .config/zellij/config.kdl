@@ -130,6 +130,18 @@ keybinds clear-defaults=true {
         }
     }
     shared_except "locked" {
+        bind "Alt Tab" { GoToNextTab; }
+        bind "F12" { ToggleFloatingPanes; }
+        bind "Alt g" {
+            Run "lazygit" {
+                floating true
+                close_on_exit true
+                x "10%"
+                y "10%"
+                width "80%"
+                height "80%"
+            }
+        }
         bind "Alt left" { MoveFocusOrTab "left"; }
         bind "Alt down" { MoveFocus "down"; }
         bind "Alt up" { MoveFocus "up"; }
@@ -139,7 +151,6 @@ keybinds clear-defaults=true {
         bind "Alt =" { Resize "Increase"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
-        bind "Alt f" { ToggleFloatingPanes; }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt h" { MoveFocusOrTab "left"; }
         bind "Alt i" { MoveTab "left"; }
@@ -154,7 +165,6 @@ keybinds clear-defaults=true {
                 floating true
                 move_to_focused_tab true
             }
-            SwitchToMode "normal"
         }
         bind "Ctrl q" { Quit; }
     }

@@ -268,12 +268,26 @@ alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git 
 alias checkout-pr="gh pr list | cut -f1,2 | fzf | cut -f1 | xargs gh pr checkout"
 alias k="kubectl"
 
-# Zellij session picker (attach to existing)
+# Zellij helper
 zj() {
-    local session
-    session=$(zellij list-sessions 2>/dev/null | fzf --ansi --prompt="Session: " | awk '{print $1}')
-    [[ -z "$session" ]] && return 0
-    zellij attach "$session"
+    case "$1" in
+        kill)
+            zellij kill-all-sessions
+            ;;
+        prune)
+            zellij delete-all-sessions
+            ;;
+        ls)
+            zellij list-sessions
+            ;;
+        *)
+            # Default: session picker
+            local session
+            session=$(zellij list-sessions 2>/dev/null | fzf --ansi --prompt="Session: " | awk '{print $1}')
+            [[ -z "$session" ]] && return 0
+            zellij attach "$session"
+            ;;
+    esac
 }
 
 # Zellij new named session (defaults to current directory name)

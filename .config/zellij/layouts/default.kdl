@@ -1,4 +1,3 @@
-// from compact default layout
 layout {
     pane
     pane size=1 borderless=true {

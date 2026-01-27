@@ -2,11 +2,17 @@ git_path: git
 
 commands:
   spawn:
+    # - >-
+    #   new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}")
+    #   && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
+    #   && echo claude \"{{ .Prompt | shq }}\"
+    #   | wezterm cli send-text --no-paste --pane-id="$new_pane_id"
     - >-
-      new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}")
+      new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
-      && echo claude \"{{ .Prompt | shq }}\"
-      | wezterm cli send-text --no-paste --pane-id="$new_pane_id"
+      && sleep 0.3
+      && zellij -s "{{ .Name }}" action write-chars "claude '{{ .Prompt }}'"
+      && zellij -s "{{ .Name }}" action write 13
   recycle:
     - git reset --hard
     - git checkout main
@@ -26,5 +32,8 @@ hooks:
 
 keybindings:
   enter:
-    help: open in weaterm
-    sh: "wezterm cli spawn --cwd '{{ .Path }}'"
+    help: open in zellij session
+    # sh: "wezterm cli spawn --cwd '{{ .Path }}'"
+    sh: >-
+      new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
+      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
