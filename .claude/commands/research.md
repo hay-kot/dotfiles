@@ -10,9 +10,9 @@ You are tasked with conducting comprehensive research across the codebase to ans
 
 ## Context Directory
 
-Research documents are stored in `.haykot/research/` which is part of the context directory managed by `ctx`.
+Research documents are stored in `.hive/research/` which is part of the context directory managed by `hive ctx`.
 
-**IMPORTANT:** `.haykot` must be a symlink, not a directory. If it doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`.
+**IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run `hive ctx init` to create the symlink - NEVER use `mkdir`.
 
 ## Initial Setup:
 
@@ -53,7 +53,7 @@ Then wait for the user's research query.
    - IMPORTANT: Wait for ALL sub-agent tasks to complete before proceeding
    - Compile all sub-agent results
    - Prioritize live codebase findings as primary source of truth
-   - Use `.haykot/` findings as supplementary historical context
+   - Use `.hive/` findings as supplementary historical context
    - Connect findings across different components
    - Include specific file paths and line numbers for reference
    - Highlight patterns, connections, and architectural decisions
@@ -61,9 +61,9 @@ Then wait for the user's research query.
 
 5. **Gather metadata for the research document:**
    - Generate all relevant metadata
-   - If `.haykot/` doesn't exist, run `ctx init` first (NEVER mkdir - it must be a symlink)
+   - If `.hive/` doesn't exist, run `hive ctx init` first (NEVER mkdir - it must be a symlink)
    - After the symlink exists, create the `research/` subdirectory if needed
-   - Filename: `.haykot/research/YYYY-MM-DD-ENG-XXXX-description.md`
+   - Filename: `.hive/research/YYYY-MM-DD-ENG-XXXX-description.md`
      - Format: `YYYY-MM-DD-ENG-XXXX-description.md` where:
        - YYYY-MM-DD is today's date
        - ENG-XXXX is the ticket number (omit if no ticket)
@@ -129,14 +129,14 @@ Then wait for the user's research query.
 
      ## Historical Context
 
-     [Relevant insights from `.haykot/` directory with references]
+     [Relevant insights from `.hive/` directory with references]
 
-     - `.haykot/research/something.md` - Historical decision about X
-     - `.haykot/notes.md` - Past exploration of Y
+     - `.hive/research/something.md` - Historical decision about X
+     - `.hive/notes.md` - Past exploration of Y
 
      ## Related Research
 
-     [Links to other research documents in `.haykot/research/`]
+     [Links to other research documents in `.hive/research/`]
 
      ## Open Questions
 
@@ -167,7 +167,7 @@ Then wait for the user's research query.
 
 - Always use parallel Task agents to maximize efficiency and minimize context usage
 - Always run fresh codebase research - never rely solely on existing research documents
-- The `.haykot/` directory provides historical context to supplement live findings
+- The `.hive/` directory provides historical context to supplement live findings
 - Focus on finding concrete file paths and line numbers for developer reference
 - Research documents should be self-contained with all necessary context
 - Each sub-agent prompt should be specific and focused on read-only operations
@@ -176,7 +176,7 @@ Then wait for the user's research query.
 - Link to GitHub when possible for permanent references
 - Keep the main agent focused on synthesis, not deep file reading
 - Encourage sub-agents to find examples and usage patterns, not just definitions
-- Check `.haykot/` for existing research and context
+- Check `.hive/` for existing research and context
 - **File reading**: Always read mentioned files FULLY (no limit/offset) before spawning sub-tasks
 - **Critical ordering**: Follow the numbered steps exactly
   - ALWAYS read mentioned files first before spawning sub-tasks (step 1)

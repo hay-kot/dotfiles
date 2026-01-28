@@ -5,9 +5,9 @@ description: Review and iterate on an existing task plan, discussing trade-offs 
 
 ## Overview
 
-Review an existing plan from `.haykot/plans/`, analyze its quality and completeness, and collaborate with the user to improve it through discussion of trade-offs and design decisions.
+Review an existing plan from `.hive/plans/`, analyze its quality and completeness, and collaborate with the user to improve it through discussion of trade-offs and design decisions.
 
-If a specific plan file is provided as an argument, use that file. Otherwise, find the latest plan in `.haykot/plans/` (sorted by filename, which uses YYYY-MM-DD prefix).
+If a specific plan file is provided as an argument, use that file. Otherwise, find the latest plan in `.hive/plans/` (sorted by filename, which uses YYYY-MM-DD prefix).
 
 ## Review Process
 

@@ -13,12 +13,12 @@ We build production code together. I handle implementation details while you gui
 
 ## Generated Assets
 
-Store generated markdown files (plans, context, notes) in `.haykot/` when available.
+Store generated markdown files (plans, context, notes) in `.hive/` when available.
 
-**IMPORTANT:** `.haykot` must ONLY be a symlink, NEVER a regular directory.
-- If `.haykot/` doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`
+**IMPORTANT:** `.hive` must ONLY be a symlink, NEVER a regular directory.
+- If `.hive/` doesn't exist, run `hive ctx init` to create the symlink - NEVER use `mkdir`
 - After the symlink exists, subdirectories (`plans/`, `research/`, etc.) can be created normally
-- The symlink points to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`
+- The symlink points to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`
 
 ## Code Organization
 

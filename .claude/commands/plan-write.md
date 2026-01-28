@@ -9,9 +9,9 @@ You are tasked with creating detailed implementation plans through an interactiv
 
 ## Context Directory
 
-Plans and research are stored in `.haykot/` which symlinks to `$XDG_DATA_HOME/haykotllm/<repo-owner>/<repo-name>/`.
+Plans and research are stored in `.hive/` which symlinks to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`.
 
-**IMPORTANT:** `.haykot` must be a symlink, not a directory. If it doesn't exist, run `ctx init` to create the symlink - NEVER use `mkdir`.
+**IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run `hive ctx init` to create the symlink - NEVER use `mkdir`.
 
 ## Initial Response
 
@@ -34,8 +34,8 @@ Please provide:
 
 I'll analyze this information and work with you to create a comprehensive plan.
 
-Tip: You can also invoke this command with a ticket file directly: `/plan-write .haykot/tickets/eng_1234.md`
-For deeper analysis, try: `/plan-write think deeply about .haykot/tickets/eng_1234.md`
+Tip: You can also invoke this command with a ticket file directly: `/plan-write .hive/tickets/eng_1234.md`
+For deeper analysis, try: `/plan-write think deeply about .hive/tickets/eng_1234.md`
 ```
 
 Then wait for the user's input.
@@ -45,7 +45,7 @@ Then wait for the user's input.
 ### Step 1: Context Gathering & Initial Analysis
 
 1. **Read all mentioned files immediately and FULLY**:
-   - Ticket files (e.g., `.haykot/tickets/eng_1234.md`)
+   - Ticket files (e.g., `.hive/tickets/eng_1234.md`)
    - Research documents
    - Related implementation plans
    - Any JSON/data files mentioned
@@ -57,7 +57,7 @@ Then wait for the user's input.
    Before asking the user any questions, use specialized agents to research in parallel:
    - Use the **codebase-locator** agent to find all files related to the ticket/task
    - Use the **codebase-analyzer** agent to understand how the current implementation works
-   - Check `.haykot/` for any existing research or context about this feature
+   - Check `.hive/` for any existing research or context about this feature
 
    These agents will:
    - Find relevant source files, configs, and tests
@@ -116,7 +116,7 @@ After getting initial clarifications:
    - **codebase-pattern-finder** - To find similar features we can model after
 
    **For historical context:**
-   - Check `.haykot/` directory for existing research, plans, or decisions about this area
+   - Check `.hive/` directory for existing research, plans, or decisions about this area
 
    Each agent knows how to:
    - Find the right files and code patterns
@@ -173,8 +173,8 @@ Once aligned on approach:
 
 After structure approval:
 
-1. **Write the plan** to `.haykot/plans/YYYY-MM-DD-ENG-XXXX-description.md`
-   - If `.haykot/` doesn't exist, run `ctx init` first (NEVER use `mkdir` - it must be a symlink)
+1. **Write the plan** to `.hive/plans/YYYY-MM-DD-ENG-XXXX-description.md`
+   - If `.hive/` doesn't exist, run `hive ctx init` first (NEVER use `mkdir` - it must be a symlink)
    - After the symlink exists, create the `plans/` subdirectory if needed
    - Format: `YYYY-MM-DD-ENG-XXXX-description.md` where:
      - YYYY-MM-DD is today's date
@@ -286,7 +286,7 @@ After structure approval:
 ## References
 
 - Original ticket: `[ticket reference]`
-- Related research: `.haykot/research/[relevant].md`
+- Related research: `.hive/research/[relevant].md`
 - Similar implementation: `[file:line]`
 ````
 
@@ -296,7 +296,7 @@ After structure approval:
 
    ```
    I've created the initial implementation plan at:
-   `.haykot/plans/YYYY-MM-DD-ENG-XXXX-description.md`
+   `.hive/plans/YYYY-MM-DD-ENG-XXXX-description.md`
 
    Please review it and let me know:
    - Are the phases properly scoped?
@@ -455,7 +455,7 @@ tasks = [
 User: /create_plan
 Assistant: I'll help you create a detailed implementation plan...
 
-User: We need to add parent-child tracking for Claude sub-tasks. See .haykot/tickets/eng_1478.md
+User: We need to add parent-child tracking for Claude sub-tasks. See .hive/tickets/eng_1478.md
 Assistant: Let me read that ticket file completely first...
 
 [Reads file fully]

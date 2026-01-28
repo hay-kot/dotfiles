@@ -29,6 +29,7 @@ backend = "github:abice/go-enum"
 [[tools."github:amir20/dtop"]]
 version = "v0.5.0"
 backend = "github:amir20/dtop"
+"platforms.macos-arm64" = { checksum = "sha256:997afcd3a54f958edec0e2ad1036d90bdd2658a871da80e5b730bbfb92983fb3", url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-apple-darwin.tar.gz", url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691914"}
 
 [[tools."github:caarlos0/svu"]]
 version = "3.3.0"
@@ -42,11 +43,12 @@ backend = "github:grafana/mcp-grafana"
 [[tools."github:hay-kot/gofind"]]
 version = "v0.4.1"
 backend = "github:hay-kot/gofind"
+"platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "v0.7.0"
+version = "0.8.1"
 backend = "github:hay-kot/hive"
-"platforms.macos-arm64" = { checksum = "sha256:f276bc7081a2f9270b4966ae7911c8c39c95b002c408d2a99526c9853bed2844", url = "https://github.com/hay-kot/hive/releases/download/v0.7.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/hive/releases/assets/346237603"}
+"platforms.macos-arm64" = { checksum = "sha256:cdb86985c537c9096839f51ef0c613d1a6c813d8ccb97a694df30c524a91b494", url = "https://github.com/hay-kot/hive/releases/download/v0.8.1/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/hive/releases/assets/347315527"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.12.0"

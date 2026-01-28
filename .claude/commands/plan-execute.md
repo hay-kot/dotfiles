@@ -5,12 +5,12 @@ description: executes a plan previously written to the repo
 
 # Execute Plan
 
-Execute a plan from `.haykot/plans/`.
+Execute a plan from `.hive/plans/`.
 
 ## Process
 
 1. If a specific plan file is provided as an argument, use that file
-2. Otherwise, find the latest plan in `.haykot/plans/` (sorted by filename, which uses YYYY-MM-DD prefix)
+2. Otherwise, find the latest plan in `.hive/plans/` (sorted by filename, which uses YYYY-MM-DD prefix)
 3. Read the plan fully to understand your task
 4. Ensure you're on a feature branch; create one if needed
 
