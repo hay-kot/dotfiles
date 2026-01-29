@@ -20,6 +20,12 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 - After the symlink exists, subdirectories (`plans/`, `research/`, etc.) can be created normally
 - The symlink points to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`
 
+**Finding Assets:**
+Use `ctx ls` to list files in the `.hive/` directory. Glob and standard `ls` don't follow the symlink.
+
+- `ctx ls` - List all context files and directories
+- Then use Read tool with the full path from ctx ls output (e.g., `.hive/plans/2026-01-29-plan.md`)
+
 ## Code Organization
 
 **Keep functions small and focused:**

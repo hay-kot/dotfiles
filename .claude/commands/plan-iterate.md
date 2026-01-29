@@ -83,7 +83,18 @@ Structure your review as:
 
 3. **Questions for Discussion**
    - Numbered list of specific questions requiring user input
-   - Group by category (Design, Trade-offs, Validation, etc.)
+   - Group by category (Design, Trade-offs, Validation, etc.) a the end of the response
+     Example:
+     ```
+     ## Questions
+
+     ### Category 1
+       - ...
+       - ...
+     ### Category 2
+       - ...
+       - ...
+     ```
    - Explain why each question matters for the implementation
 
 4. **Suggested Improvements**
