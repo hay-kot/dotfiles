@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Usage: teaapi curl [curl-options] URL
+#        teaapi --allow-delete curl -X DELETE URL
+#
+# Wrapper that injects Gitea token from tea config and redacts it from output.
+# Automatically adds Authorization header for authenticated API requests.
+# DELETE requests are blocked by default; use --allow-delete to permit.
+set -euo pipefail
+
+TEA_CONFIG="${HOME}/.config/tea/config.yml"
+ALLOW_DELETE=false
+
+if [[ "${1:-}" == "--allow-delete" ]]; then
+  ALLOW_DELETE=true
+  shift
+fi
+
+if [[ ! -f "$TEA_CONFIG" ]]; then
+  echo "Error: tea config not found at $TEA_CONFIG" >&2
+  exit 1
+fi
+
+GITEA_TOKEN=$(cat "$TEA_CONFIG" | yq ".logins.[0].token")
+
+if [[ -z "$GITEA_TOKEN" || "$GITEA_TOKEN" == "null" ]]; then
+  echo "Error: no token found in tea config" >&2
+  exit 1
+fi
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: teaapi curl [curl-options] URL" >&2
+  echo "       teaapi --allow-delete curl -X DELETE URL" >&2
+  exit 1
+fi
+
+if [[ "$1" != "curl" ]]; then
+  echo "Error: only 'curl' command is supported" >&2
+  echo "Usage: teaapi curl [curl-options] URL" >&2
+  exit 1
+fi
+
+shift
+
+if [[ "$ALLOW_DELETE" == "false" ]]; then
+  for arg in "$@"; do
+    if [[ "${arg^^}" == "DELETE" ]]; then
+      echo "Error: DELETE requests blocked. Use --allow-delete flag to permit." >&2
+      exit 1
+    fi
+  done
+fi
+
+curl -H "Authorization: token ${GITEA_TOKEN}" "$@" 2>&1 | sed "s/${GITEA_TOKEN}/[REDACTED]/g"

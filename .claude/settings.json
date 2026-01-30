@@ -95,6 +95,17 @@
       "Bash(golangci-lint run:*)",
       "Bash(godoc:*)",
       "Bash(jq:*)",
+      "Bash(tea login list:*)",
+      "Bash(tea whoami:*)",
+      "Bash(tea repo list:*)",
+      "Bash(tea repo view:*)",
+      "Bash(tea pr list:*)",
+      "Bash(tea pr view:*)",
+      "Bash(tea issue list:*)",
+      "Bash(tea issue view:*)",
+      "Bash(tea release list:*)",
+      "Bash(tea release view:*)",
+      "Bash(teaapi curl https:*)",
       "WebSearch",
       "WebFetch"
     ]
