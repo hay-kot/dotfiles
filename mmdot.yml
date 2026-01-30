@@ -132,6 +132,7 @@ brews:
       - crf++
       - ctop
       - dagger
+      - difftastic
       - docker
       - editorconfig-checker
       - eza

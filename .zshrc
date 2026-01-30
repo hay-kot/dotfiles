@@ -249,6 +249,10 @@ fi
 alias rgnb="rg -- "
 
 
+# Difftastic
+export DFT_BACKGROUND=dark
+export DFT_DISPLAY=inline
+
 # Tokyo Night theme colors for gum
 export GUM_SPIN_SPINNER_FOREGROUND="#7aa2f7"  # Tokyo Night blue
 export GUM_SPIN_TITLE_FOREGROUND="#c0caf5"    # Tokyo Night foreground

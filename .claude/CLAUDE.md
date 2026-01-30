@@ -21,10 +21,10 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 - The symlink points to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`
 
 **Finding Assets:**
-Use `ctx ls` to list files in the `.hive/` directory. Glob and standard `ls` don't follow the symlink.
+**CRITICAL:** To find plans, research, or any `.hive/` documents, run `ctx ls` with NO arguments and NO piping. Glob and standard `ls` do not follow the symlink and will fail silently.
 
-- `ctx ls` - List all context files and directories
-- Then use Read tool with the full path from ctx ls output (e.g., `.hive/plans/2026-01-29-plan.md`)
+- Run exactly: `ctx ls`
+- Then use Read tool with the full path from the output (e.g., `.hive/plans/2026-01-29-plan.md`)
 
 ## Code Organization
 
@@ -36,18 +36,15 @@ Use `ctx ls` to list files in the `.hive/` directory. Glob and standard `ls` don
 
 ## Architecture Principles
 
-**This is always a feature branch:**
-
-- Delete old code completely - no deprecation needed
-- No versioned names (processV2, handleNew, ClientOld)
+- Delete old code completely - no deprecation, versioned names, or "removed" comments
 - No migration code unless explicitly requested
-- No "removed code" comments - just delete it
-
-**Prefer explicit over implicit:**
-
 - Clear function names over clever abstractions
 - Obvious data flow over hidden magic
 - Direct dependencies over service locators
+
+## Work Tracking
+
+Use the beads (`bd`) CLI to track work and manage dependencies across sessions. Create issues for non-trivial tasks, update status as work progresses, and track blockers with dependencies.
 
 ## Maximize Efficiency
 
@@ -55,10 +52,21 @@ Use `ctx ls` to list files in the `.hive/` directory. Glob and standard `ls` don
 **Multiple agents:** Split complex tasks - one for tests, one for implementation
 **Batch similar work:** Group related file edits together
 
+## Task Runners First
+
+**Before running commands directly, check for existing task definitions:**
+
+1. `task --list` - Check Taskfile.yml for available tasks
+2. `make help` or scan Makefile - Check for make targets
+
+**Use the task runner when available.** These capture project-specific configurations, environment setup, and institutional knowledge. Only fall back to direct commands when no task exists.
+
 ## Git Standards
 
-**Branch Naming:** For repos that are apart of the 'grafana' org, use a `hay-kot/` prefix for all branches. Otherwise use `feat/`, `chore/` style branch semantics.
-**Commit Messages:** Commit messages should be clear and concise. We should not add extra words or unnecessary explanations. You should assume that those reading the commits and code have a good understand of the codebase and code in general.
+**Never push to main.** All work happens in feature branches. If currently on main, create a branch before making changes.
+
+**Branch Naming:** For repos in the 'grafana' org, use a `hay-kot/` prefix. Otherwise use `feat/`, `chore/`, `fix/` prefixes.
+**Commit Messages:** Clear and concise. Assume readers understand the codebase.
 
 ## Go Development Standards
 
@@ -67,7 +75,6 @@ Use `ctx ls` to list files in the `.hive/` directory. Glob and standard `ls` don
 - **Concrete types** not interface{} or any - interfaces hide bugs
 - **Channels** for synchronization, not time.Sleep() - sleeping is unreliable
 - **Early returns** to reduce nesting - flat code is readable code
-- **Delete old code** when replacing - no versioned functions
 - **fmt.Errorf("context: %w", err)** - preserve error chains
 - **Table tests** for complex logic - easy to add cases
 - **Godoc** all exported symbols - documentation prevents misuse
