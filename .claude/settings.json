@@ -12,7 +12,7 @@
       "Grep(.hive/**/*)",
       "Bash(hive ctx init)",
       "Bash(hive ctx ls)",
-      "Bash(ctx ls)",
+      "Bash(ctx ls:*)",
       "Bash(npm run lint)",
       "Bash(npm run test:*)",
       "Bash(make test)",
