@@ -101,6 +101,7 @@
       "Bash(tea repo view:*)",
       "Bash(tea pr list:*)",
       "Bash(tea pr view:*)",
+      "Bash(tea pr create:*)",
       "Bash(tea issue list:*)",
       "Bash(tea issue view:*)",
       "Bash(tea release list:*)",
