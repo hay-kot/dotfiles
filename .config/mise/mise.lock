@@ -46,9 +46,9 @@ backend = "github:hay-kot/gofind"
 "platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "v0.11.0"
+version = "v0.13.0"
 backend = "github:hay-kot/hive"
-"platforms.macos-arm64" = { checksum = "sha256:669d6d0f17e117201f074a1e80fa4cdd13a1b010dc675157d4c010053024095f", url = "https://github.com/hay-kot/hive/releases/download/v0.11.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/hive/releases/assets/348433486"}
+"platforms.macos-arm64" = { checksum = "sha256:f030478be61489c01ddf02c72f31fd556b71b63faef5b9fc1a7abcb314ca428f", url = "https://github.com/hay-kot/hive/releases/download/v0.13.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/hive/releases/assets/348699398"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.12.0"

@@ -85,6 +85,7 @@
       "Bash(hive:*)",
       "Bash(bd:*)",
       "Bash(go doc:*)",
+      "Bash(go mod:*)",
       "Bash(go list:*)",
       "Bash(go mod graph:*)",
       "Bash(go test:*)",
