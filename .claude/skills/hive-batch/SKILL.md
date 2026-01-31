@@ -37,6 +37,7 @@ Fields:
 - `name` (required): Short identifier for the session (used in tab title)
 - `prompt` (optional): The prompt passed to claude in the spawned terminal
 - `remote` (optional): Git remote URL if different from current repo
+- `source` (optional): Directory to copy files from (per copy rules in config)
 
 ## Critical: Avoid Double Quotes in Prompts
 

@@ -154,10 +154,23 @@ hive ls
 **Don't use for:**
 - Work in the same repository (use regular Task tool instead)
 - Sequential dependent work (finish current work first, then handoff)
-- When you need bidirectional communication (handoff is one-way)
 
 **Do use for:**
 - Cross-repository coordination
 - Parallel work streams in different repos
 - Delegating follow-up work to another codebase
 - Creating artifacts based on work done in current repo
+
+## Bidirectional Coordination
+
+For bidirectional communication between agents, combine handoff with `hive msg`:
+
+```bash
+# Handoff agent publishes completion signal
+hive msg pub -t handoff.complete "API layer done, frontend can proceed"
+
+# Original agent waits for confirmation
+hive msg sub -w -t handoff.complete --timeout 1h
+```
+
+See `/hive-msg` skill for full messaging documentation.

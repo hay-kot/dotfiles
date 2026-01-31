@@ -1,0 +1,15 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="compact-bar"
+        }
+    }
+
+    tab name="claude" focus=true {
+        pane command="claude"
+    }
+    tab name="shell" {
+        pane
+    }
+}

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# List sessions, let user select with gum, kill selected
+sessions=$(zellij list-sessions 2>/dev/null) || {
+    echo "No zellij sessions found"
+    exit 0
+}
+
+selected=$(echo "$sessions" | gum choose --no-limit --header "Select sessions to kill:")
+
+[[ -z "$selected" ]] && exit 0
+
+echo "$selected" | while read -r line; do
+    # Extract session name (everything before " [Created")
+    session="${line%% \[Created*}"
+    zellij delete-session "$session"
+    echo "Deleted: $session"
+done

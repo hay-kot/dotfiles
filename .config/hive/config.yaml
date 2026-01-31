@@ -1,12 +1,16 @@
+version: 0.2.0
 git_path: git
 
 commands:
   spawn:
+    # zellij without layout:
     # - >-
-    #   new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}")
+    #   new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
     #   && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
-    #   && echo claude \"{{ .Prompt | shq }}\"
-    #   | wezterm cli send-text --no-paste --pane-id="$new_pane_id"
+    - >-
+      new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij --layout ~/.config/zellij/layouts/hive.kdl attach --create "{{ .Name }}")
+      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
+  batch_spawn:
     - >-
       new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
@@ -34,8 +38,13 @@ rules:
 
 keybindings:
   enter:
-    help: open in zellij session
-    # sh: "wezterm cli spawn --cwd '{{ .Path }}'"
+    help: focus or open zellij session
     sh: >-
-      new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
-      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
+      pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.tab_title == "{{ .Name }}") | .pane_id' | head -1)
+      && [ -n "$pane_id" ]
+      && wezterm cli activate-pane --pane-id "$pane_id"
+      || { new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij --layout ~/.config/zellij/layouts/hive.kdl attach --create "{{ .Name }}")
+      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'; }
+  ctrl+d:
+    help: kill zellij session
+    sh: zellij kill-session "{{ .Name }}" 2>/dev/null || true

@@ -34,6 +34,8 @@ hive msg sub -t "prefix.*"            # wildcard pattern
 hive msg sub -n 10                    # last 10 messages
 hive msg sub -l                       # poll for new messages
 hive msg sub -l --timeout 5m          # poll with timeout
+hive msg sub -w -t <topic>            # wait for single message (24h timeout)
+hive msg sub -w --timeout 1h          # wait with custom timeout
 
 # List topics
 hive msg list
@@ -122,6 +124,20 @@ make build && hive msg pub -t build.done "success" || hive msg pub -t build.done
 # In another session, wait for it
 hive msg sub -t build.done -l --timeout 10m
 ```
+
+### Wait for inter-agent handoff
+
+Use `--wait` to block until a specific message arrives (24h default timeout):
+
+```bash
+# Agent 1 completes work and signals
+hive msg pub -t handoff.api "API complete. Schema changes: added role field to User"
+
+# Agent 2 waits for the handoff (blocks until message arrives)
+hive msg sub -w -t handoff.api
+```
+
+The `--wait` flag returns a single message and exits - useful for sequential coordination where one agent must wait for another.
 
 ## Message Format
 
