@@ -5,23 +5,18 @@ repo_dirs:
 
 commands:
   spawn:
-    # zellij without layout:
-    # - >-
-    #   new_pane_id=$(wezterm cli spawn --cwd "{{ .Path }}" -- zellij attach "{{ .Name }}" -c)
-    #   && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
     - >-
       window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- env -u ZELLIJ -u ZELLIJ_SESSION_NAME zellij --layout ~/.config/zellij/layouts/hive.kdl attach --create "{{ .Name }}")
+      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}")
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
       && wezterm cli activate-pane --pane-id="$new_pane_id"
   batch_spawn:
     - >-
       window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- env -u ZELLIJ -u ZELLIJ_SESSION_NAME zellij attach "{{ .Name }}" -c)
+      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- tmux new-session -A -s "{{ .Name }}")
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
       && sleep 0.3
-      && zellij -s "{{ .Name }}" action write-chars "claude '{{ .Prompt }}'"
-      && zellij -s "{{ .Name }}" action write 13
+      && tmux send-keys -t "{{ .Name }}" "claude '{{ .Prompt }}'" Enter
 
 rules:
   - pattern: ""
@@ -43,15 +38,15 @@ rules:
 
 keybindings:
   enter:
-    help: focus or open zellij session
+    help: focus or open tmux session
     sh: >-
       pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.tab_title == "{{ .Name }}") | .pane_id' | head -1)
       && [ -n "$pane_id" ]
       && wezterm cli activate-pane --pane-id "$pane_id"
       || { window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- env -u ZELLIJ -u ZELLIJ_SESSION_NAME zellij --layout ~/.config/zellij/layouts/hive.kdl attach --create "{{ .Name }}")
+      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}")
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
       && wezterm cli activate-pane --pane-id="$new_pane_id"; }
   ctrl+d:
-    help: kill zellij session
-    sh: zellij kill-session "{{ .Name }}" 2>/dev/null || true
+    help: kill tmux session
+    sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
