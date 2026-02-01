@@ -1,0 +1,44 @@
+#!/bin/bash
+# Claude Code status line script
+
+# Icons (nerd font - UTF-8 byte sequences)
+icon_folder=$(printf '\xef\x81\xbb')   # U+F07B
+icon_branch=$(printf '\xee\x9c\xa5')   # U+E725
+icon_tasks=$(printf '\xef\x82\xae')    # U+F0AE
+
+# Get directory name (just the basename)
+dir_name=$(basename "$PWD")
+
+output="$icon_folder $dir_name"
+
+# Get git info if in a repo
+if git rev-parse --git-dir &>/dev/null; then
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+    output="$output • $icon_branch $branch"
+fi
+
+# Get beads status if active
+if [ -d ".beads" ]; then
+    open=$(bd list --status=open 2>/dev/null | wc -l | tr -d ' ')
+    closed=$(bd list --status=closed 2>/dev/null | wc -l | tr -d ' ')
+    total=$((open + closed))
+
+    if [ "$total" -gt 0 ]; then
+        output="$output • $icon_tasks $closed/$total"
+    fi
+fi
+
+# Get hive inbox status if in a session
+icon_inbox=$(printf '\xef\x81\xa0')   # U+F060 (envelope)
+session_json=$(hive session info --json 2>/dev/null)
+if [ $? -eq 0 ] && [ -n "$session_json" ]; then
+    inbox=$(echo "$session_json" | jq -r '.inbox // empty' 2>/dev/null)
+    if [ -n "$inbox" ]; then
+        new_msgs=$(hive msg sub -t "$inbox" --new 2>/dev/null | jq -s 'length' 2>/dev/null)
+        if [ -n "$new_msgs" ] && [ "$new_msgs" -gt 0 ]; then
+            output="$output • $icon_inbox $new_msgs"
+        fi
+    fi
+fi
+
+echo "$output"
