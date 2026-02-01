@@ -6,6 +6,7 @@ cursor-text = 1a1b26
 selection-background = 283457
 selection-foreground = c0caf5
 
+
 # ANSI colors (palette 0-7)
 palette = 0=#15161e
 palette = 1=#f7768e
@@ -42,3 +43,5 @@ window-padding-y = 0
 
 # macOS specific - match WezTerm alt key behavior
 macos-option-as-alt = true
+
+window-inherit-working-directory = true
