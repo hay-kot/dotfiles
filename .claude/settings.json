@@ -125,7 +125,7 @@
   "alwaysThinkingEnabled": true,
   "statusLine": {
     "type": "command",
-    "command": "~/.dotfiles/.claude/statusline.sh"
+    "command": "claude-statusline"
   },
   "gitAttribution": false,
   "feedbackSurveyState": {
