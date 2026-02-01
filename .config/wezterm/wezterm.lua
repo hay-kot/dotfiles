@@ -284,7 +284,7 @@ end
 -- Font configuration
 config.line_height = 1.18
 config.font = wezterm.font({
-  family = "JetBrains Mono",
+  family = "JetBrainsMono NF",
   weight = "Regular",
   harfbuzz_features = { "calt=0", "clig=0", "liga=0" }, -- Disable Ligatures
 })
@@ -295,7 +295,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 
 config.window_frame = {
-  font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
+  font = wezterm.font("JetBrainsMono NF", { weight = "Bold" }),
   font_size = 14,
 }
 

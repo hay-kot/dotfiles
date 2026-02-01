@@ -37,15 +37,19 @@ rust = "latest"
 "github:steveyegge/beads" = "v0.49"
 "github:hay-kot/gofind" = "v0.4.1"
 "github:hay-kot/scaffold" = "v0.12.0"
-"github:hay-kot/hive" = "v0.13.0"
+"github:hay-kot/hive" = "v0.15.0"
 
-"forgejo:gitea/tea" = {version = "v0.11.1", api_url = "https://gitea.com/api/v1"}
+"forgejo:gitea/tea" = { version = "v0.11.1", api_url = "https://gitea.com/api/v1" }
 # -------------------------------------------------------
 # Rust
 
 "github:sxyazi/yazi" = "v25.5.31"         # file explorer tui
 "github:thomasschafer/scooter" = "latest" # find and replace mechanism
 "cargo:sleek" = "latest"                  # sql formatter
+
+[tasks.bin-chmod]
+description = "Make all scripts in bin/ executable"
+run = "chmod +x ~/.dotfiles/bin/*"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]

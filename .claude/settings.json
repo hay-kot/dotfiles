@@ -109,7 +109,8 @@
       "Bash(tea release view:*)",
       "Bash(teaapi curl https:*)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Skill(plan-to-beads)"
     ]
   },
   "enabledPlugins": {

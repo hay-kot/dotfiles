@@ -1,25 +1,34 @@
-version: 0.2.0
+version: 0.2.3
 git_path: git
 repo_dirs:
   - /Users/hayden/code/repos
 
+integrations:
+  terminal:
+    enabled: [tmux]
+    poll_interval: 500ms
+
+tui:
+  refresh_interval: 15s
+
 commands:
   spawn:
+    # Create wezterm tab with tmux session
     - >-
       window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}")
+      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}")
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
       && wezterm cli activate-pane --pane-id="$new_pane_id"
   batch_spawn:
+    # Create wezterm tab with tmux session and pass prompt to claude
     - >-
       window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- tmux new-session -A -s "{{ .Name }}")
+      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}")
       && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
-      && sleep 0.3
-      && tmux send-keys -t "{{ .Name }}" "claude '{{ .Prompt }}'" Enter
 
 rules:
   - pattern: ""
+    max_recycled: 3
     commands:
       - hive ctx init
   - pattern: ".*[:/]grafana/.*"
@@ -38,15 +47,15 @@ rules:
 
 keybindings:
   enter:
-    help: focus or open tmux session
-    sh: >-
-      pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.tab_title == "{{ .Name }}") | .pane_id' | head -1)
-      && [ -n "$pane_id" ]
-      && wezterm cli activate-pane --pane-id "$pane_id"
-      || { window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}")
-      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
-      && wezterm cli activate-pane --pane-id="$new_pane_id"; }
+    help: switch to tmux session (creates if needed, then press q to close popup)
+    sh: ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
+    exit: true
+    silent: true
+  p:
+    help: popup
+    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :claude"
+    exit: false
+    silent: true
   ctrl+d:
     help: kill tmux session
     sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true

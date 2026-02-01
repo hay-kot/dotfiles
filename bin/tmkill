@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# List sessions, let user select with gum, kill selected
+sessions=$(tmux list-sessions -F "#{session_name}" 2>/dev/null) || {
+    echo "No tmux sessions found"
+    exit 0
+}
+
+selected=$(echo "$sessions" | gum choose --no-limit --header "Select sessions to kill:")
+
+[[ -z "$selected" ]] && exit 0
+
+echo "$selected" | while read -r session; do
+    tmux kill-session -t "$session"
+    echo "Killed: $session"
+done

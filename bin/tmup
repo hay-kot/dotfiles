@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+conffile="$HOME/.config/wezup/wezup.json"
+cwdirname=$(basename "$(pwd)")
+
+# Read the configuration and filter entries matching the current working directory
+contents=$(jq --arg dir "$cwdirname" '.[$dir]' "$conffile")
+
+# If no matching entry, print error and exit early
+if [ "$contents" = "null" ] || [ -z "$contents" ]; then
+    echo "Error: No matching entry found for directory '$cwdirname' in $conffile"
+    exit 1
+fi
+
+# Iterate through the array of tabs
+echo "$contents" | jq -c '.[]' | while read -r tab; do
+    tab_title=$(echo "$tab" | jq -r '.pane_title')
+    cmd=$(echo "$tab" | jq -r '.cmd // empty')
+
+    # Create new window with name
+    tmux new-window -n "$tab_title"
+
+    # If there's a command, send it
+    if [ -n "$cmd" ]; then
+        tmux send-keys "$cmd" Enter
+    fi
+done
+
+# Go back to first window
+tmux select-window -t :0
