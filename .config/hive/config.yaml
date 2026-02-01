@@ -56,3 +56,19 @@ keybindings:
     help: send /tidy
     sh: claude-send "{{ .Name }}:claude" "/tidy"
     silent: true
+
+usercommands:
+  ClaudeNewWindow:
+    sh: 'tmux new-window -t "{{ .Name }}" -n "{{ if .Args }}{{ index .Args 0 }}{{ else }}claude-2{{ end }}" -c "{{ .Path }}" "claude"'
+    help: "open a new claude tab in the tmux session (optional: :fork window-name)"
+    silent: true
+
+  ReviewRequest:
+    sh: "~/.config/hive/scripts/request-review.sh {{ .Name }}"
+    help: "Request code review of current branch"
+    silent: false
+
+  CheckInbox:
+    sh: claude-send "{{ Name }}:claude" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
+    help: "Instructs claude to check it's inbox"
+    silent: false
