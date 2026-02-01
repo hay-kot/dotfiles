@@ -13,18 +13,11 @@ tui:
 
 commands:
   spawn:
-    # Create wezterm tab with tmux session
-    - >-
-      window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}")
-      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
-      && wezterm cli activate-pane --pane-id="$new_pane_id"
+    # Create or switch to tmux session
+    - ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
   batch_spawn:
-    # Create wezterm tab with tmux session and pass prompt to claude
-    - >-
-      window_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_active) | .window_id' | head -1)
-      && new_pane_id=$(wezterm cli spawn --window-id "$window_id" --cwd "{{ .Path }}" -- ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}")
-      && wezterm cli set-tab-title --pane-id="$new_pane_id" '{{ .Name }}'
+    # Create tmux session in background with prompt
+    - ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}"
 
 rules:
   - pattern: ""
@@ -40,16 +33,16 @@ rules:
   - pattern: ".*[:/]hay-kot/recipinned"
     commands:
       - task dep:sync
-      - task pc:install
+      # - task pc:install
   - pattern: ".*[:/]hay-kot/mealie"
     commands:
       - task setup
 
 keybindings:
   enter:
-    help: switch to tmux session (creates if needed, then press q to close popup)
+    help: open/create tmux
     sh: ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
-    exit: true
+    exit: $HIVE_POPUP
     silent: true
   p:
     help: popup
@@ -59,3 +52,7 @@ keybindings:
   ctrl+d:
     help: kill tmux session
     sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
+  t:
+    help: send /tidy
+    sh: claude-send "{{ .Name }}:claude" "/tidy"
+    silent: true

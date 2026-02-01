@@ -271,6 +271,7 @@ export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
 alias branch-delete="git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias checkout-pr="gh pr list | cut -f1,2 | fzf | cut -f1 | xargs gh pr checkout"
 alias k="kubectl"
+alias hv="tmux new-session -As hive hive"
 
 # Zellij helper
 zj() {

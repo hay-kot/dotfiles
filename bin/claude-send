@@ -1,0 +1,17 @@
+#!/bin/bash
+# Send text to Claude Code in a tmux pane with delayed Enter
+# Usage: claude-send <target> <text>
+#   target: tmux target (session:window or session:window.pane)
+#   text: text to send
+#
+# Example: claude-send mysession:claude "/tidy"
+
+set -e
+
+TARGET="${1:?Usage: claude-send <target> <text>}"
+TEXT="${2:?Usage: claude-send <target> <text>}"
+DELAY="${CLAUDE_SEND_DELAY:-0.5}"
+
+tmux send-keys -t "$TARGET" "$TEXT"
+sleep "$DELAY"
+tmux send-keys -t "$TARGET" C-m
