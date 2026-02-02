@@ -2,12 +2,12 @@
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)"
+    "dark": "Colored Zed Icons Theme Dark"
   },
   "theme": {
     "mode": "dark",
     "light": "Gruvbox Light",
-    "dark": "Gruvbox Dark"
+    "dark": "Tokyo Night"
   },
   "vim_mode": true
 }

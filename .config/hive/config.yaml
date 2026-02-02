@@ -82,3 +82,8 @@ usercommands:
     sh: claude-send "{{ .Name }}:claude"
     help: "Send enter to claude window"
     silent: false
+
+  OpenInZed:
+    sh: "zed {{ .Path }}"
+    help: open in zed
+    slient: true
