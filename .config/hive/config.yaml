@@ -10,6 +10,7 @@ integrations:
 
 tui:
   refresh_interval: 15s
+  preview_enabled: true
 
 commands:
   spawn:
@@ -56,6 +57,10 @@ keybindings:
     help: send /tidy
     sh: claude-send "{{ .Name }}:claude" "/tidy"
     silent: true
+  A:
+    help: send enter to claude
+    sh: claude-send "{{ .Name }}:claude"
+    silent: true
 
 usercommands:
   ClaudeNewWindow:
@@ -69,6 +74,11 @@ usercommands:
     silent: false
 
   CheckInbox:
-    sh: claude-send "{{ Name }}:claude" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
+    sh: claude-send "{{ .Name }}:claude" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
     help: "Instructs claude to check it's inbox"
+    silent: false
+
+  SendAccept:
+    sh: claude-send "{{ .Name }}:claude"
+    help: "Send enter to claude window"
     silent: false
