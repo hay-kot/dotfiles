@@ -40,27 +40,16 @@ rules:
       - task setup
 
 keybindings:
-  enter:
-    help: open/create tmux
-    sh: ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
-    exit: $HIVE_POPUP
-    silent: true
-  p:
-    help: popup
-    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :claude"
-    exit: false
-    silent: true
-  ctrl+d:
-    help: kill tmux session
-    sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
-  t:
-    help: send /tidy
-    sh: claude-send "{{ .Name }}:claude" "/tidy"
-    silent: true
   A:
-    help: send enter to claude
-    sh: claude-send "{{ .Name }}:claude"
-    silent: true
+    cmd: SendAccept
+  ctrl+d:
+    cmd: SendAccept
+  t:
+    cmd: SendTidy
+  p:
+    cmd: TmuxPopUp 
+  enter:
+    cmd: TmuxCreateOrAttach
 
 usercommands:
   ClaudeNewWindow:
@@ -83,7 +72,33 @@ usercommands:
     help: "Send enter to claude window"
     silent: false
 
+  SendTidy:
+    help: send /tidy
+    sh: claude-send "{{ .Name }}:claude" "/tidy"
+    silent: true
+
   OpenInZed:
     sh: "zed {{ .Path }}"
     help: open in zed
     slient: true
+
+  PRLink:
+    sh: "cd {{ .Path }} && prlink"
+    help: get a pr link
+    slient: false
+
+  TmuxCreateOrAttach:
+    help: open/create tmux
+    sh: ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
+    exit: $HIVE_POPUP
+    silent: true
+
+  TmuxPopUp:
+    help: popup
+    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :claude"
+    exit: false
+    silent: true
+
+  TmuxKill:
+    help: kill tmux session
+    sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
