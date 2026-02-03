@@ -12,19 +12,27 @@ tui:
   refresh_interval: 15s
   preview_enabled: true
 
-commands:
-  spawn:
-    # Create or switch to tmux session
-    - ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
-  batch_spawn:
-    # Create tmux session in background with prompt
-    - ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}"
+plugins:
+  shell_workers: 5 # shared subprocess concurrency limit
+  github:
+    enabled: true # override auto-detection (true/false)
+    results_cache: 30s # how long to cache PR status
+  beads:
+    enabled: true # override auto-detection (true/false)
+    results_cache: 30s # how long to cache issue stats
 
 rules:
   - pattern: ""
     max_recycled: 3
+    spawn:
+      # Create or switch to tmux session
+      - ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
+    batch_spawn:
+      # Create tmux session in background with prompt
+      - ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}"
     commands:
       - hive ctx init
+      - bd init --stealth
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
@@ -75,6 +83,11 @@ usercommands:
   SendTidy:
     help: send /tidy
     sh: claude-send "{{ .Name }}:claude" "/tidy"
+    silent: true
+
+  SendClear:
+    help: send /clear
+    sh: claude-send "{{ .Name }}:claude" "/clear"
     silent: true
 
   OpenInZed:
