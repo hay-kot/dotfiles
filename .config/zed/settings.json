@@ -1,4 +1,16 @@
 {
+  "agent_ui_font_size": 18.0,
+  "ui_font_size": 18.0,
+  "ui_font_family": ".ZedSans",
+  "buffer_font_family": "JetBrainsMonoNL Nerd Font Mono",
+  "tab_bar": {
+    "show": true
+  },
+  "title_bar": {
+    "show_menus": false,
+    "show_sign_in": true,
+    "show_branch_icon": false
+  },
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",

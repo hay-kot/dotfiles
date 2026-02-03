@@ -43,11 +43,11 @@ keybindings:
   A:
     cmd: SendAccept
   ctrl+d:
-    cmd: SendAccept
+    cmd: TmuxKill
   t:
     cmd: SendTidy
   p:
-    cmd: TmuxPopUp 
+    cmd: TmuxPopUp
   enter:
     cmd: TmuxCreateOrAttach
 
