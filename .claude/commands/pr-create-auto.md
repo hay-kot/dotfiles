@@ -1,5 +1,6 @@
 ---
-description: Create a PR with review
+allowed-tools: Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(gh pr:*), Bash(git push:*)
+description: Create a PR either from changes
 argument-hint: <tags>
 ---
 
@@ -15,6 +16,11 @@ Since the repository state is unknown, you may need to:
 2. Commit code changes
 3. Push the branch
 4. Create the PR using the GitHub CLI
+
+## PR Template
+
+- If `PULL_REQUEST_TEMPLATE.md` exists in the repository, use it as the basis for your PR description
+- If no template exists, keep the title and description proportional to the complexity of the changes
 
 ## PR Template
 
