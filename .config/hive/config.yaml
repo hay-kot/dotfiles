@@ -9,17 +9,11 @@ integrations:
     poll_interval: 500ms
 
 tui:
-  refresh_interval: 15s
+  refresh_interval: 10s
   preview_enabled: true
 
 plugins:
-  shell_workers: 5 # shared subprocess concurrency limit
-  github:
-    enabled: true # override auto-detection (true/false)
-    results_cache: 30s # how long to cache PR status
-  beads:
-    enabled: true # override auto-detection (true/false)
-    results_cache: 30s # how long to cache issue stats
+  shell_workers: 10 # shared subprocess concurrency limit
 
 rules:
   - pattern: ""
@@ -32,7 +26,7 @@ rules:
       - ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}"
     commands:
       - hive ctx init
-      - bd init --stealth
+      - bd init --stealth || true
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
@@ -68,17 +62,17 @@ usercommands:
   ReviewRequest:
     sh: "~/.config/hive/scripts/request-review.sh {{ .Name }}"
     help: "Request code review of current branch"
-    silent: false
+    silent: true
 
   CheckInbox:
     sh: claude-send "{{ .Name }}:claude" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
     help: "Instructs claude to check it's inbox"
-    silent: false
+    silent: true
 
   SendAccept:
     sh: claude-send "{{ .Name }}:claude"
     help: "Send enter to claude window"
-    silent: false
+    silent: true
 
   SendTidy:
     help: send /tidy
@@ -88,6 +82,11 @@ usercommands:
   SendClear:
     help: send /clear
     sh: claude-send "{{ .Name }}:claude" "/clear"
+    silent: true
+
+  SendRebase:
+    help: send /tidy
+    sh: claude-send "{{ .Name }}:claude" "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"
     silent: true
 
   OpenInZed:
@@ -115,3 +114,9 @@ usercommands:
   TmuxKill:
     help: kill tmux session
     sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
+    silent: true
+
+  CopyAgentInbox:
+    help: copy agent inbox to clipboard
+    sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
+    silent: true
