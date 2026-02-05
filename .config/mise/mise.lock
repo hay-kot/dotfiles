@@ -73,6 +73,11 @@ version = "0.8.5"
 backend = "github:thomasschafer/scooter"
 "platforms.macos-arm64" = { checksum = "sha256:8b903a0afaa4a24bc395904155917ba55a0d5f86506c21639f9a208711904761", url = "https://github.com/thomasschafer/scooter/releases/download/v0.8.5/scooter-v0.8.5-aarch64-apple-darwin.tar.gz", url_api = "https://api.github.com/repos/thomasschafer/scooter/releases/assets/341670204"}
 
+[[tools."github:zjrosen/perles"]]
+version = "0.7.83"
+backend = "github:zjrosen/perles"
+"platforms.macos-arm64" = { checksum = "sha256:2c796e0f0e672052999c672c006ee0a4b85b8ee7d5ce36882d708f2aff717f0b", url = "https://github.com/zjrosen/perles/releases/download/v0.7.83/perles_0.7.83_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/zjrosen/perles/releases/assets/350758430"}
+
 [[tools.go]]
 version = "1.25.6"
 backend = "core:go"

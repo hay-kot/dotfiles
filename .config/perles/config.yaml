@@ -1,0 +1,62 @@
+# Perles configuration
+auto_refresh: true
+
+ui:
+  show_counts: true
+  show_status_bar: true
+  vim_mode: true
+  markdown_style: "dark"
+
+theme:
+  # Custom tokyonight colors
+  colors:
+    # Base colors
+    background: "#1a1b26"
+    foreground: "#c0caf5"
+    text.primary: "#c0caf5"
+    text.secondary: "#a9b1d6"
+    text.muted: "#565f89"
+
+    # Status colors
+    status.open: "#7aa2f7"
+    status.in_progress: "#7dcfff"
+    status.closed: "#565f89"
+    status.blocked: "#f7768e"
+    status.ready: "#9ece6a"
+    status.error: "#f7768e"
+    status.warning: "#e0af68"
+    status.success: "#9ece6a"
+
+    # UI elements
+    border.normal: "#414868"
+    border.focused: "#7aa2f7"
+    selection.background: "#283457"
+    selection.foreground: "#c0caf5"
+
+    # Accent colors
+    accent.primary: "#7aa2f7"
+    accent.secondary: "#bb9af7"
+    link: "#7dcfff"
+
+views:
+  - name: All Open
+    columns:
+      - name: Open
+        type: bql
+        query: "status = open"
+        color: "#7aa2f7"
+
+  - name: Kanban
+    columns:
+      - name: Ready
+        type: bql
+        query: "status = open and ready = true"
+        color: "#9ece6a"
+      - name: In Progress
+        type: bql
+        query: "status = in_progress"
+        color: "#7dcfff"
+      - name: Done
+        type: bql
+        query: "status = closed"
+        color: "#565f89"
