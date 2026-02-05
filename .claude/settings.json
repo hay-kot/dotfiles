@@ -122,7 +122,7 @@
     "commit-commands@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "beads@beads-marketplace": true
+    "hive@hive": true
   },
   "alwaysThinkingEnabled": true,
   "gitAttribution": false,
