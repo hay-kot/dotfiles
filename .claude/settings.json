@@ -28,7 +28,7 @@
       "Bash(task go:*)",
       "Bash(task lint)",
       "Bash(task pr)",
-      "Bash(task test)",
+      "Bash(task test:*)",
       "Bash(task ui:*)",
       "Bash(gh repo view:*)",
       "Bash(gh repo list:*)",
