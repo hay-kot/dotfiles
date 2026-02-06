@@ -1,12 +1,23 @@
 #!/bin/bash
+set -eo pipefail
+
 # Hive layout - two windows: claude + shell
 # Usage: hive.sh [-b] [session-name] [working-dir] [prompt]
 #   -b: background mode (create session without attaching)
 # If session exists, switches/attaches. Otherwise creates new.
 # Works both inside and outside tmux.
 
+attach_or_switch() {
+    local session=$1
+    if [ -n "${TMUX:-}" ]; then
+        tmux switch-client -t "$session"
+    else
+        tmux attach-session -t "$session"
+    fi
+}
+
 BACKGROUND=false
-if [ "$1" = "-b" ]; then
+if [ "${1:-}" = "-b" ]; then
     BACKGROUND=true
     shift
 fi
@@ -24,13 +35,8 @@ fi
 
 if tmux has-session -t "$SESSION" 2>/dev/null; then
     # Session exists
-    if [ "$BACKGROUND" = true ]; then
-        exit 0
-    fi
-    if [ -n "$TMUX" ]; then
-        tmux switch-client -t "$SESSION"
-    else
-        tmux attach-session -t "$SESSION"
+    if [ "$BACKGROUND" = false ]; then
+        attach_or_switch "$SESSION"
     fi
 else
     # Create new session running claude directly
@@ -38,13 +44,7 @@ else
     tmux new-window -t "$SESSION" -n shell -c "$WORKDIR"
     tmux select-window -t "$SESSION:claude"
 
-    if [ "$BACKGROUND" = true ]; then
-        exit 0
-    fi
-
-    if [ -n "$TMUX" ]; then
-        tmux switch-client -t "$SESSION"
-    else
-        tmux attach-session -t "$SESSION"
+    if [ "$BACKGROUND" = false ]; then
+        attach_or_switch "$SESSION"
     fi
 fi

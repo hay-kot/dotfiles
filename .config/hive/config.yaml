@@ -111,6 +111,11 @@ usercommands:
     exit: false
     silent: true
 
+  TmuxStart:
+    help: start tmux session in background
+    sh: ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}"
+    silent: true
+
   TmuxKill:
     help: kill tmux session
     sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
@@ -119,4 +124,10 @@ usercommands:
   CopyAgentInbox:
     help: copy agent inbox to clipboard
     sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
+    silent: true
+
+  BeadsUI:
+    help: popup beads TUI (perles)
+    sh: tmux display-popup -E -w 90% -h 90% "cd {{ .Path }} && perles"
+    exit: false
     silent: true
