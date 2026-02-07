@@ -125,6 +125,10 @@
     "gopls-lsp@claude-plugins-official": true,
     "hive@hive": true
   },
+  "fileSuggestion": {
+    "type": "command",
+    "command": "~/.claude/file-suggestion.sh"
+  },
   "alwaysThinkingEnabled": true,
   "gitAttribution": false,
   "feedbackSurveyState": {

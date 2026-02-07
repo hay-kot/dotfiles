@@ -1,0 +1,359 @@
+# =============================================================================
+# Codex Rules - converted from .claude/settings.json
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# FORBIDDEN - deny rules (evaluated first)
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "forbidden",
+    justification = "Destructive recursive delete is never auto-allowed",
+    match = ["rm -rf /tmp/foo", "rm -rf ."],
+    not_match = ["rm file.txt", "rm -r dir"],
+)
+
+prefix_rule(
+    pattern = ["wget"],
+    decision = "forbidden",
+    justification = "Downloading arbitrary files is blocked",
+    match = ["wget https://example.com/file.tar.gz"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Force pushing can destroy remote history",
+    match = ["git push --force origin main", "git push --force-with-lease"],
+)
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Hard reset discards uncommitted work",
+    match = ["git reset --hard HEAD~1", "git reset --hard origin/main"],
+    not_match = ["git reset --soft HEAD~1"],
+)
+
+prefix_rule(
+    pattern = ["cat", ".env"],
+    decision = "forbidden",
+    justification = "Do not read .env files containing secrets",
+    match = ["cat .env", "cat .env.local", "cat .env.production"],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - build tools & task runners
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["make", ["test", "build", "fmt", "format", "lint"]],
+    decision = "allow",
+    justification = "Standard make targets for build/test/lint",
+    match = [
+        "make test",
+        "make build",
+        "make fmt",
+        "make format",
+        "make lint",
+    ],
+    not_match = ["make clean", "make install"],
+)
+
+prefix_rule(
+    pattern = ["task", "--list"],
+    decision = "allow",
+    justification = "List available Taskfile targets",
+    match = ["task --list"],
+)
+
+prefix_rule(
+    pattern = ["task", ["build", "fmt", "format", "lint", "pr"]],
+    decision = "allow",
+    justification = "Standard task runner targets",
+    match = [
+        "task build",
+        "task fmt",
+        "task format",
+        "task lint",
+        "task pr",
+    ],
+)
+
+prefix_rule(
+    pattern = ["task", ["check", "gen", "go", "test", "ui"]],
+    decision = "allow",
+    justification = "Task runner targets with subcommands",
+    match = [
+        "task check:all",
+        "task gen:mocks",
+        "task go:tidy",
+        "task test:unit",
+        "task ui:build",
+    ],
+)
+
+prefix_rule(
+    pattern = ["npm", "run", ["lint", "test"]],
+    decision = "allow",
+    justification = "Standard npm scripts for lint and test",
+    match = ["npm run lint", "npm run test", "npm run test:unit"],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - filesystem & search
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["mkdir"],
+    decision = "allow",
+    justification = "Creating directories is safe",
+    match = ["mkdir -p src/components", "mkdir tmp"],
+)
+
+prefix_rule(
+    pattern = [["fd", "find", "ls"]],
+    decision = "allow",
+    justification = "File listing and discovery",
+    match = ["fd main.go", "find . -name '*.go'", "ls -la"],
+)
+
+prefix_rule(
+    pattern = [["rg", "grep"]],
+    decision = "allow",
+    justification = "Content search",
+    match = ["rg TODO", "grep -r 'func main'"],
+)
+
+prefix_rule(
+    pattern = ["diff"],
+    decision = "allow",
+    justification = "Comparing files",
+    match = ["diff a.txt b.txt"],
+)
+
+prefix_rule(
+    pattern = [["cat", "head", "tail"]],
+    decision = "allow",
+    justification = "Reading file contents",
+    match = ["cat README.md", "head -20 main.go", "tail -f log.txt"],
+)
+
+prefix_rule(
+    pattern = [["wc", "which", "pwd", "echo"]],
+    decision = "allow",
+    justification = "Basic shell utilities",
+    match = ["wc -l main.go", "which go", "pwd", "echo hello"],
+)
+
+prefix_rule(
+    pattern = ["jq"],
+    decision = "allow",
+    justification = "JSON processing",
+    match = ["jq '.name' package.json"],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - git (read operations)
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["git", ["log", "status", "diff", "show", "branch"]],
+    decision = "allow",
+    justification = "Read-only git operations",
+    match = [
+        "git log --oneline -10",
+        "git status",
+        "git diff HEAD",
+        "git show HEAD",
+        "git branch -a",
+    ],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - git (write operations)
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["git", ["add", "commit", "checkout", "switch", "stash", "fetch", "pull", "rebase"]],
+    decision = "allow",
+    justification = "Standard git write operations",
+    match = [
+        "git add .",
+        "git commit -m 'fix: something'",
+        "git checkout -b feat/new",
+        "git switch main",
+        "git stash",
+        "git fetch origin",
+        "git pull",
+        "git rebase main",
+    ],
+    not_match = [
+        "git push --force origin main",
+        "git reset --hard HEAD",
+    ],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - GitHub CLI (gh)
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["gh", "repo", ["view", "list"]],
+    decision = "allow",
+    justification = "Read-only repo operations",
+    match = ["gh repo view", "gh repo list"],
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", ["view", "list", "status"]],
+    decision = "allow",
+    justification = "Read-only issue operations",
+    match = ["gh issue view 123", "gh issue list", "gh issue status"],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", ["view", "list", "status", "checks", "diff"]],
+    decision = "allow",
+    justification = "Read-only PR operations",
+    match = [
+        "gh pr view 456",
+        "gh pr list",
+        "gh pr status",
+        "gh pr checks 456",
+        "gh pr diff 456",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "search"],
+    decision = "allow",
+    justification = "GitHub search",
+    match = ["gh search repos bubbletea"],
+)
+
+prefix_rule(
+    pattern = ["gh", "status"],
+    decision = "allow",
+    justification = "GitHub status overview",
+    match = ["gh status"],
+)
+
+prefix_rule(
+    pattern = ["gh", ["run", "workflow", "release"], ["list", "view"]],
+    decision = "allow",
+    justification = "Read-only CI/CD and release operations",
+    match = [
+        "gh run list",
+        "gh run view 789",
+        "gh workflow list",
+        "gh workflow view ci.yml",
+        "gh release list",
+        "gh release view v1.0.0",
+    ],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - Go toolchain
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["go", ["doc", "mod", "list", "test", "build", "run", "vet"]],
+    decision = "allow",
+    justification = "Standard Go toolchain commands",
+    match = [
+        "go doc fmt.Println",
+        "go mod tidy",
+        "go mod graph",
+        "go list ./...",
+        "go test ./...",
+        "go build ./cmd/server",
+        "go run main.go",
+        "go vet ./...",
+    ],
+)
+
+prefix_rule(
+    pattern = [["gofumpt", "golangci-lint", "godoc"]],
+    decision = "allow",
+    justification = "Go formatting and linting tools",
+    match = [
+        "gofumpt -w .",
+        "golangci-lint run ./...",
+        "godoc -http=:6060",
+    ],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - Gitea CLI (tea)
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["tea", "login", "list"],
+    decision = "allow",
+    justification = "List tea login profiles",
+    match = ["tea login list"],
+)
+
+prefix_rule(
+    pattern = ["tea", "whoami"],
+    decision = "allow",
+    justification = "Show current tea identity",
+    match = ["tea whoami"],
+)
+
+prefix_rule(
+    pattern = ["tea", ["repo", "pr", "issue", "release"], ["list", "view"]],
+    decision = "allow",
+    justification = "Read-only Gitea operations",
+    match = [
+        "tea repo list",
+        "tea repo view myrepo",
+        "tea pr list",
+        "tea pr view 42",
+        "tea issue list",
+        "tea issue view 7",
+        "tea release list",
+        "tea release view v1.0",
+    ],
+)
+
+prefix_rule(
+    pattern = ["tea", "pr", "create"],
+    decision = "allow",
+    justification = "Create PRs via Gitea CLI",
+    match = ["tea pr create --title 'feat: new thing'"],
+)
+
+prefix_rule(
+    pattern = ["teaapi", "curl", "https"],
+    decision = "allow",
+    justification = "Gitea API calls via teaapi wrapper",
+    match = ["teaapi curl https://git.example.com/api/v1/repos"],
+)
+
+# -----------------------------------------------------------------------------
+# ALLOW - custom tools
+# -----------------------------------------------------------------------------
+
+prefix_rule(
+    pattern = ["hive"],
+    decision = "allow",
+    justification = "Hive context and session management",
+    match = ["hive ctx init", "hive ctx ls", "hive session list"],
+)
+
+prefix_rule(
+    pattern = ["ctx", "ls"],
+    decision = "allow",
+    justification = "List context assets",
+    match = ["ctx ls"],
+)
+
+prefix_rule(
+    pattern = ["bd"],
+    decision = "allow",
+    justification = "Beads work tracking CLI",
+    match = ["bd next", "bd list"],
+)

@@ -37,7 +37,7 @@ rust = "latest"
 "github:steveyegge/beads" = "v0.49"
 "github:hay-kot/gofind" = "v0.4.1"
 "github:hay-kot/scaffold" = "v0.12.0"
-"github:hay-kot/hive" = "v0.25.0"
+"github:hay-kot/hive" = "v0.26.0"
 "github:zjrosen/perles" = "v0.7.83"
 
 "forgejo:gitea/tea" = { version = "v0.11.1", api_url = "https://gitea.com/api/v1" }

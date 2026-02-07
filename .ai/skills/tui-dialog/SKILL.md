@@ -1,3 +1,11 @@
+---
+name: tui-dialog
+description: >
+  Specialized guidance for implementing dialog and overlay systems in Bubbletea v2
+  applications, including modal patterns, command palettes, and compositor-based
+  overlay rendering.
+---
+
 # TUI Dialog System Expert
 
 Specialized guidance for implementing dialog and overlay systems in Bubbletea v2 applications.

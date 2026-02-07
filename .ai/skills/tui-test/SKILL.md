@@ -1,3 +1,10 @@
+---
+name: tui-test
+description: >
+  Specialized guidance for testing TUI applications with Bubbletea, including
+  golden file testing, component testing, and integration testing with teatest.
+---
+
 # TUI Testing Expert
 
 Specialized guidance for testing Terminal User Interface applications with Bubbletea, focusing on golden file testing, component testing, and integration testing.
@@ -5,6 +12,7 @@ Specialized guidance for testing Terminal User Interface applications with Bubbl
 ## When to Use This Skill
 
 Activate when:
+
 - Writing tests for TUI applications
 - Setting up golden file testing
 - Testing rendering output
@@ -44,6 +52,7 @@ func TestRender(t *testing.T) {
 ```
 
 **Directory structure:**
+
 ```
 myapp/
 ├── component.go
@@ -55,6 +64,7 @@ myapp/
 ```
 
 **Best practices:**
+
 - One golden file per test case
 - Use descriptive test names (becomes filename)
 - Update golden files when intentionally changing UI
@@ -381,6 +391,7 @@ func TestView(t *testing.T) {
 ## Testing Checklist
 
 **Unit Tests:**
+
 - [ ] Test Init returns expected commands
 - [ ] Test Update with all message types
 - [ ] Test state transitions
@@ -389,6 +400,7 @@ func TestView(t *testing.T) {
 - [ ] Test edge cases (empty, full, boundaries)
 
 **View Tests:**
+
 - [ ] Golden file for default state
 - [ ] Golden file for each significant state
 - [ ] Test with different widths
@@ -396,6 +408,7 @@ func TestView(t *testing.T) {
 - [ ] Test overflow/truncation
 
 **Integration Tests:**
+
 - [ ] Test full user flows
 - [ ] Test keyboard navigation
 - [ ] Test window resize
@@ -403,6 +416,7 @@ func TestView(t *testing.T) {
 - [ ] Test cancellation
 
 **Component Tests:**
+
 - [ ] Test focus/blur
 - [ ] Test each public method
 - [ ] Test with sub-components
@@ -495,18 +509,21 @@ func TestFocusHandling(t *testing.T) {
 ## Debugging Test Failures
 
 **Golden file mismatch:**
+
 1. Check if change was intentional
 2. Review diff output carefully
 3. Update with `go test -update` if correct
 4. Never blindly update without reviewing
 
 **Flaky tests:**
+
 1. Use deterministic input (no time.Now(), rand.Intn())
 2. Set fixed window size
 3. Mock external dependencies
 4. Use context timeouts
 
 **Missing output:**
+
 1. Check if renderer is disabled
 2. Verify output buffer is captured
 3. Check if view returns empty string

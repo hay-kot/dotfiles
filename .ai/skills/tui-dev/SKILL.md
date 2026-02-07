@@ -1,3 +1,11 @@
+---
+name: tui-dev
+description: >
+  Expert guidance for building TUI applications with the Charm Bracelet ecosystem
+  (Bubbletea, Lipgloss, Bubbles). Use when implementing components, styling, or
+  working with MVU architecture.
+---
+
 # TUI Development Expert
 
 Expert guidance for building Terminal User Interfaces with the Charm Bracelet ecosystem (Bubbletea, Lipgloss, Bubbles).

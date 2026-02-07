@@ -1,12 +1,11 @@
-version: 0.2.3
+version: 0.2.5
 git_path: git
 repo_dirs:
   - /Users/hayden/code/repos
 
-integrations:
-  terminal:
-    enabled: [tmux]
-    poll_interval: 500ms
+tmux:
+  enabled: [tmux]
+  poll_interval: 500ms
 
 tui:
   refresh_interval: 10s
@@ -20,13 +19,13 @@ rules:
     max_recycled: 3
     spawn:
       # Create or switch to tmux session
-      - ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
+      # - ~/.config/tmux/layouts/hive.sh {{ .Name | shq }} {{ .Path | shq }}
     batch_spawn:
       # Create tmux session in background with prompt
-      - ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}" "{{ .Prompt }}"
+      # - ~/.config/tmux/layouts/hive.sh -b {{ .Name | shq }} {{ .Path | shq }} {{ .Prompt | shq }}
     commands:
       - hive ctx init
-      - bd init --stealth || true
+      - bd init --force --stealth || true
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
@@ -50,84 +49,55 @@ keybindings:
     cmd: SendTidy
   p:
     cmd: TmuxPopUp
-  enter:
-    cmd: TmuxCreateOrAttach
 
 usercommands:
-  ClaudeNewWindow:
-    sh: 'tmux new-window -t "{{ .Name }}" -n "{{ if .Args }}{{ index .Args 0 }}{{ else }}claude-2{{ end }}" -c "{{ .Path }}" "claude"'
-    help: "open a new claude tab in the tmux session (optional: :fork window-name)"
-    silent: true
-
   ReviewRequest:
     sh: "~/.config/hive/scripts/request-review.sh {{ .Name }}"
     help: "Request code review of current branch"
     silent: true
 
   CheckInbox:
-    sh: claude-send "{{ .Name }}:claude" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
+    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
     help: "Instructs claude to check it's inbox"
     silent: true
 
   SendAccept:
-    sh: claude-send "{{ .Name }}:claude"
+    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}"
     help: "Send enter to claude window"
     silent: true
 
   SendTidy:
     help: send /tidy
-    sh: claude-send "{{ .Name }}:claude" "/tidy"
+    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/tidy"
     silent: true
 
   SendClear:
     help: send /clear
-    sh: claude-send "{{ .Name }}:claude" "/clear"
+    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/clear"
     silent: true
 
   SendRebase:
     help: send /tidy
-    sh: claude-send "{{ .Name }}:claude" "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"
+    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }} " "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"
     silent: true
 
   OpenInZed:
     sh: "zed {{ .Path }}"
     help: open in zed
-    slient: true
+    silent: true
 
   PRLink:
     sh: "cd {{ .Path }} && prlink"
     help: get a pr link
-    slient: false
-
-  TmuxCreateOrAttach:
-    help: open/create tmux
-    sh: ~/.config/tmux/layouts/hive.sh "{{ .Name }}" "{{ .Path }}"
-    exit: $HIVE_POPUP
-    silent: true
+    silent: false
 
   TmuxPopUp:
     help: popup
-    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :claude"
+    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :{{ .TmuxWindow }}"
     exit: false
-    silent: true
-
-  TmuxStart:
-    help: start tmux session in background
-    sh: ~/.config/tmux/layouts/hive.sh -b "{{ .Name }}" "{{ .Path }}"
-    silent: true
-
-  TmuxKill:
-    help: kill tmux session
-    sh: tmux kill-session -t "{{ .Name }}" 2>/dev/null || true
     silent: true
 
   CopyAgentInbox:
     help: copy agent inbox to clipboard
     sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
-    silent: true
-
-  BeadsUI:
-    help: popup beads TUI (perles)
-    sh: tmux display-popup -E -w 90% -h 90% "cd {{ .Path }} && perles"
-    exit: false
     silent: true
