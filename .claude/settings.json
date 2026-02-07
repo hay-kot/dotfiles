@@ -20,6 +20,7 @@
       "Bash(make format)",
       "Bash(make lint)",
       "Bash(mkdir:*)",
+      "Bash(task --list)",
       "Bash(task build)",
       "Bash(task check:*)",
       "Bash(task fmt)",
@@ -124,7 +125,7 @@
     "gopls-lsp@claude-plugins-official": true,
     "hive@hive": true
   },
-  "alwaysThinkingEnabled": false,
+  "alwaysThinkingEnabled": true,
   "gitAttribution": false,
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812

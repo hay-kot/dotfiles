@@ -20,11 +20,7 @@ Run this at the end of any work session to ensure all changes are committed, pus
 
 Execute ALL steps in order. Do not skip steps.
 
-### Step 1: Ensure You're On a Branch
-
-Work should never be done on the main branch, create a branch following standard conventions if not on one already
-
-### Step 2: Assess Current State
+### Step 1: Assess Current State
 
 Run these commands to understand the workspace state:
 
@@ -35,13 +31,12 @@ bd list --status=in-progress
 ```
 
 Identify:
-
 - Uncommitted changes
 - Untracked files that should be committed or deleted
 - Stashed changes that need resolution
 - In-progress issues that need updates
 
-### Step 3: Handle Uncommitted Changes
+### Step 2: Handle Uncommitted Changes
 
 If there are changes:
 
@@ -51,11 +46,10 @@ If there are changes:
 4. **Delete temporary files**: Remove any scratch files, debug logs, etc.
 
 If changes shouldn't be committed:
-
 - Stash if needed later: `git stash push -m "description"`
 - Or discard: `git checkout -- <file>` (only if truly unwanted)
 
-### Step 4: Run Quality Gates (if code changed)
+### Step 3: Run Quality Gates (if code changed)
 
 Only run if actual code was modified (not just docs or config):
 
@@ -71,7 +65,7 @@ cargo clippy
 
 Fix any failures before proceeding. Do not push broken code.
 
-### Step 5: Update Issue Status
+### Step 4: Update Issue Status
 
 ```bash
 # Check current issues
@@ -84,7 +78,7 @@ bd close <issue-id> --comment "Completed in <commit-sha>"
 bd update <issue-id> --status=blocked --comment "Waiting on X"
 ```
 
-### Step 6: File Issues for Remaining Work
+### Step 5: File Issues for Remaining Work
 
 If there's follow-up work needed:
 
@@ -93,12 +87,11 @@ bd create --title "Follow-up: description" --description "Details..."
 ```
 
 Include:
-
 - What needs to be done
 - Why it wasn't done now
 - Any relevant context or file references
 
-### Step 7: Sync and Push
+### Step 6: Sync and Push
 
 This is **MANDATORY**. Work is not complete until pushed.
 
@@ -119,7 +112,6 @@ git status
 The output MUST show "Your branch is up to date with 'origin/...'"
 
 If push fails:
-
 1. Resolve conflicts
 2. Re-run quality gates
 3. Push again
@@ -158,22 +150,18 @@ After completing all steps, report:
 ## Session Tidy Complete
 
 ### Commits
-
 - [commit-sha] [commit-message]
 
 ### Issues Updated
-
 - Closed: #[id] [title]
 - Created: #[id] [title]
 
 ### Status
-
 - Working tree: Clean
 - Remote sync: Up to date
 - Open issues: [N] remaining
 
 ### Notes
-
 [Any follow-up context for next session]
 ```
 

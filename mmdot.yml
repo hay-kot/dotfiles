@@ -47,6 +47,7 @@ exec:
     - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
     - { path: "./setup/env.personal.sh", tags: ["personal", "env"] }
     - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
+    - { path: "./setup/ai.sh", tags: ["personal", "ai"] }
 
 brews:
   grafana:

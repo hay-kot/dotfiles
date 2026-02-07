@@ -13,3 +13,16 @@ chmod +x ./files/bootstrap.sh
 task setup # initialize setup
 task run -- personal # mmdot personal group
 ```
+
+## AI Skills + Commands
+
+Shared AI content lives in `.ai/`:
+
+- `/.ai/skills` - Claude and Codex skills
+- `/.ai/commands` - Claude commands and Codex CLI prompts
+
+Run the AI setup script to wire Claude + Codex:
+
+```sh
+./setup/ai.sh
+```
