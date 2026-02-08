@@ -13,6 +13,9 @@ tui:
 
 plugins:
   shell_workers: 10 # shared subprocess concurrency limit
+  github:
+    enabled: true
+    results_cache: 30m
 
 rules:
   - pattern: ""

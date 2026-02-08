@@ -1,4 +1,8 @@
 {
+  "git_panel": {
+    "tree_view": true,
+    "sort_by_path": true
+  },
   "agent_ui_font_size": 18.0,
   "ui_font_size": 18.0,
   "ui_font_family": ".ZedSans",

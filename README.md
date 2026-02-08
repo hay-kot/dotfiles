@@ -2,7 +2,7 @@ My Dotfiles.
 
 ## Setup
 
-Run `./files/bootstrap.sh` to install pre-reqs and then use the `Taskfile.yml` to run any other setup commands
+Run `./files/bootstrap.sh` to install pre-reqs and then use `mise` tasks for the rest of setup
 
 ```sh
 chmod +x ./files/bootstrap.sh
@@ -10,8 +10,8 @@ chmod +x ./files/bootstrap.sh
 ```
 
 ```sh
-task setup # initialize setup
-task run -- personal # mmdot personal group
+mise run setup # initialize setup
+mise run mmdot # run mmdot with default tags
 ```
 
 ## AI Skills + Commands

@@ -46,6 +46,8 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 
 Use the beads (`bd`) CLI to track work and manage dependencies across sessions. Create issues for non-trivial tasks, update status as work progresses, and track blockers with dependencies.
 
+Always run beads with `--no-daemon` flag when using the CLI
+
 ## Maximize Efficiency
 
 **Parallel operations:** Run multiple searches, reads, and greps in single messages
