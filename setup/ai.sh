@@ -1,12 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-DOTFILES_ROOT="${DOTFILES_ROOT:-$HOME/.dotfiles}"
-AI_ROOT="$DOTFILES_ROOT/.ai"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+AI_ROOT="$DOTFILES_DIR/.ai"
 SOURCE_SKILLS="$AI_ROOT/skills"
 SOURCE_COMMANDS="$AI_ROOT/commands"
 
-CLAUDE_DIR="$DOTFILES_ROOT/.claude"
+CLAUDE_DIR="$DOTFILES_DIR/.claude"
 CLAUDE_SKILLS_LINK="$CLAUDE_DIR/skills"
 CLAUDE_COMMANDS_LINK="$CLAUDE_DIR/commands"
 
@@ -44,8 +44,9 @@ ensure_symlink() {
   ln -sfn "$target" "$link"
 }
 
-ensure_symlink "$SOURCE_SKILLS" "$CLAUDE_SKILLS_LINK"
-ensure_symlink "$SOURCE_COMMANDS" "$CLAUDE_COMMANDS_LINK"
+# Use relative symlinks for dotfiles .claude directory (portable across machines)
+ensure_symlink "../.ai/skills" "$CLAUDE_SKILLS_LINK"
+ensure_symlink "../.ai/commands" "$CLAUDE_COMMANDS_LINK"
 
 ensure_symlink "$SOURCE_SKILLS" "$HOME_CLAUDE_SKILLS_LINK"
 ensure_symlink "$SOURCE_COMMANDS" "$HOME_CLAUDE_COMMANDS_LINK"
