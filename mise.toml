@@ -51,3 +51,7 @@ run = '{{ get_env(name="MMDOT_CMD", default="") }} run'
 description = "run mise lock"
 dir = "./.config/mise/"
 run = "mise install"
+
+[tasks.plusx]
+description = "Make all scripts in bin/ executable"
+run = "chmod +x ~/.dotfiles/bin/*"

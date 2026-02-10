@@ -127,7 +127,7 @@
   },
   "fileSuggestion": {
     "type": "command",
-    "command": "~/.claude/file-suggestion.sh"
+    "command": "claude-suggestions.sh"
   },
   "alwaysThinkingEnabled": true,
   "gitAttribution": false,

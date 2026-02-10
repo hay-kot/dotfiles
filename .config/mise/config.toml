@@ -48,10 +48,6 @@ rust = "latest"
 "github:thomasschafer/scooter" = "latest" # find and replace mechanism
 "cargo:sleek" = "latest"                  # sql formatter
 
-[tasks.bin-chmod]
-description = "Make all scripts in bin/ executable"
-run = "chmod +x ~/.dotfiles/bin/*"
-
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
 experimental = true
