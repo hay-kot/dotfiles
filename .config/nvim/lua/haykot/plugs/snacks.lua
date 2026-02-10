@@ -161,9 +161,9 @@ return {
     {
       "<leader>fc",
       function()
-        Snacks.picker.git_status()
+        Snacks.picker.git_diff()
       end,
-      desc = "find changed files",
+      desc = "find changed hunks",
     },
     {
       "<leader>fp",
