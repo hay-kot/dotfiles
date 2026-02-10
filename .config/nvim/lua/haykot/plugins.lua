@@ -62,14 +62,18 @@ require("lazy").setup({
   {
     priority = 100,
     "rmagatti/auto-session",
+    cond = function()
+      -- Don't load auto-session if disabled
+      return vim.g.auto_session_enabled ~= false
+    end,
     config = function()
       vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       require("auto-session").setup({
-        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble", "dapui", "dap" },
+        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble", "dapui", "dap", "DiffReview" },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
-        pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose" },
+        pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose", "silent! DiffReviewClose" },
         pre_restore_cmds = {
           function()
             require("haykot.lib.globals").session_restored = true

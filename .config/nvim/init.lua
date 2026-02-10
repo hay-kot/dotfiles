@@ -1,3 +1,11 @@
+-- Disable auto-session when using -c commands (must be before plugins load)
+for _, arg in ipairs(vim.v.argv) do
+  if arg == "-c" or arg == "+c" then
+    vim.g.auto_session_enabled = false
+    break
+  end
+end
+
 require("haykot.keymaps")
 require("haykot.usercommands")
 require("haykot.options")

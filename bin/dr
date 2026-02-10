@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# dr - Quick diff review launcher
+# Usage:
+#   dr              # Diff against main (default)
+#   dr main         # Diff against main
+#   dr develop      # Diff against any branch
+#   dr pr:111       # Review PR #111
+#   dr pr111        # Review PR #111 (also works)
+
+set -e
+
+arg="${1:-main}"
+
+# Check if it's a PR (pr:123 or pr123)
+if [[ "$arg" =~ ^pr:?([0-9]+)$ ]]; then
+  # Use new command structure
+  nvim -c "DiffReview pr:${BASH_REMATCH[1]}"
+else
+  nvim -c "DiffReview $arg"
+fi
