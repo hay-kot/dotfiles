@@ -16,6 +16,11 @@ end
 
 ensure_lazy()
 
+-- To use a local development version of diff-review, clone the repo to ~/dev/diff-review.
+-- When that directory exists, lazy.nvim will load from it instead of the remote repo.
+local local_path = vim.fn.expand("~/dev/diff-review")
+local use_local = vim.loop.fs_stat(local_path) ~= nil
+
 require("lazy").setup({
   -- Base Plugins
   "nvim-lua/plenary.nvim", -- Useful lua functions used by lots of plugins
@@ -27,6 +32,17 @@ require("lazy").setup({
 
     config = function()
       vim.cmd([[colorscheme tokyonight-night]])
+    end,
+  },
+  {
+    "colonyops/diff-review",
+    dir = use_local and local_path or nil,
+    name = "diff-review.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("diff-review").setup()
     end,
   },
   {
@@ -70,7 +86,17 @@ require("lazy").setup({
       vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       require("auto-session").setup({
-        bypass_session_save_file_types = { "", "blank", "alpha", "NvimTree", "nofile", "Trouble", "dapui", "dap", "DiffReview" },
+        bypass_session_save_file_types = {
+          "",
+          "blank",
+          "alpha",
+          "NvimTree",
+          "nofile",
+          "Trouble",
+          "dapui",
+          "dap",
+          "DiffReview",
+        },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
         pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose", "silent! DiffReviewClose" },
