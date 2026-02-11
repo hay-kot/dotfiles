@@ -41,33 +41,39 @@ Identify what's missing or could be improved:
 - Testing gaps
 - Documentation needs
 
-## Discussion Points
+## Interactive Discussion Process
 
-**Before suggesting changes, engage the user with specific questions about:**
+**After presenting your initial assessment, use AskUserQuestion tool to conduct a structured interview:**
 
 ### Architecture & Design Decisions
 
-- Present alternative approaches you've identified and ask which aligns better with their goals
-- Ask about constraints not mentioned in the plan (performance, backwards compatibility, etc.)
-- Clarify intended scope boundaries—what's explicitly out of scope?
+Use AskUserQuestion to gather input on:
+- Alternative approaches you've identified - which aligns better with their goals?
+- Constraints not mentioned in the plan (performance, backwards compatibility, etc.)
+- Scope boundaries—what's explicitly out of scope?
 
 ### Implementation Trade-offs
 
-- Identify trade-offs in the current approach (e.g., simplicity vs. flexibility, speed vs. maintainability)
-- Ask about acceptable compromises given timeline or resource constraints
-- Discuss build-vs-buy decisions for any components
+Use AskUserQuestion to clarify:
+- Trade-offs in the current approach (simplicity vs. flexibility, speed vs. maintainability)
+- Acceptable compromises given timeline or resource constraints
+- Build-vs-buy decisions for any components
 
 ### Integration Concerns
 
-- Ask how this work should interact with existing systems
-- Clarify rollout strategy (feature flags, gradual rollout, etc.)
-- Discuss backwards compatibility requirements
+Use AskUserQuestion to determine:
+- How this work should interact with existing systems
+- Rollout strategy (feature flags, gradual rollout, etc.)
+- Backwards compatibility requirements
 
 ### Validation & Success Criteria
 
-- Confirm what "done" looks like from the user's perspective
-- Ask about priority of different requirements if trade-offs are needed
-- Discuss acceptable test coverage levels
+Use AskUserQuestion to confirm:
+- What "done" looks like from the user's perspective
+- Priority of different requirements if trade-offs are needed
+- Acceptable test coverage levels
+
+**Important:** Group related questions (max 4 per AskUserQuestion call). Make multiple calls if needed to cover all categories.
 
 ## Output Format
 
@@ -81,31 +87,29 @@ Structure your review as:
    - What the plan does well
    - Approaches worth preserving
 
-3. **Questions for Discussion**
-   - Numbered list of specific questions requiring user input
-   - Group by category (Design, Trade-offs, Validation, etc.) a the end of the response
-     Example:
-     ```
-     ## Questions
+3. **Gap Analysis**
+   - What's missing or unclear
+   - Potential issues identified
+   - Areas needing clarification
 
-     ### Category 1
-       - ...
-       - ...
-     ### Category 2
-       - ...
-       - ...
-     ```
-   - Explain why each question matters for the implementation
+4. **Interactive Interview**
+   - **Use AskUserQuestion tool** to gather structured responses
+   - Group questions by category (Design, Trade-offs, Integration, Validation)
+   - Make multiple AskUserQuestion calls if needed (max 4 questions per call)
+   - Explain context for each question category before asking
 
-4. **Suggested Improvements**
-   - Hold detailed suggestions until after discussing questions with the user
-   - Note areas you'll address once you have their input
+5. **Suggested Improvements** (after interview)
+   - Based on user responses, propose specific changes
+   - Offer to update the plan with agreed-upon modifications
+   - Note areas you'll address based on their input
 
 ## Instructions
 
 1. Read the plan file thoroughly before making any assessments
 2. Explore relevant parts of the codebase to validate your understanding
-3. **Ask your questions before proposing changes**—user input should shape your recommendations
+3. **Use AskUserQuestion tool to conduct structured interviews**—user input should shape your recommendations
 4. Be specific in your questions; avoid generic queries
-5. After discussion, offer to update the plan with agreed-upon changes
-6. Preserve the original plan structure unless the user wants it reorganized
+5. Group related questions together (max 4 per AskUserQuestion call)
+6. After gathering all responses, propose specific improvements
+7. Offer to update the plan with agreed-upon changes
+8. Preserve the original plan structure unless the user wants it reorganized

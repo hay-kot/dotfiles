@@ -11,6 +11,11 @@ tui:
   refresh_interval: 10s
   preview_enabled: true
 
+review:
+  comment_line_width: 100
+  max_aidth: 100
+  center_document: true
+
 plugins:
   shell_workers: 10 # shared subprocess concurrency limit
   github:

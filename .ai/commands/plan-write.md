@@ -76,8 +76,9 @@ Then wait for the user's input.
    - Note assumptions that need verification
    - Determine true scope based on codebase reality
 
-5. **Present informed understanding and focused questions**:
+5. **Present informed understanding and conduct interactive interview**:
 
+   First, summarize your findings:
    ```
    Based on the ticket and my research of the codebase, I understand we need to [accurate summary].
 
@@ -85,12 +86,16 @@ Then wait for the user's input.
    - [Current implementation detail with file:line reference]
    - [Relevant pattern or constraint discovered]
    - [Potential complexity or edge case identified]
-
-   Questions that my research couldn't answer:
-   - [Specific technical question that requires human judgment]
-   - [Business logic clarification]
-   - [Design preference that affects implementation]
    ```
+
+   Then, **use AskUserQuestion tool** to interview the user about any open questions:
+   - Requirements clarifications that code can't answer
+   - Business logic decisions
+   - Design preferences between valid alternatives
+   - Scope boundaries and out-of-scope items
+   - Performance or compatibility requirements
+
+   Structure questions clearly with the AskUserQuestion tool, grouping related questions together (max 4 questions per call).
 
    Only ask questions that you genuinely cannot answer through code investigation.
 
@@ -127,8 +132,9 @@ After getting initial clarifications:
 
 4. **Wait for ALL sub-tasks to complete** before proceeding
 
-5. **Present findings and design options**:
+5. **Present findings and conduct design interview**:
 
+   First, summarize research findings:
    ```
    Based on my research, here's what I found:
 
@@ -136,16 +142,19 @@ After getting initial clarifications:
    - [Key discovery about existing code]
    - [Pattern or convention to follow]
 
-   **Design Options:**
+   **Design Options I've Identified:**
    1. [Option A] - [pros/cons]
    2. [Option B] - [pros/cons]
-
-   **Open Questions:**
-   - [Technical uncertainty]
-   - [Design decision needed]
-
-   Which approach aligns best with your vision?
    ```
+
+   Then, **use AskUserQuestion tool** to interview about design decisions:
+   - Which architectural approach to take when multiple are valid
+   - Trade-offs between complexity and flexibility
+   - Performance vs maintainability preferences
+   - Integration strategy choices
+   - Testing depth requirements
+
+   Present options with clear trade-offs and use the tool to gather structured responses.
 
 ### Step 3: Plan Structure Development
 
@@ -163,11 +172,15 @@ Once aligned on approach:
    1. [Phase name] - [what it accomplishes]
    2. [Phase name] - [what it accomplishes]
    3. [Phase name] - [what it accomplishes]
-
-   Does this phasing make sense? Should I adjust the order or granularity?
    ```
 
-2. **Get feedback on structure** before writing details
+2. **Use AskUserQuestion tool to validate structure**:
+   - Confirm phasing makes sense
+   - Verify granularity is appropriate
+   - Check order of implementation
+   - Validate out-of-scope items
+
+   Get explicit approval on structure before writing detailed plan.
 
 ### Step 4: Detailed Plan Writing
 
@@ -347,10 +360,11 @@ After structure approval:
 
 6. **No Open Questions in Final Plan**:
    - If you encounter open questions during planning, STOP
-   - Research or ask for clarification immediately
+   - **Use AskUserQuestion tool** to get answers immediately
    - Do NOT write the plan with unresolved questions
    - The implementation plan must be complete and actionable
    - Every decision must be made before finalizing the plan
+   - The structured Q&A ensures nothing is missed
 
 ## Success Criteria Guidelines
 
