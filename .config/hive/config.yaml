@@ -13,7 +13,7 @@ tui:
 
 review:
   comment_line_width: 100
-  max_aidth: 100
+  max_width: 100
   center_document: true
 
 plugins:
@@ -65,28 +65,28 @@ usercommands:
     silent: true
 
   CheckInbox:
-    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"
+    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new\""
     help: "Instructs claude to check it's inbox"
     silent: true
 
   SendAccept:
-    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}"
+    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\""
     help: "Send enter to claude window"
     silent: true
 
   SendTidy:
     help: send /tidy
-    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/tidy"
+    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/tidy\""
     silent: true
 
   SendClear:
     help: send /clear
-    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }}" "/clear"
+    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/clear\""
     silent: true
 
   SendRebase:
     help: send /tidy
-    sh: claude-send "{{ .Name }}:{{ .TmuxWindow }} " "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"
+    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }} \" \"fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts\""
     silent: true
 
   OpenInZed:

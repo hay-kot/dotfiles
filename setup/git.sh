@@ -31,16 +31,6 @@ echo "git: set default editor"
 git config --global core.editor nvim
 
 # -------------------------------------
-# Difftastic
-
-echo "git: set difftastic as diff engine"
-git config --global diff.external difft
-
-echo "git: set difftastic aliases"
-git config --global alias.dlog "-c diff.external=difft log --ext-diff"
-git config --global alias.dshow "-c diff.external=difft show --ext-diff"
-
-# -------------------------------------
 # Git Aliases
 #
 
