@@ -357,3 +357,4 @@ prefix_rule(
     justification = "Beads work tracking CLI",
     match = ["bd next", "bd list"],
 )
+prefix_rule(pattern=["mise", "run", "lint:prose"], decision="allow")
