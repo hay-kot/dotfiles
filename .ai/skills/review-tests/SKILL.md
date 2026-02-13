@@ -1,5 +1,5 @@
 ---
-name: test-review
+name: review-tests
 description: Evaluate test quality and coverage to ensure tests provide value without redundancy
 argument-hint: [file-or-function]
 ---
@@ -184,9 +184,43 @@ assert.True(t, completed)
 assert.True(t, completed)
 ```
 
+**Go 1.24+: Use `testing/synctest` for concurrent code.**
+
+The `testing/synctest` package (experimental, requires `GOEXPERIMENT=synctest`) provides
+deterministic testing of concurrent code without `time.Sleep`. It runs goroutines in an
+isolated "bubble" with a fake clock. `synctest.Wait()` blocks until all goroutines in the
+bubble are durably blocked, giving you a reliable synchronization point.
+
+```go
+// BAD: Slow and flaky — time.Sleep is never the right synchronization
+time.Sleep(100 * time.Millisecond)
+if !called {
+    t.Fatal("expected function to be called")
+}
+
+// GOOD: Deterministic — synctest.Wait() returns when all goroutines block
+synctest.Run(func() {
+    called := false
+    go func() { called = true }()
+    synctest.Wait()
+    if !called {
+        t.Fatal("expected function to be called")
+    }
+})
+```
+
+Key rules for `synctest`:
+- Wrap test body in `synctest.Run(func() { ... })`
+- Call `synctest.Wait()` before assertions to ensure goroutines have settled
+- `time.Sleep` inside a bubble advances the fake clock instantly — useful for testing timeouts
+- All goroutines in the bubble must exit before `Run` returns; clean up background goroutines
+- Use `net.Pipe` for in-memory network connections (real I/O is not durably blocking)
+
+See https://go.dev/blog/synctest for details.
+
 ## Review Checklist
 
-When /test-review is invoked, evaluate:
+When /review-tests is invoked, evaluate:
 
 1. **Path coverage**: Does each test cover a distinct execution path?
 2. **Redundancy**: Are there multiple tests covering the same path?
