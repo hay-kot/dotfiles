@@ -4,10 +4,17 @@ set -euo pipefail
 conffile="$HOME/.config/wezup/wezup.json"
 cwdirname=$(basename "$(pwd)")
 
-# Read the configuration and filter entries matching the current working directory
+# Try exact match first, then prefix match
 contents=$(jq --arg dir "$cwdirname" '.[$dir]' "$conffile")
 
-# If no matching entry, print error and exit early
+if [ "$contents" = "null" ] || [ -z "$contents" ]; then
+    # Find a key that is a prefix of the current directory name
+    matched_key=$(jq -r --arg dir "$cwdirname" 'keys[] | select($dir | startswith(.))' "$conffile" | head -1)
+    if [ -n "$matched_key" ]; then
+        contents=$(jq --arg key "$matched_key" '.[$key]' "$conffile")
+    fi
+fi
+
 if [ "$contents" = "null" ] || [ -z "$contents" ]; then
     echo "Error: No matching entry found for directory '$cwdirname' in $conffile"
     exit 1
