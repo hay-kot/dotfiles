@@ -14,7 +14,7 @@ fi
 echo "tmux: version $(tmux -V)"
 
 # Install TPM (Tmux Plugin Manager)
-TPM_DIR="$HOME/.tmux/plugins/tpm"
+TPM_DIR="$HOME/.config/tmux/plugins/tpm"
 if [ ! -d "$TPM_DIR" ]; then
   echo "tmux: installing TPM"
   git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"

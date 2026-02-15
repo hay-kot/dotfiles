@@ -9,7 +9,7 @@ contents=$(jq --arg dir "$cwdirname" '.[$dir]' "$conffile")
 
 if [ "$contents" = "null" ] || [ -z "$contents" ]; then
     # Find a key that is a prefix of the current directory name
-    matched_key=$(jq -r --arg dir "$cwdirname" 'keys[] | select($dir | startswith(.))' "$conffile" | head -1)
+    matched_key=$(jq -r --arg dir "$cwdirname" '[keys[] | select($dir | startswith(.))] | sort_by(-length) | .[0] // empty' "$conffile")
     if [ -n "$matched_key" ]; then
         contents=$(jq --arg key "$matched_key" '.[$key]' "$conffile")
     fi

@@ -34,6 +34,7 @@ brew install \
   crf++ \
   ctop \
   dagger \
+  git-delta \
   docker \
   editorconfig-checker \
   eza \
