@@ -10,6 +10,8 @@ tmux:
 tui:
   refresh_interval: 10s
   preview_enabled: true
+  views:
+    store: true
 
 review:
   comment_line_width: 100
@@ -25,16 +27,23 @@ plugins:
 rules:
   - pattern: ""
     max_recycled: 3
-    spawn:
-      # Create or switch to tmux session
-      # - ~/.config/tmux/layouts/hive.sh {{ .Name | shq }} {{ .Path | shq }}
-    batch_spawn:
-      # Create tmux session in background with prompt
-      # - ~/.config/tmux/layouts/hive.sh -b {{ .Name | shq }} {{ .Path | shq }} {{ .Prompt | shq }}
     commands:
       - hive ctx init
       - bd init --force --stealth || true
   - pattern: ".*[:/]grafana/.*"
+    commands:
+      - mise trust
+  - pattern: ".*[:/]colonyops/.*"
+    commands:
+      - mise trust
+  - pattern: ".*[:/]colonyops/hive"
+    windows:
+      - name: claude
+        command: "claude --model opus"
+        focus: true
+      - name: shell
+      - name: logs
+        command: "tail -f dev.log"
     commands:
       - mise trust
   - pattern: ".*[:/]hay-kot/.*"

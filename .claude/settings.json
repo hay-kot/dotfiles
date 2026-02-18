@@ -131,7 +131,8 @@
     "gopls-lsp@claude-plugins-official": true,
     "hive@hive": true,
     "plugin-dev@claude-plugins-official": true,
-    "scaffold@hay-kot-scaffold": true
+    "scaffold@hay-kot-scaffold": true,
+    "hive-hooks@hive": true
   },
   "alwaysThinkingEnabled": true,
   "skipDangerousModePermissionPrompt": true,
