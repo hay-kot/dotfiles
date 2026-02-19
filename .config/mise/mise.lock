@@ -40,30 +40,30 @@ backend = "github:caarlos0/svu"
 version = "0.7.9"
 backend = "github:grafana/mcp-grafana"
 
+[[tools."github:hay-kot/gobusgen"]]
+version = "0.2.0"
+backend = "github:hay-kot/gobusgen"
+
 [[tools."github:hay-kot/gofind"]]
 version = "v0.4.1"
 backend = "github:hay-kot/gofind"
 "platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "0.29.0"
+version = "v0.31.1"
 backend = "github:hay-kot/hive"
-"platforms.macos-arm64" = { checksum = "sha256:9f65cfbd826cb3b9f23004a9315391ac5816cb62561be9bfb88be02379983087", url = "https://github.com/colonyops/hive/releases/download/v0.29.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/355166105"}
 
 [[tools."github:hay-kot/scaffold"]]
-version = "0.12.1"
+version = "0.13.0"
 backend = "github:hay-kot/scaffold"
-"platforms.macos-arm64" = { checksum = "sha256:cb089f3c9c0524c5f6f6d37622af366a6db6fc42b5f982a15c2094653c6b0ae0", url = "https://github.com/hay-kot/scaffold/releases/download/v0.12.1/scaffold_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/330926848"}
 
 [[tools."github:homeport/dyff"]]
-version = "1.10.3"
+version = "1.10.4"
 backend = "github:homeport/dyff"
-"platforms.macos-arm64" = { checksum = "sha256:1c81bac7467c51de621328f53d9bf47b25ff0073724f844b5bf93fb4430ed7b5", url = "https://github.com/homeport/dyff/releases/download/v1.10.3/dyff_1.10.3_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/332530704"}
 
 [[tools."github:steveyegge/beads"]]
-version = "0.49.1"
+version = "0.49.6"
 backend = "github:steveyegge/beads"
-"platforms.macos-arm64" = { checksum = "sha256:3b1dda32ba66cddf405e8076e466faf3a6b9a303c15bb1c2b3d2403d6ebe5f15", url = "https://github.com/steveyegge/beads/releases/download/v0.49.1/beads_0.49.1_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/steveyegge/beads/releases/assets/345934992"}
 
 [[tools."github:sxyazi/yazi"]]
 version = "25.5.31"
@@ -158,5 +158,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.0"
+version = "1.93.1"
 backend = "core:rust"

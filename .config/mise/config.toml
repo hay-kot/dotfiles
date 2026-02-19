@@ -32,7 +32,7 @@ rust = "latest"
 "github:amir20/dtop" = "v0.5.0"             # docker tui
 
 # Personal Go Tools
-"go:github.com/hay-kot/mmdot" = "v0.3.0"
+"go:github.com/hay-kot/mmdot" = "v0.4.1"
 "go:github.com/hay-kot/mdparse" = "v0.1.0"
 "github:steveyegge/beads" = "v0.49"
 "github:hay-kot/gofind" = "v0.4.1"

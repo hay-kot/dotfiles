@@ -15,5 +15,9 @@ repomgr.log
 
 .config/zed/prompts/
 
+# private skill templates (synced via mmdot age encryption)
+.ai/skills/design-doc/templates/design-doc.md
+
 # tmux plugins (managed by TPM)
 .config/tmux/plugins/
+/mmdot/vault.yml
