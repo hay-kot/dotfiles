@@ -37,28 +37,32 @@ Combine both diffs to get the complete picture of what will differ from the base
 
 ## Step 2: Dispatch Sub-Agent Reviews
 
-Spawn **four sub-agents in parallel**, each focused on one review dimension. Provide each
-sub-agent with the full diff and the list of changed files.
+Spawn **four sub-agents in parallel** using the Task tool, each focused on one review dimension.
+Provide each sub-agent with the full diff and the list of changed files.
+
+**Critical:** Sub-agents do not have skills loaded automatically. Each sub-agent prompt MUST
+instruct the agent to first read the skill file, then follow its instructions. Include the
+full diff content in the prompt so the sub-agent has the code to review.
 
 ### Sub-Agent 1: Correctness Review
-> Use the **review-correctness** skill. Review all changed code for logic bugs, error handling
-> gaps, edge cases, race conditions, resource leaks, and security vulnerabilities. Return
-> findings in the review-correctness output format.
+> Read the `review-correctness` skill and follow its instructions. Review all changed code
+> for logic bugs, error handling gaps, edge cases, race conditions, resource leaks, and
+> security vulnerabilities. Return findings in the output format specified by the skill.
 
 ### Sub-Agent 2: Design Review
-> Use the **review-design** skill. Review all changed code for naming, structure, abstraction
-> quality, API surface, boundary clarity, and coupling. Return findings in the review-design
-> output format.
+> Read the `review-design` skill and follow its instructions. Review all changed code for
+> naming, structure, abstraction quality, API surface, boundary clarity, and coupling. Return
+> findings in the output format specified by the skill.
 
 ### Sub-Agent 3: Comment Review
-> Use the **review-comments** skill. Review all comments in the changed code for relevance
-> and purpose. Identify comments that restate code, are stale, or are missing where they
-> would help. Return findings in the review-comments output format.
+> Read the `review-comments` skill and follow its instructions. Review all comments in the
+> changed code for relevance and purpose. Identify comments that restate code, are stale, or
+> are missing where they would help. Return findings in the output format specified by the skill.
 
 ### Sub-Agent 4: Test Review
-> Use the **review-tests** skill. Review all test files in the changed code for coverage
-> quality, redundancy, and value. Identify missing tests for new code paths. Return findings
-> in the review-tests output format.
+> Read the `review-tests` skill and follow its instructions. Review all test files in the
+> changed code for coverage quality, redundancy, and value. Identify missing tests for new
+> code paths. Return findings in the output format specified by the skill.
 
 ## Step 3: Synthesize Results
 
