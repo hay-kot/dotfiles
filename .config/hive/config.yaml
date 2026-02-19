@@ -7,6 +7,12 @@ tmux:
   enabled: [tmux]
   poll_interval: 500ms
 
+agents:
+  default: claude
+  claude:
+    command: claude
+    flags: ["--dangerously-skip-permissions"]
+
 tui:
   refresh_interval: 10s
   preview_enabled: true

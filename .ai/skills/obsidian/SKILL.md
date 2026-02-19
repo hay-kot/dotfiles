@@ -24,10 +24,15 @@ If the variable is empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
 
 ## Document Types
 
-| Type        | Folder         | Filename Pattern                     |
-| ----------- | -------------- | ------------------------------------ |
-| test-plan   | Test Plans     | `YYYY-MM-DD-<slugified-title>.md`    |
-| design-doc  | Design Docs    | `YYYY-MM-DD-<slugified-title>.md`    |
+| Type        | Folder                                          | Filename Pattern                              |
+| ----------- | ----------------------------------------------- | --------------------------------------------- |
+| test-plan   | Test Plans                                      | `YYYY-MM-DD-<slugified-title>.md`             |
+| design-doc  | Design Docs                                     | `YYYY-MM-DD-<slugified-title>.md`             |
+| research    | Research                                        | `YYYY-MM-DD-<slugified-title>.md`             |
+| project     | Projects/\<Project Name\>                       | `<Project Name>.md`                           |
+| work-item   | Projects/\<Project Name\>/Work Items            | `<Work Item Name>.md`                         |
+
+For `project` and `work-item` types, use the `project-draft` skill instead — it handles the full interview and folder structure automatically.
 
 If the user requests a type not in this table, ask which folder to use and suggest they add it to this table.
 

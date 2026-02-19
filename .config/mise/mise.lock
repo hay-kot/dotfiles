@@ -43,6 +43,7 @@ backend = "github:grafana/mcp-grafana"
 [[tools."github:hay-kot/gobusgen"]]
 version = "0.2.0"
 backend = "github:hay-kot/gobusgen"
+"platforms.macos-arm64" = { checksum = "sha256:78e2411e4f0f222eede9e8b66a943c49db80fc65b289d2e8bca71a7738bfa2c5", url = "https://github.com/hay-kot/gobusgen/releases/download/v0.2.0/gobusgen_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356490727"}
 
 [[tools."github:hay-kot/gofind"]]
 version = "v0.4.1"
@@ -52,17 +53,18 @@ backend = "github:hay-kot/gofind"
 [[tools."github:hay-kot/hive"]]
 version = "v0.31.1"
 backend = "github:hay-kot/hive"
+"platforms.macos-arm64" = { checksum = "sha256:70e0c5d7ddfbf7761db0e26550ab26167c8066be9297a1795c5150d5922fa383", url = "https://github.com/colonyops/hive/releases/download/v0.31.1/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/356383568"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.13.0"
 backend = "github:hay-kot/scaffold"
 
 [[tools."github:homeport/dyff"]]
-version = "1.10.4"
+version = "1.10.3"
 backend = "github:homeport/dyff"
 
 [[tools."github:steveyegge/beads"]]
-version = "0.49.6"
+version = "0.49.1"
 backend = "github:steveyegge/beads"
 
 [[tools."github:sxyazi/yazi"]]
@@ -109,7 +111,7 @@ version = "v0.1.0"
 backend = "go:github.com/hay-kot/mdparse"
 
 [[tools."go:github.com/hay-kot/mmdot"]]
-version = "v0.3.0"
+version = "0.4.1"
 backend = "go:github.com/hay-kot/mmdot"
 
 [[tools."go:github.com/homeport/dyff/cmd/dyff"]]
@@ -158,5 +160,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.93.0"
 backend = "core:rust"
