@@ -41,7 +41,30 @@ Evaluate tests for coverage quality, redundancy, and value. Every test should ju
 
 ## Evaluation Process
 
-When reviewing tests, analyze each test case:
+When reviewing tests, start by collecting coverage data, then analyze each test case:
+
+### Step 0: Collect Coverage Data (Go projects only)
+
+Before analyzing tests manually, run the coverage tool to get objective data:
+
+```bash
+# Run with coverage profiling
+go test ./... -coverprofile=coverage.out -covermode=atomic
+
+# Per-function coverage breakdown
+go tool cover -func=coverage.out
+
+# For a specific package
+go test ./path/to/pkg/... -coverprofile=coverage.out && go tool cover -func=coverage.out
+```
+
+Use the coverage output to:
+- **Identify uncovered functions** - 0% coverage functions are gaps
+- **Find partially covered functions** - low % signals untested branches
+- **Validate existing tests** - high % with redundant tests confirms candidates for removal
+- **Focus review effort** - prioritize functions with coverage below 70%
+
+Interpret coverage numbers critically — 100% line coverage does not mean all logical paths are tested (e.g., different error values hitting the same return statement). Use coverage as a floor check, not a ceiling.
 
 ### Step 1: Map Execution Paths
 
@@ -222,12 +245,13 @@ See https://go.dev/blog/synctest for details.
 
 When /review-tests is invoked, evaluate:
 
-1. **Path coverage**: Does each test cover a distinct execution path?
-2. **Redundancy**: Are there multiple tests covering the same path?
-3. **Boundaries**: Are tested boundaries actually present in the code?
-4. **Maintainability**: Will these tests break on refactors?
-5. **Clarity**: Can someone understand the requirements from the tests?
-6. **Speed**: Are unit tests fast? Are slow tests justified?
+1. **Coverage baseline**: Run `go test -coverprofile` and check per-function percentages first
+2. **Path coverage**: Does each test cover a distinct execution path?
+3. **Redundancy**: Are there multiple tests covering the same path?
+4. **Boundaries**: Are tested boundaries actually present in the code?
+5. **Maintainability**: Will these tests break on refactors?
+6. **Clarity**: Can someone understand the requirements from the tests?
+7. **Speed**: Are unit tests fast? Are slow tests justified?
 
 ## Output Format
 
@@ -235,6 +259,13 @@ When reviewing tests, provide:
 
 ```markdown
 ## Test Review: [function/file]
+
+### Coverage Report
+| Function | Coverage | Status |
+|----------|----------|--------|
+| FuncA    | 87.5%    | ✓ Good |
+| FuncB    | 33.3%    | ⚠ Low  |
+| FuncC    | 0.0%     | ✗ Gap  |
 
 ### Execution Paths Identified
 1. [path description]
@@ -254,7 +285,7 @@ When reviewing tests, provide:
 - Refactor: [TestZ] tests implementation, not behavior
 
 ### Summary
-[N] tests → [M] recommended (removed X redundant, added Y for gaps)
+Coverage: X% overall | [N] tests → [M] recommended (removed X redundant, added Y for gaps)
 ```
 
 ## Guidelines

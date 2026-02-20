@@ -4,7 +4,7 @@ description: >
   Draft a new project and initial work items in Obsidian. Use when the user wants to
   capture a new project idea, plan work streams, or organize a coding initiative.
 allowed-tools: "Bash(mkdir:*),Bash(echo:*),Bash(git:*),Read,Write"
-version: "1.0.0"
+version: "1.1.0"
 author: "User"
 ---
 
@@ -32,7 +32,7 @@ Ask the user for the following before writing anything:
 4. **Initial work items** — the first concrete things to work on
    - For each item: name, objective, starting phase, priority
 
-Phases: `ideation | research | design | planning | in-progress | review | done`
+Phases: `backlog | research | design | planning | building | review | done | blocked`
 Priorities: `high | medium | low`
 
 ## File Structure
@@ -40,14 +40,18 @@ Priorities: `high | medium | low`
 ```
 $OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/
 ├── <Project Name>.md         ← project note
+├── Research/                 ← research docs created during project-advance
+├── Design Docs/              ← design docs created during project-advance
 └── Work Items/
     └── <Work Item Name>.md   ← one file per work item
 ```
 
-Create directories before writing:
+Create all directories before writing:
 
 ```bash
 mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Work Items"
+mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Research"
+mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Design Docs"
 ```
 
 ## Project Note Format
@@ -87,8 +91,7 @@ tags:
   - work-item
 type: work-item
 project: "[[<Project Name>]]"
-phase: <ideation|research|design|planning|in-progress|review|done>
-status: <backlog|active|blocked|review|done>
+phase: <backlog|research|design|planning|building|review|done|blocked>
 priority: <high|medium|low>
 repos: []
 created: YYYY-MM-DD
@@ -109,7 +112,6 @@ created: YYYY-MM-DD
 - Research:
 - Design Doc:
 - Plan:
-- Beads Board:
 - PRs:
 
 ## Notes

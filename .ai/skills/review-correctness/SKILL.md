@@ -69,7 +69,37 @@ For any shared mutable state:
 - Are channels properly closed by the sender?
 - Could `select` with `default` cause a busy loop?
 
-### Step 5: Security Scan
+### Step 5: Dead Code Analysis (Go projects only)
+
+Run `deadcode` to find unreachable functions and methods:
+
+```bash
+# Install if needed
+go install golang.org/x/tools/cmd/deadcode@latest
+
+# Analyze from the main entry point(s)
+deadcode -test ./...
+
+# For a specific binary
+deadcode ./cmd/myapp/...
+```
+
+Interpret findings critically — not all reported dead code is a bug:
+
+| Finding | Likely Cause | Action |
+|---------|-------------|--------|
+| Unexported func, never called | Genuinely dead — remove | Delete |
+| Exported func, never called internally | May be public API or used by external consumers | Investigate before removing |
+| Interface method never called | Stale interface — check if interface is still needed | Remove method or interface |
+| Function only called in deleted branch | Leftover from prior refactor | Delete |
+| `//go:build` gated code | May be intentionally excluded in current build | Skip or verify |
+
+Flag dead code as a correctness issue when it:
+- Suggests a missing call site (e.g., a cleanup function that was supposed to be deferred)
+- Indicates an unreachable error branch that should be reachable
+- Points to orphaned logic after a refactor that left callers removed
+
+### Step 6: Security Scan
 
 | Category | Check |
 |----------|-------|
@@ -143,6 +173,7 @@ When /review-correctness is invoked, evaluate:
 4. **Concurrency**: Is shared state properly synchronized?
 5. **Resource management**: Are all resources cleaned up (defer, close)?
 6. **Security**: Are inputs validated and outputs sanitized?
+7. **Dead code**: Run `deadcode -test ./...` — are there unreachable functions signaling missing call sites or orphaned logic?
 
 ## Output Format
 
@@ -160,6 +191,12 @@ When /review-correctness is invoked, evaluate:
 | Location | Category | Issue | Fix |
 |----------|----------|-------|-----|
 | query.go:34 | Injection | String interpolation in SQL | Use parameterized query |
+
+### Dead Code
+| Function | Location | Assessment | Action |
+|----------|----------|------------|--------|
+| processLegacy | legacy.go:88 | Orphaned after refactor | Delete |
+| validateToken | auth.go:201 | Exported — verify no external callers | Investigate |
 
 ### Edge Cases
 | Location | Input | Behavior | Expected |

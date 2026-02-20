@@ -69,7 +69,26 @@ For each abstraction (interface, generic, factory):
 2. **Check call sites** - If callers always use the concrete type, the interface adds nothing
 3. **Test-only interfaces** - Acceptable only if the real dependency is expensive (network, DB)
 
-### Step 4: Review API Surface
+### Step 4: Evaluate Helper Functions
+
+For any function named `helper`, placed in a `helpers`/`utils`/`common` package, or that exists solely to wrap another call, apply these tests:
+
+| Question | Verdict |
+|----------|---------|
+| Is it called in more than one place? | Single call site — inline it |
+| Does it have a name that describes *why* it exists, not *what* it does? | Vague name (`formatHelper`) — the abstraction has no identity |
+| Does extracting it make the caller clearer, or just shorter? | Shorter-but-obscure — not worth it |
+| Does it own any logic, or just delegate? | Pure delegation — remove the wrapper |
+| Would a future reader know where to find this without searching? | Buried in `utils.go` — wrong location |
+
+**Helper functions justify their existence when:**
+- Called from 3+ distinct locations
+- The extracted name communicates *intent* the call site cannot (`sanitizeUserInput` vs `strings.TrimSpace(strings.ToLower(...))`)
+- They encapsulate a non-obvious decision (not just syntax compression)
+
+**Inline when:** The helper is only called once, or its body is as readable as its name.
+
+### Step 5: Review API Surface
 
 - Are unexported things that should be? (Default to unexported)
 - Do exported functions have clear input/output contracts?
@@ -129,9 +148,10 @@ When /review-design is invoked, evaluate:
 1. **Boundaries**: Does each unit have a clear, single responsibility?
 2. **Naming**: Do names honestly describe what things do?
 3. **Abstractions**: Is every interface/generic justified by multiple consumers?
-4. **API surface**: Are exports minimal and hard to misuse?
-5. **Data flow**: Can you trace data without a debugger?
-6. **Coupling**: Could you change one module without cascading edits?
+4. **Helpers**: Is every helper called from multiple sites, named for intent, and non-trivially useful?
+5. **API surface**: Are exports minimal and hard to misuse?
+6. **Data flow**: Can you trace data without a debugger?
+7. **Coupling**: Could you change one module without cascading edits?
 
 ## Output Format
 

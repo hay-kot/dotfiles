@@ -4,7 +4,7 @@ description: >
   Save documents to Obsidian notebook. Use when the user asks to save, write, or put
   a document (test plan, design doc, etc.) into their Obsidian notebook.
 allowed-tools: "Bash(mkdir:*),Write,Read"
-version: "1.0.0"
+version: "1.1.0"
 author: "User"
 ---
 
@@ -24,13 +24,18 @@ If the variable is empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
 
 ## Document Types
 
-| Type        | Folder                                          | Filename Pattern                              |
-| ----------- | ----------------------------------------------- | --------------------------------------------- |
-| test-plan   | Test Plans                                      | `YYYY-MM-DD-<slugified-title>.md`             |
-| design-doc  | Design Docs                                     | `YYYY-MM-DD-<slugified-title>.md`             |
-| research    | Research                                        | `YYYY-MM-DD-<slugified-title>.md`             |
-| project     | Projects/\<Project Name\>                       | `<Project Name>.md`                           |
-| work-item   | Projects/\<Project Name\>/Work Items            | `<Work Item Name>.md`                         |
+When saving a `design-doc` or `research` document, check whether a project context is
+available (the user mentions a project, or the document is being created as part of
+`project-advance`). If a project is known, save under the project folder. Otherwise fall
+back to the vault-root folder.
+
+| Type       | With project context                                    | Without project context   | Filename Pattern              |
+| ---------- | ------------------------------------------------------- | ------------------------- | ----------------------------- |
+| test-plan  | _(no project variant)_                                  | Test Plans                | `YYYY-MM-DD-<slug>.md`        |
+| design-doc | Projects/\<Project Name\>/Design Docs                   | Design Docs               | `YYYY-MM-DD-<slug>.md`        |
+| research   | Projects/\<Project Name\>/Research                      | Research                  | `YYYY-MM-DD-<slug>.md`        |
+| project    | Projects/\<Project Name\>                               | _(always project-scoped)_ | `<Project Name>.md`           |
+| work-item  | Projects/\<Project Name\>/Work Items                    | _(always project-scoped)_ | `<Work Item Name>.md`         |
 
 For `project` and `work-item` types, use the `project-draft` skill instead — it handles the full interview and folder structure automatically.
 

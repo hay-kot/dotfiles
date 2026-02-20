@@ -42,16 +42,6 @@ rules:
   - pattern: ".*[:/]colonyops/.*"
     commands:
       - mise trust
-  - pattern: ".*[:/]colonyops/hive"
-    windows:
-      - name: claude
-        command: "claude --model opus"
-        focus: true
-      - name: shell
-      - name: logs
-        command: "tail -f dev.log"
-    commands:
-      - mise trust
   - pattern: ".*[:/]hay-kot/.*"
     commands:
       - mise trust
@@ -124,3 +114,89 @@ usercommands:
     help: copy agent inbox to clipboard
     sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
     silent: true
+
+  ReviewCodeSync:
+    help: "sequential chain review: codex (correctness) → agent (design+tests) → claude (comments+verdict)"
+    silent: true
+    windows:
+      - name: review-codex
+        command: |-
+          codex 'You are the first reviewer in a sequential code review chain. Your focus is CORRECTNESS.
+          Your workflow:
+          1. Read the correctness review skill for guidance:
+             cat .ai/skills/review-correctness/SKILL.md
+          2. Read all changes under review:
+             git diff main...HEAD   (branch commits)
+             git diff               (unstaged changes)
+          3. For Go projects, run dead code analysis:
+             deadcode -test ./... 2>/dev/null || true
+          4. Analyse for: logic bugs, error handling, edge cases, race conditions, resource
+             leaks, security vulnerabilities, and dead code. Follow the skill output format.
+          5. YOU MUST publish your findings before exiting. This is not optional — the next
+             reviewer is blocked waiting for your message. Run this exact command:
+             hive msg pub --topic review-{{ .ID }}.codex "your detailed findings"
+             Do not summarize to stdout and stop. Do not skip this step. The workflow
+             breaks entirely if you do not publish.
+          Be thorough. The next reviewer will challenge your findings.'
+
+      - name: review-agent
+        command: |-
+          agent 'You are the second reviewer in a sequential code review chain. Your focus is DESIGN AND TESTS.
+          Your workflow:
+          1. Wait for the first reviewer (codex) to finish:
+             hive msg sub --topic review-{{ .ID }}.codex --wait --timeout 2h
+          2. Read the design and test review skills for guidance:
+             cat .ai/skills/review-design/SKILL.md
+             cat .ai/skills/review-tests/SKILL.md
+          3. Read all changes under review:
+             git diff main...HEAD   (branch commits)
+             git diff               (unstaged changes)
+          4. Read codex'\''s findings from step 1.
+          5. For Go projects, run test coverage analysis:
+             go test ./... -coverprofile=coverage.out -covermode=atomic 2>/dev/null && go tool cover -func=coverage.out || true
+          6. Analyse for: naming quality, unjustified abstractions, helper function bloat,
+             API surface problems, test redundancy, and coverage gaps. Follow the skill output formats.
+          7. For each of codex'\''s findings: agree, refute, or deepen it with evidence from the diff.
+          8. YOU MUST publish your findings before exiting. This is not optional — the next
+             reviewer is blocked waiting for your message. Run this exact command:
+             hive msg pub --topic review-{{ .ID }}.agent "your analysis"
+             Do not summarize to stdout and stop. Do not skip this step. The workflow
+             breaks entirely if you do not publish.
+          Be critical of both the code and codex'\''s findings. Do not simply restate what codex said.'
+
+      - name: review-claude
+        command: |-
+          {{ agentCommand }} {{ agentFlags }} 'You are the final reviewer in a sequential
+          code review chain. Your focus is COMMENTS AND FINAL SYNTHESIS.
+          Your workflow:
+          1. Wait for the second reviewer (agent) to finish:
+             hive msg sub --topic review-{{ .ID }}.agent --wait --timeout 2h
+          2. Read the comments review skill for guidance:
+             cat .ai/skills/review-comments/SKILL.md
+          3. Read codex'\''s findings:
+             hive msg sub --topic review-{{ .ID }}.codex
+          4. Read agent'\''s findings from step 1.
+          5. Read all changes under review:
+             git diff main...HEAD   (branch commits)
+             git diff               (unstaged changes)
+          6. Review all comments in the changed code for quality per the comments skill.
+          7. Produce the final verdict. You must:
+             - Report comment quality findings
+             - Challenge every finding from both reviewers: demand evidence, reject vague claims
+             - Identify issues NEITHER reviewer caught
+             - Call out where the two reviewers contradict each other and resolve it
+             - Rank all issues by severity (critical / major / minor)
+             - Give a clear ship / do not ship recommendation with specific conditions
+          Be adversarial. Assume the previous reviewers missed things.'
+
+  ReviewRalph:
+    help: "iterative self-critiquing review loop"
+    form:
+      - variable: iterations
+        type: text
+        label: "Number of iterations"
+        placeholder: "3"
+    windows:
+      - name: review-ralph
+        command: "cd {{ .Path }} && bash ~/.config/hive/scripts/review-ralph.sh {{ .Form.iterations | shq }}"
+

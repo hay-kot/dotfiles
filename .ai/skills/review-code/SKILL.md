@@ -47,7 +47,10 @@ full diff content in the prompt so the sub-agent has the code to review.
 ### Sub-Agent 1: Correctness Review
 > Read the `review-correctness` skill and follow its instructions. Review all changed code
 > for logic bugs, error handling gaps, edge cases, race conditions, resource leaks, and
-> security vulnerabilities. Return findings in the output format specified by the skill.
+> security vulnerabilities. For Go projects, run `deadcode -test ./...` in the repo root
+> to identify unreachable functions as part of the dead code analysis step — do not skip
+> this even though you have the diff; the tool requires the full build graph. Return findings
+> in the output format specified by the skill.
 
 ### Sub-Agent 2: Design Review
 > Read the `review-design` skill and follow its instructions. Review all changed code for
@@ -61,8 +64,11 @@ full diff content in the prompt so the sub-agent has the code to review.
 
 ### Sub-Agent 4: Test Review
 > Read the `review-tests` skill and follow its instructions. Review all test files in the
-> changed code for coverage quality, redundancy, and value. Identify missing tests for new
-> code paths. Return findings in the output format specified by the skill.
+> changed code for coverage quality, redundancy, and value. For Go projects, run
+> `go test ./... -coverprofile=coverage.out -covermode=atomic && go tool cover -func=coverage.out`
+> in the repo root to get per-function coverage data before analyzing the diff — do not skip
+> this even though you have the diff; coverage requires actually running the tests. Identify
+> missing tests for new code paths. Return findings in the output format specified by the skill.
 
 ## Step 3: Synthesize Results
 
