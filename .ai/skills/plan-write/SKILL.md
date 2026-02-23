@@ -243,6 +243,19 @@ passes, pause here for manual confirmation from the human before proceeding.
 
 ---
 
+## Step 4a: Create Review Todo
+
+After writing the plan file, create a review todo:
+
+```bash
+hive todo add \
+  --title "Review plan: <description>" \
+  --uri "review://.hive/plans/<filename>"
+```
+
+Use the actual filename. This todo persists in the hive TUI as a reminder even if
+the user switches sessions.
+
 ## Step 5: Review and Iterate
 
 Present the plan location and ask the user to review:

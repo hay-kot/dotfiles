@@ -51,20 +51,23 @@ backend = "github:hay-kot/gofind"
 "platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "v0.32.1"
+version = "0.34.0"
 backend = "github:hay-kot/hive"
-"platforms.macos-arm64" = { checksum = "sha256:6f7b5f8d92fe7f1a7b032d4e56bc6b088d98e8e5790e245d3842121116f566d4", url = "https://github.com/colonyops/hive/releases/download/v0.32.1/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/359361286"}
+"platforms.linux-arm64" = { checksum = "sha256:b8c6a680fc9e22522029efbad0dbfc9737411c9cb0a5fc9a2cba9d9158947b3b", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Linux_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027353"}
+"platforms.linux-x64" = { checksum = "sha256:f1a15c1c7ec43c366e87f30f46196974678bafb0fa52efa2a9b6341ecc8a9901", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Linux_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027352"}
+"platforms.macos-arm64" = { checksum = "sha256:14b9cf436e1be3ab528a3e23911c113a670580f88515b620d9a4054ca3a2e40b", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027361"}
+"platforms.macos-x64" = { checksum = "sha256:729a6834be0ac867f4fb509cd6f7c09d4d62e51df3337073ee5e41e8a8893144", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Darwin_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027354"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.13.0"
 backend = "github:hay-kot/scaffold"
 
 [[tools."github:homeport/dyff"]]
-version = "1.10.4"
+version = "1.10.3"
 backend = "github:homeport/dyff"
 
 [[tools."github:steveyegge/beads"]]
-version = "0.49.6"
+version = "0.49.1"
 backend = "github:steveyegge/beads"
 
 [[tools."github:sxyazi/yazi"]]
@@ -160,5 +163,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.93.0"
 backend = "core:rust"

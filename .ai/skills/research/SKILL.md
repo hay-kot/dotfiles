@@ -133,6 +133,18 @@ last_updated_by: [researcher name]
 [Areas needing further investigation]
 ```
 
+## Step 6a: Create Review Todo
+
+After writing the research document, create a todo for human review:
+
+```bash
+hive todo add \
+  --title "Review research: <topic-slug>" \
+  --uri "review://.hive/research/<filename>"
+```
+
+Use the actual filename from Step 6.
+
 ## Step 7: Add GitHub Permalinks (if applicable)
 
 If on main or a pushed branch:

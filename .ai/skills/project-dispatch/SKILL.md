@@ -195,6 +195,18 @@ before dispatching.
 echo '<json>' | hive batch
 ```
 
+## Step 5a: Create Progress Todo
+
+After a successful dispatch, create a follow-up reminder:
+
+```bash
+hive todo add \
+  --title "Check dispatch progress: <session-names>" \
+  --uri "session://"
+```
+
+List the spawned session names in the title (comma-separated if multiple).
+
 ## Step 6: Update Work Items
 
 After `hive batch` succeeds, update each dispatched work item's `phase` to `building`:

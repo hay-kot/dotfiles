@@ -128,5 +128,16 @@ date +%Y-%m-%d
 ## After Writing
 
 1. List all files created with their full paths
-2. Tell the user they can run `/project-advance` to start progressing any work item
-3. Remind them to open `Projects/index.base` in Obsidian for the full dashboard
+2. Create a review todo pointing to the new project note in Obsidian:
+
+```bash
+VAULT="${OBSIDIAN_NOTEBOOK_DIR##*/}"
+VAULT_ENC="${VAULT// /%20}"
+PROJECT_ENC="${PROJECT_NAME// /%20}"
+hive todo add \
+  --title "Review new project: <project-name>" \
+  --uri "obsidian://vault/${VAULT_ENC}/Projects/${PROJECT_ENC}/${PROJECT_ENC}.md"
+```
+
+3. Tell the user they can run `/project-advance` to start progressing any work item
+4. Remind them to open `Projects/index.base` in Obsidian for the full dashboard

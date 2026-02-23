@@ -89,6 +89,17 @@ Run deep codebase and context research:
 5. Update the work item's Artifacts section: `- Research: [[<filename>]]`
 6. Advance `phase` to `design`
 
+Create a review todo pointing to the research doc in Obsidian:
+
+```bash
+VAULT="${OBSIDIAN_NOTEBOOK_DIR##*/}"
+VAULT_ENC="${VAULT// /%20}"
+FILE_ENC="Projects/${PROJECT// /%20}/Research/${FILENAME// /%20}"
+hive todo add \
+  --title "Review research: <work-item-title>" \
+  --uri "obsidian://vault/${VAULT_ENC}/${FILE_ENC}"
+```
+
 ### `design`
 
 Create a design document:
@@ -100,6 +111,17 @@ Create a design document:
 4. Update the work item's Artifacts section: `- Design Doc: [[<filename>]]`
 5. Advance `phase` to `planning`
 
+Create a review todo pointing to the design doc in Obsidian:
+
+```bash
+VAULT="${OBSIDIAN_NOTEBOOK_DIR##*/}"
+VAULT_ENC="${VAULT// /%20}"
+FILE_ENC="Projects/${PROJECT// /%20}/Design%20Docs/${FILENAME// /%20}"
+hive todo add \
+  --title "Review design: <work-item-title>" \
+  --uri "obsidian://vault/${VAULT_ENC}/${FILE_ENC}"
+```
+
 ### `planning`
 
 Write an implementation plan:
@@ -108,6 +130,14 @@ Write an implementation plan:
 3. Update the work item's Artifacts section:
    - `- Plan: .hive/plans/<filename>`
 4. Leave `phase` at `planning` — the work item is now ready to dispatch via `project-dispatch`
+
+Create a review todo for the plan:
+
+```bash
+hive todo add \
+  --title "Review & dispatch: <work-item-title>" \
+  --uri "review://.hive/plans/<plan-filename>"
+```
 
 ### `building`
 
