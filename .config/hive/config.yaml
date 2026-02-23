@@ -65,8 +65,6 @@ keybindings:
     cmd: SendAccept
   ctrl+d:
     cmd: TmuxKill
-  t:
-    cmd: SendTidy
   p:
     cmd: TmuxPopUp
 
