@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TIMEOUT="${TMDOWN_TIMEOUT:-10}"
+conffile="$HOME/.config/wezup/wezup.json"
+cwdirname=$(basename "$(pwd)")
+
+# Try exact match first, then prefix match
+contents=$(jq --arg dir "$cwdirname" '.[$dir]' "$conffile")
+
+if [ "$contents" = "null" ] || [ -z "$contents" ]; then
+    matched_key=$(jq -r --arg dir "$cwdirname" '[keys[] | select($dir | startswith(.))] | sort_by(-length) | .[0] // empty' "$conffile")
+    if [ -n "$matched_key" ]; then
+        contents=$(jq --arg key "$matched_key" '.[$key]' "$conffile")
+    fi
+fi
+
+if [ "$contents" = "null" ] || [ -z "$contents" ]; then
+    echo "Error: No matching entry found for directory '$cwdirname' in $conffile"
+    exit 1
+fi
+
+# Resolve window names to IDs (IDs avoid parsing issues with dots in names)
+declare -A win_ids
+while read -r tab_title; do
+    wid=$(tmux list-windows -F '#{window_name} #{window_id}' \
+        | awk -v name="$tab_title" '$0 ~ "^"name" " {print $NF}')
+    if [ -n "$wid" ]; then
+        win_ids["$tab_title"]="$wid"
+    fi
+done < <(echo "$contents" | jq -r '.[].pane_title')
+
+if [ ${#win_ids[@]} -eq 0 ]; then
+    echo "No matching windows found"
+    exit 0
+fi
+
+# Send C-c to all windows
+for win in "${!win_ids[@]}"; do
+    echo "Sending interrupt to $win..."
+    tmux send-keys -t "${win_ids[$win]}" C-c
+done
+
+# Wait for processes to return to shell
+remaining=("${!win_ids[@]}")
+elapsed=0
+while [ ${#remaining[@]} -gt 0 ] && [ "$elapsed" -lt "$TIMEOUT" ]; do
+    sleep 1
+    elapsed=$((elapsed + 1))
+    still_running=()
+    for win in "${remaining[@]}"; do
+        cmd=$(tmux list-panes -t "${win_ids[$win]}" -F '#{pane_current_command}' 2>/dev/null || true)
+        case "$cmd" in
+            bash|zsh|fish|sh) ;;
+            "") ;;
+            *) still_running+=("$win") ;;
+        esac
+    done
+    remaining=("${still_running[@]+"${still_running[@]}"}")
+done
+
+# Kill all the windows
+for win in "${!win_ids[@]}"; do
+    if tmux list-windows -F '#{window_id}' 2>/dev/null | grep -qx "${win_ids[$win]}"; then
+        if printf '%s\n' "${remaining[@]+"${remaining[@]}"}" | grep -qx "$win"; then
+            echo "Force killing $win (didn't exit within ${TIMEOUT}s)..."
+        else
+            echo "Closing $win"
+        fi
+        tmux kill-window -t "${win_ids[$win]}"
+    fi
+done

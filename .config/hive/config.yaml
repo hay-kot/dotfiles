@@ -12,6 +12,9 @@ agents:
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]
+  opencode:
+    command: opencode
+    flags: ["--agent", "free-permissions-runner"]
 
 tui:
   refresh_interval: 10s
@@ -29,6 +32,10 @@ plugins:
   github:
     enabled: true
     results_cache: 30m
+  claude:
+    yellow_threshold: 60 # % to turn yellow
+    red_threshold: 80 # % to turn red
+    model_limit: 200000 # context window size
 
 rules:
   - pattern: ""
@@ -70,28 +77,28 @@ usercommands:
     silent: true
 
   CheckInbox:
-    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new\""
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"'
     help: "Instructs claude to check it's inbox"
     silent: true
 
   SendAccept:
-    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\""
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}"'
     help: "Send enter to claude window"
     silent: true
 
   SendTidy:
     help: send /tidy
-    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/tidy\""
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/tidy"'
     silent: true
 
   SendClear:
     help: send /clear
-    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }}\" \"/clear\""
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/clear"'
     silent: true
 
   SendRebase:
     help: send /tidy
-    sh: "{{ agentSend }} \"{{ .Name }}:{{ .TmuxWindow }} \" \"fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts\""
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }} " "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"'
     silent: true
 
   OpenInZed:
@@ -106,7 +113,7 @@ usercommands:
 
   TmuxPopUp:
     help: popup
-    sh: tmux display-popup -E -w 80% -h 80% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :{{ .TmuxWindow }}"
+    sh: tmux display-popup -E -w 90% -h 90% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :{{ .TmuxWindow }}"
     exit: false
     silent: true
 
@@ -187,7 +194,16 @@ usercommands:
              - Call out where the two reviewers contradict each other and resolve it
              - Rank all issues by severity (critical / major / minor)
              - Give a clear ship / do not ship recommendation with specific conditions
-          Be adversarial. Assume the previous reviewers missed things.'
+           Be adversarial. Assume the previous reviewers missed things.'
+
+  ReviewOpenCode:
+    help: "run OpenCode review in a dedicated tmux window"
+    silent: false
+    focus: false
+    windows:
+      - name: review-opencode
+        command: |-
+          opencode --agent free-permissions-runner --prompt "Review all current repository changes against {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }}. Inspect both git diff {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }}...HEAD and git diff. Report findings grouped by severity (critical, major, minor). Include concrete evidence with file paths and line references."
 
   ReviewRalph:
     help: "iterative self-critiquing review loop"
@@ -199,4 +215,3 @@ usercommands:
     windows:
       - name: review-ralph
         command: "cd {{ .Path }} && bash ~/.config/hive/scripts/review-ralph.sh {{ .Form.iterations | shq }}"
-

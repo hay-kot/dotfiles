@@ -42,7 +42,9 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # Load environment variables from ~/.env.local if the file exists
 if [[ -f "$HOME/.shell.env" ]]; then
-    export $(grep -v '^#' "$HOME/.shell.env" | xargs)
+    set -a
+    source "$HOME/.shell.env"
+    set +a
 fi
 
 # Set $DOTFILES_DIR to ~/.dotfiles if not already set
@@ -332,3 +334,6 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Beads Config
 export BEADS_NO_DAEMON=true # constantly have daemon problems
+
+# opencode
+export PATH=/Users/hayden/.opencode/bin:$PATH

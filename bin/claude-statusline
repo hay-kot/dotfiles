@@ -1,6 +1,10 @@
 #!/bin/bash
 # Claude Code status line script
 
+# Read JSON from Claude Code stdin
+input=$(cat)
+context_pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' 2>/dev/null | cut -d. -f1)
+
 # Icons (nerd font - UTF-8 byte sequences)
 icon_folder=$(printf '\xef\x81\xbb')   # U+F07B
 icon_branch=$(printf '\xee\x9c\xa5')   # U+E725
@@ -39,6 +43,12 @@ if [ $? -eq 0 ] && [ -n "$session_json" ]; then
             output="$output • $icon_inbox $new_msgs"
         fi
     fi
+fi
+
+# Context window usage
+if [ -n "$context_pct" ] && [ "$context_pct" -gt 0 ] 2>/dev/null; then
+    icon_ctx=$(printf '\xef\x8b\x88')   # U+F2C8 (thermometer)
+    output="$output • $icon_ctx ${context_pct}%"
 fi
 
 echo "$output"
