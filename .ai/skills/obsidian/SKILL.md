@@ -80,6 +80,24 @@ Convert the title to a filename-safe slug:
 
 Example: `Auth Service Redesign` -> `auth-service-redesign`
 
+## Creating hive todos for Obsidian documents
+
+After saving a document, if a `hive todo` item should be created pointing to it, use the
+`obsidian://vault/<VaultName>/<url-encoded-path>` URI scheme. The vault name is the last
+path component of `$OBSIDIAN_NOTEBOOK_DIR`.
+
+```bash
+# Derive vault name from $OBSIDIAN_NOTEBOOK_DIR
+VAULT=$(basename "$OBSIDIAN_NOTEBOOK_DIR")
+
+hive todo add \
+  --title "Review <document title>" \
+  --uri "obsidian://vault/${VAULT}/Projects/Foo%20Bar/doc.md"
+```
+
+- Spaces in path segments must be percent-encoded as `%20`.
+- Do **not** use bare `obsidian://Projects/...` — the vault name is required.
+
 ## Example
 
 User says: "Save this test plan for the auth refactor to my obsidian notebook"

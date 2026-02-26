@@ -71,6 +71,8 @@ keybindings:
     cmd: TmuxKill
   p:
     cmd: TmuxPopUp
+  # S:
+  #   cmd: TmuxStart
 
 usercommands:
   ReviewRequest:
@@ -99,8 +101,8 @@ usercommands:
     silent: true
 
   SendRebase:
-    help: send /tidy
-    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }} " "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"'
+    help: send rebase command
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"'
     silent: true
 
   OpenInZed:

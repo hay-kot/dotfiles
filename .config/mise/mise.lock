@@ -51,12 +51,12 @@ backend = "github:hay-kot/gofind"
 "platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "0.34.0"
+version = "0.34.1"
 backend = "github:hay-kot/hive"
-"platforms.linux-arm64" = { checksum = "sha256:b8c6a680fc9e22522029efbad0dbfc9737411c9cb0a5fc9a2cba9d9158947b3b", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Linux_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027353"}
-"platforms.linux-x64" = { checksum = "sha256:f1a15c1c7ec43c366e87f30f46196974678bafb0fa52efa2a9b6341ecc8a9901", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Linux_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027352"}
-"platforms.macos-arm64" = { checksum = "sha256:14b9cf436e1be3ab528a3e23911c113a670580f88515b620d9a4054ca3a2e40b", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027361"}
-"platforms.macos-x64" = { checksum = "sha256:729a6834be0ac867f4fb509cd6f7c09d4d62e51df3337073ee5e41e8a8893144", url = "https://github.com/colonyops/hive/releases/download/v0.34.0/hive_Darwin_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361027354"}
+"platforms.linux-arm64" = { checksum = "sha256:c6ad38c0af04f97586ddcb0f4ebc7e693e26cab6a9099458d28cd1417bb4b279", url = "https://github.com/colonyops/hive/releases/download/v0.34.1/hive_Linux_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361640101"}
+"platforms.linux-x64" = { checksum = "sha256:a43f0b2b590a9313f0100d36c0169f7ef6b6f4a46f1fe2ae08b2099f12e1808c", url = "https://github.com/colonyops/hive/releases/download/v0.34.1/hive_Linux_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361640116"}
+"platforms.macos-arm64" = { checksum = "sha256:23fff70163b3989bb0fecc12706057dd0c7086495e1797fe1f41cfa0bfd1dfc0", url = "https://github.com/colonyops/hive/releases/download/v0.34.1/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361640100"}
+"platforms.macos-x64" = { checksum = "sha256:37b72693c3cdc27d3f499b29c4d13708a24b9429d8abe8058ea7875829fb95aa", url = "https://github.com/colonyops/hive/releases/download/v0.34.1/hive_Darwin_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/361640099"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.13.0"
