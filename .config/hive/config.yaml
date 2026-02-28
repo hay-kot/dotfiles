@@ -50,6 +50,8 @@ rules:
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
+  - pattern: ".*[:/]grafana/deployment_tools"
+    clone_strategy: worktree
   - pattern: ".*[:/]colonyops/.*"
     commands:
       - mise trust
@@ -71,8 +73,8 @@ keybindings:
     cmd: TmuxKill
   p:
     cmd: TmuxPopUp
-  # S:
-  #   cmd: TmuxStart
+  S:
+    cmd: TmuxStart
 
 usercommands:
   ReviewRequest:
