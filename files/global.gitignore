@@ -29,9 +29,7 @@
 
 # Dev Runtime Conf Files #
 ##########################
-*.rtx.toml
-*.mise.toml
-mise.toml
+mise.local.toml # used for local config, this should not be committed to source control
 
 # Logs and databases #
 ######################

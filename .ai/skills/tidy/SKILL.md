@@ -27,7 +27,7 @@ Run these commands to understand the workspace state:
 ```bash
 git status
 git stash list
-bd list --status=in-progress
+hive hc list --status in_progress
 ```
 
 Identify:
@@ -69,13 +69,13 @@ Fix any failures before proceeding. Do not push broken code.
 
 ```bash
 # Check current issues
-bd list
+hive hc list
 
 # Close completed work
-bd close <issue-id> --comment "Completed in <commit-sha>"
+hive hc update <issue-id> --status done
 
 # Update in-progress items
-bd update <issue-id> --status=blocked --comment "Waiting on X"
+hive hc update <issue-id> --status open
 ```
 
 ### Step 5: File Issues for Remaining Work
@@ -83,7 +83,7 @@ bd update <issue-id> --status=blocked --comment "Waiting on X"
 If there's follow-up work needed:
 
 ```bash
-bd create --title "Follow-up: description" --description "Details..."
+hive hc create --title "Follow-up: description"
 ```
 
 Include:
@@ -98,9 +98,6 @@ This is **MANDATORY**. Work is not complete until pushed.
 ```bash
 # Pull any remote changes
 git pull --rebase
-
-# Sync issues with remote
-bd sync
 
 # Push all changes
 git push
@@ -139,7 +136,7 @@ Run final checks:
 git status                    # Should show clean working tree
 git log -1 --oneline         # Verify last commit is yours
 git log origin/main..HEAD    # Show commits ahead of main (if on branch)
-bd list --status=open        # Show remaining open issues
+hive hc list --status open   # Show remaining open issues
 ```
 
 ## Output Format

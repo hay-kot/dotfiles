@@ -1,6 +1,6 @@
 ---
-name: bd-next
-description: Start the next beads task, prioritizing work related to current branch
+name: hc-next
+description: Start the next hive hc task, prioritizing work related to current branch
 argument-hint:
 ---
 
@@ -12,10 +12,9 @@ Find and start the next task, prioritizing current work context.
 
 1. **Check current branch**: `git branch --show-current`
 2. **Find related work** (in order of priority):
-   - In-progress issues: `bd list --status=in-progress`
-   - Issues matching branch name: `bd search <branch-name>`
-   - Ready tasks with no blockers: `bd ready`
-3. **Load the task**: `bd show <issue-id>` for full context
+   - In-progress issues: `hive hc list --status in_progress`
+   - Ready tasks with no blockers: `hive hc next <epic-id> --assign`
+3. **Load the task**: `hive hc show <issue-id>` for full context
 4. **Start working**: Mark as in-progress if needed, then begin implementation
 
 ## Output

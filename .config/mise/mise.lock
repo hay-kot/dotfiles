@@ -1,7 +1,17 @@
 [[tools.bun]]
 version = "1.3.6"
 backend = "core:bun"
-"platforms.macos-arm64" = { checksum = "blake3:85526dfced776d7b3c0facf44769aaacd6ec1dabb038eb11819ddee2b8dc1173"}
+"platforms.linux-arm64" = { checksum = "sha256:5afd12b366ba2d8297245cc29c039416334dd872152c1db02e5c8aa8c66e96b1", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-aarch64.zip"}
+"platforms.linux-arm64-musl" = { checksum = "sha256:21af5d4c276dc4a0a3bbd3893a83994fa9de916b6807f8af9aff43d6193e579d", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-aarch64-musl.zip"}
+"platforms.linux-x64" = { checksum = "sha256:9ba98d2134550d6690875b23a4f5c48e74b7cb267e8cc1b8f52605921c6c11ef", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-x64.zip"}
+"platforms.linux-x64-baseline" = { checksum = "sha256:1954abee08900de610a8b4692f5fffa6c6b15d8afde7d1de4d3f88cfc60e7d5f", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-x64-baseline.zip"}
+"platforms.linux-x64-musl" = { checksum = "sha256:b13061f7e2ef5896fff95d849213a9628e9d89036cb7a23837c6dbba8844f636", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-x64-musl.zip"}
+"platforms.linux-x64-musl-baseline" = { checksum = "sha256:36638b6943d5d29cd6a1e148ffc1f43417a690f44101b3fc083bd11eba418d12", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-linux-x64-musl-baseline.zip"}
+"platforms.macos-arm64" = { checksum = "sha256:2af1ec8437759ab05b3b0ea421fe9e22e6c705cb4cb0751c326982642dace8fa", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-darwin-aarch64.zip"}
+"platforms.macos-x64" = { checksum = "sha256:83ef84c2a9d25dfef6ba0b31be3d8a09952ef311c71feca4488a628e96c26706", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-darwin-x64.zip"}
+"platforms.macos-x64-baseline" = { checksum = "sha256:b2d8994d4cf70641366d69b87420b805d1d984f4ea7e16a352df156949474fa5", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-darwin-x64-baseline.zip"}
+"platforms.windows-x64" = { checksum = "sha256:7356f20f646d7047bee9eb7a3d5344019bedce778bfab3cccd5dd1ee2df6177f", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-windows-x64.zip"}
+"platforms.windows-x64-baseline" = { checksum = "sha256:2ab7cb878041529617dcb86f9e8cb59539779ecb5ebe115a9eba2fa8361736b6", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.6/bun-windows-x64-baseline.zip"}
 
 [[tools."cargo:scooter"]]
 version = "0.8.4"
@@ -19,7 +29,11 @@ backend = "forgejo:gitea/tea"
 [[tools."github:Zxilly/go-size-analyzer"]]
 version = "1.10.2"
 backend = "github:Zxilly/go-size-analyzer"
+"platforms.linux-arm64" = { checksum = "sha256:dd46f64cb5d115482ea44aa3bf53f9fd95076a2a794849787eba1d883ea0bbfd", url = "https://github.com/Zxilly/go-size-analyzer/releases/download/v1.10.2/go-size-analyzer_1.10.2_linux_arm64.pkg.tar.zst", url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/326950187"}
+"platforms.linux-x64" = { checksum = "sha256:965c18d93cbbf03d991e6603736846ff04b43a298e11ee2c6da86530a5c259f5", url = "https://github.com/Zxilly/go-size-analyzer/releases/download/v1.10.2/go-size-analyzer_1.10.2_linux_amd64.tar.gz", url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/326950172"}
 "platforms.macos-arm64" = { checksum = "sha256:54213ac16da338dd666480a6229a6361f7075668818186ff8ac1dbf247007f24", url = "https://github.com/Zxilly/go-size-analyzer/releases/download/v1.10.2/go-size-analyzer_1.10.2_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/326950175"}
+"platforms.macos-x64" = { checksum = "sha256:6c3c5cbd8f3f37dc99d6159b2523a573aa0de865901f73731726e1e36e8d2fa8", url = "https://github.com/Zxilly/go-size-analyzer/releases/download/v1.10.2/go-size-analyzer_1.10.2_darwin_amd64.tar.gz", url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/326950171"}
+"platforms.windows-x64" = { checksum = "sha256:31623eb4f9bd5fd11bfdeb5a11d44480ca600734087b1a2b5c8d13a6309183ef", url = "https://github.com/Zxilly/go-size-analyzer/releases/download/v1.10.2/go-size-analyzer_1.10.2_windows_amd64.zip", url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/326950169"}
 
 [[tools."github:abice/go-enum"]]
 version = "0.9.2"
@@ -34,7 +48,11 @@ backend = "github:amir20/dtop"
 [[tools."github:caarlos0/svu"]]
 version = "3.3.0"
 backend = "github:caarlos0/svu"
+"platforms.linux-arm64" = { checksum = "sha256:8f00c170037bcdc1ba7f2b974ec5ac1b39da7457bebc985c5fd410c724e03bac", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_linux_arm64.tar.gz", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461895"}
+"platforms.linux-x64" = { checksum = "sha256:3c093d9461b1875662df232319a314641b78ae78ddfec9378f572258803d699c", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_linux_amd64.tar.gz", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461893"}
 "platforms.macos-arm64" = { checksum = "sha256:d32d3b793fae1ec86af6d8d423fc21a63dc1b17e531a2076cddb8630bded9f31", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_darwin_all.tar.gz", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461897"}
+"platforms.macos-x64" = { checksum = "sha256:d32d3b793fae1ec86af6d8d423fc21a63dc1b17e531a2076cddb8630bded9f31", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_darwin_all.tar.gz", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461897"}
+"platforms.windows-x64" = { checksum = "sha256:5fbb2036ae5662fd8fdeb16f207a12fc1e70db07786c158879e8223de6d0e6f7", url = "https://github.com/caarlos0/svu/releases/download/v3.3.0/svu_3.3.0_windows_amd64.zip", url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/311461894"}
 
 [[tools."github:grafana/mcp-grafana"]]
 version = "0.7.9"
@@ -51,24 +69,16 @@ backend = "github:hay-kot/gofind"
 "platforms.macos-arm64" = { checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232", url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"}
 
 [[tools."github:hay-kot/hive"]]
-version = "0.35.0"
+version = "0.37.0"
 backend = "github:hay-kot/hive"
-"platforms.linux-arm64" = { checksum = "sha256:493022bca2fae6ed4976f9db36e7b418f2d208b7a0c79eb0d7e9148ae8aba5e7", url = "https://github.com/colonyops/hive/releases/download/v0.35.0/hive_Linux_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/363552142"}
-"platforms.linux-x64" = { checksum = "sha256:1e15981085e27d77c530f16c9d6008dcc5386c45b1b298a989ea2e44a868ebe6", url = "https://github.com/colonyops/hive/releases/download/v0.35.0/hive_Linux_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/363552139"}
-"platforms.macos-arm64" = { checksum = "sha256:589c4973bd67c9fcf5d7d6dbdc1fc351493dd2734f5dbd884549a6a384283d34", url = "https://github.com/colonyops/hive/releases/download/v0.35.0/hive_Darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/363552169"}
-"platforms.macos-x64" = { checksum = "sha256:390e8ed3364c845a2d26630806b2a6d89162cfbceaad7c4649a52a4de578aca8", url = "https://github.com/colonyops/hive/releases/download/v0.35.0/hive_Darwin_x86_64.tar.gz", url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/363552141"}
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.13.0"
 backend = "github:hay-kot/scaffold"
 
 [[tools."github:homeport/dyff"]]
-version = "1.10.3"
+version = "1.10.5"
 backend = "github:homeport/dyff"
-
-[[tools."github:steveyegge/beads"]]
-version = "0.49.1"
-backend = "github:steveyegge/beads"
 
 [[tools."github:sxyazi/yazi"]]
 version = "25.5.31"
@@ -163,5 +173,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.0"
+version = "1.93.1"
 backend = "core:rust"

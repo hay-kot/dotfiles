@@ -1,11 +1,11 @@
 ---
 name: oc-loop
 description: >
-  OpenCode-specific orchestration loop. Manager agent (claude-opus-4-5) reads pending beads
+  OpenCode-specific orchestration loop. Manager agent (claude-opus-4-5) reads pending hive hc
   tasks, dispatches oc-worker sub-agents (gpt-5.3-codex) to implement each task, critically
   reviews the output, and commits only code that passes quality checks. Requires oc-manager
   and oc-worker agents to be configured in opencode.json.
-allowed-tools: "Bash(bd:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Task(*)"
+allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Task(*)"
 version: "1.0.0"
 author: "Hayden"
 license: "MIT"
@@ -18,7 +18,7 @@ argument-hint: "[task-id | --all | --limit N]"
 **Requires**: `oc-manager` and `oc-worker` agents configured in `.config/opencode/agent/`.
 
 This skill runs within the `oc-manager` agent (claude-opus-4-5). It orchestrates one or more
-`oc-worker` sub-agents (gpt-5.3-codex) to implement beads tasks, then reviews and commits
+`oc-worker` sub-agents (gpt-5.3-codex) to implement hive hc tasks, then reviews and commits
 approved work.
 
 ## Prerequisites Check
@@ -26,9 +26,9 @@ approved work.
 Before starting the loop, verify the environment:
 
 ```bash
-bd list --status=pending --no-daemon   # confirm tasks exist
-git status                             # confirm clean working tree
-git branch --show-current             # confirm on a feature branch (never main)
+hive hc list --status open   # confirm tasks exist
+git status                   # confirm clean working tree
+git branch --show-current    # confirm on a feature branch (never main)
 ```
 
 If the working tree is dirty, stop and ask the user to stash or commit existing changes first.
@@ -36,25 +36,25 @@ If on `main`, stop and ask the user to create a feature branch.
 
 ## Step 1: Select Tasks
 
-**If an argument was given** (e.g., `BD-42` or `BD-42,BD-43`):
+**If an argument was given** (e.g., `hc-42` or `hc-42,hc-43`):
 - Use those specific task IDs
 
 **If `--all` was given**:
-- Run `bd list --status=pending --no-daemon` to get all pending tasks
-- Check dependencies: `bd deps <id> --no-daemon` for each — skip tasks with open blockers
+- Run `hive hc list --status open` to get all open tasks
+- Check parent/child hierarchy — skip tasks with open blockers
 
 **If `--limit N` was given**:
-- Take the first N tasks from `bd list --status=pending --no-daemon`
+- Take the first N tasks from `hive hc list --status open`
 
 **Default (no args)**:
-- Run `bd list --status=pending --no-daemon`
+- Run `hive hc list --status open`
 - Present the list to the user and ask which tasks to run this loop iteration
 
 ## Step 2: Build Context for Each Task
 
 For each selected task, gather:
 
-1. **Task details**: `bd show <id> --no-daemon` — get full description, acceptance criteria, labels
+1. **Task details**: `hive hc show <id>` — get full description, acceptance criteria, labels
 2. **Recent git history**: `git log --oneline -15`
 3. **Relevant files**: Based on task description, identify and read the files most likely affected
 4. **Test command**: Determine the correct test runner (`task test`, `go test ./...`, `bun test`, etc.)
@@ -65,10 +65,10 @@ For each selected task, gather:
 For each task, dispatch an `oc-worker` sub-agent with a prompt using this template:
 
 ```
-You are implementing beads task <ID>: <TITLE>
+You are implementing hive hc task <ID>: <TITLE>
 
 ## Task Description
-<full bd show output>
+<full hive hc show output>
 
 ## Codebase Context
 <relevant file contents with line numbers>
@@ -81,7 +81,7 @@ You are implementing beads task <ID>: <TITLE>
 - Run lint with: <lint command>
 
 ## Instructions
-1. Mark this task in-progress: bd update <ID> --status=in-progress --no-daemon
+1. Mark this task in-progress: hive hc update <ID> --status in_progress --assign
 2. Implement the task as described
 3. Run tests and lint — fix any failures
 4. Do NOT commit
@@ -123,8 +123,8 @@ git diff HEAD          # read every line
 ```bash
 git add -p                              # stage only task-related changes
 git commit -m "<clear message>          # see commit message format below
-                                        # closes BD-<id>"
-bd close <id> --no-daemon               # mark task done
+                                        # closes hc-<id>"
+hive hc update <id> --status done       # mark task done
 ```
 
 **REVISE**: Minor issues that a worker can fix.
@@ -136,7 +136,7 @@ Limit to 2 revision cycles before escalating to the user.
 
 ```bash
 git checkout -- .                        # discard changes
-bd update <id> --status=pending --no-daemon  # return to queue
+hive hc update <id> --status open        # return to queue
 ```
 
 Report the issue to the user with the specific problem and a recommended path forward.
@@ -149,7 +149,7 @@ Report the issue to the user with the specific problem and a recommended path fo
 - <what changed and why, bullet point per file/area>
 - <any non-obvious decisions>
 
-closes BD-<id>
+closes hc-<id>
 ```
 
 Example:
@@ -160,7 +160,7 @@ add pagination to user list endpoint
 - update UserRepo.List to accept pagination params
 - add integration test for edge cases (empty page, last page)
 
-closes BD-47
+closes hc-47
 ```
 
 ## Step 6: Loop Summary
@@ -174,7 +174,7 @@ Loop complete.
 - Revised:    N tasks (list)
 - Escalated:  N tasks (list with reasons)
 
-Remaining pending: <bd list --status=pending --no-daemon count>
+Remaining open: <hive hc list --status open count>
 ```
 
 ## Notes
@@ -183,7 +183,7 @@ Remaining pending: <bd list --status=pending --no-daemon count>
 - **Known issue**: `openai/gpt-5.3-codex` may terminate early in multi-worker parallel sequences
   (GitHub #12570). If this occurs, switch `oc-worker` model to `opencode/gpt-5.2-codex` in
   `.config/opencode/agent/oc-worker.md`.
-- **Branch safety**: Never run on `main`. Always on a feature branch created from `plan-to-beads`
+- **Branch safety**: Never run on `main`. Always on a feature branch created from `plan-to-hc`
   or manually before invoking this skill.
 - **Context window**: For large tasks, break context into sections — workers have limited windows.
   Lead with the most relevant files for the specific task.

@@ -34,7 +34,7 @@ parameters. Do not proceed until you have read it completely.
 
 If no research document is specified, ask the user which research doc to use:
 ```bash
-ctx ls  # list available research docs
+hive ctx ls  # list available research docs
 ```
 
 ---

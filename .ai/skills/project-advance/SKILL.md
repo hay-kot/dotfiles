@@ -3,7 +3,7 @@ name: project-advance
 description: >
   Advance a project work item through its lifecycle. Reads work items from the Obsidian
   Projects folder, finds the next ready item by priority and phase, then runs the
-  appropriate workflow (research, design-doc, plan-write, beads). Use when you want to
+  appropriate workflow (research, design-doc, plan-write, hive hc). Use when you want to
   continue project work or let AI pick and execute the next task autonomously.
 allowed-tools: "Bash(*),Read,Write,Task(*)"
 version: "1.1.0"
@@ -142,10 +142,10 @@ hive todo add \
 ### `building`
 
 Check implementation status:
-1. Check beads for any linked issues: `bd list --no-daemon`
+1. Check hive hc for any linked issues: `hive hc list`
 2. Check for open PRs in the linked repos (if using gh CLI)
 3. Summarize: what's done, what's in flight, what's blocked
-4. If all beads issues are closed and PRs merged, prompt user to advance to `review`
+4. If all hive hc issues are done and PRs merged, prompt user to advance to `review`
 
 ### `review`
 

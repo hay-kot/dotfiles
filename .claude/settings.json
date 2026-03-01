@@ -16,7 +16,6 @@
       "Bash(basename:*)",
       "Bash(hive ctx init)",
       "Bash(hive ctx ls)",
-      "Bash(ctx ls:*)",
       "Bash(npm run lint)",
       "Bash(npm run test:*)",
       "Bash(make test)",
@@ -82,7 +81,6 @@
       "Bash(pwd)",
       "Bash(echo:*)",
       "Bash(hive:*)",
-      "Bash(bd:*)",
       "Bash(go doc:*)",
       "Bash(go mod:*)",
       "Bash(go list:*)",
@@ -109,7 +107,7 @@
       "Bash(teaapi curl https:*)",
       "WebSearch",
       "WebFetch",
-      "Skill(plan-to-beads)"
+      "Skill(plan-to-hc)"
     ],
     "deny": [
       "Bash(rm -rf:*)",

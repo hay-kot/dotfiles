@@ -1,6 +1,6 @@
 version: 0.2.5
 git_path: git
-repo_dirs:
+workspaces:
   - /Users/hayden/code/repos
 
 tmux:

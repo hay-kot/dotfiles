@@ -21,14 +21,15 @@ if git rev-parse --git-dir &>/dev/null; then
     output="$output • $icon_branch $branch"
 fi
 
-# Get beads status if active
-if [ -d ".beads" ]; then
-    open=$(bd list --status=open 2>/dev/null | wc -l | tr -d ' ')
-    closed=$(bd list --status=closed 2>/dev/null | wc -l | tr -d ' ')
-    total=$((open + closed))
+# Get hive hc task status
+hc_json=$(hive hc list --json 2>/dev/null)
+if [ $? -eq 0 ] && [ -n "$hc_json" ]; then
+    open=$(echo "$hc_json" | jq '[.[] | select(.status == "open" or .status == "in_progress")] | length' 2>/dev/null)
+    done=$(echo "$hc_json" | jq '[.[] | select(.status == "done")] | length' 2>/dev/null)
+    total=$((open + done))
 
     if [ "$total" -gt 0 ]; then
-        output="$output • $icon_tasks $closed/$total"
+        output="$output • $icon_tasks $done/$total"
     fi
 fi
 

@@ -21,9 +21,9 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 - The symlink points to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`
 
 **Finding Assets:**
-**CRITICAL:** To find plans, research, or any `.hive/` documents, run `ctx ls` with NO arguments and NO piping. Glob and standard `ls` do not follow the symlink and will fail silently.
+**CRITICAL:** To find plans, research, or any `.hive/` documents, run `hive ctx ls` with NO arguments and NO piping. Glob and standard `ls` do not follow the symlink and will fail silently.
 
-- Run exactly: `ctx ls`
+- Run exactly: `hive ctx ls`
 - Then use Read tool with the full path from the output (e.g., `.hive/plans/2026-01-29-plan.md`)
 
 ## Code Organization
@@ -44,9 +44,7 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 
 ## Work Tracking
 
-Use the beads (`bd`) CLI to track work and manage dependencies across sessions. Create issues for non-trivial tasks, update status as work progresses, and track blockers with dependencies.
-
-Always run beads with `--no-daemon` flag when using the CLI
+Use `hive hc` to track work and manage tasks across sessions. Create issues for non-trivial tasks, update status as work progresses, and organize with epics and parent/child hierarchy.
 
 ## Maximize Efficiency
 

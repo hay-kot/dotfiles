@@ -145,7 +145,7 @@ Acceptance Criteria:
 
 An implementation plan exists at: <plan-path>
 
-Read the plan fully. Then use the `plan-to-beads` skill to load the plan into beads
+Read the plan fully. Then use the `plan-to-hc` skill to load the plan into hive hc
 tasks for this session. Execute each task in order. When all tasks are complete and
 a PR is open, you are done.
 ```

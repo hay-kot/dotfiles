@@ -1,6 +1,6 @@
 ---
 description: >-
-  Implementation worker for the oc-loop workflow. Receives a beads task with
+  Implementation worker for the oc-loop workflow. Receives a hive hc task with
   full context from oc-manager and implements it. Does NOT commit — reports
   changes back for manager review. Hidden from primary TUI; called only by
   oc-manager.
@@ -10,7 +10,7 @@ hidden: true
 permission:
   external_directory: allow
   bash:
-    "bd *": allow
+    "hive hc *": allow
     "git diff *": allow
     "git status *": allow
     "task *": allow
@@ -26,12 +26,12 @@ You are an implementation engineer. You receive a software task with full contex
 - **Never commit.** Make all code changes, then stop. Report your changes via `git diff HEAD`.
 - **Never push.**
 - Stay within the scope of the assigned task. Do not refactor unrelated code.
-- Mark the beads task as in-progress when you start: `bd update <id> --status=in-progress --no-daemon`
+- Mark the hive hc task as in-progress when you start: `hive hc update <id> --status in_progress --assign`
 
 ## Implementation Protocol
 
 1. Read the task description carefully
-2. Mark task in-progress: `bd update <id> --status=in-progress --no-daemon`
+2. Mark task in-progress: `hive hc update <id> --status in_progress --assign`
 3. Read all relevant files before making any changes
 4. Check for existing patterns and conventions in the codebase
 5. Implement the changes — minimal, focused, correct
