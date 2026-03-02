@@ -2,9 +2,9 @@
 name: oc-loop
 description: >
   Orchestration loop for hive hc tasks. Reads pending tasks, dispatches
-  general-purpose sub-agents (via the Agent tool) in isolated worktrees to
-  implement each task, critically reviews the output, and commits only code
-  that passes quality checks.
+  general-purpose sub-agents (via the Agent tool) to implement each task,
+  critically reviews the output, and commits only code that passes quality
+  checks.
 allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Agent(*)"
 version: "2.0.0"
 author: "Hayden"
@@ -61,16 +61,14 @@ For each selected task, gather:
 
 ## Step 3: Dispatch Workers via Agent Tool
 
-**You MUST use the `Agent` tool** to dispatch each task to a sub-agent. Use
-`subagent_type: "general-purpose"` and `isolation: "worktree"` so each worker
-operates in its own isolated copy of the repo.
+**You MUST use the `Agent` tool** to dispatch each task to a sub-agent using
+`subagent_type: "general-purpose"`.
 
 For each task, call the Agent tool like this:
 
 ```
 Agent(
   subagent_type: "general-purpose",
-  isolation: "worktree",
   description: "Implement hc-<ID>: <short title>",
   prompt: <see template below>
 )
@@ -108,9 +106,8 @@ You are implementing hive hc task <ID>: <TITLE>
 
 ### Parallelism Decision
 
-- If tasks touch different files with no overlap → dispatch all workers simultaneously
-  (multiple Agent tool calls in the same message)
-- If tasks share files → dispatch sequentially (wait for review before next dispatch)
+- Dispatch tasks **sequentially** (one at a time) since workers share the same working tree
+- Wait for each worker to complete and be reviewed before dispatching the next
 
 ## Step 4: Review Each Completed Worker
 
@@ -118,10 +115,9 @@ When a worker agent returns, perform a critical code review of its output.
 
 ### Automated Checks
 
-After the worker finishes, check its worktree results:
+After the worker finishes, check the results:
 
 ```bash
-# In the worker's worktree (path returned by Agent tool)
 git diff HEAD              # read every line
 <test command>             # must pass
 <lint command>             # must pass
@@ -141,7 +137,7 @@ git diff HEAD              # read every line
 
 **APPROVE**: All checks pass and review is clean.
 
-Apply the changes from the worktree to the main working tree, then commit:
+Stage and commit the changes:
 
 ```bash
 git add -p                              # stage only task-related changes
@@ -203,7 +199,7 @@ Remaining open: <hive hc list --status open count>
 ## Notes
 
 - **Agent dispatch**: Always use `Agent` tool with `subagent_type: "general-purpose"`.
-  Use `isolation: "worktree"` for parallel tasks to avoid file conflicts.
+  Dispatch tasks sequentially since workers share the working tree.
 - **Revisions**: Use the `resume` parameter on the Agent tool to continue a worker's
   context when requesting revisions.
 - **Branch safety**: Never run on `main`. Always on a feature branch.
