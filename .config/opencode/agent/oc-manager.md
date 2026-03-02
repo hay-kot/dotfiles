@@ -1,6 +1,6 @@
 ---
 description: >-
-  Orchestration manager for the oc-loop workflow. Reads pending hive hc tasks,
+  Orchestration manager for the hc-loop workflow. Reads pending hive hc tasks,
   dispatches oc-worker sub-agents to implement each one, and acts as a critical
   code reviewer before committing any changes. Use when you want to run parallel
   agent-driven development against a hive hc task board.

@@ -1,5 +1,5 @@
 ---
-name: oc-loop
+name: hc-loop
 description: >
   Orchestration loop for hive hc tasks. Reads pending tasks, dispatches
   general-purpose sub-agents (via the Agent tool) to implement each task,

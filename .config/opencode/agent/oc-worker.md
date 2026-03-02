@@ -1,6 +1,6 @@
 ---
 description: >-
-  Implementation worker for the oc-loop workflow. Receives a hive hc task with
+  Implementation worker for the hc-loop workflow. Receives a hive hc task with
   full context from oc-manager and implements it. Does NOT commit — reports
   changes back for manager review. Hidden from primary TUI; called only by
   oc-manager.
