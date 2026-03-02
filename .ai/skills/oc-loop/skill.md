@@ -1,25 +1,24 @@
 ---
 name: oc-loop
 description: >
-  OpenCode-specific orchestration loop. Manager agent (claude-opus-4-5) reads pending hive hc
-  tasks, dispatches oc-worker sub-agents (gpt-5.3-codex) to implement each task, critically
-  reviews the output, and commits only code that passes quality checks. Requires oc-manager
-  and oc-worker agents to be configured in opencode.json.
-allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Task(*)"
-version: "1.0.0"
+  Orchestration loop for hive hc tasks. Reads pending tasks, dispatches
+  general-purpose sub-agents (via the Agent tool) in isolated worktrees to
+  implement each task, critically reviews the output, and commits only code
+  that passes quality checks.
+allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Agent(*)"
+version: "2.0.0"
 author: "Hayden"
 license: "MIT"
-compatibility: opencode
 argument-hint: "[task-id | --all | --limit N]"
 ---
 
-# OC Loop — Manager-Driven Agent Dispatch
+# Task Loop — Agent-Dispatched Implementation
 
-**Requires**: `oc-manager` and `oc-worker` agents configured in `.config/opencode/agent/`.
+You are the **manager**. You do NOT implement tasks yourself. You dispatch sub-agents
+using the `Agent` tool, review their output, and commit approved work.
 
-This skill runs within the `oc-manager` agent (claude-opus-4-5). It orchestrates one or more
-`oc-worker` sub-agents (gpt-5.3-codex) to implement hive hc tasks, then reviews and commits
-approved work.
+**CRITICAL RULE**: Never write or edit application code directly. ALL implementation
+work MUST be delegated to a sub-agent via the `Agent` tool.
 
 ## Prerequisites Check
 
@@ -60,9 +59,24 @@ For each selected task, gather:
 4. **Test command**: Determine the correct test runner (`task test`, `go test ./...`, `bun test`, etc.)
 5. **Lint command**: Determine the correct lint runner (`task lint`, `golangci-lint run`, etc.)
 
-## Step 3: Dispatch Workers
+## Step 3: Dispatch Workers via Agent Tool
 
-For each task, dispatch an `oc-worker` sub-agent with a prompt using this template:
+**You MUST use the `Agent` tool** to dispatch each task to a sub-agent. Use
+`subagent_type: "general-purpose"` and `isolation: "worktree"` so each worker
+operates in its own isolated copy of the repo.
+
+For each task, call the Agent tool like this:
+
+```
+Agent(
+  subagent_type: "general-purpose",
+  isolation: "worktree",
+  description: "Implement hc-<ID>: <short title>",
+  prompt: <see template below>
+)
+```
+
+### Worker Prompt Template
 
 ```
 You are implementing hive hc task <ID>: <TITLE>
@@ -84,30 +98,37 @@ You are implementing hive hc task <ID>: <TITLE>
 1. Mark this task in-progress: hive hc update <ID> --status in_progress --assign
 2. Implement the task as described
 3. Run tests and lint — fix any failures
-4. Do NOT commit
+4. Do NOT commit — leave changes unstaged or staged but uncommitted
 5. Report back with:
    a) Summary of changes made
-   b) Output of: git diff HEAD
+   b) List of files modified
    c) Test and lint results
    d) Any open questions
 ```
 
-**Parallelism decision**:
+### Parallelism Decision
+
 - If tasks touch different files with no overlap → dispatch all workers simultaneously
+  (multiple Agent tool calls in the same message)
 - If tasks share files → dispatch sequentially (wait for review before next dispatch)
 
 ## Step 4: Review Each Completed Worker
 
-When a worker reports back, perform a critical code review:
+When a worker agent returns, perform a critical code review of its output.
 
-### Automated checks
+### Automated Checks
+
+After the worker finishes, check its worktree results:
+
 ```bash
-git diff HEAD          # read every line
-<test command>         # must pass
-<lint command>         # must pass
+# In the worker's worktree (path returned by Agent tool)
+git diff HEAD              # read every line
+<test command>             # must pass
+<lint command>             # must pass
 ```
 
-### Manual review checklist
+### Review Checklist
+
 - [ ] Changes are scoped to the task — no unrelated modifications
 - [ ] No introduced security vulnerabilities
 - [ ] Error cases handled at system boundaries (not deep in business logic)
@@ -120,6 +141,8 @@ git diff HEAD          # read every line
 
 **APPROVE**: All checks pass and review is clean.
 
+Apply the changes from the worktree to the main working tree, then commit:
+
 ```bash
 git add -p                              # stage only task-related changes
 git commit -m "<clear message>          # see commit message format below
@@ -129,7 +152,7 @@ hive hc update <id> --status done       # mark task done
 
 **REVISE**: Minor issues that a worker can fix.
 
-Re-dispatch the worker with the specific `git diff` output and a precise list of required changes.
+Resume the worker agent (using its agent ID) with specific feedback and required changes.
 Limit to 2 revision cycles before escalating to the user.
 
 **REJECT / ESCALATE**: Fundamental design issue, scope creep, or two failed revisions.
@@ -179,11 +202,12 @@ Remaining open: <hive hc list --status open count>
 
 ## Notes
 
-- **Model**: Manager = `opencode/claude-opus-4-5`, Worker = `openai/gpt-5.3-codex`
-- **Known issue**: `openai/gpt-5.3-codex` may terminate early in multi-worker parallel sequences
-  (GitHub #12570). If this occurs, switch `oc-worker` model to `opencode/gpt-5.2-codex` in
-  `.config/opencode/agent/oc-worker.md`.
-- **Branch safety**: Never run on `main`. Always on a feature branch created from `plan-to-hc`
-  or manually before invoking this skill.
-- **Context window**: For large tasks, break context into sections — workers have limited windows.
-  Lead with the most relevant files for the specific task.
+- **Agent dispatch**: Always use `Agent` tool with `subagent_type: "general-purpose"`.
+  Use `isolation: "worktree"` for parallel tasks to avoid file conflicts.
+- **Revisions**: Use the `resume` parameter on the Agent tool to continue a worker's
+  context when requesting revisions.
+- **Branch safety**: Never run on `main`. Always on a feature branch.
+- **Context window**: For large tasks, include only the most relevant files in the
+  worker prompt. Workers have limited context windows.
+- **You are the manager**: Your job is to orchestrate, review, and commit. Never
+  implement directly.
