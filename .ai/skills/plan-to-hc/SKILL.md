@@ -3,7 +3,7 @@ name: plan-to-hc
 description: >
   Create a hive hc epic from the current plan file, inserting the ENTIRE PLAN TEXT
   into the epic and creating subtasks to track all work items.
-allowed-tools: "Read,Bash(hive hc:*),Bash(echo:*),Bash(bpcopy:*)"
+allowed-tools: "Read,Bash(hive hc:*),Bash(echo:*),Bash(bpcopy:*),Bash(cat:*)"
 version: "1.0.0"
 author: "User"
 license: "MIT"
@@ -21,36 +21,36 @@ When this command is invoked:
 
 2. **Extract the plan content**: Get the ENTIRE TEXT of the plan
 
-3. **Create a hive hc epic**: Use `hive hc create --type epic` to create an epic with:
-   - A descriptive title based on the plan's goal
-   - The complete plan text in the description
+3. **Create a hive hc epic with subtasks**: Use the **bulk JSON stdin format** to create the epic and all subtasks in a single command. This avoids shell escaping issues with `--desc`.
 
-4. **Create subtasks**: Analyze the plan and create subtasks for each major work item or implementation step using `hive hc create --parent <epic-id>` with:
-   - Clear, actionable titles
-   - Parent reference to the epic
-   - Appropriate status and labels
+   Build a JSON object and pipe it to `hive hc create`:
+   ```bash
+   cat <<'JSONEOF' | hive hc create
+   {
+     "title": "Epic title here",
+     "type": "epic",
+     "desc": "Full plan text here (escaped for JSON)",
+     "children": [
+       {"title": "Step 1: ...", "type": "task"},
+       {"title": "Step 2: ...", "type": "task", "desc": "details"}
+     ]
+   }
+   JSONEOF
+   ```
 
-5. **Link dependencies**: If the plan has sequential steps, link the subtasks with appropriate dependencies
+   - The epic description must contain the COMPLETE plan text
+   - Each major work item becomes a child task
+   - Use clear, actionable titles for subtasks
 
-6. **Copy the plan id**: Put the epic id on the clipboard
-   - echo <plan id> | bpcopy
+   **CRITICAL**: Do NOT use `--desc` flag for long text. Always use the JSON stdin format to avoid the description being added as a comment instead.
 
-## Expected Workflow
-
-```bash
-# User runs:
-/plan-to-hc
-
-# Agent should:
-# 1. Read the plan file
-# 2. Create epic with full plan text
-# 3. Create subtasks for each work item
-# 4. Link dependencies as needed
-```
+4. **Copy the epic id**: Put the epic id on the clipboard
+   - echo <epic id> | bpcopy
 
 ## Notes
 
-- The epic description should contain the COMPLETE plan text for reference
+- **ALWAYS use the JSON stdin format** — never pass plan text via `--desc` flag (it gets added as a comment instead of description)
+- The epic description must contain the COMPLETE plan text
 - Subtasks should capture all trackable work items from the plan
-- Use clear, descriptive titles for easy identification
+- Escape the plan text properly for JSON (newlines as `\n`, quotes as `\"`)
 - Preserve any dependencies or sequential ordering from the plan
