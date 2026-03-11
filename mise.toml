@@ -55,3 +55,8 @@ run = "mise install"
 [tasks.plusx]
 description = "Make all scripts in bin/ executable"
 run = "chmod +x ~/.dotfiles/bin/*"
+
+[tasks.psweep]
+description = "Run psweep CLI"
+dir = "./tools/psweep"
+run = "go run . {{arg(name=\"args\", var=true)}}"

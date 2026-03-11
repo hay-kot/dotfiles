@@ -27,10 +27,10 @@ If empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
 Scan all work item notes:
 
 ```bash
-find "$OBSIDIAN_NOTEBOOK_DIR/Projects" -path "*/Work Items/*.md" -type f
+find "$OBSIDIAN_NOTEBOOK_DIR/Projects" -path "*/Work/*.md" -type f
 ```
 
-Read the frontmatter of each file to extract: `phase`, `priority`, `project`, `repos`.
+Read the frontmatter of each file to extract: `phase`, `priority`, `project`, `repos`, `lane`, `auto-advance`, `gate-before`, `dispatched-at`, `dispatched-session`.
 
 ## Step 2: Select Work Item
 
@@ -42,7 +42,7 @@ Read the frontmatter of each file to extract: `phase`, `priority`, `project`, `r
 - Then by priority: `high` → `medium` → `low`
 - Then by phase progression order: `research` → `design` → `planning` → `building`
 
-Show the user the top 3 candidates and confirm which to advance before proceeding.
+Show the user the top 3 candidates with their lane (if set) and confirm which to advance before proceeding.
 
 ## Step 3: Resolve Project Context
 
@@ -55,7 +55,7 @@ All artifacts for this work item are stored under the project folder:
 $OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/
 ├── Research/       ← research docs go here
 ├── Design Docs/    ← design docs go here
-└── Work Items/
+└── Work/
     └── <Work Item Name>.md
 ```
 
@@ -159,6 +159,9 @@ Surface what's ready for human review:
 After completing the workflow step, update the note using the Edit tool:
 - Append new artifact links to the Artifacts section
 - Update the `phase` frontmatter field to the next phase
+- **Clear dispatch lock:** If `dispatched-at` and `dispatched-session` are set in the frontmatter, remove both lines (the agent clears its own lock when done)
+- **Respect gate-before:** If `gate-before` is set and the next phase would reach or pass the gated phase, set `phase` to the gated phase but do NOT run the workflow for that phase. Print a message that human review is required before proceeding.
+- **Respect auto-advance:** If `auto-advance` is `false`, always stop after completing a phase and ask the user before advancing to the next phase.
 
 When updating frontmatter, do a targeted Edit of just the changed property line — don't rewrite the whole file.
 

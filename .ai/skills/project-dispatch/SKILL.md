@@ -28,7 +28,7 @@ If empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
 Scan all work item notes:
 
 ```bash
-find "$OBSIDIAN_NOTEBOOK_DIR/Projects" -path "*/Work Items/*.md" -type f
+find "$OBSIDIAN_NOTEBOOK_DIR/Projects" -path "*/Work/*.md" -type f
 ```
 
 Read each file fully to extract frontmatter and Artifacts section. Classify each item:
@@ -60,13 +60,13 @@ Dispatchable work items:
 
 ── PLANNING (ready to build) ──────────────────────────────
 [Adaptive Logs API Alignment]
-  1. Fix HTTP Status Codes        (high)   ✓ plan exists
-  2. Validation Consolidation     (high)   ✗ no plan yet
-  3. Consolidate Response Types   (low)    ✓ plan exists
+  1. Fix HTTP Status Codes        (high)   prep   ✓ plan exists
+  2. Validation Consolidation     (high)   focus  ✗ no plan yet
+  3. Consolidate Response Types   (low)    prep   ✓ plan exists
 
 ── DESIGN ─────────────────────────────────────────────────
 [Adaptive Logs Observability]
-  4. Logging Infrastructure       (high)
+  4. Logging Infrastructure       (high)   prep
 
 ── RESEARCH ───────────────────────────────────────────────
   (none)
@@ -209,7 +209,11 @@ List the spawned session names in the title (comma-separated if multiple).
 
 ## Step 6: Update Work Items
 
-After `hive batch` succeeds, update each dispatched work item's `phase` to `building`:
+After `hive batch` succeeds, set dispatch lock fields on each dispatched work item:
+- `dispatched-at: <ISO 8601 timestamp>`
+- `dispatched-session: <session-id from hive batch output>`
+
+Then update each dispatched work item's `phase` to `building`:
 
 ```
 phase: building

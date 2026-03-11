@@ -42,14 +42,14 @@ $OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/
 ├── <Project Name>.md         ← project note
 ├── Research/                 ← research docs created during project-advance
 ├── Design Docs/              ← design docs created during project-advance
-└── Work Items/
+└── Work/
     └── <Work Item Name>.md   ← one file per work item
 ```
 
 Create all directories before writing:
 
 ```bash
-mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Work Items"
+mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Work"
 mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Research"
 mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/Projects/<Project Name>/Design Docs"
 ```
@@ -88,11 +88,14 @@ created: YYYY-MM-DD
 ```markdown
 ---
 tags:
-  - work-item
-type: work-item
+  - work
+type: work
 project: "[[<Project Name>]]"
 phase: <backlog|research|design|planning|building|review|done|blocked>
 priority: <high|medium|low>
+auto-advance: false
+gate-before: ""
+lane: ""
 repos: []
 created: YYYY-MM-DD
 ---
