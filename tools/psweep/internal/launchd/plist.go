@@ -28,6 +28,7 @@ func LogPath() string {
 type Config struct {
 	BinaryPath string
 	IntervalS  int
+	Hours      string
 }
 
 // Generate produces the plist XML content.
@@ -71,7 +72,7 @@ func Generate(cfg Config) (string, error) {
 		<key>HOME</key>
 		<string>` + xmlEscape(os.Getenv("HOME")) + `</string>
 		<key>PSWEEP_HOURS</key>
-		<string>` + xmlEscape(os.Getenv("PSWEEP_HOURS")) + `</string>
+		<string>` + xmlEscape(cfg.Hours) + `</string>
 	</dict>
 </dict>
 </plist>

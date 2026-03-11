@@ -41,6 +41,34 @@ For `project` and `work-item` types, use the `project-draft` skill instead — i
 
 If the user requests a type not in this table, ask which folder to use and suggest they add it to this table.
 
+## Shared Project Files
+
+Two shared files live at `$OBSIDIAN_NOTEBOOK_DIR/Projects/`:
+
+### Tasks.md — Human action inbox
+
+Append a checkbox line when the next step requires human action:
+
+```markdown
+- [ ] <action needed> — [[<artifact to review>]] — [[<Work Item Name>]] — YYYY-MM-DD
+```
+
+- Always `[[wikilink]]` to the artifact the human needs to review
+- Always `[[wikilink]]` to the work item
+- For GitHub PRs/issues, use full markdown links: `[owner/repo#123](https://github.com/owner/repo/pull/123)`
+- Append only — never remove or modify existing lines
+
+### Log.md — Append-only work history
+
+Append a line after completing any phase or producing an artifact:
+
+```markdown
+- YYYY-MM-DD — <what was done> — [[<artifact>]] — [[<Work Item Name>]]
+```
+
+- For GitHub PRs/issues, use full markdown links instead of wikilinks
+- Append only — never remove or modify existing lines
+
 ## Writing a Document
 
 1. **Resolve the vault path** from `$OBSIDIAN_NOTEBOOK_DIR`

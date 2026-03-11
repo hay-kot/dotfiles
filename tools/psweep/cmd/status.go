@@ -4,9 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"time"
 
-	"github.com/hay-kot/psweep/internal/pipeline"
 	"github.com/hay-kot/psweep/internal/vault"
 )
 
@@ -34,6 +32,21 @@ func runStatus(args []string) error {
 		items = append(items, item)
 	}
 
-	fmt.Print(pipeline.Generate(items, time.Now()))
+	dispatchable := vault.FilterDispatchable(items)
+
+	fmt.Printf("Total work items: %d\n", len(items))
+	fmt.Printf("Dispatchable:     %d\n", len(dispatchable))
+
+	for _, item := range items {
+		if item.Phase == vault.PhaseDone {
+			continue
+		}
+		status := "ready"
+		if !item.DispatchedAt.IsZero() {
+			status = fmt.Sprintf("dispatched (session: %s)", item.DispatchedSession)
+		}
+		fmt.Printf("  %-30s %-12s %s\n", item.Title, item.Phase, status)
+	}
+
 	return nil
 }

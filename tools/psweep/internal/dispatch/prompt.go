@@ -9,6 +9,20 @@ import (
 	"github.com/hay-kot/psweep/internal/vault"
 )
 
+var sharedSuffix = `
+## Completion Protocol
+
+When you finish your work:
+
+1. Run /project-advance to advance the work item to the next phase
+2. Append to ` + "`$OBSIDIAN_NOTEBOOK_DIR/Projects/Log.md`" + `:
+   ` + "`- YYYY-MM-DD — <what you did> — [[<artifact>]] — [[{{.Title}}]]`" + `
+3. If the next step needs human action, append to ` + "`$OBSIDIAN_NOTEBOOK_DIR/Projects/Tasks.md`" + `:
+   ` + "`- [ ] <action needed> — [[<artifact>]] — [[{{.Title}}]] — YYYY-MM-DD`" + `
+
+Always use ` + "`[[wikilinks]]`" + ` for Obsidian docs and full markdown URLs for GitHub PRs/issues.
+`
+
 var researchTmpl = template.Must(template.New("research").Parse(`You are working on "{{.Title}}" for project {{.Project}}.
 
 Repos: {{.ReposJoined}}
@@ -20,7 +34,7 @@ Repos: {{.ReposJoined}}
 Work item path: {{.WorkItemPath}}
 
 Please research this topic thoroughly, then run /project-advance to advance the work item to the next phase.
-`))
+` + sharedSuffix))
 
 var designTmpl = template.Must(template.New("design").Parse(`You are working on "{{.Title}}" for project {{.Project}}.
 
@@ -37,7 +51,7 @@ Repos: {{.ReposJoined}}
 Work item path: {{.WorkItemPath}}
 
 Please create a design document, then run /project-advance to advance the work item to the next phase.
-`))
+` + sharedSuffix))
 
 var planningNoplanTmpl = template.Must(template.New("planning-noplan").Parse(`You are working on "{{.Title}}" for project {{.Project}}.
 
@@ -54,14 +68,14 @@ Repos: {{.ReposJoined}}
 Work item path: {{.WorkItemPath}}
 
 Please create an implementation plan using /plan-write, then advance the work item.
-`))
+` + sharedSuffix))
 
 var planningWithplanTmpl = template.Must(template.New("planning-withplan").Parse(`You are working on "{{.Title}}" for project {{.Project}}.
 
 A plan already exists at: {{.PlanPath}}
 
 Please convert this plan to tracked tasks using /plan-to-hc, then advance the work item.
-`))
+` + sharedSuffix))
 
 type promptData struct {
 	Title              string

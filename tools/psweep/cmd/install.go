@@ -25,6 +25,7 @@ func init() {
 func runInstall(args []string) error {
 	fs := flag.NewFlagSet("install", flag.ExitOnError)
 	interval := fs.Duration("interval", 30*time.Minute, "Run interval (e.g. 15m, 1h)")
+	hours := fs.String("hours", "8-16", "Working hours range in 24h format (e.g. 8-21)")
 	fs.Parse(args)
 
 	// Find psweep binary
@@ -41,6 +42,7 @@ func runInstall(args []string) error {
 	cfg := launchd.Config{
 		BinaryPath: binaryPath,
 		IntervalS:  int(interval.Seconds()),
+		Hours:      *hours,
 	}
 
 	content, err := launchd.Generate(cfg)

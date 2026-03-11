@@ -5,8 +5,8 @@ description: >
   Projects folder, finds the next ready item by priority and phase, then runs the
   appropriate workflow (research, design-doc, plan-write, hive hc). Use when you want to
   continue project work or let AI pick and execute the next task autonomously.
-allowed-tools: "Bash(*),Read,Write,Task(*)"
-version: "1.1.0"
+allowed-tools: "Bash(*),Read,Write,Edit,Task(*)"
+version: "1.2.0"
 author: "User"
 ---
 
@@ -88,17 +88,7 @@ Run deep codebase and context research:
    - Frontmatter: include `work-item: "[[<Work Item Name>]]"` and `project: "[[<Project Name>]]"`
 5. Update the work item's Artifacts section: `- Research: [[<filename>]]`
 6. Advance `phase` to `design`
-
-Create a review todo pointing to the research doc in Obsidian:
-
-```bash
-VAULT="${OBSIDIAN_NOTEBOOK_DIR##*/}"
-VAULT_ENC="${VAULT// /%20}"
-FILE_ENC="Projects/${PROJECT// /%20}/Research/${FILENAME// /%20}"
-hive todo add \
-  --title "Review research: <work-item-title>" \
-  --uri "obsidian://vault/${VAULT_ENC}/${FILE_ENC}"
-```
+7. **Log & Task:** append to Log.md and add a review task to Tasks.md (see Step 6)
 
 ### `design`
 
@@ -110,17 +100,7 @@ Create a design document:
    - Follow the obsidian skill conventions for frontmatter and slug filenames
 4. Update the work item's Artifacts section: `- Design Doc: [[<filename>]]`
 5. Advance `phase` to `planning`
-
-Create a review todo pointing to the design doc in Obsidian:
-
-```bash
-VAULT="${OBSIDIAN_NOTEBOOK_DIR##*/}"
-VAULT_ENC="${VAULT// /%20}"
-FILE_ENC="Projects/${PROJECT// /%20}/Design%20Docs/${FILENAME// /%20}"
-hive todo add \
-  --title "Review design: <work-item-title>" \
-  --uri "obsidian://vault/${VAULT_ENC}/${FILE_ENC}"
-```
+6. **Log & Task:** append to Log.md and add a review task to Tasks.md (see Step 6)
 
 ### `planning`
 
@@ -130,14 +110,7 @@ Write an implementation plan:
 3. Update the work item's Artifacts section:
    - `- Plan: .hive/plans/<filename>`
 4. Leave `phase` at `planning` — the work item is now ready to dispatch via `project-dispatch`
-
-Create a review todo for the plan:
-
-```bash
-hive todo add \
-  --title "Review & dispatch: <work-item-title>" \
-  --uri "review://.hive/plans/<plan-filename>"
-```
+5. **Log & Task:** append to Log.md and add a review/dispatch task to Tasks.md (see Step 6)
 
 ### `building`
 
@@ -145,14 +118,14 @@ Check implementation status:
 1. Check hive hc for any linked issues: `hive hc list`
 2. Check for open PRs in the linked repos (if using gh CLI)
 3. Summarize: what's done, what's in flight, what's blocked
-4. If all hive hc issues are done and PRs merged, prompt user to advance to `review`
+4. If all hive hc issues are done and PRs merged, add a task to Tasks.md to advance to `review`
 
 ### `review`
 
 Surface what's ready for human review:
 1. List linked PRs and their status
 2. Summarize what was built and what acceptance criteria were met
-3. Prompt user to verify against acceptance criteria and mark `phase: done` when complete
+3. Add a task to Tasks.md for human verification against acceptance criteria
 
 ## Step 5: Update Work Item Note
 
@@ -160,10 +133,58 @@ After completing the workflow step, update the note using the Edit tool:
 - Append new artifact links to the Artifacts section
 - Update the `phase` frontmatter field to the next phase
 - **Clear dispatch lock:** If `dispatched-at` and `dispatched-session` are set in the frontmatter, remove both lines (the agent clears its own lock when done)
-- **Respect gate-before:** If `gate-before` is set and the next phase would reach or pass the gated phase, set `phase` to the gated phase but do NOT run the workflow for that phase. Print a message that human review is required before proceeding.
+- **Respect gate-before:** If `gate-before` is set and the next phase would reach or pass the gated phase, set `phase` to the gated phase but do NOT run the workflow for that phase. Add a task to Tasks.md that human review is required before proceeding.
 - **Respect auto-advance:** If `auto-advance` is `false`, always stop after completing a phase and ask the user before advancing to the next phase.
 
 When updating frontmatter, do a targeted Edit of just the changed property line — don't rewrite the whole file.
+
+## Step 6: Update Tasks.md and Log.md
+
+After every phase completion, update two files in the vault:
+
+### Log.md — Append-only work history
+
+Path: `$OBSIDIAN_NOTEBOOK_DIR/Projects/Log.md`
+
+Append a line recording what was completed:
+
+```markdown
+- YYYY-MM-DD — <what was done> — [[<artifact filename>]] — [[<Work Item Name>]]
+```
+
+Examples:
+```markdown
+- 2026-03-10 — Completed research — [[2026-03-10-auth-service-research]] — [[Auth Service Refactor]]
+- 2026-03-10 — Created design doc — [[2026-03-10-auth-design-doc]] — [[Auth Service Refactor]]
+- 2026-03-10 — Opened PR — [hay-kot/myapp#42](https://github.com/hay-kot/myapp/pull/42) — [[Implement Search API]]
+```
+
+### Tasks.md — Human action inbox
+
+Path: `$OBSIDIAN_NOTEBOOK_DIR/Projects/Tasks.md`
+
+Append a task when the next step requires human action (review, decision, gate):
+
+```markdown
+- [ ] <action needed> — [[<artifact to review>]] — [[<Work Item Name>]] — YYYY-MM-DD
+```
+
+Examples:
+```markdown
+- [ ] Review research: Auth Service — [[2026-03-10-auth-service-research]] — [[Auth Service Refactor]] — 2026-03-10
+- [ ] Review design doc: Search API — [[2026-03-10-search-api-design]] — [[Implement Search API]] — 2026-03-10
+- [ ] Review & dispatch plan — [[2026-03-10-auth-plan]] — [[Auth Service Refactor]] — 2026-03-10
+- [ ] Decision needed: JWT vs sessions — [[2026-03-10-auth-design-doc]] — [[Auth Service Refactor]] — 2026-03-10
+- [ ] Review PR for merge — [hay-kot/myapp#42](https://github.com/hay-kot/myapp/pull/42) — [[Implement Search API]] — 2026-03-10
+- [ ] Gated: human approval required before building — [[Auth Service Refactor]] — 2026-03-10
+```
+
+**Rules:**
+- Always link to the specific artifact (obsidian `[[wikilink]]` for vault docs, full markdown URL for GitHub PRs/issues)
+- Always link to the work item with `[[<Work Item Name>]]`
+- Always include the date
+- Create the file if it doesn't exist (no frontmatter needed, Obsidian uses the filename as title)
+- Append only — never remove or modify existing lines
 
 ## Advancement Map
 

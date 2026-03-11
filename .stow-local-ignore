@@ -18,7 +18,13 @@ files/*
 mmdot
 mmdot.yml
 mise.toml
+setup
+tools
+
+AGENTS.md
 
 .hive
 .claude
-.hive
+.ai
+.codex
+.haykot

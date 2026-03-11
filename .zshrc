@@ -86,19 +86,15 @@ mac_config() {
     }
 
     # pnpm
-    export PNPM_HOME="/Users/hayden/Library/pnpm"
+    export PNPM_HOME="$HOME/Library/pnpm"
     case ":$PATH:" in
       *":$PNPM_HOME:"*) ;;
       *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
-    # pnpm end
     export PATH="/opt/homebrew/sbin:$PATH"
 
     # Activate mise
     eval "$(/opt/homebrew/bin/mise activate zsh)"
-    # rtx was renamed to mise so this is a temporary alias
-    alias rtx="mise"
-
     export DOCKER_HOST=unix:///var/run/docker.sock
     alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
     alias lzd=lazydocker
@@ -171,11 +167,7 @@ if which bat > /dev/null; then
     alias cat="batcat"
 fi
 
-if which exa > /dev/null; then
-    alias l='exa --all'
-    alias ls="exa --long --header --git --icons --all --group-directories-first"
-    alias tree="exa --tree --level=3"
-elif which eza > /dev/null; then
+if which eza > /dev/null; then
     export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza/
     alias l='eza --no-git --all'
     alias ls="eza --no-git --long --header --git --icons --all --group-directories-first"
@@ -273,33 +265,6 @@ export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
 alias k="kubectl"
 alias hv="tmux new-session -As hive hive"
 
-# Zellij helper
-zj() {
-    case "$1" in
-        kill)
-            zellij kill-all-sessions
-            ;;
-        prune)
-            zellij delete-all-sessions
-            ;;
-        ls)
-            zellij list-sessions
-            ;;
-        *)
-            # Default: session picker
-            local session
-            session=$(zellij list-sessions 2>/dev/null | fzf --ansi --prompt="Session: " | awk '{print $1}')
-            [[ -z "$session" ]] && return 0
-            zellij attach "$session"
-            ;;
-    esac
-}
-
-# Zellij new named session (defaults to current directory name)
-zn() {
-    local name="${1:-$(basename $PWD)}"
-    zellij attach --create "$name"
-}
 k9z() {
   local context namespace cmd
 
@@ -332,8 +297,5 @@ PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
-# Beads Config
-export BEADS_NO_DAEMON=true # constantly have daemon problems
-
 # opencode
-export PATH=/Users/hayden/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH

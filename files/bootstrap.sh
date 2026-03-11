@@ -73,4 +73,7 @@ install_homebrew
 # Install mise
 install_brew_package "mise"
 
+# Install stow (needed to symlink dotfiles before mmdot runs)
+install_brew_package "stow"
+
 log_info "Setup complete!"

@@ -65,3 +65,20 @@ run = "go run . {{arg(name=\"args\", var=true)}}"
 description = "Build and install psweep binary"
 dir = "./tools/psweep"
 run = "go install ."
+
+[tasks."full-setup"]
+description = "Full machine setup: bootstrap, stow, lock"
+run = """
+#!/bin/bash
+set -e
+echo "==> Running setup (bootstrap + mise install)..."
+mise run setup
+echo "==> Running stow..."
+mise run stow
+echo "==> Installing mise tools..."
+mise run lock
+echo "==> Done!"
+echo "==> Next: run mmdot manually with your profile tag:"
+echo "    mmdot run @personal"
+echo "    mmdot run @grafana"
+"""

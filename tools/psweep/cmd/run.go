@@ -4,13 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"time"
 
 	"github.com/hay-kot/psweep/internal/dispatch"
-	"github.com/hay-kot/psweep/internal/pipeline"
 	"github.com/hay-kot/psweep/internal/vault"
 )
 
@@ -22,10 +22,16 @@ func runRun(args []string) error {
 	staleThreshold := fs.Duration("stale-threshold", 2*time.Hour, "Lock timeout duration")
 	fs.Parse(args)
 
+	f, err := setupLogger()
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
 	// Working hours guard: PSWEEP_HOURS=8-16 (24h format, default: no restriction)
 	if !*dryRun {
 		if ok, reason := withinWorkingHours(time.Now()); !ok {
-			fmt.Println(reason)
+			log.Println(reason)
 			return nil
 		}
 	}
@@ -64,7 +70,7 @@ func runRun(args []string) error {
 	for _, p := range paths {
 		item, err := vault.Parse(p)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "warning: skipping %s: %v\n", p, err)
+			log.Printf("warning: skipping %s: %v", p, err)
 			continue
 		}
 		items = append(items, item)
@@ -84,27 +90,27 @@ func runRun(args []string) error {
 		}
 
 		if vault.IsLocked(item, *staleThreshold) {
-			fmt.Printf("  skip (locked): %s\n", item.Title)
+			log.Printf("skip (locked): %s", item.Title)
 			continue
 		}
 
 		if vault.IsStale(item, *staleThreshold) {
 			alive, err := dispatch.IsSessionAlive(ctx, runner, item.DispatchedSession)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "warning: checking session %s: %v\n", item.DispatchedSession, err)
+				log.Printf("warning: checking session %s: %v", item.DispatchedSession, err)
 				continue
 			}
 			if alive {
 				if !*dryRun {
 					_ = vault.SetLock(item.Path, item.DispatchedSession, time.Now())
 				}
-				fmt.Printf("  skip (stale but alive): %s\n", item.Title)
+				log.Printf("skip (stale but alive): %s", item.Title)
 				continue
 			}
 			if !*dryRun {
 				_ = vault.ClearLock(item.Path)
 			}
-			fmt.Printf("  re-dispatch (stale, dead): %s\n", item.Title)
+			log.Printf("re-dispatch (stale, dead): %s", item.Title)
 		}
 
 		toDispatch = append(toDispatch, item)
@@ -114,7 +120,7 @@ func runRun(args []string) error {
 	toDispatch = dispatch.Prioritize(toDispatch, *maxDispatch)
 
 	if len(toDispatch) == 0 {
-		fmt.Println("No items to dispatch.")
+		log.Println("No items to dispatch.")
 		return nil
 	}
 
@@ -123,7 +129,7 @@ func runRun(args []string) error {
 	for _, item := range toDispatch {
 		prompt, err := dispatch.BuildPrompt(item)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "warning: prompt for %s: %v\n", item.Title, err)
+			log.Printf("warning: prompt for %s: %v", item.Title, err)
 			continue
 		}
 		prompts[item.Path] = prompt
@@ -145,6 +151,7 @@ func runRun(args []string) error {
 	}
 
 	// Execute dispatch
+	log.Printf("dispatching %d items", len(toDispatch))
 	result, err := dispatch.Execute(ctx, runner, batch)
 	if err != nil {
 		return fmt.Errorf("dispatch: %w", err)
@@ -158,33 +165,10 @@ func runRun(args []string) error {
 		}
 		sessionID := result.CreatedSessions[i]
 		if err := vault.SetLock(item.Path, sessionID, now); err != nil {
-			fmt.Fprintf(os.Stderr, "warning: setting lock on %s: %v\n", item.Title, err)
+			log.Printf("warning: setting lock on %s: %v", item.Title, err)
 		}
-		fmt.Printf("  dispatched: %s → %s\n", item.Title, sessionID)
+		log.Printf("dispatched: %s → %s", item.Title, sessionID)
 	}
 
-	// Re-scan to pick up lock changes we just wrote
-	return generateAndWritePipeline(vaultPath)
-}
-
-func generateAndWritePipeline(vaultPath string) error {
-	paths, err := vault.Scan(vaultPath)
-	if err != nil {
-		return fmt.Errorf("scanning vault for pipeline: %w", err)
-	}
-	var items []vault.WorkItem
-	for _, p := range paths {
-		item, err := vault.Parse(p)
-		if err != nil {
-			continue
-		}
-		items = append(items, item)
-	}
-	content := pipeline.Generate(items, time.Now())
-	outPath := filepath.Join(vaultPath, "Projects", "Pipeline.md")
-	if err := os.WriteFile(outPath, []byte(content), 0o644); err != nil {
-		return fmt.Errorf("writing Pipeline.md: %w", err)
-	}
-	fmt.Printf("  wrote %s\n", outPath)
 	return nil
 }
