@@ -2,7 +2,7 @@
 name: project-migrate
 description: >
   Migrate an existing Obsidian project folder from the old structure (Work Items/, work-item tags)
-  to the new psweep-compatible structure (Work/, work tags, new frontmatter fields). One-time migration.
+  to the new structure (Work/, work tags, new frontmatter fields). One-time migration.
 allowed-tools: "Bash(mv:*),Bash(ls:*),Bash(echo:*),Bash(find:*),Read,Edit"
 version: "1.0.0"
 author: "User"
@@ -10,7 +10,7 @@ author: "User"
 
 # Project Migrate
 
-Migrate an existing project from the old work item schema to the new psweep-compatible schema.
+Migrate an existing project from the old work item schema to the new schema.
 
 ## Vault Resolution
 

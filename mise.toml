@@ -56,16 +56,6 @@ run = "mise install"
 description = "Make all scripts in bin/ executable"
 run = "chmod +x ~/.dotfiles/bin/*"
 
-[tasks.psweep]
-description = "Run psweep CLI"
-dir = "./tools/psweep"
-run = "go run . {{arg(name=\"args\", var=true)}}"
-
-[tasks."psweep:install"]
-description = "Build and install psweep binary"
-dir = "./tools/psweep"
-run = "go install ."
-
 [tasks."full-setup"]
 description = "Full machine setup: bootstrap, stow, lock"
 run = """

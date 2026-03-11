@@ -6,7 +6,7 @@ description: >
   dispatch, then runs `hive batch` to spawn one agent per item. Use when you have a
   queue of work items ready to run in parallel.
 allowed-tools: "Bash(*),Read,Write"
-version: "1.1.0"
+version: "1.2.0"
 author: "User"
 ---
 
@@ -23,7 +23,7 @@ echo "$OBSIDIAN_NOTEBOOK_DIR"
 
 If empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
 
-## Step 1: Find Dispatchable Work Items
+## Step 1: Find All Work Items
 
 Scan all work item notes:
 
@@ -31,42 +31,48 @@ Scan all work item notes:
 find "$OBSIDIAN_NOTEBOOK_DIR/Projects" -path "*/Work/*.md" -type f
 ```
 
-Read each file fully to extract frontmatter and Artifacts section. Classify each item:
+Read each file fully to extract frontmatter and Artifacts section.
 
-| Phase | Dispatchable when... |
-|---|---|
-| `research` | Always — agent will run the research workflow |
-| `design` | Always — agent will run the design-doc workflow |
-| `planning` | Always — agent will write a plan if none exists, or execute if plan exists |
-
-Items at `building`, `review`, `done`, or `blocked` are excluded.
-
-For each dispatchable item, extract:
+For each item, extract:
 - Work item title (filename without `.md`)
 - Project name (from `project` frontmatter, strip `[[` and `]]`)
 - Phase
 - Priority
 - Repos (from `repos` frontmatter)
+- `dispatched-at` and `dispatched-session` (from frontmatter, if present)
 - Objective (from `## Objective` section body)
 - Acceptance Criteria (from `## Acceptance Criteria` section body)
 - Plan file path (from `- Plan:` in Artifacts, if present)
 
+### Classify items
+
+| Phase | Classification |
+|---|---|
+| `research`, `design`, `planning` | **Dispatchable** — ready for an agent |
+| `building` | **In progress** — already dispatched, show but do not offer for selection |
+| `review`, `done`, `blocked`, `backlog` | **Excluded** — skip entirely |
+
 ## Step 2: Show Dispatch Board
 
-Present items grouped by phase, then project, sorted by priority:
+Present dispatchable items grouped by phase, then project, sorted by priority.
+Show in-progress (`building`) items in a separate section so the user can see what
+is already running.
 
 ```
+In-progress work items (already dispatched — phase: building):
+
+  ● Fix HTTP Status Codes        [Adaptive Logs]  dispatched 2026-03-10
+
 Dispatchable work items:
 
-── PLANNING (ready to build) ──────────────────────────────
+── PLANNING ───────────────────────────────────────────────
 [Adaptive Logs API Alignment]
-  1. Fix HTTP Status Codes        (high)   prep   ✓ plan exists
-  2. Validation Consolidation     (high)   focus  ✗ no plan yet
-  3. Consolidate Response Types   (low)    prep   ✓ plan exists
+  1. Validation Consolidation     (high)   ✗ no plan yet
+  2. Consolidate Response Types   (low)    ✓ plan exists
 
 ── DESIGN ─────────────────────────────────────────────────
 [Adaptive Logs Observability]
-  4. Logging Infrastructure       (high)   prep
+  3. Logging Infrastructure       (high)
 
 ── RESEARCH ───────────────────────────────────────────────
   (none)
@@ -195,38 +201,34 @@ before dispatching.
 echo '<json>' | hive batch
 ```
 
-## Step 5a: Create Progress Todo
+## Step 6: Mark Dispatched Work Items
 
-After a successful dispatch, create a follow-up reminder:
+This is the critical step that prevents double-dispatch. For each dispatched item,
+apply **all three edits** using the Edit tool (not a full file rewrite):
 
-```bash
-hive todo add \
-  --title "Check dispatch progress: <session-names>" \
-  --uri "session://"
+1. Set `phase: building`
+2. Set `dispatched-at: <RFC 3339 timestamp>` (e.g. `2026-03-11T09:00:00-07:00`)
+3. Set `dispatched-session: <session-id>` from the `hive batch` output
+
+If the field already exists in frontmatter, replace the existing line.
+If the field does not exist, add it after the `phase:` line.
+
+Example targeted edits:
+```
+phase: research  →  phase: building
+dispatched-at: ""  →  dispatched-at: "2026-03-11T09:00:00-07:00"
+dispatched-session: ""  →  dispatched-session: "abc123"
 ```
 
-List the spawned session names in the title (comma-separated if multiple).
+If `hive batch` output does not include a session ID for a particular item, still
+set `phase: building` and `dispatched-at` — omit `dispatched-session`.
 
-## Step 6: Update Work Items
-
-After `hive batch` succeeds, set dispatch lock fields on each dispatched work item:
-- `dispatched-at: <ISO 8601 timestamp>`
-- `dispatched-session: <session-id from hive batch output>`
-
-Then update each dispatched work item's `phase` to `building`:
-
-```
-phase: building
-```
-
-Use a targeted Edit on just the `phase:` line — don't rewrite the whole file.
-
-**Exception:** planning-phase items with no plan go to `building` too — the agent
-will write the plan and stop, so `building` here means "agent is working on it."
+**These edits are what prevents the item from re-appearing in future dispatch runs.**
+Do not skip this step even if partial failures occurred.
 
 ## After Dispatch
 
 Report:
 - How many sessions spawned, grouped by phase
-- Session names
+- Session names and the work items they correspond to
 - Remind user: `hive ls` to check status

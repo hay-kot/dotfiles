@@ -323,6 +323,11 @@ checksum = "sha256:f9091649b39f24fec956ac96a154917834cc4b0b4097e80c86e826d4c9299
 url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows_x86_64.tar.gz"
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
 
+[tools."github:hay-kot/gofind"."platforms.windows-x64-baseline"]
+checksum = "sha256:f9091649b39f24fec956ac96a154917834cc4b0b4097e80c86e826d4c9299b57"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
+
 [[tools."github:hay-kot/hive"]]
 version = "0.38.0"
 backend = "github:hay-kot/hive"
@@ -672,5 +677,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.94.0"
 backend = "core:rust"
