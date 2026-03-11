@@ -22,6 +22,14 @@ func runRun(args []string) error {
 	staleThreshold := fs.Duration("stale-threshold", 2*time.Hour, "Lock timeout duration")
 	fs.Parse(args)
 
+	// Working hours guard: PSWEEP_HOURS=8-16 (24h format, default: no restriction)
+	if !*dryRun {
+		if ok, reason := withinWorkingHours(time.Now()); !ok {
+			fmt.Println(reason)
+			return nil
+		}
+	}
+
 	ctx := context.Background()
 
 	// Acquire process lockfile

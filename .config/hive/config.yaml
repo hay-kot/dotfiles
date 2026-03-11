@@ -78,57 +78,68 @@ rules:
 
 usercommands:
   ReviewRequest:
+    scope: ["sessions"]
     sh: "~/.config/hive/scripts/request-review.sh {{ .Name }}"
     help: "Request code review of current branch"
     silent: true
 
   CheckInbox:
+    scope: ["sessions"]
     sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"'
     help: "Instructs claude to check it's inbox"
     silent: true
 
   SendAccept:
+    scope: ["sessions"]
     sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}"'
     help: "Send enter to claude window"
     silent: true
 
   SendTidy:
+    scope: ["sessions"]
     help: send /tidy
     sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/tidy"'
     silent: true
 
   SendClear:
+    scope: ["sessions"]
     help: send /clear
     sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/clear"'
     silent: true
 
   SendRebase:
+    scope: ["sessions"]
     help: send rebase command
     sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "fetch and rebase the current branch on {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }} branch and resolve any conflicts"'
     silent: true
 
   OpenInZed:
+    scope: ["sessions"]
     sh: "zed {{ .Path }}"
     help: open in zed
     silent: true
 
   PRLink:
+    scope: ["sessions"]
     sh: "cd {{ .Path }} && prlink"
     help: get a pr link
     silent: false
 
   TmuxPopUp:
+    scope: ["sessions"]
     help: popup
     sh: tmux display-popup -E -w 90% -h 90% "tmux kill-session -t hive-popup 2>/dev/null; tmux new-session -s hive-popup -t '{{ .Name }}' \; select-window -t :{{ .TmuxWindow }}"
     exit: false
     silent: true
 
   CopyAgentInbox:
+    scope: ["sessions"]
     help: copy agent inbox to clipboard
     sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
     silent: true
 
   ReviewCodeSync:
+    scope: ["sessions"]
     help: "sequential chain review: codex (correctness) → agent (design+tests) → claude (comments+verdict)"
     silent: true
     windows:
@@ -203,6 +214,7 @@ usercommands:
            Be adversarial. Assume the previous reviewers missed things.'
 
   ReviewOpenCode:
+    scope: ["sessions"]
     help: "run OpenCode review in a dedicated tmux window"
     silent: false
     focus: false
@@ -212,6 +224,7 @@ usercommands:
           opencode --agent free-permissions-runner --prompt "Review all current repository changes against {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }}. Inspect both git diff {{ if .Args }}{{ index .Args 0 }}{{ else }}main{{ end }}...HEAD and git diff. Report findings grouped by severity (critical, major, minor). Include concrete evidence with file paths and line references."
 
   ReviewRalph:
+    scope: ["sessions"]
     help: "iterative self-critiquing review loop"
     form:
       - variable: iterations

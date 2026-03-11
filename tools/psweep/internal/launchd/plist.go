@@ -70,6 +70,8 @@ func Generate(cfg Config) (string, error) {
 		<string>` + xmlEscape(os.Getenv("PATH")) + `</string>
 		<key>HOME</key>
 		<string>` + xmlEscape(os.Getenv("HOME")) + `</string>
+		<key>PSWEEP_HOURS</key>
+		<string>` + xmlEscape(os.Getenv("PSWEEP_HOURS")) + `</string>
 	</dict>
 </dict>
 </plist>

@@ -430,6 +430,11 @@ checksum = "sha256:117a1998ee9b0b49040fb3e37170b9649f804ae24ec6610897615c71321f1
 url = "https://github.com/homeport/dyff/releases/download/v1.11.2/dyff_1.11.2_windows_amd64.tar.gz"
 url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/364711261"
 
+[tools."github:homeport/dyff"."platforms.windows-x64-baseline"]
+checksum = "sha256:117a1998ee9b0b49040fb3e37170b9649f804ae24ec6610897615c71321f1098"
+url = "https://github.com/homeport/dyff/releases/download/v1.11.2/dyff_1.11.2_windows_amd64.tar.gz"
+url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/364711261"
+
 [[tools."github:sxyazi/yazi"]]
 version = "25.5.31"
 backend = "github:sxyazi/yazi"
@@ -488,6 +493,11 @@ checksum = "sha256:9501ed1055f371171d71ccbe825e8bbb5b8a245ec1c01bb01033406908a1f
 url = "https://github.com/thomasschafer/scooter/releases/download/v0.9.0/scooter-v0.9.0-x86_64-pc-windows-msvc.zip"
 url_api = "https://api.github.com/repos/thomasschafer/scooter/releases/assets/364244662"
 
+[tools."github:thomasschafer/scooter"."platforms.windows-x64-baseline"]
+checksum = "sha256:9501ed1055f371171d71ccbe825e8bbb5b8a245ec1c01bb01033406908a1f6d5"
+url = "https://github.com/thomasschafer/scooter/releases/download/v0.9.0/scooter-v0.9.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/thomasschafer/scooter/releases/assets/364244662"
+
 [[tools."github:zjrosen/perles"]]
 version = "0.7.83"
 backend = "github:zjrosen/perles"
@@ -538,6 +548,10 @@ checksum = "sha256:65773dab2f8cc4cd23d93ba6d0a805de150ca0b78378879292be0b903b8cd
 url = "https://dl.google.com/go/go1.26.1.darwin-amd64.tar.gz"
 
 [tools.go."platforms.windows-x64"]
+checksum = "sha256:9b68112c913f45b7aebbf13c036721264bbba7e03a642f8f7490c561eebd1ecc"
+url = "https://dl.google.com/go/go1.26.1.windows-amd64.zip"
+
+[tools.go."platforms.windows-x64-baseline"]
 checksum = "sha256:9b68112c913f45b7aebbf13c036721264bbba7e03a642f8f7490c561eebd1ecc"
 url = "https://dl.google.com/go/go1.26.1.windows-amd64.zip"
 
@@ -625,6 +639,10 @@ url = "https://nodejs.org/dist/v25.8.0/node-v25.8.0-darwin-x64.tar.gz"
 checksum = "sha256:5744746371a417179a701044739b5fa2b3164e943aa57f86059fb312f8032e86"
 url = "https://nodejs.org/dist/v25.8.0/node-v25.8.0-win-x64.zip"
 
+[tools.node."platforms.windows-x64-baseline"]
+checksum = "sha256:5744746371a417179a701044739b5fa2b3164e943aa57f86059fb312f8032e86"
+url = "https://nodejs.org/dist/v25.8.0/node-v25.8.0-win-x64.zip"
+
 [[tools."npm:@anthropic-ai/claude-code"]]
 version = "2.0.75"
 backend = "npm:@anthropic-ai/claude-code"
@@ -654,5 +672,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"

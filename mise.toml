@@ -60,3 +60,8 @@ run = "chmod +x ~/.dotfiles/bin/*"
 description = "Run psweep CLI"
 dir = "./tools/psweep"
 run = "go run . {{arg(name=\"args\", var=true)}}"
+
+[tasks."psweep:install"]
+description = "Build and install psweep binary"
+dir = "./tools/psweep"
+run = "go install ."
