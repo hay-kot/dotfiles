@@ -22,37 +22,59 @@ Every review must follow this structure. Do not invent alternative formats.
 ```markdown
 # Code Review: [scope or branch]
 
-> Iteration [N] of [M] | Focus: [skill focus for this iteration]
+Iteration [N] of [M] | Focus: [skill focus for this iteration]
 
-## Critical Issues
+---
 
-_Must be resolved before merge. If none: "None found."_
+### Critical
 
-| # | File:Line | Issue | Evidence | Fix |
-|---|-----------|-------|----------|-----|
-| 1 | auth.go:45 | Swallowed error discards failure context | `if err != nil { log.Println(err) }` — error not returned | Return `fmt.Errorf("creating user: %w", err)` |
+1. **`auth.go:45` — Swallowed error discards failure context**
+   - Evidence: `if err != nil { log.Println(err) }` — error not returned to caller
+   - Fix: `return fmt.Errorf("creating user: %w", err)`
 
-## Suggestions
+### Suggestions
 
-_Worth fixing but not blocking._
+1. **`user.go:88` — `formatName` helper only called once**
+   - Evidence: Single call site at handler.go:32
+   - Recommendation: Inline the 2-line body and delete the helper
 
-| # | File:Line | Issue | Evidence | Recommendation |
-|---|-----------|-------|----------|----------------|
-| 1 | user.go:88 | Helper `formatName` only called once — inline it | Single call site at handler.go:32 | Inline the 2-line body, delete helper |
+### Nits
 
-## Nits
+1. **`cache.go:12`** — Comment restates code: `// increment counter` above `count++`
 
-_Optional. Omit section entirely if none._
+---
 
-| # | File:Line | Issue |
-|---|-----------|-------|
-| 1 | cache.go:12 | Comment restates code: `// increment counter` above `count++` |
+### Verdict
 
-## Verdict
+**[SHIP / DO NOT SHIP / NEEDS DISCUSSION]** — [One sentence. If SHIP: note any conditions. If DO NOT SHIP: name the blocking issue(s).]
 
-**[SHIP / DO NOT SHIP / NEEDS DISCUSSION]**
+Critical: N | Suggestions: N | Nits: N
+```
 
-[One sentence. If SHIP: note any conditions. If DO NOT SHIP: name the blocking issue(s).]
+## Saving the Review
+
+After outputting the review, save a copy to `.hive/Reviews/` using the filename pattern
+`YYYY-MM-DD-<slug>.md` where the slug is derived from the branch or scope name.
+
+```bash
+mkdir -p .hive/Reviews
+```
+
+Then write the file with the Write tool. If `.hive/` does not exist as a symlink, run
+`hive ctx init` first — never create it as a plain directory.
+
+Every saved review must include this frontmatter:
+
+```yaml
+---
+type: review
+date: YYYY-MM-DD
+repository: owner/repo
+branch: [branch reviewed]
+commit: [HEAD commit hash]
+base_branch: main
+tags: [component, topic]
+---
 ```
 
 ## Evidence Requirements

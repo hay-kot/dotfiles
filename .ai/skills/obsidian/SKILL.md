@@ -4,7 +4,7 @@ description: >
   Save documents to Obsidian notebook. Use when the user asks to save, write, or put
   a document (test plan, design doc, etc.) into their Obsidian notebook.
 allowed-tools: "Bash(mkdir:*),Write,Read"
-version: "1.1.0"
+version: "1.2.0"
 author: "User"
 ---
 
@@ -98,6 +98,61 @@ Field details:
 - **repository**: Infer from the current git remote (`git remote get-url origin`, extract `owner/repo`). If not in a git repo, ask the user.
 - **created**: Today's date
 - **status**: Always `draft` unless the user specifies otherwise
+
+## Obsidian Formatting
+
+Use Obsidian-native formatting to improve readability. Prefer these over plain prose wherever appropriate.
+
+### Callouts
+
+Use callouts to surface important information visually. Syntax:
+
+```markdown
+> [!TYPE] Optional Title
+> Content here.
+```
+
+Use a collapsible callout (`> [!TYPE]-`) for lengthy details that shouldn't clutter the main flow.
+
+**Callout vocabulary:**
+
+| Callout | When to use |
+| --- | --- |
+| `[!IMPORTANT]` | Must-read constraints, requirements, or helpful suggestions |
+| `[!WARNING]` | Risks, gotchas, or things likely to go wrong |
+| `[!QUESTION]` | Open questions that still need resolution |
+| `[!DECISION]` | A decision that was made and its rationale |
+| `[!TRADEOFF]` | Trade-off comparison between two or more approaches |
+| `[!RISK]` | Identified risks (especially in test plans) |
+
+**Guidelines:**
+- Use `[!DECISION]` and `[!TRADEOFF]` liberally in design docs — decisions are the most valuable part
+- Use `[!QUESTION]` for anything unresolved rather than leaving it buried in prose
+- Use `[!RISK]` in test plans to make coverage gaps explicit
+
+### Mermaid Diagrams
+
+Include a Mermaid diagram whenever a document describes a system with multiple components, a sequence of steps, or a data flow. Obsidian renders Mermaid natively.
+
+````markdown
+```mermaid
+flowchart LR
+  A[Input] --> B{Decision} --> C[Result]
+```
+````
+
+Common diagram types:
+- `flowchart LR` / `flowchart TD` — architecture, data flow, decision trees
+- `sequenceDiagram` — request/response flows, inter-service communication
+- `erDiagram` — data models
+- `gantt` — timelines and milestones
+
+### Inline Emphasis
+
+- `==highlighted text==` — use for key terms on first use, critical values, or decision outcomes
+- **Bold** — use for section-level emphasis, important constraints, and named concepts
+- _Italic_ — use for definitions, titles of referenced documents, or secondary emphasis
+- Avoid over-bolding; reserve it for information the reader must not miss
 
 ## Slug Generation
 

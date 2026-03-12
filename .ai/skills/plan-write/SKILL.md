@@ -274,6 +274,18 @@ Iterate based on feedback until the user is satisfied.
 Use this template in the Wave 1 draft agent prompt and for the final plan file.
 
 ```markdown
+---
+type: plan
+date: YYYY-MM-DD
+repository: owner/repo
+branch: [current branch]
+commit: [short commit hash]
+tags: [component, topic]
+research: .hive/research/[source-filename.md]
+updates:
+  - YYYY-MM-DD: Initial plan
+---
+
 # [Feature/Task Name] Implementation Plan
 
 ## Overview

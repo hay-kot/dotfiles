@@ -59,8 +59,9 @@ Before writing the document, gather:
 
 ```bash
 git branch --show-current
-git rev-parse HEAD
-date -u +"%Y-%m-%dT%H:%M:%SZ"
+git rev-parse --short HEAD
+date +"%Y-%m-%d"
+gh repo view --json nameWithOwner -q .nameWithOwner
 ```
 
 ## Step 6: Write the Research Document
@@ -71,16 +72,15 @@ date -u +"%Y-%m-%dT%H:%M:%SZ"
 
 ```markdown
 ---
-date: [ISO datetime with timezone]
-researcher: [git config user.name]
-git_commit: [current commit hash]
+type: research
+date: YYYY-MM-DD
+repository: owner/repo
 branch: [current branch]
-repository: [repo name]
-topic: "[Research question/topic]"
-tags: [research, codebase, relevant-component-names]
-status: complete
-last_updated: [YYYY-MM-DD]
-last_updated_by: [researcher name]
+commit: [short commit hash]
+tags: [component, topic]
+topic: "[Research question]"
+updates:
+  - YYYY-MM-DD: Initial research
 ---
 
 # Research: [Topic]
@@ -164,8 +164,7 @@ Ask if follow-up questions or clarification is needed.
 ## Step 9: Handle Follow-up Questions
 
 Append follow-up research to the same document:
-- Update `last_updated` and `last_updated_by` in frontmatter
-- Add `last_updated_note: "Added follow-up research for [brief description]"`
+- Append a new entry to the `updates` list in frontmatter: `- YYYY-MM-DD: [brief description]`
 - Add a new section: `## Follow-up Research [timestamp]`
 - Spawn new sub-agents as needed
 
