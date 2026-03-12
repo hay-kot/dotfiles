@@ -329,57 +329,67 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.38.0"
+version = "0.39.0"
 backend = "github:hay-kot/hive"
 
-[tools."github:hay-kot/hive"."platforms.linux-arm64"]
-checksum = "sha256:9adee63e77b9b038360484ceba00c3f2a9995bd149b41dc0469536f15db5bc9a"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276730"
-
-[tools."github:hay-kot/hive"."platforms.linux-arm64-musl"]
-checksum = "sha256:9adee63e77b9b038360484ceba00c3f2a9995bd149b41dc0469536f15db5bc9a"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276730"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64"]
-checksum = "sha256:2f8f28dde00fcd09c6fecf21d778803f18bab1e3e49660d4ed079e127993bcf9"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276721"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-baseline"]
-checksum = "sha256:2f8f28dde00fcd09c6fecf21d778803f18bab1e3e49660d4ed079e127993bcf9"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276721"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-musl"]
-checksum = "sha256:2f8f28dde00fcd09c6fecf21d778803f18bab1e3e49660d4ed079e127993bcf9"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276721"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:2f8f28dde00fcd09c6fecf21d778803f18bab1e3e49660d4ed079e127993bcf9"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276721"
-
-[tools."github:hay-kot/hive"."platforms.macos-arm64"]
-checksum = "sha256:b43dc61a9a20614453a0d7458000f4ef9372d1037724e24d881b4365210537f4"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276720"
-
-[tools."github:hay-kot/hive"."platforms.macos-x64"]
-checksum = "sha256:359eee9f0008f621cc9d519f281147b233a2e916742338e3fa8cc0269762c52e"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276719"
-
-[tools."github:hay-kot/hive"."platforms.macos-x64-baseline"]
-checksum = "sha256:359eee9f0008f621cc9d519f281147b233a2e916742338e3fa8cc0269762c52e"
-url = "https://github.com/colonyops/hive/releases/download/v0.38.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/367276719"
-
 [[tools."github:hay-kot/scaffold"]]
-version = "0.13.0"
+version = "v0.13.1"
 backend = "github:hay-kot/scaffold"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-arm64"]
+checksum = "sha256:34b021b3521b91d8dd54a9184e60d7902435a99a1a157354eef8f8548a671455"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661407"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-arm64-musl"]
+checksum = "sha256:34b021b3521b91d8dd54a9184e60d7902435a99a1a157354eef8f8548a671455"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661407"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-x64"]
+checksum = "sha256:9d78d259b5644dd27293e6b221aeccc4966ad185eeb042174bce137f9086c1ac"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661414"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-x64-baseline"]
+checksum = "sha256:9d78d259b5644dd27293e6b221aeccc4966ad185eeb042174bce137f9086c1ac"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661414"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-x64-musl"]
+checksum = "sha256:9d78d259b5644dd27293e6b221aeccc4966ad185eeb042174bce137f9086c1ac"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661414"
+
+[tools."github:hay-kot/scaffold"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:9d78d259b5644dd27293e6b221aeccc4966ad185eeb042174bce137f9086c1ac"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661414"
+
+[tools."github:hay-kot/scaffold"."platforms.macos-arm64"]
+checksum = "sha256:a12fc97aa8264a306dc7429c3a7f5d2206847ba7e83cd482b76f66633d5d9864"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661411"
+
+[tools."github:hay-kot/scaffold"."platforms.macos-x64"]
+checksum = "sha256:4396181516897f98b910dfefeafa763df19140d98da02254133ccfca21fac59f"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661404"
+
+[tools."github:hay-kot/scaffold"."platforms.macos-x64-baseline"]
+checksum = "sha256:4396181516897f98b910dfefeafa763df19140d98da02254133ccfca21fac59f"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661404"
+
+[tools."github:hay-kot/scaffold"."platforms.windows-x64"]
+checksum = "sha256:79a419f064b5e3bf65c5ed1d1bd6ade12bfddead3a4048a92423525904652066"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661413"
+
+[tools."github:hay-kot/scaffold"."platforms.windows-x64-baseline"]
+checksum = "sha256:79a419f064b5e3bf65c5ed1d1bd6ade12bfddead3a4048a92423525904652066"
+url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661413"
 
 [[tools."github:homeport/dyff"]]
 version = "1.11.2"
