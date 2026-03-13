@@ -62,6 +62,13 @@ a pure config change, documentation-only update, or trivial rename).
 
 State which dimensions you selected and why before dispatching.
 
+## Optional: External Codex Review
+
+If running alongside `/review-with-codex`, spawn codex **before** dispatching sub-agents so
+both run concurrently. Follow Steps 0–3 of the `review-with-codex` skill now, then proceed
+with sub-agent dispatch below. Collect codex's findings after sub-agents complete (Step 4 of
+`review-with-codex`), then include them in synthesis.
+
 ## Step 3: Dispatch Sub-Agent Reviews
 
 Spawn selected sub-agents **in parallel** using the Task tool.
