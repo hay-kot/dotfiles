@@ -142,7 +142,7 @@ brew install --cask \
   tableplus \
   visual-studio-code \
   vlc \
-  wezterm \
+  ghostty \
   zed \
   zoom \
   balenaetcher \

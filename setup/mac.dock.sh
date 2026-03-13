@@ -16,14 +16,18 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 
+# Minimize windows into app icon, no launch animation, hide recent apps
+defaults write com.apple.dock minimize-to-application -bool true
+defaults write com.apple.dock launchanim -bool false
+defaults write com.apple.dock show-recents -bool false
+
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Define the list of applications to add to the Dock
 apps_to_add=(
+  "/Applications/Ghostty.app"
   "/Applications/Brave Browser.app"
-  "/Applications/Wezterm.app"
-  "/Applications/Signal.app"
   "/Applications/Obsidian.app"
 )
 

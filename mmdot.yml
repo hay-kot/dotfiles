@@ -38,6 +38,7 @@ exec:
     # mac
     - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"], }
     - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"], }
+    - { path: "./setup/mac.defaults.sh", tags: ["grafana", "personal", "mac", "setup"], }
 
     # grafana
     - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
@@ -56,21 +57,25 @@ brews:
       - all
     brews:
       - awscli
+      - azure-cli
       - hashicorp/tap/terraform
       - jsonnet
       - jsonnet-bundler
       - shellcheck
       - tanka
       - helm
+      - zizmor
     taps:
       - hashicorp/tap
       - grafana/grafana
     casks:
       - 1password
+      - gcloud-cli
       - google-cloud-sdk
       - goland
-      - tuple
       - slack
+      - tailscale-app
+      - tuple
     mas: []
   personal:
     outfile: ./setup/brew.personal.sh
@@ -145,6 +150,7 @@ brews:
       - gh
       - git
       - git-lfs
+      - glow
       - gnupg
       - go
       - go-task/tap/go-task
@@ -158,6 +164,7 @@ brews:
       - hay-kot/gotmpl-tap/gotmpl
       - hyperfine
       - imagemagick
+      - infat
       - ipython
       - jesseduffield/lazydocker/lazydocker
       - jq
@@ -176,6 +183,7 @@ brews:
       - mas
       - mingw-w64
       - mise
+      - mole
       - mozjpeg
       - neovim
       - node
@@ -186,6 +194,7 @@ brews:
       - pnpm
       - pre-commit
       - ripgrep
+      - semgrep
       - sqlc
       - sqlfmt
       - starship
@@ -225,7 +234,7 @@ brews:
       - tableplus
       - visual-studio-code
       - vlc
-      - wezterm
+      - ghostty
       - zed
       - zoom
 

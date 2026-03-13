@@ -25,6 +25,24 @@ mkdir -p "${HOME}/Downloads/Screenshots"
 defaults write com.apple.screencapture location -string "${HOME}/Downloads/Screenshots"
 
 ###############################################################################
+# UI                                                                          #
+###############################################################################
+
+# Dark mode
+defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
+
+###############################################################################
+# Keyboard                                                                    #
+###############################################################################
+
+# Fast key repeat
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
+
+# Disable press-and-hold in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+###############################################################################
 # Screen                                                                      #
 ###############################################################################
 
@@ -38,6 +56,14 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Finder: show path bar
 defaults write com.apple.finder ShowPathbar -bool true
+
+# Sidebar visible
+defaults write com.apple.finder ShowSidebar -bool true
+
+# Hide all drives and volumes from desktop
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -69,6 +95,11 @@ defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool false
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+
+# List view icon size: 32px (one step up from default 16px)
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ExtendedListViewSettingsV2:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_DefaultListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
 
 ###############################################################################
 # Misc                                                                        #
