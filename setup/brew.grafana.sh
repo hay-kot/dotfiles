@@ -45,6 +45,7 @@ brew install \
   gh \
   git \
   git-lfs \
+  glow \
   gnupg \
   go \
   go-task/tap/go-task \
@@ -58,6 +59,7 @@ brew install \
   hay-kot/gotmpl-tap/gotmpl \
   hyperfine \
   imagemagick \
+  infat \
   ipython \
   jesseduffield/lazydocker/lazydocker \
   jq \
@@ -76,6 +78,7 @@ brew install \
   mas \
   mingw-w64 \
   mise \
+  mole \
   mozjpeg \
   neovim \
   node \
@@ -86,6 +89,7 @@ brew install \
   pnpm \
   pre-commit \
   ripgrep \
+  semgrep \
   sqlc \
   sqlfmt \
   starship \
@@ -102,12 +106,14 @@ brew install \
   zlib \
   zsh-autosuggestions \
   awscli \
+  azure-cli \
   hashicorp/tap/terraform \
   jsonnet \
   jsonnet-bundler \
   shellcheck \
   tanka \
-  helm
+  helm \
+  zizmor
 
 # Installing Homebrew Casks
 brew install --cask \
@@ -134,12 +140,14 @@ brew install --cask \
   tableplus \
   visual-studio-code \
   vlc \
-  wezterm \
+  ghostty \
   zed \
   zoom \
   1password \
+  gcloud-cli \
   google-cloud-sdk \
   goland \
-  tuple \
-  slack
+  slack \
+  tailscale-app \
+  tuple
 
