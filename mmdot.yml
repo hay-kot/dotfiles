@@ -90,6 +90,7 @@ brews:
     brews:
       - autorestic
       - bitwarden-cli
+      - rbw
       - caddy
       - flyctl
       - mailpit
