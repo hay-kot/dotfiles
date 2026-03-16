@@ -45,7 +45,7 @@ brew install \
   gh \
   git \
   git-lfs \
-  glow \
+  charmbracelet/tap/glow \
   gnupg \
   go \
   go-task/tap/go-task \

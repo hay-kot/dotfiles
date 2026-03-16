@@ -30,22 +30,22 @@ templates:
 exec:
   shell: /bin/bash
   scripts:
+    # brew (run first, other scripts depend on installed packages)
+    - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
+    - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
+
     # dev
-    - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
+    - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
 
     # mac
-    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"], }
-    - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"], }
-    - { path: "./setup/mac.defaults.sh", tags: ["grafana", "personal", "mac", "setup"], }
+    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    - { path: "./setup/mac.defaults.sh", tags: ["grafana", "personal", "mac", "setup"] }
 
-    # grafana
-    - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
+    # env & config
     - { path: "./setup/env.grafana.sh", tags: ["grafana", "env"] }
-
-    # personal
-    - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
     - { path: "./setup/env.personal.sh", tags: ["personal", "env"] }
     - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
     - { path: "./setup/ai.sh", tags: ["personal", "ai"] }
@@ -151,7 +151,7 @@ brews:
       - gh
       - git
       - git-lfs
-      - glow
+      - charmbracelet/tap/glow
       - gnupg
       - go
       - go-task/tap/go-task

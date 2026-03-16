@@ -18,6 +18,7 @@ files/*
 mmdot
 mmdot.yml
 mise.toml
+renovate.json
 setup
 tools
 

@@ -6,8 +6,9 @@
 # ~/.macos — https://mths.be/macos
 # https://macos-defaults.com/
 
-# set capslock to ctrl
-# https://stackoverflow.com/questions/127591/using-caps-lock-as-esc-in-mac-os-x/46460200#46460200
+# Remap Caps Lock to Escape
+# https://developer.apple.com/library/archive/technotes/tn2450/_index.html
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
