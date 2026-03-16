@@ -159,7 +159,6 @@ brew install --cask \
   signal \
   steam \
   transmit \
-  yubico-yubikey-manager \
   proton-drive \
   protonvpn
 

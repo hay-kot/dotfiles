@@ -152,7 +152,7 @@ brews:
       - signal
       - steam
       - transmit
-      - yubico-yubikey-manager
+      #- yubico-yubikey-manager
       - proton-drive
       - protonvpn
 
