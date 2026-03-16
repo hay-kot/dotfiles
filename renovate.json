@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "mise": {
+    "fileMatch": [".config/mise/config.toml"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["mise"],
+      "rangeStrategy": "pin"
+    }
+  ]
+}
