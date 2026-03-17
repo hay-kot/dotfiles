@@ -1,0 +1,35 @@
+personal_repos:
+  - git@github.com:colonyops/diff-review.git
+  - git@github.com:colonyops/hive.git
+  - git@github.com:hay-kot/criterio.git
+  - git@github.com:hay-kot/dirwatch.git
+  - git@github.com:hay-kot/easyemails.git
+  - git@github.com:hay-kot/flint.git
+  - git@github.com:hay-kot/gobusgen.git
+  - git@github.com:hay-kot/gofind.git
+  - git@github.com:hay-kot/haykot.dev.git
+  - git@github.com:hay-kot/httpkit.git
+  - git@github.com:hay-kot/local-review.git
+  - git@github.com:hay-kot/mdparse.git
+  - git@github.com:hay-kot/mmdot.git
+  - git@github.com:hay-kot/obsidian-dnd-ui-toolkit.git
+  - git@github.com:hay-kot/plugs.git
+  - git@github.com:hay-kot/pres-bubble-tea-tuis.git
+  - git@github.com:hay-kot/pres-building-a-saas-stack-in-go.git
+  - git@github.com:hay-kot/recipes-api.git
+  - git@github.com:hay-kot/recipinned.git
+  - git@github.com:hay-kot/scaffold.git
+  - git@github.com:hay-kot/scaffold-go-cli.git
+  - git@github.com:hay-kot/scaffold-go-pkg.git
+  - git@github.com:hay-kot/scaffold-go-web.git
+  - git@github.com:mealie-recipes/discord-bot.git
+  - git@github.com:mealie-recipes/mealie.io.git
+  - git@github.com:mealie-recipes/recipes-server.git
+  - git@github.com:mealie-recipes/mealie.git
+  - gitea@gitea.kotel.app:renovate/renovate-v2.git
+  - ssh://gitea@gitea.kotel.app:222/hay-kot/coros.git
+  - ssh://gitea@gitea.kotel.app:222/hay-kot/infra.git
+  - ssh://gitea@gitea.kotel.app:222/hay-kot/training-assistant.git
+
+grafana_repos: []
+  # - git@github.com:grafana/example.git

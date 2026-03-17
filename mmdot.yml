@@ -5,6 +5,7 @@ macros:
 variables:
   var_files:
     - ./mmdot/vault.yml?vault=true
+    - ./mmdot/repos.yml
 
 templates:
   - name: Host File Template
@@ -26,6 +27,42 @@ templates:
       {{ end }}
     output: secrets/.env.local
     perm: "0600"
+  - name: Clone Personal Repos
+    tags: [personal, repos]
+    template: |-
+      #!/bin/bash
+      set -e
+      REPO_DIR="$HOME/code/Repos"
+      mkdir -p "$REPO_DIR"
+      {{ range .personal_repos -}}
+      REPO_NAME=$(basename "{{ . }}" .git)
+      if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+        echo "Cloning $REPO_NAME..."
+        git clone "{{ . }}" "$REPO_DIR/$REPO_NAME"
+      else
+        echo "Skipping $REPO_NAME (already exists)"
+      fi
+      {{ end -}}
+    output: ./setup/clones.personal.sh
+    perm: "0755"
+  - name: Clone Grafana Repos
+    tags: [grafana, repos]
+    template: |-
+      #!/bin/bash
+      set -e
+      REPO_DIR="$HOME/code/Repos"
+      mkdir -p "$REPO_DIR"
+      {{ range .grafana_repos -}}
+      REPO_NAME=$(basename "{{ . }}" .git)
+      if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+        echo "Cloning $REPO_NAME..."
+        git clone "{{ . }}" "$REPO_DIR/$REPO_NAME"
+      else
+        echo "Skipping $REPO_NAME (already exists)"
+      fi
+      {{ end -}}
+    output: ./setup/clones.grafana.sh
+    perm: "0755"
 
 exec:
   shell: /bin/bash
@@ -33,6 +70,10 @@ exec:
     # brew (run first, other scripts depend on installed packages)
     - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
     - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
+
+    # repos
+    - { path: "~/.mmdot/clones.personal.sh", tags: ["personal", "repos"] }
+    - { path: "~/.mmdot/clones.grafana.sh", tags: ["grafana", "repos"] }
 
     # dev
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
