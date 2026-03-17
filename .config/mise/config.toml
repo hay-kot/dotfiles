@@ -38,7 +38,7 @@ rust = "latest"
 "github:hay-kot/scaffold" = "v0.13.1"
 "github:hay-kot/hive" = "v0.39.0"
 "github:hay-kot/gobusgen" = "v0.3.0"
-"github:zjrosen/perles" = "v0.7.83"
+"github:zjrosen/perles" = "v0.8.0"
 
 "forgejo:gitea/tea" = { version = "v0.11.1", api_url = "https://gitea.com/api/v1" }
 # -------------------------------------------------------
