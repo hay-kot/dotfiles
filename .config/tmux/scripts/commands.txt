@@ -1,0 +1,5 @@
+# Command Palette entries
+# Format: Name|Description|Command
+Hive Review|Open latest review document|tmux display-popup -E -w 75% -h 95% "hive review --latest || (echo 'Press enter to close'; read)"
+Claude Code|New window with Claude (dangerously)|tmux new-window -n claude "claude --dangerously-skip-permissions"
+Codex|New window with Codex|tmux new-window -n codex "codex"
