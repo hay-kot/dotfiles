@@ -78,6 +78,7 @@ exec:
     # dev
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
     - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
+    - { path: "./setup/git.personal.sh", tags: ["personal", "git"] }
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
 
     # mac

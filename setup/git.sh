@@ -57,4 +57,3 @@ for alias in "${aliases[@]}"; do
   value=$(echo "$alias" | cut -d'=' -f2-)
   set_git_alias "$key" "$value"
 done
-
