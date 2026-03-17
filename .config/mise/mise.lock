@@ -139,58 +139,63 @@ url = "https://github.com/abice/go-enum/releases/download/v0.9.2/go-enum_Darwin_
 url_api = "https://api.github.com/repos/abice/go-enum/releases/assets/305592765"
 
 [[tools."github:amir20/dtop"]]
-version = "0.5.0"
+version = "0.6.14"
 backend = "github:amir20/dtop"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64"]
-checksum = "sha256:b095ce63139ab69ebdc8d353318d1a1015ede08214d49e8ab3835585d737a759"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691912"
+checksum = "sha256:5f46351fec1c9e219ad22bc8b8bc1f3f141f0c3a59252277d7523829491d1c4d"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793251"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64-musl"]
-checksum = "sha256:b095ce63139ab69ebdc8d353318d1a1015ede08214d49e8ab3835585d737a759"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691912"
+checksum = "sha256:5f46351fec1c9e219ad22bc8b8bc1f3f141f0c3a59252277d7523829491d1c4d"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793251"
 
 [tools."github:amir20/dtop"."platforms.linux-x64"]
-checksum = "sha256:54fa149611fb892c7a4a34a0c59f688d076738db717da196b02048905000105f"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691920"
+checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-baseline"]
-checksum = "sha256:54fa149611fb892c7a4a34a0c59f688d076738db717da196b02048905000105f"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691920"
+checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl"]
-checksum = "sha256:54fa149611fb892c7a4a34a0c59f688d076738db717da196b02048905000105f"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691920"
+checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:54fa149611fb892c7a4a34a0c59f688d076738db717da196b02048905000105f"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691920"
+checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
 
 [tools."github:amir20/dtop"."platforms.macos-arm64"]
-checksum = "sha256:997afcd3a54f958edec0e2ad1036d90bdd2658a871da80e5b730bbfb92983fb3"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691914"
+checksum = "sha256:8f9e2c7dc96a0d37133abbe9a2ce4a77c57c4b97aeb9fe61450795135d47e83c"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793255"
 
 [tools."github:amir20/dtop"."platforms.macos-x64"]
-checksum = "sha256:b67cb90358acf07096701385ef859b72283593685f8d18e584ef63c82c89df43"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691919"
+checksum = "sha256:1c4303035be549a4257e37c609c71a377c2a229f1918763c03b16a9ab30c48d7"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793257"
 
 [tools."github:amir20/dtop"."platforms.macos-x64-baseline"]
-checksum = "sha256:b67cb90358acf07096701385ef859b72283593685f8d18e584ef63c82c89df43"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691919"
+checksum = "sha256:1c4303035be549a4257e37c609c71a377c2a229f1918763c03b16a9ab30c48d7"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793257"
 
 [tools."github:amir20/dtop"."platforms.windows-x64"]
-checksum = "sha256:561b78ddd20240d6e3e468c88390510f96755f3c43a76ee56b96108c7f9f0f1e"
-url = "https://github.com/amir20/dtop/releases/download/v0.5.0/source.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/319691923"
+checksum = "sha256:6620eff4d5421433520166c7b7d150865a0d0d28f46ae29ac90ca5f534f702ad"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793275"
+
+[tools."github:amir20/dtop"."platforms.windows-x64-baseline"]
+checksum = "sha256:6620eff4d5421433520166c7b7d150865a0d0d28f46ae29ac90ca5f534f702ad"
+url = "https://github.com/amir20/dtop/releases/download/v0.6.14/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793275"
 
 [[tools."github:caarlos0/svu"]]
 version = "3.4.0"
@@ -261,13 +266,63 @@ version = "0.7.9"
 backend = "github:grafana/mcp-grafana"
 
 [[tools."github:hay-kot/gobusgen"]]
-version = "0.2.0"
+version = "0.3.0"
 backend = "github:hay-kot/gobusgen"
 
+[tools."github:hay-kot/gobusgen"."platforms.linux-arm64"]
+checksum = "sha256:2bc233b1d9f246280e5c75d8c82827c5d375f4d7a6471a77cef62c602fcce37c"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544101"
+
+[tools."github:hay-kot/gobusgen"."platforms.linux-arm64-musl"]
+checksum = "sha256:2bc233b1d9f246280e5c75d8c82827c5d375f4d7a6471a77cef62c602fcce37c"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544101"
+
+[tools."github:hay-kot/gobusgen"."platforms.linux-x64"]
+checksum = "sha256:f617165e11ee9444ad7bd6c5691cdf6599388d8c4252e40635928d62dd851b3f"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544103"
+
+[tools."github:hay-kot/gobusgen"."platforms.linux-x64-baseline"]
+checksum = "sha256:f617165e11ee9444ad7bd6c5691cdf6599388d8c4252e40635928d62dd851b3f"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544103"
+
+[tools."github:hay-kot/gobusgen"."platforms.linux-x64-musl"]
+checksum = "sha256:f617165e11ee9444ad7bd6c5691cdf6599388d8c4252e40635928d62dd851b3f"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544103"
+
+[tools."github:hay-kot/gobusgen"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:f617165e11ee9444ad7bd6c5691cdf6599388d8c4252e40635928d62dd851b3f"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544103"
+
 [tools."github:hay-kot/gobusgen"."platforms.macos-arm64"]
-checksum = "sha256:78e2411e4f0f222eede9e8b66a943c49db80fc65b289d2e8bca71a7738bfa2c5"
-url = "https://github.com/hay-kot/gobusgen/releases/download/v0.2.0/gobusgen_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356490727"
+checksum = "sha256:b48c5b99c4a23f3ccb164cf52af6e548e68e41ff26910b58cfd2f9ed23cb5267"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544106"
+
+[tools."github:hay-kot/gobusgen"."platforms.macos-x64"]
+checksum = "sha256:193033044e78834d9fcb8f438d7cf3af0bcbbac44f4ac638949bc38b0a692621"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544107"
+
+[tools."github:hay-kot/gobusgen"."platforms.macos-x64-baseline"]
+checksum = "sha256:193033044e78834d9fcb8f438d7cf3af0bcbbac44f4ac638949bc38b0a692621"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544107"
+
+[tools."github:hay-kot/gobusgen"."platforms.windows-x64"]
+checksum = "sha256:64ce30cf528044761a01d0dffa2e31917dd0079f78250273c1a7aa07451cfb6b"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544102"
+
+[tools."github:hay-kot/gobusgen"."platforms.windows-x64-baseline"]
+checksum = "sha256:64ce30cf528044761a01d0dffa2e31917dd0079f78250273c1a7aa07451cfb6b"
+url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544102"
 
 [[tools."github:hay-kot/gofind"]]
 version = "0.4.1"
@@ -451,8 +506,63 @@ url = "https://github.com/homeport/dyff/releases/download/v1.11.2/dyff_1.11.2_wi
 url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/364711261"
 
 [[tools."github:sxyazi/yazi"]]
-version = "25.5.31"
+version = "26.1.22"
 backend = "github:sxyazi/yazi"
+
+[tools."github:sxyazi/yazi"."platforms.linux-arm64"]
+checksum = "sha256:f5a9d7062ae30b75c1e0481d3132aa54c14bacf76efb1b39b54b6d5d08b7c537"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342402"
+
+[tools."github:sxyazi/yazi"."platforms.linux-arm64-musl"]
+checksum = "sha256:91a37cdb3aa49f903aab6af57bca708935acb6def1d9f218716ab414f0a3a8b1"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-unknown-linux-musl.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342415"
+
+[tools."github:sxyazi/yazi"."platforms.linux-x64"]
+checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+
+[tools."github:sxyazi/yazi"."platforms.linux-x64-baseline"]
+checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+
+[tools."github:sxyazi/yazi"."platforms.linux-x64-musl"]
+checksum = "sha256:b977351968206c0b78d2ef5bf21351685cc191b58a4c7e1c98c37db5d0a381f8"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-musl.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342414"
+
+[tools."github:sxyazi/yazi"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+
+[tools."github:sxyazi/yazi"."platforms.macos-arm64"]
+checksum = "sha256:8355ad582dd9f4ef1f88a228080f2b6116bbb483dd48d1bde555d475f4d2afe4"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342413"
+
+[tools."github:sxyazi/yazi"."platforms.macos-x64"]
+checksum = "sha256:1e097c015a968aba29bbc11bffdb99a7aedaf92c78df09d00613283dac0f148c"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342404"
+
+[tools."github:sxyazi/yazi"."platforms.macos-x64-baseline"]
+checksum = "sha256:1e097c015a968aba29bbc11bffdb99a7aedaf92c78df09d00613283dac0f148c"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342404"
+
+[tools."github:sxyazi/yazi"."platforms.windows-x64"]
+checksum = "sha256:7d6c8e3f596f99dd8f20fc7b806c9195c4746c2b7100d0e90a7ff80c259c899a"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342407"
+
+[tools."github:sxyazi/yazi"."platforms.windows-x64-baseline"]
+checksum = "sha256:7d6c8e3f596f99dd8f20fc7b806c9195c4746c2b7100d0e90a7ff80c259c899a"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342407"
 
 [[tools."github:thomasschafer/scooter"]]
 version = "0.9.0"
@@ -591,7 +701,7 @@ version = "v0.3.2"
 backend = "go:github.com/hay-kot/gofind"
 
 [[tools."go:github.com/hay-kot/mdparse"]]
-version = "0.1.0"
+version = "0.1.1"
 backend = "go:github.com/hay-kot/mdparse"
 
 [[tools."go:github.com/hay-kot/mmdot"]]
