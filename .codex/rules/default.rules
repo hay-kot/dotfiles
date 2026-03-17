@@ -1,2 +1,3 @@
 prefix_rule(pattern=["hive", "msg"], decision="allow")
 prefix_rule(pattern=["hive", "msg", "pub"], decision="allow")
+prefix_rule(pattern=["/bin/zsh", "-lc", "hive msg pub --topic review.uw21.codex \"$(sed -n '10,$p' .hive/Reviews/2026-03-16-feat-appdata.md)\""], decision="allow")
