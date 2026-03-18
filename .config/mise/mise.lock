@@ -139,63 +139,63 @@ url = "https://github.com/abice/go-enum/releases/download/v0.9.2/go-enum_Darwin_
 url_api = "https://api.github.com/repos/abice/go-enum/releases/assets/305592765"
 
 [[tools."github:amir20/dtop"]]
-version = "0.6.14"
+version = "0.7.0"
 backend = "github:amir20/dtop"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64"]
-checksum = "sha256:5f46351fec1c9e219ad22bc8b8bc1f3f141f0c3a59252277d7523829491d1c4d"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793251"
+checksum = "sha256:27942d56fadb97a02aabea9a55edfa14a91656c35fe4f0ab864be6c9734f4276"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033132"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64-musl"]
-checksum = "sha256:5f46351fec1c9e219ad22bc8b8bc1f3f141f0c3a59252277d7523829491d1c4d"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793251"
+checksum = "sha256:27942d56fadb97a02aabea9a55edfa14a91656c35fe4f0ab864be6c9734f4276"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033132"
 
 [tools."github:amir20/dtop"."platforms.linux-x64"]
-checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
+checksum = "sha256:ffaa3acbd10c1f1ea41b18e8a639a6531172be20b73ed7ebcc268e0f6631c97d"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033152"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-baseline"]
-checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
+checksum = "sha256:ffaa3acbd10c1f1ea41b18e8a639a6531172be20b73ed7ebcc268e0f6631c97d"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033152"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl"]
-checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
+checksum = "sha256:ffaa3acbd10c1f1ea41b18e8a639a6531172be20b73ed7ebcc268e0f6631c97d"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033152"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:04638a5eea2d7442c2e9e7175d582deb22d5734196317783d2dd2a54ae1cddb2"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793263"
+checksum = "sha256:ffaa3acbd10c1f1ea41b18e8a639a6531172be20b73ed7ebcc268e0f6631c97d"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033152"
 
 [tools."github:amir20/dtop"."platforms.macos-arm64"]
-checksum = "sha256:8f9e2c7dc96a0d37133abbe9a2ce4a77c57c4b97aeb9fe61450795135d47e83c"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793255"
+checksum = "sha256:a5030851c8bdce11b5643efe294215cb2d868e7b832f8c033e87888331b11500"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033131"
 
 [tools."github:amir20/dtop"."platforms.macos-x64"]
-checksum = "sha256:1c4303035be549a4257e37c609c71a377c2a229f1918763c03b16a9ab30c48d7"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793257"
+checksum = "sha256:5bf2322f16de1787ae4b3a827018842a4cef86de6347d7d8d248843332ade9fb"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033149"
 
 [tools."github:amir20/dtop"."platforms.macos-x64-baseline"]
-checksum = "sha256:1c4303035be549a4257e37c609c71a377c2a229f1918763c03b16a9ab30c48d7"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793257"
+checksum = "sha256:5bf2322f16de1787ae4b3a827018842a4cef86de6347d7d8d248843332ade9fb"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033149"
 
 [tools."github:amir20/dtop"."platforms.windows-x64"]
-checksum = "sha256:6620eff4d5421433520166c7b7d150865a0d0d28f46ae29ac90ca5f534f702ad"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/source.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793275"
+checksum = "sha256:a4e767b2c3c05a031494a8118a5800ea7349262dfa7487471873a9d71db9387a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033157"
 
 [tools."github:amir20/dtop"."platforms.windows-x64-baseline"]
-checksum = "sha256:6620eff4d5421433520166c7b7d150865a0d0d28f46ae29ac90ca5f534f702ad"
-url = "https://github.com/amir20/dtop/releases/download/v0.6.14/source.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/373793275"
+checksum = "sha256:a4e767b2c3c05a031494a8118a5800ea7349262dfa7487471873a9d71db9387a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.0/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/376033157"
 
 [[tools."github:caarlos0/svu"]]
 version = "3.4.0"
@@ -445,6 +445,65 @@ url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/3726614
 checksum = "sha256:79a419f064b5e3bf65c5ed1d1bd6ade12bfddead3a4048a92423525904652066"
 url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Windows_x86_64.zip"
 url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661413"
+
+[[tools."github:hay-kot/solo"]]
+version = "v0.1.0"
+backend = "github:hay-kot/solo"
+
+[tools."github:hay-kot/solo"."platforms.linux-arm64"]
+checksum = "sha256:3beb31f6dbd09fdea0da8e6935c2ea9509f64c885d067ce0ac7db3166867f73d"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161579"
+
+[tools."github:hay-kot/solo"."platforms.linux-arm64-musl"]
+checksum = "sha256:3beb31f6dbd09fdea0da8e6935c2ea9509f64c885d067ce0ac7db3166867f73d"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161579"
+
+[tools."github:hay-kot/solo"."platforms.linux-x64"]
+checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
+
+[tools."github:hay-kot/solo"."platforms.linux-x64-baseline"]
+checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
+
+[tools."github:hay-kot/solo"."platforms.linux-x64-musl"]
+checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
+
+[tools."github:hay-kot/solo"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
+
+[tools."github:hay-kot/solo"."platforms.macos-arm64"]
+checksum = "sha256:4f8a7cd27f6d29553d20e14f52c7e54e07152be39b5ff9b4281b5ff12c640e02"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161619"
+
+[tools."github:hay-kot/solo"."platforms.macos-x64"]
+checksum = "sha256:3cff04d611738d96ac91ae0fd9a7a6ac7abe30ef1bfe4f2e1ae9fc0caa133c0b"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161622"
+
+[tools."github:hay-kot/solo"."platforms.macos-x64-baseline"]
+checksum = "sha256:3cff04d611738d96ac91ae0fd9a7a6ac7abe30ef1bfe4f2e1ae9fc0caa133c0b"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161622"
+
+[tools."github:hay-kot/solo"."platforms.windows-x64"]
+checksum = "sha256:b44679f1fcd9572a486e37a0b1ce0c41e6ef60d37f812af81335865222e7e03e"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161582"
+
+[tools."github:hay-kot/solo"."platforms.windows-x64-baseline"]
+checksum = "sha256:b44679f1fcd9572a486e37a0b1ce0c41e6ef60d37f812af81335865222e7e03e"
+url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161582"
 
 [[tools."github:homeport/dyff"]]
 version = "1.11.2"
@@ -797,5 +856,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"
