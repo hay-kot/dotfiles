@@ -29,7 +29,7 @@ rust = "latest"
 "github:Zxilly/go-size-analyzer" = "latest"
 "github:homeport/dyff" = "v1"               # yaml differ 
 "github:caarlos0/svu" = "latest"
-"github:amir20/dtop" = "v0.6.14"             # docker tui
+"github:amir20/dtop" = "v0.7.0"             # docker tui
 
 # Personal Go Tools
 "go:github.com/hay-kot/mmdot" = "v0.4.1"
