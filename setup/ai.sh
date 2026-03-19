@@ -6,14 +6,6 @@ AI_ROOT="$DOTFILES_DIR/.ai"
 SOURCE_SKILLS="$AI_ROOT/skills"
 SOURCE_COMMANDS="$AI_ROOT/commands"
 
-CLAUDE_DIR="$DOTFILES_DIR/.claude"
-CLAUDE_SKILLS_LINK="$CLAUDE_DIR/skills"
-CLAUDE_COMMANDS_LINK="$CLAUDE_DIR/commands"
-
-HOME_CLAUDE_DIR="$HOME/.claude"
-HOME_CLAUDE_SKILLS_LINK="$HOME_CLAUDE_DIR/skills"
-HOME_CLAUDE_COMMANDS_LINK="$HOME_CLAUDE_DIR/commands"
-
 CODEX_SKILLS_DIR="$HOME/.codex/skills"
 CODEX_CLAUDE_LINK="$CODEX_SKILLS_DIR/claude"
 CODEX_PROMPTS_LINK="$HOME/.codex/prompts"
@@ -28,8 +20,6 @@ if [ ! -d "$SOURCE_COMMANDS" ]; then
   exit 1
 fi
 
-mkdir -p "$CLAUDE_DIR"
-mkdir -p "$HOME_CLAUDE_DIR"
 mkdir -p "$CODEX_SKILLS_DIR"
 
 ensure_symlink() {
@@ -44,19 +34,10 @@ ensure_symlink() {
   ln -sfn "$target" "$link"
 }
 
-# Use relative symlinks for dotfiles .claude directory (portable across machines)
-ensure_symlink "../.ai/skills" "$CLAUDE_SKILLS_LINK"
-ensure_symlink "../.ai/commands" "$CLAUDE_COMMANDS_LINK"
-
-ensure_symlink "$SOURCE_SKILLS" "$HOME_CLAUDE_SKILLS_LINK"
-ensure_symlink "$SOURCE_COMMANDS" "$HOME_CLAUDE_COMMANDS_LINK"
-
+# Claude skills/commands/settings are handled by stow.
+# Only Codex links need manual setup.
 ensure_symlink "$SOURCE_SKILLS" "$CODEX_CLAUDE_LINK"
 ensure_symlink "$SOURCE_COMMANDS" "$CODEX_PROMPTS_LINK"
 
-echo "Linked Claude (dotfiles): $CLAUDE_SKILLS_LINK -> $SOURCE_SKILLS"
-echo "Linked Claude (dotfiles): $CLAUDE_COMMANDS_LINK -> $SOURCE_COMMANDS"
-echo "Linked Claude (home): $HOME_CLAUDE_SKILLS_LINK -> $SOURCE_SKILLS"
-echo "Linked Claude (home): $HOME_CLAUDE_COMMANDS_LINK -> $SOURCE_COMMANDS"
 echo "Linked Codex skills: $CODEX_CLAUDE_LINK -> $SOURCE_SKILLS"
 echo "Linked Codex prompts: $CODEX_PROMPTS_LINK -> $SOURCE_COMMANDS"

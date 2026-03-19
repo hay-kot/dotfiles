@@ -160,5 +160,7 @@ brew install --cask \
   steam \
   transmit \
   proton-drive \
-  protonvpn
+  protonvpn \
+  autodesk-fusion \
+  zen
 

@@ -26,7 +26,7 @@ personal_repos:
   - git@github.com:mealie-recipes/mealie.io.git
   - git@github.com:mealie-recipes/recipes-server.git
   - git@github.com:mealie-recipes/mealie.git
-  - gitea@gitea.kotel.app:renovate/renovate-v2.git
+  - ssh://gitea@gitea.kotel.app:222/renovate/renovate-v2.git
   - ssh://gitea@gitea.kotel.app:222/hay-kot/coros.git
   - ssh://gitea@gitea.kotel.app:222/hay-kot/infra.git
   - ssh://gitea@gitea.kotel.app:222/hay-kot/training-assistant.git

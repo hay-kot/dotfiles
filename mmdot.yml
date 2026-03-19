@@ -72,8 +72,8 @@ exec:
     - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
 
     # repos
-    - { path: "~/.mmdot/clones.personal.sh", tags: ["personal", "repos"] }
-    - { path: "~/.mmdot/clones.grafana.sh", tags: ["grafana", "repos"] }
+    - { path: "./setup/clones.personal.sh", tags: ["personal", "repos"] }
+    - { path: "./setup/clones.grafana.sh", tags: ["grafana", "repos"] }
 
     # dev
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
@@ -156,6 +156,8 @@ brews:
       #- yubico-yubikey-manager
       - proton-drive
       - protonvpn
+      - autodesk-fusion
+      - zen
 
   all:
     taps:

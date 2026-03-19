@@ -191,10 +191,10 @@ if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
-REPO_NAME=$(basename "gitea@gitea.kotel.app:renovate/renovate-v2.git" .git)
+REPO_NAME=$(basename "ssh://gitea@gitea.kotel.app:222/renovate/renovate-v2.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
-  git clone "gitea@gitea.kotel.app:renovate/renovate-v2.git" "$REPO_DIR/$REPO_NAME"
+  git clone "ssh://gitea@gitea.kotel.app:222/renovate/renovate-v2.git" "$REPO_DIR/$REPO_NAME"
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
