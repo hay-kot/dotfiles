@@ -1,0 +1,53 @@
+questions:
+  - name: script_name
+    group: setup
+    prompt:
+      message: "Script name (kebab-case, e.g. 'docker' or 'env.personal')"
+      description: "Will be used as setup/<name>.sh"
+    validate:
+      required: true
+      match:
+        regex: "^[a-z][a-z0-9]*([.-][a-z][a-z0-9]*)*$"
+        message: "Must be lowercase kebab-case (letters, numbers, dots, hyphens)"
+
+  - name: scopes
+    group: setup
+    prompt:
+      message: "Machine scopes"
+      multi: true
+      options:
+        - personal
+        - grafana
+    validate:
+      min: 1
+
+  - name: tags
+    group: setup
+    prompt:
+      message: "Tags"
+      description: "Enter tags one at a time (leave empty to skip)"
+      loop: true
+
+computed:
+  all_tags: '{{ concat .Scaffold.scopes .Scaffold.tags | join "," }}'
+
+rewrites:
+  - from: templates/script.sh
+    to: "setup/{{ .Scaffold.script_name }}.sh"
+
+inject:
+  - name: "add exec script entry"
+    path: mmdot.yml
+    at: "# SCAFFOLD:setup-script"
+    mode: after
+    template: '- { path: "./setup/{{ .Scaffold.script_name }}.sh", tags: [{{ range $i, $t := (concat .Scaffold.scopes .Scaffold.tags) }}{{ if $i }}, {{ end }}"{{ $t }}"{{ end }}] }'
+
+messages:
+  post: |
+    Created `setup/{{ .Scaffold.script_name }}.sh` and added entry to `mmdot.yml`.
+
+presets:
+  default:
+    script_name: "example"
+    scopes: ["personal"]
+    tags: ["env"]
