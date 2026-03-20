@@ -127,6 +127,7 @@ brew install --cask \
   bitwarden \
   brave-browser \
   claude-code \
+  cleanshot \
   chromedriver \
   docker \
   cleanshot \
@@ -150,6 +151,7 @@ brew install --cask \
   ghostty \
   zed \
   zoom \
+  aldente \
   balenaetcher \
   discord \
   home-assistant \

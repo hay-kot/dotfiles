@@ -145,6 +145,7 @@ brews:
       - hay-kot/flint-tap/flint
       - hay-kot/dirwatch-tap/dirwatch
     casks:
+      - aldente
       - balenaetcher
       - discord
       - home-assistant
@@ -260,6 +261,7 @@ brews:
       - bitwarden
       - brave-browser
       - claude-code
+      - cleanshot
       - chromedriver
       - docker
       - cleanshot

@@ -120,6 +120,7 @@ brew install --cask \
   bitwarden \
   brave-browser \
   claude-code \
+  cleanshot \
   chromedriver \
   docker \
   cleanshot \
