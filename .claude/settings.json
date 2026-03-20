@@ -127,10 +127,24 @@
     "commit-commands@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "hive@hive": true,
     "plugin-dev@claude-plugins-official": true,
     "scaffold@hay-kot-scaffold": true,
-    "hive-hooks@hive": true
+    "hive-hooks@hive": true,
+    "hive@hive": true
+  },
+  "extraKnownMarketplaces": {
+    "hive": {
+      "source": {
+        "source": "github",
+        "repo": "colonyops/hive"
+      }
+    },
+    "hay-kot-scaffold": {
+      "source": {
+        "source": "github",
+        "repo": "hay-kot/scaffold"
+      }
+    }
   },
   "alwaysThinkingEnabled": true,
   "skipDangerousModePermissionPrompt": true,
