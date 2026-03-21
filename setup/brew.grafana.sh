@@ -119,20 +119,19 @@ brew install \
 brew install --cask \
   bitwarden \
   brave-browser \
-  claude-code \
-  cleanshot \
   chromedriver \
-  docker \
   cleanshot \
+  docker \
   firefox \
   font-fira-code \
   font-fira-code-nerd-font \
   font-hack-nerd-font \
   font-jetbrains-mono-nerd-font \
+  ghostty \
   google-chrome \
   gpg-suite-no-mail \
   insomnia \
-  jordanbaird-ice \
+  hiddenbar \
   keyboard-cleaner \
   obsidian \
   raycast \
@@ -141,7 +140,6 @@ brew install --cask \
   tableplus \
   visual-studio-code \
   vlc \
-  ghostty \
   zed \
   zoom \
   1password \

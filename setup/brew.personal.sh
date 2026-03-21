@@ -126,20 +126,19 @@ brew install \
 brew install --cask \
   bitwarden \
   brave-browser \
-  claude-code \
-  cleanshot \
   chromedriver \
-  docker \
   cleanshot \
+  docker \
   firefox \
   font-fira-code \
   font-fira-code-nerd-font \
   font-hack-nerd-font \
   font-jetbrains-mono-nerd-font \
+  ghostty \
   google-chrome \
   gpg-suite-no-mail \
   insomnia \
-  jordanbaird-ice \
+  hiddenbar \
   keyboard-cleaner \
   obsidian \
   raycast \
@@ -148,21 +147,21 @@ brew install --cask \
   tableplus \
   visual-studio-code \
   vlc \
-  ghostty \
   zed \
   zoom \
   aldente \
+  bambu-studio \
+  autodesk-fusion \
   balenaetcher \
   discord \
   home-assistant \
-  microsoft-auto-update \
-  microsoft-office \
   orbstack \
+  pdf-expert \
+  proton-drive \
+  protonvpn \
   signal \
   steam \
   transmit \
-  proton-drive \
-  protonvpn \
-  autodesk-fusion \
-  zen
+  zen \
+  zwift
 
