@@ -285,7 +285,7 @@ brews:
       - zoom
 
 age:
-  identity_file: ~/.age/mmdot_mbp_personal
+  identity_file: ~/.age/key.txt
   recipients:
     - age1t5ky59uskhjgajsmsf0gwvhe2y58lxhrlmvmf8ue9u4edf62x3lq84h8sg
   files:
