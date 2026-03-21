@@ -146,20 +146,20 @@ brews:
       - hay-kot/dirwatch-tap/dirwatch
     casks:
       - aldente
+      - bambu-studio
+      - autodesk-fusion
       - balenaetcher
       - discord
       - home-assistant
-      - microsoft-auto-update
-      - microsoft-office
       - orbstack
+      - pdf-expert
+      - proton-drive
+      - protonvpn
       - signal
       - steam
       - transmit
-      #- yubico-yubikey-manager
-      - proton-drive
-      - protonvpn
-      - autodesk-fusion
       - zen
+      - zwift
 
   all:
     taps:
@@ -260,20 +260,19 @@ brews:
     casks:
       - bitwarden
       - brave-browser
-      - claude-code
-      - cleanshot
       - chromedriver
-      - docker
       - cleanshot
+      - docker
       - firefox
       - font-fira-code
       - font-fira-code-nerd-font
       - font-hack-nerd-font
       - font-jetbrains-mono-nerd-font
+      - ghostty
       - google-chrome
       - gpg-suite-no-mail
       - insomnia
-      - jordanbaird-ice
+      - hiddenbar
       - keyboard-cleaner
       - obsidian
       - raycast
@@ -282,7 +281,6 @@ brews:
       - tableplus
       - visual-studio-code
       - vlc
-      - ghostty
       - zed
       - zoom
 
