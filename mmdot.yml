@@ -181,12 +181,12 @@ brews:
       - bfg
       - btop
       - cfitsio
+      - charmbracelet/tap/glow
       - cmake
       - coreutils
       - crf++
       - ctop
       - dagger
-      - git-delta
       - docker
       - editorconfig-checker
       - eza
@@ -196,8 +196,8 @@ brews:
       - fzf
       - gh
       - git
+      - git-delta
       - git-lfs
-      - charmbracelet/tap/glow
       - gnupg
       - go
       - go-task/tap/go-task
@@ -236,6 +236,7 @@ brews:
       - node
       - nss
       - openslide
+      - opensuperwhisper
       - orc
       - pinentry-mac
       - pnpm

@@ -32,12 +32,12 @@ brew install \
   bfg \
   btop \
   cfitsio \
+  charmbracelet/tap/glow \
   cmake \
   coreutils \
   crf++ \
   ctop \
   dagger \
-  git-delta \
   docker \
   editorconfig-checker \
   eza \
@@ -47,8 +47,8 @@ brew install \
   fzf \
   gh \
   git \
+  git-delta \
   git-lfs \
-  charmbracelet/tap/glow \
   gnupg \
   go \
   go-task/tap/go-task \
@@ -87,6 +87,7 @@ brew install \
   node \
   nss \
   openslide \
+  opensuperwhisper \
   orc \
   pinentry-mac \
   pnpm \

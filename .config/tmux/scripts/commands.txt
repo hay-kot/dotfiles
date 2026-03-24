@@ -5,3 +5,6 @@ Claude Code|New window with Claude (dangerously)|tmux new-window -n claude "clau
 Codex|New window with Codex|tmux new-window -n codex "codex"
 Lazygit|Open lazygit popup|tmux display-popup -E -w 80% -h 80% "lazygit"
 Diff Review|Review diff against main|tmux new-window -n review "dr"
+Solo Up|Start solo environment|solo up
+Solo Down|Stop solo environment|solo down
+Lazydocker|Docker management|tmux display-popup -E -w 90% -h 90% "lazydocker"
