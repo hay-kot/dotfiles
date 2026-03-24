@@ -3,6 +3,9 @@ git_path: git
 workspaces:
   - /Users/hayden/code/repos
 
+context:
+  base_dir: "~/Code/repos/hivemind/context"
+
 tmux:
   enabled: [tmux]
   poll_interval: 500ms
