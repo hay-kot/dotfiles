@@ -148,5 +148,6 @@ brew install --cask \
   goland \
   slack \
   tailscale-app \
-  tuple
+  tuple \
+  zen
 

@@ -162,6 +162,5 @@ brew install --cask \
   signal \
   steam \
   transmit \
-  zen \
   zwift
 
