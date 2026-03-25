@@ -76,10 +76,6 @@ mac_config() {
     export PATH="$HOME/Go/bin:$PATH"
     # tmuxifier
     export PATH="$HOME/.tmuxifier/bin:$PATH"
-    # repomgr
-    export REPOMGR_CONFIG="$HOME/.config/repomgr/repomgr.toml"
-    export DIRWATCH_CONFIG="$HOME/.config/dirwatch/dirwatch.toml"
-    alias rpm="repomgr"
     # Auto Edit Dotfiles and Change Directories
     edf() {
         nvim --cmd "cd $DOTFILES_DIR"
@@ -299,3 +295,4 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
+export SOPS_AGE_KEY_FILE=~/.age/key.txt

@@ -1,0 +1,18 @@
+shell: /bin/zsh
+shell_cmd: -c
+log:
+  file: /Users/hayden/.config/dirwatch/dirwatch.log
+  level: info
+vars:
+  scriptbin: /Users/hayden/code/repos/dotfiles/bin
+watchers:
+  - dirs:
+      - ~/Downloads
+    events:
+      - create
+      - write
+      - rename
+    matches:
+      - "*.HEIC"
+      - "*.heic"
+    exec: "{{ .Vars.scriptbin }}/heic2jpeg '{{ .Path }}'"

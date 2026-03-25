@@ -1,45 +1,38 @@
 #!/bin/bash
 
-# Check if ImageMagick is installed
-if ! command -v convert &> /dev/null; then
+if ! command -v magick &> /dev/null; then
     echo "ImageMagick is not installed. Please install it and try again."
     exit 1
 fi
 
-# Check if at least one argument is provided
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <heic_file> [<heic_file> ...]"
     exit 1
 fi
 
-# Loop through each provided HEIC file
 for file in "$@"; do
-    # Check if file exists
+    # Wait for file to exist (handles watcher race conditions)
+    for i in $(seq 1 10); do
+        [ -f "$file" ] && break
+        sleep 0.5
+    done
+
     if [ ! -f "$file" ]; then
         echo "File '$file' not found."
         continue
     fi
 
-    # Get file extension in lowercase
     extension=$(echo "${file##*.}" | tr '[:upper:]' '[:lower:]')
 
-    # Check if file is HEIC
     if [ "$extension" != "heic" ]; then
         echo "Skipping '$file': Not a HEIC file."
         continue
     fi
 
-    # Get filename without extension
     filename="${file%.*}"
 
-    # Convert HEIC to JPEG
-    convert "$file" "${filename}.jpg"
-
-    # Check if conversion was successful
-    if [ $? -eq 0 ]; then
+    if magick "$file" "${filename}.jpg"; then
         echo "Conversion successful: '$file' -> '${filename}.jpg'"
-        # Optionally, you can remove the original HEIC file
-        # rm "$file"
     else
         echo "Conversion failed: '$file'"
     fi

@@ -4,7 +4,7 @@ workspaces:
   - /Users/hayden/code/repos
 
 context:
-  base_dir: "~/Code/repos/hivemind/context"
+  base_dir: "/Users/hayden/code/repos/hivemind/context"
 
 tmux:
   enabled: [tmux]
