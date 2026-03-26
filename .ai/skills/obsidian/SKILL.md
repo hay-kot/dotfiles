@@ -1,84 +1,48 @@
 ---
 name: obsidian
 description: >
-  Save documents to Obsidian notebook. Use when the user asks to save, write, or put
-  a document (test plan, design doc, etc.) into their Obsidian notebook.
-allowed-tools: "Bash(mkdir:*),Write,Read"
-version: "1.2.0"
+  Save documents to the .hive/ context directory (symlinked into Obsidian). Use when the user asks
+  to save, write, or put a document into their notebook.
+allowed-tools: "Bash(mkdir:*),Bash(hive:*),Bash(git:*),Bash(date:*),Write,Read"
+version: "2.0.0"
 author: "User"
 ---
 
-# Obsidian Notebook
+# Obsidian / Hive Context
 
-Save structured documents into the user's Obsidian vault.
+Save structured documents into the `.hive/` context directory. This directory is symlinked into the user's Obsidian vault, so anything written here appears in Obsidian automatically.
 
-## Vault Location
+## Context Directory
 
-The vault root is stored in `$OBSIDIAN_NOTEBOOK_DIR`. Always resolve this before writing:
+**IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run
+`hive ctx init` to create it — NEVER use `mkdir` for `.hive` itself.
 
-```bash
-echo "$OBSIDIAN_NOTEBOOK_DIR"
-```
+## Document Types and Paths
 
-If the variable is empty, stop and tell the user to set `OBSIDIAN_NOTEBOOK_DIR`.
+| Type        | Path                          | Filename Pattern             |
+| ----------- | ----------------------------- | ---------------------------- |
+| research    | `.hive/research/`             | `YYYY-MM-DD-<slug>.md`      |
+| design-doc  | `.hive/design-docs/`          | `YYYY-MM-DD-<slug>.md`      |
+| plan        | `.hive/plans/`                | `YYYY-MM-DD-<slug>.md`      |
 
-## Document Types
-
-When saving a `design-doc` or `research` document, check whether a project context is
-available (the user mentions a project, or the document is being created as part of
-`project-advance`). If a project is known, save under the project folder. Otherwise fall
-back to the vault-root folder.
-
-| Type       | With project context                                    | Without project context   | Filename Pattern              |
-| ---------- | ------------------------------------------------------- | ------------------------- | ----------------------------- |
-| test-plan  | _(no project variant)_                                  | Test Plans                | `YYYY-MM-DD-<slug>.md`        |
-| design-doc | Projects/\<Project Name\>/Design Docs                   | Design Docs               | `YYYY-MM-DD-<slug>.md`        |
-| research   | Projects/\<Project Name\>/Research                      | Research                  | `YYYY-MM-DD-<slug>.md`        |
-| project    | Projects/\<Project Name\>                               | _(always project-scoped)_ | `<Project Name>.md`           |
-| work-item  | Projects/\<Project Name\>/Work Items                    | _(always project-scoped)_ | `<Work Item Name>.md`         |
-
-For `project` and `work-item` types, use the `project-draft` skill instead — it handles the full interview and folder structure automatically.
-
-If the user requests a type not in this table, ask which folder to use and suggest they add it to this table.
-
-## Shared Project Files
-
-Two shared files live at `$OBSIDIAN_NOTEBOOK_DIR/Projects/`:
-
-### Tasks.md — Human action inbox
-
-Append a checkbox line when the next step requires human action:
-
-```markdown
-- [ ] <action needed> — [[<artifact to review>]] — [[<Work Item Name>]] — YYYY-MM-DD
-```
-
-- Always `[[wikilink]]` to the artifact the human needs to review
-- Always `[[wikilink]]` to the work item
-- For GitHub PRs/issues, use full markdown links: `[owner/repo#123](https://github.com/owner/repo/pull/123)`
-- Append only — never remove or modify existing lines
-
-### Log.md — Append-only work history
-
-Append a line after completing any phase or producing an artifact:
-
-```markdown
-- YYYY-MM-DD — <what was done> — [[<artifact>]] — [[<Work Item Name>]]
-```
-
-- For GitHub PRs/issues, use full markdown links instead of wikilinks
-- Append only — never remove or modify existing lines
+For research documents, use the `research` skill. For design docs, use the `design-doc` skill. For plans, use the `plan-write` skill. This skill handles ad-hoc documents or types not covered by a dedicated skill.
 
 ## Writing a Document
 
-1. **Resolve the vault path** from `$OBSIDIAN_NOTEBOOK_DIR`
-2. **Determine the document type** from user intent
-3. **Create the target folder** if it doesn't exist:
+1. **Confirm `.hive/` exists** — if not, run `hive ctx init`
+2. **Create the target subdirectory** if it doesn't exist:
    ```bash
-   mkdir -p "$OBSIDIAN_NOTEBOOK_DIR/<Folder>"
+   mkdir -p .hive/<subdirectory>
+   ```
+3. **Gather metadata**:
+   ```bash
+   git branch --show-current
+   git rev-parse --short HEAD
+   date +"%Y-%m-%d"
+   gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || echo "unknown"
    ```
 4. **Generate the filename**: `YYYY-MM-DD-<slugified-title>.md` using today's date
-5. **Write the file** using the Write tool with the frontmatter and content
+5. **Write the file** with frontmatter and content
 
 ## Frontmatter
 
@@ -86,53 +50,38 @@ Every document must start with YAML frontmatter:
 
 ```yaml
 ---
-title: "<Document Title>"
-repository: "<owner>/<repo>"
-created: YYYY-MM-DD
+type: "<document-type>"
+date: YYYY-MM-DD
+repository: owner/repo
+branch: [current branch]
+commit: [short commit hash]
 status: draft
+topic: "[Document title]"
 ---
 ```
 
-Field details:
-- **title**: Descriptive title for the document
-- **repository**: Infer from the current git remote (`git remote get-url origin`, extract `owner/repo`). If not in a git repo, ask the user.
-- **created**: Today's date
-- **status**: Always `draft` unless the user specifies otherwise
+## Formatting
 
-## Obsidian Formatting
-
-Use Obsidian-native formatting to improve readability. Prefer these over plain prose wherever appropriate.
+Use standard markdown. When targeting Obsidian rendering, these features are available:
 
 ### Callouts
-
-Use callouts to surface important information visually. Syntax:
 
 ```markdown
 > [!TYPE] Optional Title
 > Content here.
 ```
 
-Use a collapsible callout (`> [!TYPE]-`) for lengthy details that shouldn't clutter the main flow.
-
-**Callout vocabulary:**
-
-| Callout | When to use |
-| --- | --- |
-| `[!IMPORTANT]` | Must-read constraints, requirements, or helpful suggestions |
-| `[!WARNING]` | Risks, gotchas, or things likely to go wrong |
-| `[!QUESTION]` | Open questions that still need resolution |
-| `[!DECISION]` | A decision that was made and its rationale |
-| `[!TRADEOFF]` | Trade-off comparison between two or more approaches |
-| `[!RISK]` | Identified risks (especially in test plans) |
-
-**Guidelines:**
-- Use `[!DECISION]` and `[!TRADEOFF]` liberally in design docs — decisions are the most valuable part
-- Use `[!QUESTION]` for anything unresolved rather than leaving it buried in prose
-- Use `[!RISK]` in test plans to make coverage gaps explicit
+| Callout        | When to use                                          |
+| -------------- | ---------------------------------------------------- |
+| `[!IMPORTANT]` | Must-read constraints or requirements                |
+| `[!WARNING]`   | Risks, gotchas, or things likely to go wrong         |
+| `[!QUESTION]`  | Open questions needing resolution                    |
+| `[!DECISION]`  | A decision and its rationale                         |
+| `[!TRADEOFF]`  | Trade-off comparison between approaches              |
 
 ### Mermaid Diagrams
 
-Include a Mermaid diagram whenever a document describes a system with multiple components, a sequence of steps, or a data flow. Obsidian renders Mermaid natively.
+Include diagrams when describing systems with multiple components or data flows:
 
 ````markdown
 ```mermaid
@@ -140,19 +89,6 @@ flowchart LR
   A[Input] --> B{Decision} --> C[Result]
 ```
 ````
-
-Common diagram types:
-- `flowchart LR` / `flowchart TD` — architecture, data flow, decision trees
-- `sequenceDiagram` — request/response flows, inter-service communication
-- `erDiagram` — data models
-- `gantt` — timelines and milestones
-
-### Inline Emphasis
-
-- `==highlighted text==` — use for key terms on first use, critical values, or decision outcomes
-- **Bold** — use for section-level emphasis, important constraints, and named concepts
-- _Italic_ — use for definitions, titles of referenced documents, or secondary emphasis
-- Avoid over-bolding; reserve it for information the reader must not miss
 
 ## Slug Generation
 
@@ -162,38 +98,3 @@ Convert the title to a filename-safe slug:
 - Strip leading/trailing hyphens
 
 Example: `Auth Service Redesign` -> `auth-service-redesign`
-
-## Creating hive todos for Obsidian documents
-
-After saving a document, if a `hive todo` item should be created pointing to it, use the
-`obsidian://vault/<VaultName>/<url-encoded-path>` URI scheme. The vault name is the last
-path component of `$OBSIDIAN_NOTEBOOK_DIR`.
-
-```bash
-# Derive vault name from $OBSIDIAN_NOTEBOOK_DIR
-VAULT=$(basename "$OBSIDIAN_NOTEBOOK_DIR")
-
-hive todo add \
-  --title "Review <document title>" \
-  --uri "obsidian://vault/${VAULT}/Projects/Foo%20Bar/doc.md"
-```
-
-- Spaces in path segments must be percent-encoded as `%20`.
-- Do **not** use bare `obsidian://Projects/...` — the vault name is required.
-
-## Example
-
-User says: "Save this test plan for the auth refactor to my obsidian notebook"
-
-Result: `$OBSIDIAN_NOTEBOOK_DIR/Test Plans/2026-02-18-auth-refactor-test-plan.md`
-
-```markdown
----
-title: "Auth Refactor Test Plan"
-repository: "hay-kot/hive"
-created: 2026-02-18
-status: draft
----
-
-<content from the conversation>
-```
