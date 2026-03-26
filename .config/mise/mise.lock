@@ -265,6 +265,10 @@ provenance = "github-attestations"
 version = "0.7.9"
 backend = "github:grafana/mcp-grafana"
 
+[[tools."github:hay-kot/dirwatch"]]
+version = "0.1.0"
+backend = "github:hay-kot/dirwatch"
+
 [[tools."github:hay-kot/gobusgen"]]
 version = "0.3.0"
 backend = "github:hay-kot/gobusgen"
@@ -384,53 +388,12 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.42.0"
+version = "0.43.0"
 backend = "github:hay-kot/hive"
 
-[tools."github:hay-kot/hive"."platforms.linux-arm64"]
-checksum = "sha256:2df6b24647fb48fdc89c8719de4d45537fd921c98ae1bd6cc343d358fc49279c"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192680"
-
-[tools."github:hay-kot/hive"."platforms.linux-arm64-musl"]
-checksum = "sha256:2df6b24647fb48fdc89c8719de4d45537fd921c98ae1bd6cc343d358fc49279c"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192680"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64"]
-checksum = "sha256:df84e575a3f369d9429228ab55a113dcea501daf48b72d91f9efc67e5353bc72"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192687"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-baseline"]
-checksum = "sha256:df84e575a3f369d9429228ab55a113dcea501daf48b72d91f9efc67e5353bc72"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192687"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-musl"]
-checksum = "sha256:df84e575a3f369d9429228ab55a113dcea501daf48b72d91f9efc67e5353bc72"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192687"
-
-[tools."github:hay-kot/hive"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:df84e575a3f369d9429228ab55a113dcea501daf48b72d91f9efc67e5353bc72"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192687"
-
-[tools."github:hay-kot/hive"."platforms.macos-arm64"]
-checksum = "sha256:d100b14c7dcf9591cd81c5b4ff49bae95117fa5b6440e030fc0583a7b78c02da"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192678"
-
-[tools."github:hay-kot/hive"."platforms.macos-x64"]
-checksum = "sha256:31ac44ba586c311fd4e627b2f53b72d71fc8ec97641d4efa843ff265c3d4514b"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192679"
-
-[tools."github:hay-kot/hive"."platforms.macos-x64-baseline"]
-checksum = "sha256:31ac44ba586c311fd4e627b2f53b72d71fc8ec97641d4efa843ff265c3d4514b"
-url = "https://github.com/colonyops/hive/releases/download/v0.42.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/378192679"
+[[tools."github:hay-kot/mi"]]
+version = "v0.2.0"
+backend = "github:hay-kot/mi"
 
 [[tools."github:hay-kot/scaffold"]]
 version = "v0.13.1"
@@ -492,63 +455,8 @@ url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Wi
 url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661413"
 
 [[tools."github:hay-kot/solo"]]
-version = "v0.1.0"
+version = "0.2.0"
 backend = "github:hay-kot/solo"
-
-[tools."github:hay-kot/solo"."platforms.linux-arm64"]
-checksum = "sha256:3beb31f6dbd09fdea0da8e6935c2ea9509f64c885d067ce0ac7db3166867f73d"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161579"
-
-[tools."github:hay-kot/solo"."platforms.linux-arm64-musl"]
-checksum = "sha256:3beb31f6dbd09fdea0da8e6935c2ea9509f64c885d067ce0ac7db3166867f73d"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161579"
-
-[tools."github:hay-kot/solo"."platforms.linux-x64"]
-checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
-
-[tools."github:hay-kot/solo"."platforms.linux-x64-baseline"]
-checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
-
-[tools."github:hay-kot/solo"."platforms.linux-x64-musl"]
-checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
-
-[tools."github:hay-kot/solo"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:3d73c92c2618cc2c33ee46f70b50888b60e6d0a829c5d1f1d911d6dbb8e262ff"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161581"
-
-[tools."github:hay-kot/solo"."platforms.macos-arm64"]
-checksum = "sha256:4f8a7cd27f6d29553d20e14f52c7e54e07152be39b5ff9b4281b5ff12c640e02"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161619"
-
-[tools."github:hay-kot/solo"."platforms.macos-x64"]
-checksum = "sha256:3cff04d611738d96ac91ae0fd9a7a6ac7abe30ef1bfe4f2e1ae9fc0caa133c0b"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161622"
-
-[tools."github:hay-kot/solo"."platforms.macos-x64-baseline"]
-checksum = "sha256:3cff04d611738d96ac91ae0fd9a7a6ac7abe30ef1bfe4f2e1ae9fc0caa133c0b"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161622"
-
-[tools."github:hay-kot/solo"."platforms.windows-x64"]
-checksum = "sha256:b44679f1fcd9572a486e37a0b1ce0c41e6ef60d37f812af81335865222e7e03e"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161582"
-
-[tools."github:hay-kot/solo"."platforms.windows-x64-baseline"]
-checksum = "sha256:b44679f1fcd9572a486e37a0b1ce0c41e6ef60d37f812af81335865222e7e03e"
-url = "https://github.com/hay-kot/solo/releases/download/v0.1.0/solo_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/376161582"
 
 [[tools."github:homeport/dyff"]]
 version = "1.11.2"
