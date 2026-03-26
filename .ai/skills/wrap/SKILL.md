@@ -46,13 +46,11 @@ Do NOT use `git add -A` or `git add .`. Stage specific files for each logical co
 
 ### Step 3: Run Quality Gates
 
-Auto-detect the project's tooling and run checks. Check in this order of priority:
+Discover available tasks and run checks:
 
 1. **CLAUDE.md / AGENTS.md**: Look for project-specific check/lint/test commands
-2. **Taskfile.yml**: `task --list` — look for `check`, `lint`, `test` targets
-3. **Makefile**: Look for `check`, `lint`, `test` targets
-4. **mise tasks**: `mise tasks` — look for relevant targets
-5. **Direct commands**: Fall back to language-specific commands (`go test ./...`, `npm test`, `cargo test`, etc.)
+2. **`mi --ls`**: Lists all available tasks across Taskfile, Makefile, and mise. Look for `check`, `lint`, `test`, `fmt` targets and run them with `mi <task-name>`.
+3. **Direct commands**: Fall back to language-specific commands (`go test ./...`, `npm test`, `cargo test`, etc.) only if `mi` finds no relevant targets.
 
 Run whatever applies. Fix failures before proceeding. Do not push broken code.
 

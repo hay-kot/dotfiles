@@ -56,8 +56,7 @@ Use `hive hc` to track work and manage tasks across sessions. Create issues for 
 
 **Before running commands directly, check for existing task definitions:**
 
-1. `task --list` - Check Taskfile.yml for available tasks
-2. `make help` or scan Makefile - Check for make targets
+Run `mi --ls` to list all available tasks. `mi` auto-detects Taskfile, Makefile, and mise runners and shows all available targets. Run tasks with `mi <task-name>`.
 
 **Use the task runner when available.** These capture project-specific configurations, environment setup, and institutional knowledge. Only fall back to direct commands when no task exists.
 
