@@ -13,7 +13,13 @@ zinit light Aloxaf/fzf-tab                    # fzf tab completion
 # End ========================================================================
 
 fpath=(~/.zsh/completions $fpath)
-autoload -U compinit && compinit
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+  zcompile ${ZDOTDIR:-$HOME}/.zcompdump
+else
+  compinit -C
+fi
 
 zinit cdreplay -q
 
@@ -31,8 +37,6 @@ setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_find_no_dups
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -65,22 +69,16 @@ is_mac() {
 
 is_mac
 
+edf() {
+    nvim --cmd "cd $DOTFILES_DIR"
+}
+
 mac_config() {
     export EDITOR=nvim
-    # Set Lazygit Config Dir
     export XDG_CONFIG_HOME="$HOME/.config"
-    # GPG Keys
     export GPG_TTY=$(tty)
-    # Homebrew Path
-    export PATH=/opt/homebrew/bin:$PATH
-    # Go
-    export PATH="$HOME/Go/bin:$PATH"
-    # tmuxifier
-    export PATH="$HOME/.tmuxifier/bin:$PATH"
-    # Auto Edit Dotfiles and Change Directories
-    edf() {
-        nvim --cmd "cd $DOTFILES_DIR"
-    }
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/libpq/bin:$PATH"
+    export PATH="$HOME/Go/bin:$HOME/.tmuxifier/bin:$PATH"
 
     # pnpm
     export PNPM_HOME="$HOME/Library/pnpm"
@@ -88,16 +86,12 @@ mac_config() {
       *":$PNPM_HOME:"*) ;;
       *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
-    export PATH="/opt/homebrew/sbin:$PATH"
 
-    # Activate mise
     eval "$(/opt/homebrew/bin/mise activate zsh)"
     export DOCKER_HOST=unix:///var/run/docker.sock
     alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
     alias lzd=lazydocker
     alias lg=lazygit
-
-    ## Default Mailpit Args
     alias mockmail="mailpit --smtp-auth-accept-any --smtp-auth-allow-insecure"
 
     mize() {
@@ -110,25 +104,20 @@ if (( AM_MAC > 0)); then;
     mac_config;
 fi
 
-export DEFAULT_USER="$(whoami)"
+export DEFAULT_USER="$USER"
 DISABLE_AUTO_TITLE="true"
 
-# ============================================================================
-# Python Dev Common
 POETRY_VIRTUALENVS_IN_PROJECT=true
 alias activate="source ./.venv/bin/activate"
-export PATH="$HOME/.poetry/bin:$PATH"
-export PATH=$PATH:~/.local/bin
 
-NPM_PACKAGES="${HOME}/.npm"
-PATH="$NPM_PACKAGES/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$HOME/.npm/bin:$HOME/.opencode/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
 # Theme https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_night.sh
-export FZF_DEFAULT_OPTS="--extended --layout=reverse --height 60%"
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+export FZF_DEFAULT_OPTS="\
   --highlight-line \
   --info=inline-right \
   --ansi \
@@ -158,13 +147,13 @@ alias vim="nvim"
 alias v="nvim"
 alias rl="source ~/.zshrc"
 
-if which bat > /dev/null; then
+if (( $+commands[bat] )); then
     alias cat="bat"
-    elif which batcat > /dev/null; then
+elif (( $+commands[batcat] )); then
     alias cat="batcat"
 fi
 
-if which eza > /dev/null; then
+if (( $+commands[eza] )); then
     export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza/
     alias l='eza --no-git --all'
     alias ls="eza --no-git --long --header --git --icons --all --group-directories-first"
@@ -174,10 +163,8 @@ else
     alias l="ls -lah"
 fi
 
-# Stuff That Came With Template
-alias myip="wget -qO- https://wtfismyip.com/text"	# quickly show external ip address
+alias myip="wget -qO- https://wtfismyip.com/text"
 alias x="exit"
-alias k="k -h"						# show human readable filesizes, in kb, mb etc
 
 ###############################################################################
 #                         Alias Functions                                     #
@@ -225,16 +212,10 @@ fh() {
 
 alias cz="cd \$(fd --type directory | fzf)"
 
-# Magic .env file loading function
-if [ -f $DOTFILES_DIR/secrets/.env.local ]; then
-    if [[ -s $DOTFILES_DIR/secrets/.env.local ]]; then
-        set -a
-        source $DOTFILES_DIR/secrets/.env.local
-        set +a
-    fi
-else
-    mkdir -p $DOTFILES_DIR/secrets
-    touch $DOTFILES_DIR/secrets/.env.local
+if [[ -s $DOTFILES_DIR/secrets/.env.local ]]; then
+    set -a
+    source $DOTFILES_DIR/secrets/.env.local
+    set +a
 fi
 
 alias rgnb="rg -- "
@@ -289,11 +270,8 @@ eval "$(starship init zsh)"
 
 # Custom Completions
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
+source <(mi completion zsh)
 
 # Load system local zshconfig if exists
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-# opencode
-export PATH=$HOME/.opencode/bin:$PATH
 export SOPS_AGE_KEY_FILE=~/.age/key.txt
