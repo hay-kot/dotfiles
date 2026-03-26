@@ -12,6 +12,7 @@ zinit light Aloxaf/fzf-tab                    # fzf tab completion
 
 # End ========================================================================
 
+fpath=(~/.zsh/completions $fpath)
 autoload -U compinit && compinit
 
 zinit cdreplay -q
