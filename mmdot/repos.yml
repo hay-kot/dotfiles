@@ -12,6 +12,7 @@ personal_repos:
   - git@github.com:hay-kot/httpkit.git
   - git@github.com:hay-kot/local-review.git
   - git@github.com:hay-kot/mdparse.git
+  - git@github.com:hay-kot/mi.git
   - git@github.com:hay-kot/mmdot.git
   - git@github.com:hay-kot/obsidian-dnd-ui-toolkit.git
   - git@github.com:hay-kot/plugs.git
