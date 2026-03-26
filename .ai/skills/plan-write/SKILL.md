@@ -6,8 +6,6 @@ description: >
   Expects a research document as input. Interviews the user, then uses sub-agents
   to draft and review the plan before writing a structured plan to .hive/plans/.
 allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Read,Write,Task(*)"
-version: "2.0.0"
-author: "User"
 ---
 
 # Implementation Plan

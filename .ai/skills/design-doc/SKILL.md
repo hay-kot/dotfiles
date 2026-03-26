@@ -4,8 +4,6 @@ description: >
   Generate a design doc from template and save to .hive/design-docs/. Use when the user asks to create, draft, or
   write a design doc, design proposal, or technical proposal.
 allowed-tools: "Read,Write,Bash(mkdir:*),Bash(git:*),Bash(hive:*),Bash(date:*)"
-version: "2.0.0"
-author: "User"
 ---
 
 # Design Doc Generator

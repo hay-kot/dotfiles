@@ -4,10 +4,6 @@ description: >
   Best practices for working with Go codebases. Use when writing, debugging,
   or exploring Go code, including reading dependency sources and documentation.
 allowed-tools: "Read,Bash(go:*)"
-version: "1.0.0"
-author: "User"
-license: "MIT"
-source: https://github.com/grafana/loki/pull/20609/files
 ---
 
 # Go Programming Language

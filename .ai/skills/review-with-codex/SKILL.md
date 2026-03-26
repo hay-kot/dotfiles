@@ -5,8 +5,7 @@ description: >
   general PR review and publishes findings back via hive messaging. Use standalone for an
   external second opinion, or alongside /review-code to run both concurrently.
 allowed-tools: "Bash(tmux:*),Bash(hive msg:*),Bash(hive session:*),Bash(git:*),Bash(mktemp:*),Bash(chmod:*),Bash(printf:*),Bash(rm:*)"
-version: "1.0.0"
-author: "Hayden"
+disable-model-invocation: true
 argument-hint: "[base-branch]"
 ---
 

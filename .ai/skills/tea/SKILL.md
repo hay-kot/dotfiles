@@ -4,9 +4,6 @@ description: >
   Gitea/Forgejo CLI and API usage. Use when working with tea CLI commands
   or making direct API calls to Gitea/Forgejo instances.
 allowed-tools: "Bash(tea:*),Bash(teaapi:*)"
-version: "1.0.0"
-author: "User"
-license: "MIT"
 ---
 
 # Tea CLI and Gitea API

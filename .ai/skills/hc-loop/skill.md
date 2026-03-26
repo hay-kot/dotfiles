@@ -6,9 +6,7 @@ description: >
   critically reviews the output, and commits only code that passes quality
   checks.
 allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Agent(*)"
-version: "2.0.0"
-author: "Hayden"
-license: "MIT"
+disable-model-invocation: true
 argument-hint: "[task-id | --all | --limit N]"
 ---
 

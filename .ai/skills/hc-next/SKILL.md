@@ -1,7 +1,6 @@
 ---
 name: hc-next
 description: Start the next hive hc task, prioritizing work related to current branch
-argument-hint:
 ---
 
 # Next - Start Working

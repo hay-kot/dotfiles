@@ -6,8 +6,6 @@ description: >
   yesterday's completed work. Use when the user says "morning prep", "daily prep",
   "start my day", or wants a GitHub status update written to their daily note.
 allowed-tools: "Bash(gh:*),Bash(date:*),Bash(echo:*),Bash(mkdir:*),Read,Write,Edit"
-version: "1.1.0"
-author: "User"
 ---
 
 # Daily Prep

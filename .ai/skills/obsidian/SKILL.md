@@ -4,8 +4,6 @@ description: >
   Save documents to the .hive/ context directory (symlinked into Obsidian). Use when the user asks
   to save, write, or put a document into their notebook.
 allowed-tools: "Bash(mkdir:*),Bash(hive:*),Bash(git:*),Bash(date:*),Write,Read"
-version: "2.0.0"
-author: "User"
 ---
 
 # Obsidian / Hive Context

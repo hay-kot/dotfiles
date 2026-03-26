@@ -5,8 +5,6 @@ description: >
   for deep research, wants to understand how a feature works, or needs thorough analysis
   of patterns and architecture across the codebase.
 allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),WebSearch,Read,Write,Task(*)"
-version: "1.0.0"
-author: "User"
 ---
 
 # Research Codebase

@@ -4,9 +4,7 @@ description: >
   Create a hive hc epic from the current plan file, inserting the ENTIRE PLAN TEXT
   into the epic and creating subtasks to track all work items.
 allowed-tools: "Read,Bash(hive hc:*),Bash(echo:*),Bash(bpcopy:*),Bash(cat:*)"
-version: "1.0.0"
-author: "User"
-license: "MIT"
+disable-model-invocation: true
 ---
 
 # Plan to Hive HC

@@ -1,7 +1,6 @@
 ---
 name: wrap
 description: Wrap up a work session - organize commits, push branch to remote, update task state
-argument-hint:
 ---
 
 # Wrap - Session Wrap-Up
