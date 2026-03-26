@@ -65,6 +65,13 @@ if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
+REPO_NAME=$(basename "git@github.com:hay-kot/hivemind.git" .git)
+if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+  echo "Cloning $REPO_NAME..."
+  git clone "git@github.com:hay-kot/hivemind.git" "$REPO_DIR/$REPO_NAME"
+else
+  echo "Skipping $REPO_NAME (already exists)"
+fi
 REPO_NAME=$(basename "git@github.com:hay-kot/httpkit.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
@@ -83,6 +90,13 @@ REPO_NAME=$(basename "git@github.com:hay-kot/mdparse.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
   git clone "git@github.com:hay-kot/mdparse.git" "$REPO_DIR/$REPO_NAME"
+else
+  echo "Skipping $REPO_NAME (already exists)"
+fi
+REPO_NAME=$(basename "git@github.com:hay-kot/mi.git" .git)
+if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+  echo "Cloning $REPO_NAME..."
+  git clone "git@github.com:hay-kot/mi.git" "$REPO_DIR/$REPO_NAME"
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
@@ -135,13 +149,6 @@ if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
-REPO_NAME=$(basename "git@github.com:hay-kot/scaffold.git" .git)
-if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
-  echo "Cloning $REPO_NAME..."
-  git clone "git@github.com:hay-kot/scaffold.git" "$REPO_DIR/$REPO_NAME"
-else
-  echo "Skipping $REPO_NAME (already exists)"
-fi
 REPO_NAME=$(basename "git@github.com:hay-kot/scaffold-go-cli.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
@@ -163,10 +170,24 @@ if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
+REPO_NAME=$(basename "git@github.com:hay-kot/scaffold.git" .git)
+if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+  echo "Cloning $REPO_NAME..."
+  git clone "git@github.com:hay-kot/scaffold.git" "$REPO_DIR/$REPO_NAME"
+else
+  echo "Skipping $REPO_NAME (already exists)"
+fi
 REPO_NAME=$(basename "git@github.com:mealie-recipes/discord-bot.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
   git clone "git@github.com:mealie-recipes/discord-bot.git" "$REPO_DIR/$REPO_NAME"
+else
+  echo "Skipping $REPO_NAME (already exists)"
+fi
+REPO_NAME=$(basename "git@github.com:mealie-recipes/mealie.git" .git)
+if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
+  echo "Cloning $REPO_NAME..."
+  git clone "git@github.com:mealie-recipes/mealie.git" "$REPO_DIR/$REPO_NAME"
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
@@ -181,13 +202,6 @@ REPO_NAME=$(basename "git@github.com:mealie-recipes/recipes-server.git" .git)
 if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
   echo "Cloning $REPO_NAME..."
   git clone "git@github.com:mealie-recipes/recipes-server.git" "$REPO_DIR/$REPO_NAME"
-else
-  echo "Skipping $REPO_NAME (already exists)"
-fi
-REPO_NAME=$(basename "git@github.com:mealie-recipes/mealie.git" .git)
-if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
-  echo "Cloning $REPO_NAME..."
-  git clone "git@github.com:mealie-recipes/mealie.git" "$REPO_DIR/$REPO_NAME"
 else
   echo "Skipping $REPO_NAME (already exists)"
 fi
