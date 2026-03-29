@@ -73,8 +73,7 @@ rules:
       - mise trust
   - pattern: ".*[:/]hay-kot/recipinned"
     commands:
-      - task dep:sync
-      # - task pc:install
+      - mise run dep:sync
   - pattern: ".*[:/]hay-kot/mealie"
     commands:
       - task setup

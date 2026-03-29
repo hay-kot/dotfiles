@@ -2,8 +2,8 @@ projects:
   recipinned*:
     tabs:
       - title: rcp.docker
-        cmd: task dev:svc
+        cmd: mise dev:svc
       - title: rcp.server
-        cmd: task go:run
+        cmd: mise go:run
       - title: rcp.ui
-        cmd: task ui:dev
+        cmd: mise ui:dev

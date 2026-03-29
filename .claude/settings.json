@@ -114,6 +114,8 @@
       "Bash(wget:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
+      "Bash(sops -d:*)",
+      "Bash(sops --decrypt:*)",
       "Read(.env)",
       "Read(.env.*)"
     ]

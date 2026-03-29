@@ -388,11 +388,11 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.43.0"
+version = "0.44.0"
 backend = "github:hay-kot/hive"
 
 [[tools."github:hay-kot/mi"]]
-version = "v0.2.0"
+version = "v0.3.0"
 backend = "github:hay-kot/mi"
 
 [[tools."github:hay-kot/scaffold"]]
