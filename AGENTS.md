@@ -88,6 +88,18 @@ Run `mi --ls` to list all available tasks. `mi` auto-detects Taskfile, Makefile,
 
 Your redirects prevent over-engineering. When uncertain about implementation, stop and ask for guidance.
 
+## Package Manager Security
+
+Package managers are configured with a minimum release age of 7 days to mitigate supply chain attacks:
+
+- **npm/pnpm:** `~/.npmrc` and `~/.config/pnpm/rc`
+- **bun:** `~/.bunfig.toml`
+- **uv:** `~/.config/uv/uv.toml`
+
+If a package installation fails due to `min-release-age`, `minimum-release-age`, or `exclude-newer`, **do not attempt to bypass it**. Report the blocked package name and version to the user and stop. Do not add flags like `--ignore-scripts=false`, `--legacy-peer-deps`, or any other workaround that circumvents these settings.
+
+Also note: `ignore-scripts=true` is set globally for npm. If a package requires lifecycle scripts to function, flag this to the user rather than disabling the setting.
+
 ## Testing Strategy
 
 **Match testing approach to code complexity:**
