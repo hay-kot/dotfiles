@@ -56,10 +56,10 @@ plugins:
 
 rules:
   - pattern: ""
+    branch_template: "hay-kot/{{ .Slug }}"
     max_recycled: 3
     commands:
       - hive ctx init
-      - bd init --force --stealth || true
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
