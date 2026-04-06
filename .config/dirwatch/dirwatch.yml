@@ -16,3 +16,13 @@ watchers:
       - "*.HEIC"
       - "*.heic"
     exec: "{{ .Vars.scriptbin }}/heic2jpeg '{{ .Path }}'"
+  - dirs:
+      - ~/Downloads
+    events:
+      - create
+      - write
+      - rename
+    matches:
+      - "*.epub"
+      - "*.EPUB"
+    exec: "{{ .Vars.scriptbin }}/epub-organize '{{ .Path }}'"

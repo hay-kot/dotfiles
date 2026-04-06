@@ -211,7 +211,7 @@ version = "0.7.9"
 backend = "github:grafana/mcp-grafana"
 
 [[tools."github:hay-kot/dirwatch"]]
-version = "0.1.0"
+version = "0.1.1"
 backend = "github:hay-kot/dirwatch"
 
 [[tools."github:hay-kot/gobusgen"]]
@@ -809,5 +809,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"

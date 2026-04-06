@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <epub_file> [<epub_file> ...]"
+    exit 1
+fi
+
+for file in "$@"; do
+    # Wait for file to exist (handles watcher race conditions)
+    for i in $(seq 1 10); do
+        [ -f "$file" ] && break
+        sleep 0.5
+    done
+
+    if [ ! -f "$file" ]; then
+        echo "File '$file' not found."
+        continue
+    fi
+
+    extension=$(echo "${file##*.}" | tr '[:upper:]' '[:lower:]')
+    if [ "$extension" != "epub" ]; then
+        echo "Skipping '$file': Not an epub file."
+        continue
+    fi
+
+    dir=$(dirname "$file")
+
+    # Extract metadata from epub (epub is a zip with OPF XML inside)
+    opf_content=$(unzip -p "$file" "*.opf" 2>/dev/null)
+    if [ -z "$opf_content" ]; then
+        echo "Skipping '$file': Could not read epub metadata."
+        continue
+    fi
+
+    author=$(echo "$opf_content" | sed -n 's/.*<dc:creator[^>]*>\([^<]*\)<\/dc:creator>.*/\1/p' | head -1)
+    title=$(echo "$opf_content" | sed -n 's/.*<dc:title[^>]*>\([^<]*\)<\/dc:title>.*/\1/p' | head -1)
+
+    if [ -z "$author" ] || [ -z "$title" ]; then
+        echo "Skipping '$file': Could not extract author or title from metadata."
+        continue
+    fi
+
+    # Sanitize for filesystem
+    author=$(echo "$author" | sed 's/[/:*?"<>|]/_/g' | sed 's/  */ /g' | sed 's/^ *//;s/ *$//')
+    title=$(echo "$title" | sed 's/[/:*?"<>|]/_/g' | sed 's/  */ /g' | sed 's/^ *//;s/ *$//')
+
+    dest_dir="${dir}/${author}/${title}"
+    dest_file="${dest_dir}/${title} - ${author}.epub"
+
+    if [ -f "$dest_file" ]; then
+        echo "Skipping '$file': Already organized at '${dest_file}'."
+        continue
+    fi
+
+    mkdir -p "$dest_dir"
+    mv "$file" "$dest_file"
+    echo "Organized: '${dest_file}'"
+done
