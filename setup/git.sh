@@ -23,6 +23,7 @@ git config --global core.excludesFile "$HOME/.gitignore_global"
 # -------------------------------------
 # Git Config
 #
+git config --global init.defaultBranch main
 
 echo "git: enable rerere"
 git config --global rerere.enabled true
