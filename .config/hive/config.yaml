@@ -34,6 +34,8 @@ views:
         cmd: TmuxPopUp
       S:
         cmd: TmuxStart
+      M:
+        cmd: WatchSession
 
 review:
   comment_line_width: 100
@@ -139,6 +141,17 @@ usercommands:
     help: copy agent inbox to clipboard
     sh: cd {{ .Path }} && hive session info --json | jq .inbox -r | pbcopy
     silent: true
+
+  WatchSession:
+    scope: ["sessions"]
+    help: add session to hivemind watchlist for monitoring
+    form:
+      - variable: directive
+        type: text
+        label: "What should this agent accomplish?"
+        placeholder: "Implement JWT middleware. Open a PR targeting main when done."
+    sh: cd {{ .Path }} && hive session info --json | uv run ~/Code/repos/hivemind/scripts/monitor.py add --directive {{ .Form.directive | shq }}
+    silent: false
 
   ReviewCodeSync:
     scope: ["sessions"]

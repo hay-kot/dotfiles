@@ -16,14 +16,14 @@
     "show_branch_icon": false
   },
   "icon_theme": {
-    "mode": "dark",
+    "mode": "light",
     "light": "Zed (Default)",
     "dark": "Material Icon Theme"
   },
   "theme": {
     "mode": "dark",
     "light": "Gruvbox Light",
-    "dark": "Tokyo Night"
+    "dark": "One Dark"
   },
   "vim_mode": true
 }

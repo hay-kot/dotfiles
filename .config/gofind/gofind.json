@@ -13,7 +13,8 @@
         "~/Code/haybytes",
         "~/Code/Repos",
         "~/Code/pr",
-        "~/Code/business"
+        "~/Code/business",
+        "~/Code/notebooks/grafana"
       ],
       "match": ".git"
     }
