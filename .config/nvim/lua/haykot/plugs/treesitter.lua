@@ -16,15 +16,18 @@ return {
     },
   },
   config = function()
-    require("nvim-treesitter").setup()
+    require("nvim-treesitter").setup({
+      auto_install = true,
+    })
 
-    -- Enable treesitter highlighting and indentation
     vim.treesitter.language.register("bash", "zsh")
 
-    -- Auto-install parsers when entering a buffer
     vim.api.nvim_create_autocmd("FileType", {
-      callback = function()
-        pcall(vim.treesitter.start)
+      callback = function(args)
+        local ft = vim.bo[args.buf].filetype
+        if ft ~= "" and vim.treesitter.language.get_lang(ft) then
+          pcall(vim.treesitter.start, args.buf)
+        end
       end,
     })
   end,
