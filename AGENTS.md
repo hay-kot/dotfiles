@@ -67,6 +67,10 @@ Run `mi --ls` to list all available tasks. `mi` auto-detects Taskfile, Makefile,
 **Branch Naming:** For repos in the 'grafana' org, use a `hay-kot/` prefix. Otherwise use `feat/`, `chore/`, `fix/` prefixes.
 **Commit Messages:** Clear and concise. Assume readers understand the codebase.
 
+## Tagging and Mentions
+
+**NEVER tag or @-mention other users on GitHub, Slack, or any other platform unless EXPLICITLY asked to do so.** This includes PR descriptions, issue bodies, commit messages, review comments, and any other written content. Reviewer assignments, CODEOWNERS, and similar platform mechanisms handle notifications — do not add `@username` mentions on your own initiative.
+
 ## Go Development Standards
 
 ### Required Patterns
