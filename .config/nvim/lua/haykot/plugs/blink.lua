@@ -3,7 +3,6 @@ return {
   -- optional: provides snippets for the snippet source
   dependencies = {
     "rafamadriz/friendly-snippets",
-    "fang2hou/blink-copilot",
   },
   -- build = "rustup run nightly cargo build --release",
 

@@ -34,10 +34,6 @@ return {
         update_in_insert = false, -- Update diagnostics in insert mode.
         always_visible = true, -- Show diagnostics even if there are none.
       }
-      local filetype = function()
-        return vim.bo.filetype
-      end
-
       require("lualine").setup({
         options = { theme = "tokyonight" },
         sections = {

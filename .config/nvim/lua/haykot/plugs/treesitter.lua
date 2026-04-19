@@ -16,18 +16,36 @@ return {
     },
   },
   config = function()
-    require("nvim-treesitter").setup({
-      auto_install = true,
+    require("nvim-treesitter").setup()
+
+    require("nvim-treesitter").install({
+      "bash",
+      "c",
+      "go",
+      "gomod",
+      "gosum",
+      "javascript",
+      "json",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "rust",
+      "toml",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "yaml",
     })
 
     vim.treesitter.language.register("bash", "zsh")
 
     vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
+      pattern = "*",
       callback = function(args)
-        local ft = vim.bo[args.buf].filetype
-        if ft ~= "" and vim.treesitter.language.get_lang(ft) then
-          pcall(vim.treesitter.start, args.buf)
-        end
+        pcall(vim.treesitter.start, args.buf)
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end,
     })
   end,

@@ -148,13 +148,6 @@ return {
           settings = {
             packageManager = "pnpm",
           },
-          on_attach = function(_, bufnr)
-            -- To slow now need to look into this
-            --[[ vim.api.nvim_create_autocmd("BufWritePre", { ]]
-            --[[   buffer = bufnr, ]]
-            --[[   command = "EslintFixAll", ]]
-            --[[ }) ]]
-          end,
         },
         html = {
           init_options = {
@@ -239,14 +232,6 @@ return {
         --[[ }, ]]
       }
 
-      -- Identify disabled servers for exclusion
-      local disabled_servers = {}
-      for server_name, server in pairs(servers) do
-        if server.enabled == false then
-          table.insert(disabled_servers, server_name)
-        end
-      end
-
       -- Pre-configure all servers with capabilities
       for server_name, server in pairs(servers) do
         -- server can be a function or a table, if function execute and set opts to be result
@@ -261,11 +246,10 @@ return {
         vim.lsp.config(server_name, server)
       end
 
-      return servers, disabled_servers
+      return servers
     end
 
-    -- Configure servers and get disabled list
-    local servers, disabled_servers = config_servers()
+    local servers = config_servers()
 
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -287,12 +271,12 @@ return {
         end, { desc = "Open diagnostic float" })
 
         km.nnoremap("[d", function()
-          vim.diagnostic.goto_next()
-        end, { desc = "Jump to next diagnostic" })
-
-        km.nnoremap("]d", function()
           vim.diagnostic.goto_prev()
         end, { desc = "Jump to previous diagnostic" })
+
+        km.nnoremap("]d", function()
+          vim.diagnostic.goto_next()
+        end, { desc = "Jump to next diagnostic" })
 
         km.nnoremap("<leader>lca", function()
           vim.lsp.buf.code_action()
@@ -339,15 +323,6 @@ return {
       virtual_text = {
         source = false,
         spacing = 2,
-        format = function(diagnostic)
-          local diagnostic_message = {
-            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            [vim.diagnostic.severity.WARN] = diagnostic.message,
-            [vim.diagnostic.severity.INFO] = diagnostic.message,
-            [vim.diagnostic.severity.HINT] = diagnostic.message,
-          }
-          return diagnostic_message[diagnostic.severity]
-        end,
       },
     })
 
@@ -360,9 +335,7 @@ return {
     -- Mason v2 configuration with automatic_enable instead of handlers
     require("mason-lspconfig").setup({
       ensure_installed = vim.tbl_keys(servers),
-      automatic_enable = {
-        exclude = disabled_servers,
-      },
+      automatic_enable = true,
     })
   end,
 }

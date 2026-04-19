@@ -73,7 +73,7 @@ return {
       "<leader>lt",
       function()
         -- regular files have empty string for buftype
-        local is_file = vim.api.nvim_buf_get_option(0, "buftype") == ""
+        local is_file = vim.bo[0].buftype == ""
         if is_file then
           local filename = vim.api.nvim_buf_get_name(0)
           Snacks.terminal.toggle(nil, {
@@ -161,9 +161,9 @@ return {
     {
       "<leader>fc",
       function()
-        Snacks.picker.git_diff()
+        Snacks.picker.git_status()
       end,
-      desc = "find changed hunks",
+      desc = "find changed files",
     },
     {
       "<leader>fp",

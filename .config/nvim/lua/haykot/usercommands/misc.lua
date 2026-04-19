@@ -8,9 +8,6 @@ vim.api.nvim_create_user_command("ThemeTokyonight", function()
   vim.cmd("colorscheme tokyonight")
 end, { range = false, nargs = 0, desc = "Set the color scheme to tokyonight" })
 
-vim.api.nvim_create_user_command("ThemeGruvboxMaterial", function()
-  vim.cmd("colorscheme gruvbox-material")
-end, { range = false, nargs = 0, desc = "Set the color scheme to gruvbox-material" })
 
 vim.api.nvim_create_user_command("TrimTrailingWhitespace", function()
   local line_count = vim.api.nvim_buf_line_count(0)

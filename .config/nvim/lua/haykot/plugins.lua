@@ -46,34 +46,11 @@ require("lazy").setup({
     end,
   },
   {
-    "sainnhe/gruvbox-material",
-    enabled = true,
-    priority = 1000,
-    config = function()
-      -- vim.o.background = "dark"
-      -- vim.g.gruvbox_material_background = "hard"
-
-      -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#2A3132", fg = "#d8db92" })
-      -- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#2A3132", fg = "#d8db92" })
-      -- vim.cmd.colorscheme("gruvbox-material")
-    end,
-  },
-  {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
   },
-  {
-    enabled = false,
-    "windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup({
-        disable_filetype = { "TelescopePrompt", "vim" },
-      })
-    end,
-  },
-
   -- Auto Session Manager
   {
     priority = 100,
@@ -92,14 +69,13 @@ require("lazy").setup({
           "alpha",
           "NvimTree",
           "nofile",
-          "Trouble",
           "dapui",
           "dap",
           "DiffReview",
         },
         log_level = "error",
         auto_session_suppress_dirs = { "~/", "~/code", "~/code/repos", "~/Downloads", "/" },
-        pre_save_cmds = { "lua require('nvim-tree').setup()", "tabdo NvimTreeClose", "silent! DiffReviewClose" },
+        pre_save_cmds = { "silent! DiffReviewClose" },
         pre_restore_cmds = {
           function()
             require("haykot.lib.globals").session_restored = true
@@ -109,7 +85,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Which Key (Experimental, may remove)
   {
     "folke/which-key.nvim",
     config = function()
@@ -132,9 +107,7 @@ require("lazy").setup({
   require("haykot.plugs.lsp"),
   require("haykot.plugs.null-ls"),
 
-  require("haykot.plugs.trouble"),
   require("haykot.plugs.dev-icons"),
-  require("haykot.plugs.comments"),
   require("haykot.plugs.snacks"),
 
   -- UI Elements for Search and cmd
@@ -234,13 +207,6 @@ require("lazy").setup({
           require("gitsigns").preview_hunk()
         end,
         desc = "git status",
-      },
-      {
-        "<leader>gb",
-        function()
-          require("gitsigns").toggle_current_line_blame()
-        end,
-        desc = "git toggle current line blame",
       },
     },
   },

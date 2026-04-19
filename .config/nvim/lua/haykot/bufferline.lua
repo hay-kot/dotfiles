@@ -3,8 +3,6 @@ if not status_ok then
   return
 end
 
-require("bufferline").setup({})
-
 local km = require("haykot.keymaps")
 km.nnoremap("<leader>bn", ":bnext <CR>", { desc = "next buffer" })
 km.nnoremap("<leader>bp", ":bprev <CR>", { desc = "previous buffer" })
