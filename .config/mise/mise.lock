@@ -139,8 +139,63 @@ url = "https://github.com/abice/go-enum/releases/download/v0.9.2/go-enum_Darwin_
 url_api = "https://api.github.com/repos/abice/go-enum/releases/assets/305592765"
 
 [[tools."github:amir20/dtop"]]
-version = "0.7.2"
+version = "0.7.3"
 backend = "github:amir20/dtop"
+
+[tools."github:amir20/dtop"."platforms.linux-arm64"]
+checksum = "sha256:7ab5a2da690728cd7f243d9d0dee0e35e89035c565132b8342478b6f37b7be56"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127730"
+
+[tools."github:amir20/dtop"."platforms.linux-arm64-musl"]
+checksum = "sha256:7ab5a2da690728cd7f243d9d0dee0e35e89035c565132b8342478b6f37b7be56"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127730"
+
+[tools."github:amir20/dtop"."platforms.linux-x64"]
+checksum = "sha256:637f0f74d4cfc96a0b223ba521f708da90755e8339a750b88ecd52cb46ce8255"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127742"
+
+[tools."github:amir20/dtop"."platforms.linux-x64-baseline"]
+checksum = "sha256:637f0f74d4cfc96a0b223ba521f708da90755e8339a750b88ecd52cb46ce8255"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127742"
+
+[tools."github:amir20/dtop"."platforms.linux-x64-musl"]
+checksum = "sha256:637f0f74d4cfc96a0b223ba521f708da90755e8339a750b88ecd52cb46ce8255"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127742"
+
+[tools."github:amir20/dtop"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:637f0f74d4cfc96a0b223ba521f708da90755e8339a750b88ecd52cb46ce8255"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127742"
+
+[tools."github:amir20/dtop"."platforms.macos-arm64"]
+checksum = "sha256:31fedb2fd619cacbef6f846fbd536684d67ea8c3b62cbca611c726e33a45400b"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127732"
+
+[tools."github:amir20/dtop"."platforms.macos-x64"]
+checksum = "sha256:c7a6803676cde19f5f71caf675b856484eef31864e45f9b68850342ad5e26f23"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127737"
+
+[tools."github:amir20/dtop"."platforms.macos-x64-baseline"]
+checksum = "sha256:c7a6803676cde19f5f71caf675b856484eef31864e45f9b68850342ad5e26f23"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127737"
+
+[tools."github:amir20/dtop"."platforms.windows-x64"]
+checksum = "sha256:505347798820b8af214cca97ee4571e5a6667fd24c53cf038040789a7ab05f41"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127745"
+
+[tools."github:amir20/dtop"."platforms.windows-x64-baseline"]
+checksum = "sha256:505347798820b8af214cca97ee4571e5a6667fd24c53cf038040789a7ab05f41"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.3/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/394127745"
 
 [[tools."github:caarlos0/svu"]]
 version = "3.4.0"
@@ -274,66 +329,11 @@ url = "https://github.com/hay-kot/gobusgen/releases/download/v0.3.0/gobusgen_Win
 url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/356544102"
 
 [[tools."github:hay-kot/gofind"]]
-version = "0.4.1"
+version = "v0.5.1"
 backend = "github:hay-kot/gofind"
 
-[tools."github:hay-kot/gofind"."platforms.linux-arm64"]
-checksum = "sha256:9a40142e7404d2e24222602cb40ce6aa8dd691f7197cda23a5296bc5e9593a20"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628573"
-
-[tools."github:hay-kot/gofind"."platforms.linux-arm64-musl"]
-checksum = "sha256:9a40142e7404d2e24222602cb40ce6aa8dd691f7197cda23a5296bc5e9593a20"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628573"
-
-[tools."github:hay-kot/gofind"."platforms.linux-x64"]
-checksum = "sha256:0c135c5412c5246631025b3521176f668ba1e9b562b4224f981a6d2d45fafae1"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628568"
-
-[tools."github:hay-kot/gofind"."platforms.linux-x64-baseline"]
-checksum = "sha256:0c135c5412c5246631025b3521176f668ba1e9b562b4224f981a6d2d45fafae1"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628568"
-
-[tools."github:hay-kot/gofind"."platforms.linux-x64-musl"]
-checksum = "sha256:0c135c5412c5246631025b3521176f668ba1e9b562b4224f981a6d2d45fafae1"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628568"
-
-[tools."github:hay-kot/gofind"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:0c135c5412c5246631025b3521176f668ba1e9b562b4224f981a6d2d45fafae1"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628568"
-
-[tools."github:hay-kot/gofind"."platforms.macos-arm64"]
-checksum = "sha256:ce8214db7815a4de2d8d98f6df8a28f21b1da90443019de7ddc9b8c9ef158232"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628572"
-
-[tools."github:hay-kot/gofind"."platforms.macos-x64"]
-checksum = "sha256:955d6193ac30bec7450b3981d00b141e044be48826ce12a5c11ca09c8f5aa01f"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628566"
-
-[tools."github:hay-kot/gofind"."platforms.macos-x64-baseline"]
-checksum = "sha256:955d6193ac30bec7450b3981d00b141e044be48826ce12a5c11ca09c8f5aa01f"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628566"
-
-[tools."github:hay-kot/gofind"."platforms.windows-x64"]
-checksum = "sha256:f9091649b39f24fec956ac96a154917834cc4b0b4097e80c86e826d4c9299b57"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
-
-[tools."github:hay-kot/gofind"."platforms.windows-x64-baseline"]
-checksum = "sha256:f9091649b39f24fec956ac96a154917834cc4b0b4097e80c86e826d4c9299b57"
-url = "https://github.com/hay-kot/gofind/releases/download/v0.4.1/gofind_Windows_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/306628569"
-
 [[tools."github:hay-kot/hive"]]
-version = "0.45.0"
+version = "0.46.0"
 backend = "github:hay-kot/hive"
 
 [[tools."github:hay-kot/mi"]]
@@ -809,5 +809,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.94.0"
 backend = "core:rust"
