@@ -25,24 +25,20 @@ brew install \
   age \
   ansible \
   ansible-lint \
-  apr-util \
   atlas \
   bash \
   bat \
   bfg \
   btop \
-  cfitsio \
   charmbracelet/tap/glow \
   cmake \
   coreutils \
-  crf++ \
   ctop \
   dagger \
   docker \
   editorconfig-checker \
   eza \
   fd \
-  fftw \
   fx \
   fzf \
   gh \
@@ -70,25 +66,12 @@ brew install \
   kubernetes-cli \
   kustomize \
   lazygit \
-  libexif \
-  libgit2@1.7 \
-  libgsf \
-  libimagequant \
-  libmatio \
-  libproxy \
-  libspng \
   mage \
   mas \
-  mingw-w64 \
   mise \
   mole \
-  mozjpeg \
   neovim \
   node \
-  nss \
-  openslide \
-  opensuperwhisper \
-  orc \
   pinentry-mac \
   pnpm \
   pre-commit \
@@ -100,6 +83,7 @@ brew install \
   stow \
   stylua \
   tmux \
+  tree-sitter-cli \
   ttyd \
   typos-cli \
   uv \
@@ -107,8 +91,6 @@ brew install \
   wireguard-go \
   yank \
   yq \
-  zlib \
-  zsh-autosuggestions \
   autorestic \
   bitwarden-cli \
   rbw \
@@ -129,7 +111,7 @@ brew install --cask \
   brave-browser \
   chromedriver \
   cleanshot \
-  docker \
+  codex \
   firefox \
   font-fira-code \
   font-fira-code-nerd-font \
@@ -142,6 +124,7 @@ brew install --cask \
   hiddenbar \
   keyboard-cleaner \
   obsidian \
+  opensuperwhisper \
   raycast \
   rectangle-pro \
   sublime-text \

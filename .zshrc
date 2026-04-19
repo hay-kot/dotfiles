@@ -38,6 +38,9 @@ setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 
+# Dedupe PATH entries across all prepends/appends below
+typeset -U path PATH
+
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"

@@ -4,8 +4,9 @@ My Dotfiles.
 
 ### Phase 0: Prerequisites
 
-1. **Install Bitwarden desktop app** — log in, enable SSH agent
-2. **Install [mise](https://mise.jdx.dev/installing-mise.html)**
+1. **Install Xcode Command Line Tools** — `xcode-select --install` (required before Homebrew/git work)
+2. **Install Bitwarden desktop app** — log in, enable SSH agent
+3. **Install [mise](https://mise.jdx.dev/installing-mise.html)**
 
 ### Phase 1: Clone & Bootstrap
 
@@ -15,6 +16,8 @@ cd ~/.dotfiles
 mise run full-setup
 ```
 
+> Optional: run `mise run xcode` to accept the Xcode license and pull any pending system updates.
+
 This runs three sub-tasks in sequence:
 
 1. `files/bootstrap.sh` — installs Homebrew, mise, stow
@@ -23,15 +26,16 @@ This runs three sub-tasks in sequence:
 
 ### Phase 2: Retrieve age Key
 
-The age identity at `~/.age/mmdot_mbp_personal` is required to decrypt `mmdot/vault.yml`.
+The age identity at `~/.age/key.txt` is required to decrypt `mmdot/vault.yml`
+and is also used as `SOPS_AGE_KEY_FILE`.
 
 ```sh
 brew install rbw
 rbw config set email <your-bitwarden-email>
 rbw register && rbw sync
 mkdir -p ~/.age
-rbw get age-identity > ~/.age/mmdot_mbp_personal
-chmod 600 ~/.age/mmdot_mbp_personal
+rbw get age-identity > ~/.age/key.txt
+chmod 600 ~/.age/key.txt
 ```
 
 ### Phase 3: Run mmdot
