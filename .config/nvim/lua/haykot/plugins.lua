@@ -216,11 +216,6 @@ require("lazy").setup({
     ft = { "alloy" },
   },
   {
-    "google/vim-jsonnet",
-    lazy = true,
-    ft = "jsonnet",
-  },
-  {
     "mfussenegger/nvim-dap",
     dependencies = {
       {
