@@ -451,63 +451,63 @@ url = "https://github.com/hay-kot/mi/releases/download/v0.4.0/mi_Windows_x86_64.
 url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/385979816"
 
 [[tools."github:hay-kot/mmdot"]]
-version = "0.5.0"
+version = "v0.5.1"
 backend = "github:hay-kot/mmdot"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-arm64"]
-checksum = "sha256:0cbb9c6ab36406ff209a5394fa7d582d719bb093d3521d335064b8e14620b2ae"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901182"
+checksum = "sha256:42414e4d4f3f1f7dc4ba2e3758db3071a84d2a5b35503a58566416a5ed6e38bb"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914713"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-arm64-musl"]
-checksum = "sha256:0cbb9c6ab36406ff209a5394fa7d582d719bb093d3521d335064b8e14620b2ae"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901182"
+checksum = "sha256:42414e4d4f3f1f7dc4ba2e3758db3071a84d2a5b35503a58566416a5ed6e38bb"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914713"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64"]
-checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+checksum = "sha256:31135cbb31e36a60a6c074403541e9a383d34b19034f197ff0d9c1d0515e7f1e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914719"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-baseline"]
-checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+checksum = "sha256:31135cbb31e36a60a6c074403541e9a383d34b19034f197ff0d9c1d0515e7f1e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914719"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-musl"]
-checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+checksum = "sha256:31135cbb31e36a60a6c074403541e9a383d34b19034f197ff0d9c1d0515e7f1e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914719"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+checksum = "sha256:31135cbb31e36a60a6c074403541e9a383d34b19034f197ff0d9c1d0515e7f1e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914719"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-arm64"]
-checksum = "sha256:a308c9349e40a366e0110a18ea770be85c23bdf489a5e99bd2f165804b0a70bf"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901195"
+checksum = "sha256:695b17af09b728eba0dce3228e04b68d37b5039f660d4175628c2ccb87c1cc38"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914711"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-x64"]
-checksum = "sha256:9cd82ad1e74cc2b7c862fc377a97bddf7a557520c324c214d074564bba99c1b4"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901194"
+checksum = "sha256:9829cd5b1b2edbd10a54fc3d733b0550aa54ee1d4d55f687093f4fd9f4e24923"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914710"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-x64-baseline"]
-checksum = "sha256:9cd82ad1e74cc2b7c862fc377a97bddf7a557520c324c214d074564bba99c1b4"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901194"
+checksum = "sha256:9829cd5b1b2edbd10a54fc3d733b0550aa54ee1d4d55f687093f4fd9f4e24923"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914710"
 
 [tools."github:hay-kot/mmdot"."platforms.windows-x64"]
-checksum = "sha256:27ae403c3b5d8f76afeb24a427a05bd35a958bd878c4f125ef891c59893ea754"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901183"
+checksum = "sha256:4d7ad4a6c06c65c7ecff222aaf2244c882e5db32f2c625586f1a70d5f01717f7"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914721"
 
 [tools."github:hay-kot/mmdot"."platforms.windows-x64-baseline"]
-checksum = "sha256:27ae403c3b5d8f76afeb24a427a05bd35a958bd878c4f125ef891c59893ea754"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901183"
+checksum = "sha256:4d7ad4a6c06c65c7ecff222aaf2244c882e5db32f2c625586f1a70d5f01717f7"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.1/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401914721"
 
 [[tools."github:hay-kot/scaffold"]]
 version = "v0.13.1"
@@ -923,5 +923,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.94.0"
 backend = "core:rust"
