@@ -2,21 +2,19 @@
 name: hc-loop
 description: >
   Orchestration loop for hive hc tasks. Reads pending tasks, dispatches
-  general-purpose sub-agents (via the Agent tool) to implement each task,
-  critically reviews the output, and commits only code that passes quality
-  checks.
-allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read,Agent(*)"
-disable-model-invocation: true
+  sub-agents to implement each task, critically reviews the output, and
+  commits only code that passes quality checks.
+allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read"
 argument-hint: "[task-id | --all | --limit N]"
 ---
 
-# Task Loop — Agent-Dispatched Implementation
+# Task Loop — Manager Role
 
-You are the **manager**. You do NOT implement tasks yourself. You dispatch sub-agents
-using the `Agent` tool, review their output, and commit approved work.
+You are the **manager**. You do NOT implement tasks yourself. You spawn worker
+sub-agents, review their output, and commit approved work.
 
 **CRITICAL RULE**: Never write or edit application code directly. ALL implementation
-work MUST be delegated to a sub-agent via the `Agent` tool.
+work MUST be delegated to a sub-agent.
 
 ## Prerequisites Check
 
@@ -57,63 +55,54 @@ For each selected task, gather:
 4. **Test command**: Determine the correct test runner (`task test`, `go test ./...`, `bun test`, etc.)
 5. **Lint command**: Determine the correct lint runner (`task lint`, `golangci-lint run`, etc.)
 
-## Step 3: Dispatch Workers via Agent Tool
+## Step 3: Dispatch Worker Sub-Agents
 
-**You MUST use the `Agent` tool** to dispatch each task to a sub-agent using
-`subagent_type: "general-purpose"`.
+Spawn a new sub-agent for each task. Use whatever sub-agent dispatch mechanism
+your environment provides (Agent tool, task tool, fork, etc.). Give the worker
+the full context below and wait for it to report back before proceeding.
 
-For each task, call the Agent tool like this:
+Dispatch tasks **sequentially** — one at a time — since workers share the same
+working tree.
 
-```
-Agent(
-  subagent_type: "general-purpose",
-  description: "Implement hc-<ID>: <short title>",
-  prompt: <see template below>
-)
-```
+### Worker Instructions
 
-### Worker Prompt Template
+Send the worker the following prompt, filled in with the gathered context:
 
-```
-You are implementing hive hc task <ID>: <TITLE>
+---
 
-## Task Description
-<full hive hc show output>
+You are implementing hive hc task `<ID>`: `<TITLE>`
 
-## Codebase Context
-<relevant file contents with line numbers>
+**Task Description**
+`<full hive hc show output>`
 
-## Recent History
-<git log output>
+**Codebase Context**
+`<relevant file contents with line numbers>`
 
-## Commands
-- Run tests with: <test command>
-- Run lint with: <lint command>
+**Recent History**
+`<git log output>`
 
-## Instructions
-1. Mark this task in-progress: hive hc update <ID> --status in_progress --assign
+**Commands**
+- Run tests with: `<test command>`
+- Run lint with: `<lint command>`
+
+**Your job**
+1. Mark this task in-progress: `hive hc update <ID> --status in_progress --assign`
 2. Implement the task as described
-3. Run tests and lint — fix any failures
+3. Run tests and lint — fix any failures before reporting back
 4. Do NOT commit — leave changes unstaged or staged but uncommitted
 5. Report back with:
-   a) Summary of changes made
-   b) List of files modified
-   c) Test and lint results
-   d) Any open questions
-```
+   - Summary of changes made
+   - List of files modified
+   - Test and lint results
+   - Any open questions or blockers
 
-### Parallelism Decision
-
-- Dispatch tasks **sequentially** (one at a time) since workers share the same working tree
-- Wait for each worker to complete and be reviewed before dispatching the next
+---
 
 ## Step 4: Review Each Completed Worker
 
-When a worker agent returns, perform a critical code review of its output.
+When a worker returns, perform a critical code review.
 
 ### Automated Checks
-
-After the worker finishes, check the results:
 
 ```bash
 git diff HEAD              # read every line
@@ -135,18 +124,15 @@ git diff HEAD              # read every line
 
 **APPROVE**: All checks pass and review is clean.
 
-Stage and commit the changes:
-
 ```bash
 git add -p                              # stage only task-related changes
-git commit -m "<clear message>          # see commit message format below
-                                        # closes hc-<id>"
+git commit -m "<clear message>"
 hive hc update <id> --status done       # mark task done
 ```
 
 **REVISE**: Minor issues that a worker can fix.
 
-Resume the worker agent (using its agent ID) with specific feedback and required changes.
+Resume the worker with specific feedback and the required changes.
 Limit to 2 revision cycles before escalating to the user.
 
 **REJECT / ESCALATE**: Fundamental design issue, scope creep, or two failed revisions.
@@ -169,17 +155,6 @@ Report the issue to the user with the specific problem and a recommended path fo
 closes hc-<id>
 ```
 
-Example:
-```
-add pagination to user list endpoint
-
-- add limit/offset query params to GET /users handler
-- update UserRepo.List to accept pagination params
-- add integration test for edge cases (empty page, last page)
-
-closes hc-47
-```
-
 ## Step 6: Loop Summary
 
 After all tasks are processed, report:
@@ -193,15 +168,3 @@ Loop complete.
 
 Remaining open: <hive hc list --status open count>
 ```
-
-## Notes
-
-- **Agent dispatch**: Always use `Agent` tool with `subagent_type: "general-purpose"`.
-  Dispatch tasks sequentially since workers share the working tree.
-- **Revisions**: Use the `resume` parameter on the Agent tool to continue a worker's
-  context when requesting revisions.
-- **Branch safety**: Never run on `main`. Always on a feature branch.
-- **Context window**: For large tasks, include only the most relevant files in the
-  worker prompt. Workers have limited context windows.
-- **You are the manager**: Your job is to orchestrate, review, and commit. Never
-  implement directly.
