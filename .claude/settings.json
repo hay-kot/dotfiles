@@ -120,6 +120,7 @@
       "Read(.env.*)"
     ]
   },
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
@@ -154,5 +155,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
   },
-  "model": "sonnet"
+  "skipAutoPermissionPrompt": true
 }
