@@ -332,6 +332,61 @@ url_api = "https://api.github.com/repos/hay-kot/gobusgen/releases/assets/3565441
 version = "v0.5.1"
 backend = "github:hay-kot/gofind"
 
+[tools."github:hay-kot/gofind"."platforms.linux-arm64"]
+checksum = "sha256:81bbec853bbf917ea0b85e7713fe924787b880ceafed03ca8d1512ed8364aae2"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476374"
+
+[tools."github:hay-kot/gofind"."platforms.linux-arm64-musl"]
+checksum = "sha256:81bbec853bbf917ea0b85e7713fe924787b880ceafed03ca8d1512ed8364aae2"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476374"
+
+[tools."github:hay-kot/gofind"."platforms.linux-x64"]
+checksum = "sha256:56d39da9dd95acd2999a228b6e59053649d595d6d51a4d4aef27c1c6aabb9f98"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476377"
+
+[tools."github:hay-kot/gofind"."platforms.linux-x64-baseline"]
+checksum = "sha256:56d39da9dd95acd2999a228b6e59053649d595d6d51a4d4aef27c1c6aabb9f98"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476377"
+
+[tools."github:hay-kot/gofind"."platforms.linux-x64-musl"]
+checksum = "sha256:56d39da9dd95acd2999a228b6e59053649d595d6d51a4d4aef27c1c6aabb9f98"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476377"
+
+[tools."github:hay-kot/gofind"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:56d39da9dd95acd2999a228b6e59053649d595d6d51a4d4aef27c1c6aabb9f98"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476377"
+
+[tools."github:hay-kot/gofind"."platforms.macos-arm64"]
+checksum = "sha256:52dadc4a96fee413d501f22572e17176902d6ed38624706afc351d98cbc09ba4"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476387"
+
+[tools."github:hay-kot/gofind"."platforms.macos-x64"]
+checksum = "sha256:03347e29764d3803f6c747c558614c1e2f654bf1d827a527d0e1c62c5e81d8d0"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476388"
+
+[tools."github:hay-kot/gofind"."platforms.macos-x64-baseline"]
+checksum = "sha256:03347e29764d3803f6c747c558614c1e2f654bf1d827a527d0e1c62c5e81d8d0"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476388"
+
+[tools."github:hay-kot/gofind"."platforms.windows-x64"]
+checksum = "sha256:22950317970300974e760c248c353b3cc0bda1eb7b9d7c217194fad850e42b18"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476376"
+
+[tools."github:hay-kot/gofind"."platforms.windows-x64-baseline"]
+checksum = "sha256:22950317970300974e760c248c353b3cc0bda1eb7b9d7c217194fad850e42b18"
+url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476376"
+
 [[tools."github:hay-kot/hive"]]
 version = "0.46.0"
 backend = "github:hay-kot/hive"
@@ -809,5 +864,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"
