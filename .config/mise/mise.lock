@@ -450,6 +450,65 @@ checksum = "sha256:6a802fd2cdd9155ffcd7335dcca47d802cd8b5ceb68c751dd718e396272aa
 url = "https://github.com/hay-kot/mi/releases/download/v0.4.0/mi_Windows_x86_64.zip"
 url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/385979816"
 
+[[tools."github:hay-kot/mmdot"]]
+version = "0.5.0"
+backend = "github:hay-kot/mmdot"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-arm64"]
+checksum = "sha256:0cbb9c6ab36406ff209a5394fa7d582d719bb093d3521d335064b8e14620b2ae"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901182"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-arm64-musl"]
+checksum = "sha256:0cbb9c6ab36406ff209a5394fa7d582d719bb093d3521d335064b8e14620b2ae"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901182"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64"]
+checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-baseline"]
+checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-musl"]
+checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:753e1bfb7327a19809941a1877775c5adc642da97c6c7481dfb5a16b4e32efa2"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901196"
+
+[tools."github:hay-kot/mmdot"."platforms.macos-arm64"]
+checksum = "sha256:a308c9349e40a366e0110a18ea770be85c23bdf489a5e99bd2f165804b0a70bf"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901195"
+
+[tools."github:hay-kot/mmdot"."platforms.macos-x64"]
+checksum = "sha256:9cd82ad1e74cc2b7c862fc377a97bddf7a557520c324c214d074564bba99c1b4"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901194"
+
+[tools."github:hay-kot/mmdot"."platforms.macos-x64-baseline"]
+checksum = "sha256:9cd82ad1e74cc2b7c862fc377a97bddf7a557520c324c214d074564bba99c1b4"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901194"
+
+[tools."github:hay-kot/mmdot"."platforms.windows-x64"]
+checksum = "sha256:27ae403c3b5d8f76afeb24a427a05bd35a958bd878c4f125ef891c59893ea754"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901183"
+
+[tools."github:hay-kot/mmdot"."platforms.windows-x64-baseline"]
+checksum = "sha256:27ae403c3b5d8f76afeb24a427a05bd35a958bd878c4f125ef891c59893ea754"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.5.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/401901183"
+
 [[tools."github:hay-kot/scaffold"]]
 version = "v0.13.1"
 backend = "github:hay-kot/scaffold"
@@ -864,5 +923,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.94.0"
 backend = "core:rust"
