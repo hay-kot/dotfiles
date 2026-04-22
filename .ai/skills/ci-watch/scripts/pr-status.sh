@@ -124,11 +124,16 @@ else
   # -------------------------------------------------------------------------
 
   # Parse host, owner, repo from remote URL
-  # Supports: https://host/owner/repo or git@host:owner/repo
+  # Supports: https://host/owner/repo, ssh://user@host:port/owner/repo, or git@host:owner/repo
   if echo "$REMOTE_URL" | grep -q "^https://"; then
     GITEA_HOST=$(echo "$REMOTE_URL" | sed 's|https://||' | cut -d'/' -f1)
     OWNER=$(echo "$REMOTE_URL" | sed 's|https://[^/]*/||' | cut -d'/' -f1)
     REPO=$(echo "$REMOTE_URL" | sed 's|https://[^/]*/[^/]*/||' | sed 's|\.git$||')
+  elif echo "$REMOTE_URL" | grep -q "^ssh://"; then
+    GITEA_HOST=$(echo "$REMOTE_URL" | sed 's|ssh://[^@]*@||' | sed 's|:.*||')
+    PATH_PART=$(echo "$REMOTE_URL" | sed 's|ssh://[^/]*/||')
+    OWNER=$(echo "$PATH_PART" | cut -d'/' -f1)
+    REPO=$(echo "$PATH_PART" | cut -d'/' -f2 | sed 's|\.git$||')
   else
     GITEA_HOST=$(echo "$REMOTE_URL" | sed 's|.*@||' | cut -d':' -f1)
     OWNER=$(echo "$REMOTE_URL" | cut -d':' -f2 | cut -d'/' -f1)
@@ -140,7 +145,7 @@ else
   if [[ -z "$PR_NUMBER" ]]; then
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || no_pr_json "gitea"
     # Find open PR for current branch
-    PR_NUMBER=$(teaapi curl "${API_BASE}/repos/${OWNER}/${REPO}/pulls?state=open&limit=50" 2>/dev/null \
+    PR_NUMBER=$(teaapi curl -s "${API_BASE}/repos/${OWNER}/${REPO}/pulls?state=open&limit=50" 2>/dev/null \
       | jq -r --arg branch "$CURRENT_BRANCH" '.[] | select(.head.label == $branch) | .number' \
       | head -1)
   fi
@@ -148,7 +153,7 @@ else
   [[ -z "$PR_NUMBER" ]] && no_pr_json "gitea"
 
   # Full PR JSON (includes head.sha)
-  PR_JSON=$(teaapi curl "${API_BASE}/repos/${OWNER}/${REPO}/pulls/${PR_NUMBER}" 2>/dev/null) \
+  PR_JSON=$(teaapi curl -s "${API_BASE}/repos/${OWNER}/${REPO}/pulls/${PR_NUMBER}" 2>/dev/null) \
     || no_pr_json "gitea"
 
   PR_TITLE=$(echo "$PR_JSON" | jq -r '.title // ""')
@@ -170,21 +175,21 @@ else
   FAILING_CHECKS_JSON="[]"
 
   if [[ -n "$HEAD_SHA" ]]; then
-    STATUSES=$(teaapi curl "${API_BASE}/repos/${OWNER}/${REPO}/statuses/${HEAD_SHA}" \
+    STATUSES=$(teaapi curl -s "${API_BASE}/repos/${OWNER}/${REPO}/statuses/${HEAD_SHA}" \
       2>/dev/null || echo "[]")
 
     STATUS_COUNT=$(echo "$STATUSES" | jq 'length' 2>/dev/null || echo 0)
 
     if [[ "$STATUS_COUNT" -gt 0 ]]; then
       # Gitea statuses: state is "success","failure","error","pending","warning"
-      HAS_FAILURE=$(echo "$STATUSES" | jq 'any(.state == "failure" or .state == "error")' 2>/dev/null || echo "false")
-      HAS_PENDING=$(echo "$STATUSES" | jq 'any(.state == "pending" or .state == "warning")' 2>/dev/null || echo "false")
+      HAS_FAILURE=$(echo "$STATUSES" | jq 'any(.status == "failure" or .status == "error")' 2>/dev/null || echo "false")
+      HAS_PENDING=$(echo "$STATUSES" | jq 'any(.status == "pending" or .status == "warning")' 2>/dev/null || echo "false")
 
       if [[ "$HAS_FAILURE" == "true" ]]; then
         CI_STATUS="fail"
-        FAILING_CHECKS_JSON=$(echo "$STATUSES" | jq '[
-          .[] | select(.state == "failure" or .state == "error")
-          | {name: .context, url: .target_url}
+        FAILING_CHECKS_JSON=$(echo "$STATUSES" | jq --arg host "https://${GITEA_HOST}" '[
+          .[] | select(.status == "failure" or .status == "error")
+          | {name: .context, url: (if (.target_url | startswith("http")) then .target_url else ($host + .target_url) end)}
         ]' 2>/dev/null || echo "[]")
       elif [[ "$HAS_PENDING" == "true" ]]; then
         CI_STATUS="pending"
@@ -195,7 +200,7 @@ else
   fi
 
   # Review comments
-  REVIEW_COMMENTS_JSON=$(teaapi curl \
+  REVIEW_COMMENTS_JSON=$(teaapi curl -s \
     "${API_BASE}/repos/${OWNER}/${REPO}/pulls/${PR_NUMBER}/reviews" \
     2>/dev/null \
     | jq '[
