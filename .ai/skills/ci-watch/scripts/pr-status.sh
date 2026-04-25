@@ -142,6 +142,19 @@ else
 
   API_BASE="https://${GITEA_HOST}/api/v1"
 
+  # Validate auth — attempt token refresh if expired, then fail fast with a clear error
+  AUTH_CHECK=$(teaapi curl -s "${API_BASE}/repos/${OWNER}/${REPO}" 2>/dev/null)
+  if echo "$AUTH_CHECK" | jq -e '.message' >/dev/null 2>&1; then
+    echo "pr-status.sh: auth failed, attempting token refresh..." >&2
+    tea login oauth-refresh >/dev/null 2>&1 || true
+    AUTH_CHECK=$(teaapi curl -s "${API_BASE}/repos/${OWNER}/${REPO}" 2>/dev/null)
+    if echo "$AUTH_CHECK" | jq -e '.message' >/dev/null 2>&1; then
+      MSG=$(echo "$AUTH_CHECK" | jq -r '.message')
+      echo "pr-status.sh error: Gitea API error after refresh: $MSG" >&2
+      exit 1
+    fi
+  fi
+
   if [[ -z "$PR_NUMBER" ]]; then
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || no_pr_json "gitea"
     # Find open PR for current branch
@@ -181,13 +194,18 @@ else
     STATUS_COUNT=$(echo "$STATUSES" | jq 'length' 2>/dev/null || echo 0)
 
     if [[ "$STATUS_COUNT" -gt 0 ]]; then
-      # Gitea statuses: state is "success","failure","error","pending","warning"
-      HAS_FAILURE=$(echo "$STATUSES" | jq 'any(.status == "failure" or .status == "error")' 2>/dev/null || echo "false")
-      HAS_PENDING=$(echo "$STATUSES" | jq 'any(.status == "pending" or .status == "warning")' 2>/dev/null || echo "false")
+      # Gitea returns all historical statuses newest-first. Deduplicate by context
+      # so stale "pending" entries from job start don't shadow current "success".
+      LATEST_STATUSES=$(echo "$STATUSES" | jq '
+        unique_by(.context)
+      ' 2>/dev/null || echo "$STATUSES")
+
+      HAS_FAILURE=$(echo "$LATEST_STATUSES" | jq 'any(.status == "failure" or .status == "error")' 2>/dev/null || echo "false")
+      HAS_PENDING=$(echo "$LATEST_STATUSES" | jq 'any(.status == "pending" or .status == "warning")' 2>/dev/null || echo "false")
 
       if [[ "$HAS_FAILURE" == "true" ]]; then
         CI_STATUS="fail"
-        FAILING_CHECKS_JSON=$(echo "$STATUSES" | jq --arg host "https://${GITEA_HOST}" '[
+        FAILING_CHECKS_JSON=$(echo "$LATEST_STATUSES" | jq --arg host "https://${GITEA_HOST}" '[
           .[] | select(.status == "failure" or .status == "error")
           | {name: .context, url: (if (.target_url | startswith("http")) then .target_url else ($host + .target_url) end)}
         ]' 2>/dev/null || echo "[]")
