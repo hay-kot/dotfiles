@@ -297,7 +297,8 @@ brews:
 age:
   identity_file: ~/.age/key.txt
   recipients:
-    - age1f54edfn0hwv29z5dy7f3zhtf42d08758yl84f7ypg4kat897svwsqrta6c
+    - age1f54edfn0hwv29z5dy7f3zhtf42d08758yl84f7ypg4kat897svwsqrta6c # personal
+    - age1pq5slcxq6ncpr380j3p0ng9kfwek55leexea55prjx7yvw3h6gms7ly6nt # grafana
   files:
     - src: secrets/design-doc-template.md.age
       dest: .ai/skills/design-doc/templates/design-doc.md
