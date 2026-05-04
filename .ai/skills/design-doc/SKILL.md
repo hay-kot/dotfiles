@@ -70,10 +70,19 @@ date: YYYY-MM-DD
 repository: owner/repo
 branch: [current branch]
 commit: [short commit hash]
-status: draft
-topic: "[Design doc title]"
+tags: [component, topic]
+research: .hive/research/[source-filename.md]
+updates:
+  - YYYY-MM-DD: Initial draft
 ---
 ```
+
+This schema mirrors the `plan` frontmatter (same fields, `type: design-doc` instead
+of `type: plan`). Author, Reviewers, and Status are rendered in the template body —
+do not duplicate them in frontmatter.
+
+The `research` field is optional but recommended when the design doc is informed by a
+research document.
 
 ## Audience
 

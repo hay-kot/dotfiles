@@ -67,6 +67,8 @@ rules:
       - mise trust
   - pattern: ".*[:/]grafana/deployment_tools"
     clone_strategy: worktree
+  - pattern: ".*[:/]grafana/loki"
+    clone_strategy: worktree
   - pattern: ".*[:/]colonyops/.*"
     commands:
       - mise trust
