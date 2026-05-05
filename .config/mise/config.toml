@@ -46,7 +46,7 @@ rust = "latest"
 # -------------------------------------------------------
 # Rust
 
-"github:sxyazi/yazi" = "v26.1.22"         # file explorer tui
+"github:sxyazi/yazi" = "v26.5.6"         # file explorer tui
 "github:thomasschafer/scooter" = "latest" # find and replace mechanism
 "cargo:sleek" = "latest"                  # sql formatter
 
