@@ -8,3 +8,4 @@ Diff Review|Review diff against main|tmux new-window -n review "dr"
 Solo Up|Start solo environment|solo up
 Solo Down|Stop solo environment|solo down
 Lazydocker|Docker management|tmux display-popup -E -w 90% -h 90% "lazydocker"
+Neovim Split|Vertical split with Neovim|tmux split-window -h "nvim"
