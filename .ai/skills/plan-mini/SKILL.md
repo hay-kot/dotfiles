@@ -122,6 +122,19 @@ Requirements:
 - Every file in the Files table must have a line reference
 - If you find a gap the research didn't cover, write [GAP: description] — do not guess
 - Do not add phases, testing strategy sections, or architecture insights — this is a mini plan
+- If you include code blocks, show contracts only:
+  - Interfaces, type definitions, struct fields, and function/method signatures in full
+  - Function/method bodies elided with `...` — the plan defines the API surface, not the implementation
+  - Example:
+    ```go
+    type Store interface {
+        Get(ctx context.Context, id string) (*User, error)
+    }
+
+    func (s *SQLStore) Get(ctx context.Context, id string) (*User, error) {
+        ...
+    }
+    ```
 ```
 
 Wait for the agent to complete.

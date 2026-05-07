@@ -127,6 +127,26 @@ Requirements:
 - Testing strategy must explicitly address unit, integration, and e2e tests
 - Do not invent decisions not documented above
 - If you encounter a gap, write "[OPEN: description]" — do not guess
+- Code blocks must show contracts, not implementations:
+  - Interfaces, type definitions, struct fields, and function/method signatures
+    should be written in full — they are the API contract and the point of the plan
+  - Function/method bodies should be elided with `...` — implementation details
+    belong in the code, not the plan
+  - Example:
+    ```go
+    type Store interface {
+        Get(ctx context.Context, id string) (*User, error)
+    }
+
+    type SQLStore struct {
+        db     *sql.DB
+        logger *slog.Logger
+    }
+
+    func (s *SQLStore) Get(ctx context.Context, id string) (*User, error) {
+        ...
+    }
+    ```
 ```
 
 Wait for the draft agent to complete before proceeding.
@@ -326,7 +346,9 @@ updates:
 **Changes**: [Summary of changes]
 
 ```[language]
-// Specific code to add/modify
+// Show the contract: interface, type, struct fields, function signatures.
+// Elide function/method bodies with `...` — the plan defines the API surface,
+// not the implementation.
 ```
 
 ### Success Criteria:
