@@ -3,9 +3,12 @@
 Hive Review|Open latest review document|tmux display-popup -E -w 75% -h 95% "hive review --latest || (echo 'Press enter to close'; read)"
 Claude Code|New window with Claude (dangerously)|tmux new-window -n claude "claude --dangerously-skip-permissions"
 Codex|New window with Codex|tmux new-window -n codex "codex"
+Orchestrator|Claude orchestrator window primed with /agent-orchestrator|tmux new-window -n orchestrator "claude --dangerously-skip-permissions"; sleep 2; tmux send-keys -t :orchestrator -l "/agent-orchestrator"; sleep 0.5; tmux send-keys -t :orchestrator C-m
 Lazygit|Open lazygit popup|tmux display-popup -E -w 80% -h 80% "lazygit"
 Diff Review|Review diff against main|tmux new-window -n review "dr"
 Solo Up|Start solo environment|solo up
 Solo Down|Stop solo environment|solo down
 Lazydocker|Docker management|tmux display-popup -E -w 90% -h 90% "lazydocker"
 Neovim Split|Vertical split with Neovim|tmux split-window -h "nvim"
+PR Link|Copy current branch PR link to clipboard|tmux display-popup -E -w 60% -h 40% -d "#{pane_current_path}" "prlink; echo; echo 'Press enter to close'; read"
+PR Open|Open current branch PR in browser|tmux display-popup -E -w 50% -h 20% -d "#{pane_current_path}" "gh pr view --web || (echo 'Press enter to close'; read)"
