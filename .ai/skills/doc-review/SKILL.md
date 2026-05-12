@@ -6,6 +6,7 @@ description: >
   plan", "open the doc in plannotator", "let me annotate the research", "review
   the latest doc", or returns to a session to gate work the agent produced.
 allowed-tools: "Bash(plannotator:*),Bash(hive ctx ls),Bash(ls:*),Bash(find:*),Bash(stat:*),Read"
+disable-model-invocation: true
 ---
 
 # Doc Review

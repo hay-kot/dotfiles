@@ -3,6 +3,7 @@ name: catchup
 description: Show changes compared to base branch (defaults to main). Use when the user asks what changed, wants a summary of branch differences, or says "catch me up".
 allowed-tools: "Bash(git diff:*),Bash(git log:*),Bash(git status:*),Bash(git branch:*),Read,Grep,Glob"
 argument-hint: "[base-branch or additional context]"
+disable-model-invocation: true
 ---
 
 # Catchup

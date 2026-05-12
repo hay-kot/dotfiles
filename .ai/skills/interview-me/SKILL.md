@@ -3,6 +3,7 @@ name: interview-me
 description: Deep-dive spec interviewer. Reads a file or requirement, analyzes it against the codebase, then conducts a rigorous 1-on-1 interview using AskUserQuestion to produce a comprehensive, opinionated specification document. Acts as a collaborative architect with active pushback.
 argument-hint: <file-path-or-requirement>
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion, Task, TaskCreate, TaskUpdate, TaskList
+disable-model-invocation: true
 ---
 
 ultrathink

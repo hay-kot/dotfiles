@@ -7,6 +7,7 @@ description: >
   plannotator", "let me annotate the diff", or returns to a session to gate code
   the agent produced.
 allowed-tools: "Bash(plannotator:*),Read"
+disable-model-invocation: true
 ---
 
 # Diff Review

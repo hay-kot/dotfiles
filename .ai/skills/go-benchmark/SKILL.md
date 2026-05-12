@@ -2,6 +2,7 @@
 name: go-benchmark
 description: Write and analyze Go benchmarks using modern patterns and tools
 argument-hint: [benchmark-task]
+disable-model-invocation: true
 ---
 
 # Go Benchmarking - Modern Patterns and Best Practices
