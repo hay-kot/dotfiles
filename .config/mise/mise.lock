@@ -143,8 +143,74 @@ version = "0.7.6"
 backend = "github:amir20/dtop"
 
 [[tools."github:backnotprop/plannotator"]]
-version = "0.19.11"
+version = "0.19.14"
 backend = "github:backnotprop/plannotator"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-arm64"]
+checksum = "sha256:c3a7f5dd76c3350cd3a83ad9f0565d3a858c0539856ec44e59c8820e67271a4c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719941"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-arm64-musl"]
+checksum = "sha256:c3a7f5dd76c3350cd3a83ad9f0565d3a858c0539856ec44e59c8820e67271a4c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719941"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-x64"]
+checksum = "sha256:e6d56ee80ad538864d2fe7aa4b325c3237b43a22dd93f1b5e7cd95d60961bf8c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719943"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-x64-baseline"]
+checksum = "sha256:e6d56ee80ad538864d2fe7aa4b325c3237b43a22dd93f1b5e7cd95d60961bf8c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719943"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-x64-musl"]
+checksum = "sha256:e6d56ee80ad538864d2fe7aa4b325c3237b43a22dd93f1b5e7cd95d60961bf8c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719943"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:e6d56ee80ad538864d2fe7aa4b325c3237b43a22dd93f1b5e7cd95d60961bf8c"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719943"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.macos-arm64"]
+checksum = "sha256:f7202d188432956ff42bd8cc97c024d3be9f803698065581e5897e7333a977eb"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-darwin-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719944"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.macos-x64"]
+checksum = "sha256:09ac98cca42e4172fd7a7f570f29999ad49a3b3e9e8d35cfea1f917eeae58f7f"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-darwin-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719946"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.macos-x64-baseline"]
+checksum = "sha256:09ac98cca42e4172fd7a7f570f29999ad49a3b3e9e8d35cfea1f917eeae58f7f"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-darwin-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719946"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.windows-x64"]
+checksum = "sha256:ac4199c744d8713d5f5b1c6b9cf65bffa44d8db166b613972bbb447fdc92cf33"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-win32-x64.exe"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719938"
+provenance = "github-attestations"
+
+[tools."github:backnotprop/plannotator"."platforms.windows-x64-baseline"]
+checksum = "sha256:ac4199c744d8713d5f5b1c6b9cf65bffa44d8db166b613972bbb447fdc92cf33"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.19.14/plannotator-win32-x64.exe"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/417719938"
+provenance = "github-attestations"
 
 [[tools."github:caarlos0/svu"]]
 version = "3.4.0"
@@ -581,63 +647,63 @@ url = "https://github.com/homeport/dyff/releases/download/v1.11.2/dyff_1.11.2_wi
 url_api = "https://api.github.com/repos/homeport/dyff/releases/assets/364711261"
 
 [[tools."github:sxyazi/yazi"]]
-version = "26.1.22"
+version = "26.5.6"
 backend = "github:sxyazi/yazi"
 
 [tools."github:sxyazi/yazi"."platforms.linux-arm64"]
-checksum = "sha256:f5a9d7062ae30b75c1e0481d3132aa54c14bacf76efb1b39b54b6d5d08b7c537"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342402"
+checksum = "sha256:c38b07961e7fc4c76503fd0f4a1b4bd0b379a99835b818cd899b0315c728e1e1"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871949"
 
 [tools."github:sxyazi/yazi"."platforms.linux-arm64-musl"]
-checksum = "sha256:91a37cdb3aa49f903aab6af57bca708935acb6def1d9f218716ab414f0a3a8b1"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-unknown-linux-musl.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342415"
+checksum = "sha256:dff4a6774069bdde616c3cd145275b462a5887229cd9bf6341e78063da37e84f"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-aarch64-unknown-linux-musl.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871963"
 
 [tools."github:sxyazi/yazi"."platforms.linux-x64"]
-checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+checksum = "sha256:1c9096f0a83b8102c194385f644cdeff93cc8269426163c9d033041ebd537bd2"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871957"
 
 [tools."github:sxyazi/yazi"."platforms.linux-x64-baseline"]
-checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+checksum = "sha256:1c9096f0a83b8102c194385f644cdeff93cc8269426163c9d033041ebd537bd2"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871957"
 
 [tools."github:sxyazi/yazi"."platforms.linux-x64-musl"]
-checksum = "sha256:b977351968206c0b78d2ef5bf21351685cc191b58a4c7e1c98c37db5d0a381f8"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-musl.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342414"
+checksum = "sha256:1031a02560d053301537195a6661d227c15cb4ce5c30481050b31e2b88681bff"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-unknown-linux-musl.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871954"
 
 [tools."github:sxyazi/yazi"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:a136269b2d5fbb5fb43f3fac3391446e8fbc72aba1c4bb4fae6e6d1556420750"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342410"
+checksum = "sha256:1031a02560d053301537195a6661d227c15cb4ce5c30481050b31e2b88681bff"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-unknown-linux-musl.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871954"
 
 [tools."github:sxyazi/yazi"."platforms.macos-arm64"]
-checksum = "sha256:8355ad582dd9f4ef1f88a228080f2b6116bbb483dd48d1bde555d475f4d2afe4"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-aarch64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342413"
+checksum = "sha256:7abd71725e2fe27bed036becbf6ce79fa17964eb68491d34190011c94b8c7ca8"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-aarch64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871956"
 
 [tools."github:sxyazi/yazi"."platforms.macos-x64"]
-checksum = "sha256:1e097c015a968aba29bbc11bffdb99a7aedaf92c78df09d00613283dac0f148c"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342404"
+checksum = "sha256:6846066f992c1688d8ec77431a3ab53f5ef268019fcef86e5649b8c27010868d"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871953"
 
 [tools."github:sxyazi/yazi"."platforms.macos-x64-baseline"]
-checksum = "sha256:1e097c015a968aba29bbc11bffdb99a7aedaf92c78df09d00613283dac0f148c"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342404"
+checksum = "sha256:6846066f992c1688d8ec77431a3ab53f5ef268019fcef86e5649b8c27010868d"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871953"
 
 [tools."github:sxyazi/yazi"."platforms.windows-x64"]
-checksum = "sha256:7d6c8e3f596f99dd8f20fc7b806c9195c4746c2b7100d0e90a7ff80c259c899a"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342407"
+checksum = "sha256:6c6c52a4b2648e179f917bdaa7c57e793d18561b380a8bfa025f10cd1b9b2ad1"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871959"
 
 [tools."github:sxyazi/yazi"."platforms.windows-x64-baseline"]
-checksum = "sha256:7d6c8e3f596f99dd8f20fc7b806c9195c4746c2b7100d0e90a7ff80c259c899a"
-url = "https://github.com/sxyazi/yazi/releases/download/v26.1.22/yazi-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/344342407"
+checksum = "sha256:6c6c52a4b2648e179f917bdaa7c57e793d18561b380a8bfa025f10cd1b9b2ad1"
+url = "https://github.com/sxyazi/yazi/releases/download/v26.5.6/yazi-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/sxyazi/yazi/releases/assets/412871959"
 
 [[tools."github:thomasschafer/scooter"]]
 version = "0.9.0"
@@ -872,5 +938,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.94.0"
 backend = "core:rust"

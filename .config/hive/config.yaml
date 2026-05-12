@@ -37,6 +37,8 @@ views:
         cmd: TmuxStart
       M:
         cmd: WatchSession
+      g:
+        cmd: LazyGitOpen
 
 review:
   comment_line_width: 100
@@ -252,3 +254,10 @@ usercommands:
     windows:
       - name: review-ralph
         command: "cd {{ .Path }} && bash ~/.config/hive/scripts/review-ralph.sh {{ .Form.iterations | shq }}"
+
+  ShareToBrain:
+    scope: ["review"]
+    help: "share focused doc to grafana/adaptive-telemetry-brain"
+    sh: |
+      cd "$(dirname {{ .Doc.Path | shq }})" && rice doc share {{ .Doc.Path | shq }}
+    silent: false

@@ -82,41 +82,12 @@ If the evolving coverage map grows beyond ~8 major areas:
 - Show suggested split with dependency order
 - If user agrees, generate separate files with a master spec linking them
 
-## Phase 3: Interactive Spec Preview (Opt-in)
-
-After the interview completes, use AskUserQuestion to ask: **"Generate an interactive HTML preview for visual review, or go straight to the markdown spec?"**
-
-If the user chooses the HTML preview:
-
-### Generate the Preview
-1. Read `STYLE_PRESETS.md` from this skill's directory for the complete HTML template, CSS, and JavaScript reference
-2. Build the HTML by mapping each coverage area to a styled section card, synthesizing Q&A content into prose with semantic HTML (`<p>`, `<ul>`, `<table>`, `<pre>`, `<blockquote>`)
-3. Every block-level content element must have `class="commentable"` and a unique `data-id="{sectionIndex}-{elementIndex}"` — this enables inline commenting
-4. Render the Decisions Log as a collapsible table (collapsed by default)
-5. Write the file to `<spec-output-dir>/.preview-<spec-name>.html`
-6. Open in the user's browser using Bash: `open` (macOS), `xdg-open` (Linux), or `start` (Windows)
-
-### Preview Instructions for the User
-Tell the user:
-- **Click any paragraph, bullet, or table row** to add an inline comment about what should change
-- **Click "Revise"** when done — all comments are auto-copied to clipboard
-- **Paste the feedback** back into Claude Code, and I'll revise and regenerate the preview
-- **Click "Approved"** when the spec looks right — paste the approval, and I'll generate the final markdown spec
-
-### Feedback Loop
-When the user pastes structured feedback:
-1. Parse each commented section and its notes
-2. For ambiguous comments, ask 1-2 clarifying follow-up questions using AskUserQuestion
-3. Regenerate the HTML preview with updated content (overwrite the same file)
-4. Tell the user to refresh or re-open the preview
-5. Repeat until the user pastes "All sections approved — generate final spec"
-
-If the user skips the preview, proceed directly to Phase 4.
+After the interview completes, proceed directly to Phase 4.
 
 ## Phase 4: Spec Generation
 
 ### Output Location
-After the preview is approved (or skipped), use AskUserQuestion to ask where to save the spec file.
+Save the spec to `.hive/specs/<spec-name>.md`. Create the `.hive/specs/` directory if it does not exist.
 
 ### Spec Format
 Generate **dynamic sections** based on what the interview revealed. Do NOT use a fixed template. Common sections include (but are not limited to):
@@ -142,12 +113,11 @@ If complexity exceeded the threshold and user agreed to split:
 - Write a master `spec-overview.md` linking all sub-specs with dependency graph
 
 ### State File
-Write interview state to `<spec-output-dir>/.<spec-name>.interview-state.json` containing:
+Write interview state to `.hive/specs/.<spec-name>.interview-state.json` containing:
 - All Q&A pairs
 - Coverage map state
 - Timestamp
 - Codebase analysis summary
-- `previewGenerated` (boolean) — whether HTML preview was generated
 - `feedbackRounds` (array) — each round's feedback and changes made
 
 This enables resume functionality.
@@ -164,13 +134,12 @@ Then generate the task breakdown from the spec's dependency graph and implementa
 
 ## Resume Behavior
 
-If a `.interview-state.json` file exists next to the input/output path:
+If a `.interview-state.json` file exists in `.hive/specs/`:
 1. Read the state file
 2. **Re-validate against current codebase** — Check if code changes invalidate any previous answers
 3. Flag stale answers and re-ask those specific questions
 4. Continue from where the interview left off
 5. Show the user what was already covered vs. what needs re-validation
-6. If `previewGenerated` is true but spec was not finalized, ask whether to continue the preview review or start fresh
 
 ## Security Hard Blocks
 

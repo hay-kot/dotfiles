@@ -5,7 +5,7 @@ description: >
   sub-agents to implement each task, critically reviews the output, and
   commits only code that passes quality checks.
 allowed-tools: "Bash(hive hc:*),Bash(git:*),Bash(task:*),Bash(make:*),Bash(go:*),Bash(bun:*),Read"
-argument-hint: "[task-id | --all | --limit N]"
+argument-hint: "[epic-id | task-id | --all | --limit N]"
 ---
 
 # Task Loop — Manager Role
@@ -27,11 +27,26 @@ git branch --show-current    # confirm on a feature branch (never main)
 ```
 
 If the working tree is dirty, stop and ask the user to stash or commit existing changes first.
-If on `main`, stop and ask the user to create a feature branch.
+
+If on `main`, create a feature branch automatically — do NOT stop and ask:
+
+1. Determine the branch name from context:
+   - If an epic or task ID was given: run `hive hc show <id>` and extract the title.
+     Lowercase it, strip punctuation, replace spaces with hyphens, take the first 4–5
+     meaningful words. Prefix with `feat/`. Example: "Add timers table migration" →
+     `feat/add-timers-table-migration`.
+   - If `--all` or no args: use the title of the first open task from
+     `hive hc list --status open` the same way.
+2. Run: `git checkout -b <branch-name>`
+3. Continue the loop on the new branch.
 
 ## Step 1: Select Tasks
 
-**If an argument was given** (e.g., `hc-42` or `hc-42,hc-43`):
+**If an epic ID was given** (e.g., `hc-ngmspm9i` — identified by being a parent with children):
+- Run `hive hc list --parent <id> --status open` to get all open child tasks
+- Skip any tasks marked `[blocked]`
+
+**If a task ID or comma-separated list was given** (e.g., `hc-42` or `hc-42,hc-43`):
 - Use those specific task IDs
 
 **If `--all` was given**:
@@ -39,11 +54,11 @@ If on `main`, stop and ask the user to create a feature branch.
 - Check parent/child hierarchy — skip tasks with open blockers
 
 **If `--limit N` was given**:
-- Take the first N tasks from `hive hc list --status open`
+- Take the first N unblocked tasks from `hive hc list --status open`
 
 **Default (no args)**:
 - Run `hive hc list --status open`
-- Present the list to the user and ask which tasks to run this loop iteration
+- Use all open, unblocked tasks (same as `--all`) — do NOT ask the user to pick
 
 ## Step 2: Build Context for Each Task
 
