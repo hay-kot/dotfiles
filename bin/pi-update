@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# pi-update - Update pi and its packages
+#
+# pi is managed by mise, so `pi update` can't update itself.
+# This script updates the pi tool via mise and reinstalls all npm packages
+# from ~/.pi/agent/settings.json.
+#
+# Uses --min-release-age=0 to bypass the global npmrc gate for pi packages,
+# which suppresses the "Package Updates Available" banner in pi.
+
+set -euo pipefail
+
+SETTINGS="$HOME/.pi/agent/settings.json"
+UPDATE_PI=true
+UPDATE_PACKAGES=true
+
+usage() {
+  echo "Usage: pi-update [--self | --extensions]"
+  echo ""
+  echo "  --self        Update pi only (via mise)"
+  echo "  --extensions  Update packages only"
+  echo "  (no args)     Update both"
+  exit 0
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --self)       UPDATE_PACKAGES=false ;;
+    --extensions) UPDATE_PI=false ;;
+    -h|--help)    usage ;;
+    *) echo "Unknown argument: $arg"; usage ;;
+  esac
+done
+
+if $UPDATE_PI; then
+  echo "==> Upgrading pi via mise..."
+  mise upgrade "npm:@earendil-works/pi-coding-agent"
+fi
+
+if $UPDATE_PACKAGES; then
+  if [[ ! -f "$SETTINGS" ]]; then
+    echo "No settings file found at $SETTINGS"
+    exit 1
+  fi
+
+  # Extract package names from settings, stripping "npm:" prefix and version pins
+  mapfile -t packages < <(
+    jq -r '.packages[]? | select(type == "string") | select(startswith("npm:"))' "$SETTINGS" \
+      | sed 's|^npm:||' \
+      | sed 's|@[0-9].*||'
+  )
+
+  if [[ ${#packages[@]} -eq 0 ]]; then
+    echo "No npm packages found in $SETTINGS"
+    exit 0
+  fi
+
+  echo "==> Updating pi packages: ${packages[*]}"
+  npm install -g --min-release-age=0 "${packages[@]}"
+  echo "==> Done."
+fi

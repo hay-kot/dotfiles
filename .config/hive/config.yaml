@@ -12,17 +12,17 @@ tmux:
   preview_window_matcher: [claude, aider, codex, cursor, crush, agent, pi, llm, opencode, orchestrator]
 
 agents:
-  #agent_selector: true
-  default: claude
-  claude:
-    command: claude
-    flags: ["--dangerously-skip-permissions"]
+  agent_selector: true
+  default: pi
   pi:
     command: pi
     flags: []
-  opencode:
-    command: opencode
-    flags: ["--agent", "free-permissions-runner"]
+  claude:
+    command: claude
+    flags: ["--dangerously-skip-permissions"]
+  codex:
+    command: codex
+    flags: ["--dangerously-bypass-approvals-and-sandbox"]
 
 views:
   store:
