@@ -30,7 +30,7 @@ mise install
 
 [tasks.stow]
 description = "runs stow command with arguments"
-run = "stow -t ~/ ."
+run = "stow --no-folding -t ~/ ."
 
 # ---------------------------------------------------------
 # mmdot

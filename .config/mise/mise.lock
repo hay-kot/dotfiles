@@ -913,6 +913,10 @@ url = "https://nodejs.org/dist/v25.8.0/node-v25.8.0-win-x64.zip"
 version = "2.0.75"
 backend = "npm:@anthropic-ai/claude-code"
 
+[[tools."npm:@earendil-works/pi-coding-agent"]]
+version = "0.74.0"
+backend = "npm:@earendil-works/pi-coding-agent"
+
 [[tools."npm:eslint"]]
 version = "10.0.3"
 backend = "npm:eslint"
@@ -938,5 +942,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"

@@ -16,6 +16,7 @@ rust = "latest"
 "npm:ts-node" = "latest"
 "npm:pnpm" = "latest"
 "npm:yarn" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "0.74.0"
 
 # -------------------------------------------------------
 # Go

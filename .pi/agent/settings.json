@@ -1,0 +1,31 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
+  "theme": "dark",
+  "enableInstallTelemetry": false,
+  "hideThinkingBlock": true,
+  "enableSkillCommands": true,
+  "packages": [
+    "npm:pi-subagents",
+    "npm:pi-web-access",
+    "npm:@juicesharp/rpiv-ask-user-question"
+  ],
+  "skills": [
+    "./skills"
+  ],
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3
+  },
+  "warnings": {
+    "anthropicExtraUsage": false
+  },
+  "editorPaddingX": 1,
+  "lastChangelogVersion": "0.74.0"
+}
