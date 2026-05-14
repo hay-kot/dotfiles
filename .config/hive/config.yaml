@@ -9,13 +9,17 @@ context:
 tmux:
   enabled: [tmux]
   poll_interval: 500ms
-  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, llm, opencode, orchestrator]
+  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, pi, llm, opencode, orchestrator]
 
 agents:
+  #agent_selector: true
   default: claude
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]
+  pi:
+    command: pi
+    flags: []
   opencode:
     command: opencode
     flags: ["--agent", "free-permissions-runner"]
