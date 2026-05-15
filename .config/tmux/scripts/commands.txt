@@ -6,6 +6,8 @@ Codex|New window with Codex|tmux new-window -n codex "codex"
 Orchestrator|Claude orchestrator window primed with /agent-orchestrator|tmux new-window -n orchestrator "claude --dangerously-skip-permissions"; sleep 2; tmux send-keys -t :orchestrator -l "/agent-orchestrator"; sleep 0.5; tmux send-keys -t :orchestrator C-m
 Lazygit|Open lazygit popup|tmux display-popup -E -w 80% -h 80% "lazygit"
 Diff Review|Review diff against main|tmux new-window -n review "dr"
+Code Review (tuicr)|Interactive TUI code review with comments|tmux display-popup -E -w 95% -h 95% -d "#{pane_current_path}" "tuicr"
+Code Review PR (tuicr)|Review a GitHub PR interactively|tmux display-popup -E -w 95% -h 95% -d "#{pane_current_path}" "$SHELL -lic 'echo -n \"PR number: \"; read pr; tuicr pr $pr'"
 Solo Up|Start solo environment|solo up
 Solo Down|Stop solo environment|solo down
 Lazydocker|Docker management|tmux display-popup -E -w 90% -h 90% "lazydocker"

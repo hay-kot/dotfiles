@@ -52,6 +52,7 @@ rust = "latest"
 
 "github:sxyazi/yazi" = "v26.5.6"         # file explorer tui
 "github:thomasschafer/scooter" = "latest" # find and replace mechanism
+"github:agavra/tuicr" = "latest"          # tui code review
 "cargo:sleek" = "latest"                  # sql formatter
 
 [settings]

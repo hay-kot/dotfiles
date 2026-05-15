@@ -1,0 +1,19 @@
+# Tokyo Night Storm - matches tmux theme
+theme = "tokyo-night-storm"
+
+diff_view = "unified"
+show_file_list = true
+mouse = true
+leader = ";"
+wrap = false
+cursor_line = true
+transparent_background = true
+scroll_offset = 3
+
+comment_types = [
+  { id = "issue", definition = "problems that must be fixed before merge", color = "red" },
+  { id = "suggestion", definition = "possible improvements to consider", color = "yellow" },
+  { id = "note", definition = "observations or questions for clarification", color = "blue" },
+  { id = "praise", definition = "positive feedback on good patterns", color = "green" },
+  { id = "nit", label = "nitpick", definition = "small optional tweaks", color = "#565f89" },
+]

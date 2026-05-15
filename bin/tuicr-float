@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Launch tuicr in a tmux floating popup window.
+# Usage: tuicr-float [directory] [tuicr-args...]
+#
+# When run outside tmux, falls back to running tuicr directly.
+# When --stdout is passed, captures output and prints it after tuicr exits.
+
+POPUP_WIDTH="${TUICR_POPUP_WIDTH:-95%}"
+POPUP_HEIGHT="${TUICR_POPUP_HEIGHT:-95%}"
+
+target_dir="${1:-.}"
+shift 2>/dev/null || true
+tuicr_args=("$@")
+
+target_dir="$(cd "$target_dir" && pwd)"
+
+if ! git -C "$target_dir" rev-parse --git-dir &>/dev/null; then
+    echo "Error: not a git repository: $target_dir" >&2
+    exit 1
+fi
+
+if ! command -v tuicr &>/dev/null; then
+    echo "Error: tuicr not found. Run: mise install" >&2
+    exit 1
+fi
+
+# Outside tmux: run directly
+if [[ -z "${TMUX:-}" ]]; then
+    exec tuicr "${tuicr_args[@]}" -C "$target_dir"
+fi
+
+# Check for --stdout in args to capture output
+use_stdout=false
+for arg in "${tuicr_args[@]}"; do
+    if [[ "$arg" == "--stdout" ]]; then
+        use_stdout=true
+        break
+    fi
+done
+
+if [[ "$use_stdout" == true ]]; then
+    output_file=$(mktemp /tmp/tuicr-output.XXXXXX)
+    tmux display-popup -E -w "$POPUP_WIDTH" -h "$POPUP_HEIGHT" -d "$target_dir" \
+        "tuicr ${tuicr_args[*]} > '$output_file' 2>&1"
+
+    if [[ -s "$output_file" ]]; then
+        echo "=== TUICR INSTRUCTIONS ==="
+        cat "$output_file"
+        echo "=== END TUICR INSTRUCTIONS ==="
+    else
+        echo "No instructions exported from tuicr."
+    fi
+    rm -f "$output_file"
+else
+    tmux display-popup -E -w "$POPUP_WIDTH" -h "$POPUP_HEIGHT" -d "$target_dir" \
+        "tuicr ${tuicr_args[*]}"
+fi
