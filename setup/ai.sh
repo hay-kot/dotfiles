@@ -27,8 +27,21 @@ ensure_symlink() {
   ln -sfn "$target" "$link"
 }
 
-# Claude and Pi skills/settings are handled by stow.
-# Only Codex links need manual setup.
+# Pi extensions, skills, and settings.
+# Stow can't manage ~/.pi as a single symlink because it contains local
+# state (auth.json, sessions/, run-history.jsonl). Individual items are
+# symlinked instead.
+PI_AGENT_DIR="$HOME/.pi/agent"
+mkdir -p "$PI_AGENT_DIR"
+
+ensure_symlink "$DOTFILES_DIR/.pi/agent/AGENTS.md" "$PI_AGENT_DIR/AGENTS.md"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/settings.json" "$PI_AGENT_DIR/settings.json"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/skills" "$PI_AGENT_DIR/skills"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/extensions" "$PI_AGENT_DIR/extensions"
+
+echo "Linked Pi agent config: $PI_AGENT_DIR"
+
+# Codex links need manual setup.
 ensure_symlink "$SOURCE_SKILLS" "$CODEX_CLAUDE_LINK"
 
 echo "Linked Codex skills: $CODEX_CLAUDE_LINK -> $SOURCE_SKILLS"
