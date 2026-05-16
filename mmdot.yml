@@ -302,3 +302,6 @@ age:
   files:
     - src: secrets/design-doc-template.md.age
       dest: .ai/skills/design-doc/templates/design-doc.md
+    - src: secrets/sigil-pi-config.json.age
+      dest: ~/.config/sigil-pi/config.json
+      perm: "0600"
