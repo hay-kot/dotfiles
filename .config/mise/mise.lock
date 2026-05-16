@@ -533,10 +533,70 @@ url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/385979816"
 version = "0.7.0"
 backend = "github:hay-kot/mmdot"
 
+[tools."github:hay-kot/mmdot"."platforms.linux-arm64"]
+checksum = "sha256:2e51d90fb713269da47392d50cc2100ecb3e115215bf2c27d937cdf99f9f9730"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507467"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-arm64-musl"]
+checksum = "sha256:2e51d90fb713269da47392d50cc2100ecb3e115215bf2c27d937cdf99f9f9730"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507467"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64"]
+checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-baseline"]
+checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-musl"]
+checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+github_attestations = "unavailable"
+
 [tools."github:hay-kot/mmdot"."platforms.macos-arm64"]
 checksum = "sha256:2b033455f82bcd66bf298cfe1fe56440ba97b7402cad88ce23461696a863eab7"
 url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507453"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.macos-x64"]
+checksum = "sha256:7f8efd2dae5b89a5c3aa53e4879767d744d9f7f196c64dc5a94b897355651307"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507452"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.macos-x64-baseline"]
+checksum = "sha256:7f8efd2dae5b89a5c3aa53e4879767d744d9f7f196c64dc5a94b897355651307"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507452"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.windows-x64"]
+checksum = "sha256:b5198606a0eb327471decc588ddeba5d19191a609edb5f8a9ee93bc7bcd1a55e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507455"
+github_attestations = "unavailable"
+
+[tools."github:hay-kot/mmdot"."platforms.windows-x64-baseline"]
+checksum = "sha256:b5198606a0eb327471decc588ddeba5d19191a609edb5f8a9ee93bc7bcd1a55e"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507455"
 github_attestations = "unavailable"
 
 [[tools."github:hay-kot/scaffold"]]
@@ -957,5 +1017,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.94.0"
+version = "1.93.1"
 backend = "core:rust"
