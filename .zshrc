@@ -278,3 +278,4 @@ source <(mi completion zsh)
 # Load system local zshconfig if exists
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"
 export SOPS_AGE_KEY_FILE=~/.age/key.txt
+export HIVE_LOG_LEVEL=debug
