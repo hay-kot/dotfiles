@@ -9,7 +9,7 @@ context:
 tmux:
   enabled: [tmux]
   poll_interval: 500ms
-  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, pi, llm, opencode, orchestrator]
+  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, opencode, orchestrator]
 
 agents:
   agent_selector: true
