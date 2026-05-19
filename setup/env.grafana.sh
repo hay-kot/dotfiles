@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp -f ./files/grafana.local.env $HOME/.shell.env
+cp -f ./files/grafana.local.env "$HOME/.shell.env"

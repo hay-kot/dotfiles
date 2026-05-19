@@ -12,10 +12,26 @@ echo "git: setting user.email"
 git config --global user.email 64056131+hay-kot@users.noreply.github.com
 
 # -------------------------------------
+# Git Commit Signing
+
+SIGNING_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIItPXIuTYpgamCjUnv40GA4Oo5Aji5x86pGwm9tuH33T"
+ALLOWED_SIGNERS_FILE="$HOME/.config/git/allowed_signers"
+
+# Configure SSH commit signing. The allowed signers file lets local Git verify
+# signatures made by this key.
+echo "git: configure ssh commit signing"
+mkdir -p "$(dirname "$ALLOWED_SIGNERS_FILE")"
+printf '64056131+hay-kot@users.noreply.github.com %s\n' "$SIGNING_KEY" >"$ALLOWED_SIGNERS_FILE"
+git config --global gpg.format ssh
+git config --global user.signingkey "$SIGNING_KEY"
+git config --global commit.gpgsign true
+git config --global gpg.ssh.allowedSignersFile "$ALLOWED_SIGNERS_FILE"
+
+# -------------------------------------
 # Git Global Ignore File
 
 echo "git: copy global git ignore"
-cp ./files/global.gitignore $HOME/.gitignore_global
+cp ./files/global.gitignore "$HOME/.gitignore_global"
 
 echo "git: setting core.excludesFile to $HOME/.gitignore_global"
 git config --global core.excludesFile "$HOME/.gitignore_global"
@@ -23,6 +39,7 @@ git config --global core.excludesFile "$HOME/.gitignore_global"
 # -------------------------------------
 # Git Config
 #
+echo "git: set default branch to main"
 git config --global init.defaultBranch main
 
 echo "git: enable rerere"

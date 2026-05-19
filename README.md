@@ -48,7 +48,7 @@ mmdot run @personal   # or @grafana for work machine
 
 1. **Deploy SSH key to servers** — `ssh-copy-id <host>` for each homelab host
 2. **Add SSH public key to GitHub/Gitea** — `ssh-add -L` to get the public key
-3. **GPG key** — generate a fresh key (see below)
+3. **Git commit signing** — configured by `setup/git.sh` using SSH signing
 
 ## SSH Keys
 
@@ -56,21 +56,8 @@ SSH keys are managed via Bitwarden's SSH agent. No key files on disk — the age
 keys directly. The CI/Ansible key is stored in Bitwarden but disabled from the SSH agent;
 retrieve it with `rbw` when needed.
 
-## GPG Keys
+## Git Commit Signing
 
-Generate a fresh key on each new machine rather than transferring.
-
-```sh
-gpg --full-generate-key  # RSA 4096, no expiry or your preference
-gpg --list-secret-keys --keyid-format long  # note the new KEY_ID
-gpg --armor --export KEY_ID  # copy to GitHub → Settings → SSH and GPG keys
-git config --global user.signingkey KEY_ID
-git config --global commit.gpgsign true
-```
-
-Revoke the old key after confirming the new one works:
-
-```sh
-gpg --edit-key OLD_KEY_ID revkey
-# Remove the old key from GitHub
-```
+`setup/git.sh` configures SSH commit signing and local signature verification with
+`gpg.ssh.allowedSignersFile`. Add the signing SSH public key to GitHub/Gitea so hosted
+commits show as verified.
