@@ -46,6 +46,8 @@ Store generated markdown files (plans, context, notes) in `.hive/` when availabl
 
 Use `hive hc` to track work and manage tasks across sessions. Create issues for non-trivial tasks, update status as work progresses, and organize with epics and parent/child hierarchy.
 
+When selecting GitHub issues to work on, prefer `ghissues` for LLM-friendly issue summaries before using raw `gh issue list` output. Use `ghissues` with no arguments for the current repo, or `ghissues --repo owner/name` for an explicit repo.
+
 ## Maximize Efficiency
 
 **Parallel operations:** Run multiple searches, reads, and greps in single messages
