@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+# Usage:
+#   ghissues                         # open issues for current repo, page 1
+#   ghissues --repo owner/name        # open issues for explicit repo
+#   ghissues --limit 20 --page 2      # deterministic pagination
+#   ghissues --state all              # open and closed issues
+#
+# Print GitHub issues as LLM-friendly markdown.
+set -euo pipefail
+
+usage() {
+	cat <<'EOF'
+Usage: ghissues [flags]
+
+Print GitHub issues as LLM-friendly markdown.
+
+Flags:
+  --repo owner/name       Repository to query. Defaults to the current git repo.
+  --limit n              Issues per page, 1-100. Default: 20.
+  --page n               Page number, starting at 1. Default: 1.
+  --state open|closed|all Issue state. Default: open.
+  --excerpt n            Body excerpt length in characters. Default: 500.
+  -h, --help             Show this help.
+
+Examples:
+  ghissues
+  ghissues --repo cli/cli --limit 10 --page 3
+  ghissues --state all --excerpt 1000
+EOF
+}
+
+repo=""
+limit=20
+page=1
+state="open"
+excerpt_length=500
+
+require_cmd() {
+	if ! command -v "$1" >/dev/null 2>&1; then
+		echo "Error: required command not found: $1" >&2
+		exit 1
+	fi
+}
+
+parse_positive_int() {
+	local name="$1"
+	local value="$2"
+
+	if [[ ! "$value" =~ ^[0-9]+$ ]] || [[ "$value" -lt 1 ]]; then
+		echo "Error: $name must be a positive integer" >&2
+		exit 1
+	fi
+}
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--repo)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --repo requires owner/name" >&2
+			exit 1
+		}
+		repo="$2"
+		shift 2
+		;;
+	--limit)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --limit requires a value" >&2
+			exit 1
+		}
+		limit="$2"
+		shift 2
+		;;
+	--page)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --page requires a value" >&2
+			exit 1
+		}
+		page="$2"
+		shift 2
+		;;
+	--state)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --state requires open, closed, or all" >&2
+			exit 1
+		}
+		state="$2"
+		shift 2
+		;;
+	--excerpt)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --excerpt requires a value" >&2
+			exit 1
+		}
+		excerpt_length="$2"
+		shift 2
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*)
+		echo "Error: unknown argument: $1" >&2
+		usage >&2
+		exit 1
+		;;
+	esac
+done
+
+require_cmd gh
+require_cmd jq
+
+parse_positive_int "--limit" "$limit"
+parse_positive_int "--page" "$page"
+parse_positive_int "--excerpt" "$excerpt_length"
+
+if [[ "$limit" -gt 100 ]]; then
+	echo "Error: --limit cannot exceed 100" >&2
+	exit 1
+fi
+
+case "$state" in
+open | closed | all) ;;
+*)
+	echo "Error: --state must be open, closed, or all" >&2
+	exit 1
+	;;
+esac
+
+if [[ -z "$repo" ]]; then
+	repo=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null || true)
+	if [[ -z "$repo" ]]; then
+		echo "Error: could not determine current GitHub repo. Pass --repo owner/name." >&2
+		exit 1
+	fi
+fi
+
+if [[ ! "$repo" =~ ^[^/[:space:]]+/[^/[:space:]]+$ ]]; then
+	echo "Error: --repo must be in owner/name format" >&2
+	exit 1
+fi
+
+query="repo:$repo type:issue"
+if [[ "$state" != "all" ]]; then
+	query="$query state:$state"
+fi
+
+json=$(gh api -X GET search/issues \
+	-f "q=$query" \
+	-f "per_page=$limit" \
+	-f "page=$page")
+
+jq -r \
+	--arg repo "$repo" \
+	--arg query "$query" \
+	--arg state "$state" \
+	--argjson limit "$limit" \
+	--argjson page "$page" \
+	--argjson excerptLength "$excerpt_length" \
+	'
+  def names($items):
+    if ($items | length) == 0 then "none" else ($items | map(.name // .login) | join(", ")) end;
+
+  def excerpt($max):
+    (. // "")
+    | gsub("\\r"; "")
+    | gsub("\\n+"; " ")
+    | gsub("[[:space:]]+"; " ")
+    | sub("^[[:space:]]+"; "")
+    | sub("[[:space:]]+$"; "")
+    | if (. | length) > $max then .[0:$max] + "…" else . end;
+
+  def issue_markdown:
+    "### #\(.number) \(.title)\n"
+    + "- URL: \(.html_url)\n"
+    + "- State: \(.state)\n"
+    + "- Labels: \(names(.labels))\n"
+    + "- Assignees: \(names(.assignees))\n"
+    + "- Updated: \(.updated_at)\n"
+    + "- Comments: \(.comments)\n"
+    + "- Body excerpt: \((.body | excerpt($excerptLength)) // "")\n";
+
+  (.total_count / $limit | ceil) as $totalPages |
+  "# GitHub Issues: \($repo)\n\n"
+  + "- Query: `\($query)`\n"
+  + "- State: \($state)\n"
+  + "- Page: \($page)\n"
+  + "- Limit: \($limit)\n"
+  + "- Returned: \(.items | length)\n"
+  + "- Total matches: \(.total_count)\n"
+  + "- Total pages: \($totalPages)\n"
+  + "- Has next page: \(if $page < $totalPages then "yes" else "no" end)\n\n"
+  + "## Next page command\n\n"
+  + (if $page < $totalPages then "```sh\nghissues --repo \($repo) --state \($state) --limit \($limit) --page \($page + 1)\n```\n" else "No next page.\n" end)
+  + "\n## Issues\n\n"
+  + (if (.items | length) == 0 then "No issues found.\n" else (.items | map(issue_markdown) | join("\n")) end)
+  ' <<<"$json"

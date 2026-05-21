@@ -3,6 +3,7 @@ prefix_rule(pattern=["hive", "msg", "pub"], decision="allow")
 prefix_rule(pattern=["/bin/zsh", "-lc", "hive msg"], decision="allow")
 prefix_rule(pattern=["zsh", "-lc", "hive msg"], decision="allow")
 prefix_rule(pattern=["hive", "hc"], decision="allow")
+prefix_rule(pattern=["ghissues"], decision="allow")
 
 # forbidden: mirror of claude permissions.deny
 prefix_rule(pattern=["rm", "-rf"], decision="forbidden", justification="destructive recursive delete")

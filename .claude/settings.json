@@ -40,6 +40,7 @@
       "Bash(gh issue view:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue status:*)",
+      "Bash(ghissues:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr list:*)",
       "Bash(gh pr status:*)",
@@ -149,6 +150,5 @@
   "gitAttribution": false,
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
-  },
-  "model": "sonnet"
+  }
 }
