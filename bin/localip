@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BOLD='\033[1m'
+DIM='\033[2m'
+CYAN='\033[36m'
+GREEN='\033[32m'
+RESET='\033[0m'
+
+os="$(uname -s)"
+
+print_iface() {
+  local iface="$1"
+  local ip="$2"
+  local family="$3"
+  printf "${CYAN}${BOLD}%-14s${RESET}  ${GREEN}%-20s${RESET}  ${DIM}%s${RESET}\n" "$iface" "$ip" "$family"
+}
+
+echo
+printf "${BOLD}Local IP Addresses${RESET}\n"
+printf "${DIM}%-14s  %-20s  %s${RESET}\n" "Interface" "Address" "Family"
+printf "${DIM}%s${RESET}\n" "──────────────────────────────────────────"
+
+re_mac_iface='^([a-zA-Z0-9]+): '
+re_inet4='^[[:space:]]+inet[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)'
+re_inet6='^[[:space:]]+inet6[[:space:]]+([a-f0-9:]+)'
+re_linux_iface='^[0-9]+:[[:space:]]+([a-zA-Z0-9@._-]+):'
+re_linux_inet4='inet[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/'
+re_linux_inet6='inet6[[:space:]]+([a-f0-9:]+)/'
+
+if [[ "$os" == "Darwin" ]]; then
+  current_iface=""
+  while IFS= read -r line; do
+    if [[ "$line" =~ $re_mac_iface ]]; then
+      current_iface="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ $re_inet4 ]]; then
+      ip="${BASH_REMATCH[1]}"
+      [[ "$ip" == "127.0.0.1" ]] && continue
+      print_iface "$current_iface" "$ip" "IPv4"
+    elif [[ "$line" =~ $re_inet6 ]]; then
+      ip="${BASH_REMATCH[1]}"
+      [[ "$ip" == "::1" ]] && continue
+      [[ "$ip" == fe80* ]] && continue
+      print_iface "$current_iface" "$ip" "IPv6"
+    fi
+  done < <(ifconfig)
+else
+  current_iface=""
+  while IFS= read -r line; do
+    if [[ "$line" =~ $re_linux_iface ]]; then
+      current_iface="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ $re_linux_inet4 ]]; then
+      ip="${BASH_REMATCH[1]}"
+      [[ "$ip" == "127.0.0.1" ]] && continue
+      print_iface "$current_iface" "$ip" "IPv4"
+    elif [[ "$line" =~ $re_linux_inet6 ]]; then
+      ip="${BASH_REMATCH[1]}"
+      [[ "$ip" == "::1" ]] && continue
+      [[ "$ip" == fe80* ]] && continue
+      print_iface "$current_iface" "$ip" "IPv6"
+    fi
+  done < <(ip addr show)
+fi
+
+echo

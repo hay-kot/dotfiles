@@ -1,55 +1,72 @@
 #!/bin/bash
-# Claude Code status line script
+# Claude Code status line - custom Pi footer
 
-# Read JSON from Claude Code stdin
 input=$(cat)
-context_pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' 2>/dev/null | cut -d. -f1)
 
-# Icons (nerd font - UTF-8 byte sequences)
-icon_folder=$(printf '\xef\x81\xbb')   # U+F07B
-icon_branch=$(printf '\xee\x9c\xa5')   # U+E725
-icon_tasks=$(printf '\xef\x82\xae')    # U+F0AE
+# Parse JSON
+ctx_used=$(echo "$input" | jq -r '.context_window.total_input_tokens // empty' 2>/dev/null)
+ctx_total=$(echo "$input" | jq -r '.context_window.context_window_size // empty' 2>/dev/null)
+ctx_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty' 2>/dev/null | cut -d. -f1)
+model=$(echo "$input" | jq -r '.model.id // empty' 2>/dev/null)
+thinking=$(echo "$input" | jq -r '.effort.level // empty' 2>/dev/null)
 
-# Get directory name (just the basename)
-dir_name=$(basename "$PWD")
+# Colors
+R=$'\033[0m'
+DIM=$'\033[2m'
+ACCENT=$'\033[96m'
+MUTED=$'\033[37m'
+WARN=$'\033[33m'
+ERR=$'\033[31m'
 
-output="$icon_folder $dir_name"
+icon_branch=$(printf '\xee\x9c\xa5')  # U+E725
 
-# Get git info if in a repo
-if git rev-parse --git-dir &>/dev/null; then
+abbrev() {
+    local n=$1
+    [[ "$n" =~ ^[0-9]+$ ]] || { echo "?"; return; }
+    if   (( n >= 1000000 )); then printf '%dm' $(( n / 1000000 ))
+    elif (( n >= 1000    )); then printf '%dk' $(( n / 1000 ))
+    else                          printf '%d'  "$n"
+    fi
+}
+
+# Git branch
+branch=""
+git rev-parse --git-dir &>/dev/null && \
     branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
-    output="$output • $icon_branch $branch"
+
+if [ -n "$branch" ]; then
+    line_c="${ACCENT}${icon_branch} ${branch}${R}"
+else
+    line_c="${DIM}no branch${R}"
 fi
 
-# Get hive hc task status
-hc_json=$(hive hc list --json 2>/dev/null)
-if [ $? -eq 0 ] && [ -n "$hc_json" ]; then
-    open=$(echo "$hc_json" | jq '[.[] | select(.status == "open" or .status == "in_progress")] | length' 2>/dev/null)
-    done=$(echo "$hc_json" | jq '[.[] | select(.status == "done")] | length' 2>/dev/null)
-    total=$((open + done))
+sep_c="${MUTED}  ·  ${R}"
 
-    if [ "$total" -gt 0 ]; then
-        output="$output • $icon_tasks $done/$total"
+# Context usage
+if [ -n "$ctx_used" ] && [ -n "$ctx_total" ]; then
+    u=$(abbrev "$ctx_used")
+    t=$(abbrev "$ctx_total")
+    tokens="${u}/${t}"
+    if [[ "$ctx_pct" =~ ^[0-9]+$ ]]; then
+        (( ctx_pct >= 75 )) && pc="$ERR" || { (( ctx_pct >= 65 )) && pc="$WARN" || pc="$MUTED"; }
+        line_c+="${sep_c}${MUTED}${tokens}${R} ${pc}${ctx_pct}%${R}"
+    else
+        line_c+="${sep_c}${MUTED}${tokens}${R}"
     fi
+else
+    line_c+="${sep_c}${MUTED}ctx ?${R}"
 fi
 
-# Get hive inbox status if in a session
-icon_inbox=$(printf '\xef\x81\xa0')   # U+F060 (envelope)
-session_json=$(hive session info --json 2>/dev/null)
-if [ $? -eq 0 ] && [ -n "$session_json" ]; then
-    inbox=$(echo "$session_json" | jq -r '.inbox // empty' 2>/dev/null)
-    if [ -n "$inbox" ]; then
-        new_msgs=$(hive msg sub -t "$inbox" --new --peek 2>/dev/null | jq -s 'length' 2>/dev/null)
-        if [ -n "$new_msgs" ] && [ "$new_msgs" -gt 0 ]; then
-            output="$output • $icon_inbox $new_msgs"
-        fi
-    fi
+# Model
+if [ -n "$model" ]; then
+    line_c+="${sep_c}${MUTED}${model}${R}"
+else
+    line_c+="${sep_c}${MUTED}no model${R}"
 fi
 
-# Context window usage
-if [ -n "$context_pct" ] && [ "$context_pct" -gt 0 ] 2>/dev/null; then
-    icon_ctx=$(printf '\xef\x8b\x88')   # U+F2C8 (thermometer)
-    output="$output • $icon_ctx ${context_pct}%"
+# Thinking effort
+if [ -n "$thinking" ]; then
+    line_c+="${sep_c}${MUTED}${thinking}${R}"
 fi
 
-echo "$output"
+printf ' %s\n' "$line_c"
