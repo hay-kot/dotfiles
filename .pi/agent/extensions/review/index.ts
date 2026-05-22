@@ -29,6 +29,7 @@ type TuiInstance = {
 };
 
 let tuiInstance: TuiInstance | undefined;
+let activeReview: { controller: AbortController; label: string } | undefined;
 
 function isUrl(value: string): boolean {
   return value.startsWith("http://") || value.startsWith("https://");
@@ -132,6 +133,33 @@ function isGitRepo(dir: string): boolean {
   }
 }
 
+async function sendUserPrompt(
+  ctx: ExtensionCommandContext,
+  pi: ExtensionAPI,
+  prompt: string,
+) {
+  if (ctx.isIdle()) {
+    await pi.sendUserMessage(prompt);
+    return;
+  }
+
+  await pi.sendUserMessage(prompt, { deliverAs: "followUp" });
+}
+
+function startActiveReview(label: string): AbortController | null {
+  if (activeReview) return null;
+
+  const controller = new AbortController();
+  activeReview = { controller, label };
+  return controller;
+}
+
+function finishActiveReview(controller: AbortController) {
+  if (activeReview?.controller === controller) {
+    activeReview = undefined;
+  }
+}
+
 function parseReviewOutput(output: string): {
   hasComments: boolean;
   commentCount: number;
@@ -213,24 +241,80 @@ async function handleCodeReview(
     label = trimmed;
   }
 
-  ctx.ui.setStatus("review-code", `plannotator review: ${label}`);
-  try {
-    const result = await pi.exec("plannotator", plannotatorArgs, {
-      signal: ctx.signal,
-    });
-    if (result.code !== 0 && !result.killed) {
-      const err =
-        result.stderr.trim() || result.stdout.trim() || `exit ${result.code}`;
-      ctx.ui.notify(`plannotator review failed: ${err}`, "error");
-    }
-  } catch (error) {
+  const controller = startActiveReview(label);
+  if (!controller) {
     ctx.ui.notify(
-      `plannotator failed to launch: ${(error as Error).message}`,
-      "error",
+      `A review is already running: ${activeReview?.label}. Run /review:cancel first.`,
+      "warning",
     );
-  } finally {
-    ctx.ui.setStatus("review-code", "");
+    return;
   }
+
+  ctx.ui.notify(
+    `Starting plannotator review for ${label}. Run /review:cancel to stop it.`,
+    "info",
+  );
+  ctx.ui.setStatus("review-code", `plannotator review: ${label}`);
+
+  void (async () => {
+    let stdout = "";
+    let stderr = "";
+    let code = 0;
+    let killed = false;
+    try {
+      const result = await pi.exec("plannotator", plannotatorArgs, {
+        cwd: ctx.cwd,
+        signal: controller.signal,
+      });
+      stdout = result.stdout;
+      stderr = result.stderr;
+      code = result.code;
+      killed = result.killed;
+    } catch (error) {
+      if (controller.signal.aborted) {
+        ctx.ui.notify(`plannotator review cancelled: ${label}`, "info");
+      } else {
+        ctx.ui.notify(
+          `plannotator failed to launch: ${(error as Error).message}`,
+          "error",
+        );
+      }
+      return;
+    } finally {
+      ctx.ui.setStatus("review-code", "");
+      finishActiveReview(controller);
+    }
+
+    if (controller.signal.aborted || killed) {
+      ctx.ui.notify(`plannotator review cancelled: ${label}`, "info");
+      return;
+    }
+
+    const feedback = stdout.trim() || stderr.trim();
+    if (code !== 0) {
+      ctx.ui.notify(
+        `plannotator review failed: ${feedback || `exit ${code}`}`,
+        "error",
+      );
+    }
+
+    if (!feedback) {
+      ctx.ui.notify("plannotator review completed with no feedback.", "info");
+      return;
+    }
+
+    const prompt = [
+      `Plannotator code review for ${label} (exit ${code}).`,
+      "",
+      "Review feedback:",
+      "",
+      feedback,
+      "",
+      "Address all actionable review comments. If no code changes are needed, explain why and stop.",
+    ].join("\n");
+
+    await sendUserPrompt(ctx, pi, prompt);
+  })();
 }
 
 async function pickDoc(ctx: ExtensionCommandContext): Promise<string | null> {
@@ -262,6 +346,10 @@ async function handleTuicrReview(
     return;
   }
 
+  const target = path.relative(ctx.cwd, dir) || dir;
+  const scope = revisions ? `${target} (${revisions})` : target;
+  ctx.ui.notify(`Opening tuicr review for ${scope}...`, "info");
+
   try {
     const output = runTuicrInline(dir, revisions);
     const parsed = parseReviewOutput(output);
@@ -278,7 +366,9 @@ async function handleTuicrReview(
       `📝 Review: ${parsed.commentCount} comment${parsed.commentCount !== 1 ? "s" : ""} received`,
     ]);
 
-    pi.sendUserMessage(
+    await sendUserPrompt(
+      ctx,
+      pi,
       `Here is my code review from tuicr. Please address all comments:\n\n${parsed.text}`,
     );
 
@@ -304,46 +394,73 @@ async function handleDocReview(
   }
 
   const relForDisplay = path.relative(ctx.cwd, target) || target;
-  ctx.ui.setStatus("review-doc", `plannotator gate: ${relForDisplay}`);
-
-  let stdout = "";
-  let stderr = "";
-  let code = 0;
-  try {
-    const result = await pi.exec(
-      "plannotator",
-      ["annotate", target, "--gate", "--json"],
-      { signal: ctx.signal },
-    );
-    stdout = result.stdout;
-    stderr = result.stderr;
-    code = result.code;
-  } catch (error) {
+  const controller = startActiveReview(relForDisplay);
+  if (!controller) {
     ctx.ui.notify(
-      `plannotator failed to launch: ${(error as Error).message}`,
-      "error",
+      `A review is already running: ${activeReview?.label}. Run /review:cancel first.`,
+      "warning",
     );
     return;
-  } finally {
-    ctx.ui.setStatus("review-doc", "");
   }
 
-  const feedback =
-    stdout.trim() || stderr.trim() || "(no output from plannotator)";
-  const prompt = [
-    `Plannotator review of \`${relForDisplay}\` (exit ${code}).`,
-    "",
-    "Result (JSON from `plannotator annotate --gate --json`):",
-    "",
-    "```json",
-    feedback,
-    "```",
-    "",
-    `Read \`${relForDisplay}\`, apply the reviewer's feedback, and revise the document.`,
-    "If the gate was approved with no changes, just confirm and stop.",
-  ].join("\n");
+  ctx.ui.notify(
+    `Starting document review for ${relForDisplay}. Run /review:cancel to stop it.`,
+    "info",
+  );
+  ctx.ui.setStatus("review-doc", `plannotator gate: ${relForDisplay}`);
 
-  await pi.sendUserMessage(prompt);
+  void (async () => {
+    let stdout = "";
+    let stderr = "";
+    let code = 0;
+    let killed = false;
+    try {
+      const result = await pi.exec(
+        "plannotator",
+        ["annotate", target, "--gate", "--json"],
+        { cwd: ctx.cwd, signal: controller.signal },
+      );
+      stdout = result.stdout;
+      stderr = result.stderr;
+      code = result.code;
+      killed = result.killed;
+    } catch (error) {
+      if (controller.signal.aborted) {
+        ctx.ui.notify(`document review cancelled: ${relForDisplay}`, "info");
+      } else {
+        ctx.ui.notify(
+          `plannotator failed to launch: ${(error as Error).message}`,
+          "error",
+        );
+      }
+      return;
+    } finally {
+      ctx.ui.setStatus("review-doc", "");
+      finishActiveReview(controller);
+    }
+
+    if (controller.signal.aborted || killed) {
+      ctx.ui.notify(`document review cancelled: ${relForDisplay}`, "info");
+      return;
+    }
+
+    const feedback =
+      stdout.trim() || stderr.trim() || "(no output from plannotator)";
+    const prompt = [
+      `Plannotator review of \`${relForDisplay}\` (exit ${code}).`,
+      "",
+      "Result (JSON from `plannotator annotate --gate --json`):",
+      "",
+      "```json",
+      feedback,
+      "```",
+      "",
+      `Read \`${relForDisplay}\`, apply the reviewer's feedback, and revise the document.`,
+      "If the gate was approved with no changes, just confirm and stop.",
+    ].join("\n");
+
+    await sendUserPrompt(ctx, pi, prompt);
+  })();
 }
 
 export default function reviewExtension(pi: ExtensionAPI) {
@@ -354,6 +471,11 @@ export default function reviewExtension(pi: ExtensionAPI) {
       setTimeout(() => ctx.ui.setWidget("__tuicr-tui-capture", undefined), 0);
       return { render: () => [], invalidate: () => {}, dispose: () => {} };
     });
+  });
+
+  pi.on("session_shutdown", () => {
+    activeReview?.controller.abort();
+    activeReview = undefined;
   });
 
   pi.registerCommand("review:code", {
@@ -368,6 +490,20 @@ export default function reviewExtension(pi: ExtensionAPI) {
     description: "Launch tuicr to interactively review code changes",
     handler: async (args, ctx) => {
       await handleTuicrReview(args, ctx, pi);
+    },
+  });
+
+  pi.registerCommand("review:cancel", {
+    description: "Cancel the active plannotator review",
+    handler: async (_args, ctx) => {
+      if (!activeReview) {
+        ctx.ui.notify("No active review to cancel.", "info");
+        return;
+      }
+
+      const { controller, label } = activeReview;
+      controller.abort();
+      ctx.ui.notify(`Cancelling review: ${label}`, "info");
     },
   });
 

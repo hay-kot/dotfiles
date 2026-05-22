@@ -68,6 +68,7 @@ Run `mi --ls` to list all available tasks. `mi` auto-detects Taskfile, Makefile,
 
 **Branch Naming:** For repos in the 'grafana' org, use a `hay-kot/` prefix. Otherwise use `feat/`, `chore/`, `fix/` prefixes.
 **Commit Messages:** Clear and concise. Assume readers understand the codebase.
+**Commit Signing:** All commits MUST be signed. NEVER bypass signing — do not use `--no-gpg-sign`, `-c commit.gpgsign=false`, or any other flag that disables signing. If signing fails, investigate and fix the underlying issue rather than working around it.
 
 ## Tagging and Mentions
 
