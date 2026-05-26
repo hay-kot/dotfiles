@@ -2,6 +2,19 @@
 
 We build production code together. I handle implementation details while you guide architecture and catch complexity early.
 
+## Dotfiles Conventions
+
+### Logging
+
+Tools in `bin/` that produce persistent logs write to `~/.local/dotlogs/<toolname>.log`.
+Never use `~/.local/log/` or any other path. Log lines must include a UTC timestamp.
+
+### TruffleHog Config
+
+Custom detectors live in `.config/trufflehog/config.yaml` (stow-managed to `~/.config/trufflehog/config.yaml`).
+All trufflehog call sites check for this file and pass `--config` when present.
+Add new detectors to the config file — do not hardcode patterns in scripts.
+
 ## Core Workflow: Research → Plan → Implement → Validate
 
 **Start every feature with:** "Let me research the codebase and create a plan before implementing."

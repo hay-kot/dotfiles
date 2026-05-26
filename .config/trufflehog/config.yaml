@@ -1,0 +1,11 @@
+detectors:
+  # Grafana Cloud service account tokens.
+  # Format: glc_<scope>_<base64-payload>
+  # The scope segment (e.g. "ops") is optional — some tokens omit it.
+  # Examples:
+  #   glc_eyJrIjoiZm9vIn0=
+  - name: GrafanaCloudToken
+    keywords:
+      - glc_
+    regex:
+      token: 'glc_(?:[a-z]+_)?[A-Za-z0-9+/=_-]{30,}'

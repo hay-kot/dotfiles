@@ -48,6 +48,9 @@ git config --global rerere.enabled true
 echo "git: set default editor"
 git config --global core.editor nvim
 
+echo "git: set global hooks path"
+git config --global core.hooksPath ~/.git-hooks
+
 # -------------------------------------
 # Git Aliases
 #

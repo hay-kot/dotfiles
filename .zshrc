@@ -35,8 +35,41 @@ SAVEHIST=$HISTSIZE
 HISTDUP=erase
 setopt appendhistory
 setopt sharehistory
-setopt hist_ignore_space
+setopt hist_ignore_space    # prefix any command with a space to skip history
 setopt hist_ignore_all_dups
+
+# ---------------------------------------------------------------------------
+# History Security: intercept commands before they're written to history.
+# Returns 2 = keep in session memory only, not written to HISTFILE.
+# ---------------------------------------------------------------------------
+_zsh_history_secret_filter() {
+  emulate -L zsh
+  local cmd="${1%%$'\n'}"
+  local -a patterns=(
+    '(#i)*TOKEN=*'
+    '(#i)*API_KEY=*'
+    '(#i)*API_SECRET=*'
+    '(#i)*SECRET_KEY=*'
+    '(#i)*_SECRET=*'
+    '(#i)*PASSWORD=*'
+    '(#i)*PASSWD=*'
+    '(#i)*_PASS=*'
+    '(#i)*AWS_SECRET_ACCESS_KEY=*'
+    '(#i)*PRIVATE_KEY=*'
+    '(#i)*Authorization:*'
+    '(#i)*Bearer *'
+    '(#i)* --password *'
+    '(#i)*ghp_*'       # GitHub personal access tokens
+    '(#i)*glpat-*'     # GitLab personal access tokens
+  )
+  for pat in "${patterns[@]}"; do
+    if [[ "$cmd" == ${~pat} ]]; then
+      return 2
+    fi
+  done
+  return 0
+}
+add-zsh-hook zshaddhistory _zsh_history_secret_filter
 
 # Dedupe PATH entries across all prepends/appends below
 typeset -U path PATH
@@ -245,6 +278,8 @@ export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
 
 alias k="kubectl"
 alias hv="tmux new-session -As hive hive"
+
+alias llv="lnavlogs"
 
 k9z() {
   local context namespace cmd

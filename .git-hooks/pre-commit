@@ -1,0 +1,11 @@
+#!/bin/sh
+# TruffleHog pre-commit hook
+# Scans staged changes for verified and unknown secrets before each commit.
+# Set TRUFFLEHOG_PRE_COMMIT=1 to let TruffleHog auto-configure optimal settings.
+export TRUFFLEHOG_PRE_COMMIT=1
+CONFIG="$HOME/.config/trufflehog/config.yaml"
+if [ -f "$CONFIG" ]; then
+  trufflehog git file://. --config "$CONFIG"
+else
+  trufflehog git file://.
+fi

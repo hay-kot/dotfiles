@@ -76,4 +76,7 @@ install_brew_package "mise"
 # Install stow (needed to symlink dotfiles before mmdot runs)
 install_brew_package "stow"
 
+# Install trufflehog for secrets scanning
+install_brew_package "trufflehog"
+
 log_info "Setup complete!"
