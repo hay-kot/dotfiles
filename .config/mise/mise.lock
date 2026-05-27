@@ -404,62 +404,53 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476387"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.50.0"
+version = "0.51.0"
 backend = "github:hay-kot/hive"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64"]
-checksum = "sha256:85c537c2d61355d1445d0c8b362b36d5192107fca31a828981d6f4edbba439d8"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550090"
-github_attestations = "unavailable"
+checksum = "sha256:f085e8d6d2d08f6d30a08933f3d3c4125ac0cc5d29a44cf399196ea760d843c2"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380838"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64-musl"]
-checksum = "sha256:85c537c2d61355d1445d0c8b362b36d5192107fca31a828981d6f4edbba439d8"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550090"
-github_attestations = "unavailable"
+checksum = "sha256:f085e8d6d2d08f6d30a08933f3d3c4125ac0cc5d29a44cf399196ea760d843c2"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380838"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64"]
-checksum = "sha256:845b62fa6f788f813876e0e16b5ef1a9290639d530a51a8ba22f55a3e8b79203"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550091"
-github_attestations = "unavailable"
+checksum = "sha256:e489e37d1dc366e24611bd723ffe7a5b2abbdad7d30d8a3aa24ed4596544427c"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380836"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-baseline"]
-checksum = "sha256:845b62fa6f788f813876e0e16b5ef1a9290639d530a51a8ba22f55a3e8b79203"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550091"
-github_attestations = "unavailable"
+checksum = "sha256:e489e37d1dc366e24611bd723ffe7a5b2abbdad7d30d8a3aa24ed4596544427c"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380836"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl"]
-checksum = "sha256:845b62fa6f788f813876e0e16b5ef1a9290639d530a51a8ba22f55a3e8b79203"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550091"
-github_attestations = "unavailable"
+checksum = "sha256:e489e37d1dc366e24611bd723ffe7a5b2abbdad7d30d8a3aa24ed4596544427c"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380836"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:845b62fa6f788f813876e0e16b5ef1a9290639d530a51a8ba22f55a3e8b79203"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550091"
-github_attestations = "unavailable"
+checksum = "sha256:e489e37d1dc366e24611bd723ffe7a5b2abbdad7d30d8a3aa24ed4596544427c"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380836"
 
 [tools."github:hay-kot/hive"."platforms.macos-arm64"]
-checksum = "sha256:398b957573fa26916dee03e334e3c305a9e7f051dbb8263af280effdae361a09"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550098"
-github_attestations = "unavailable"
+checksum = "sha256:c2a4a850465c2ba8618f30b63e6e4bddfa3bc9deb9b205c19aece8521df4866e"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380837"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64"]
-checksum = "sha256:caf6a1fb270432ad3a36a5f1101e63cad4ca3261713f697c04a0ee09e7df1db4"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550092"
-github_attestations = "unavailable"
+checksum = "sha256:aa5a4f099e48c261d5c0ce135fc95a1360c4f825b371dda3eebeae9cc775fd63"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380863"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64-baseline"]
-checksum = "sha256:caf6a1fb270432ad3a36a5f1101e63cad4ca3261713f697c04a0ee09e7df1db4"
-url = "https://github.com/colonyops/hive/releases/download/v0.50.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/425550092"
-github_attestations = "unavailable"
+checksum = "sha256:aa5a4f099e48c261d5c0ce135fc95a1360c4f825b371dda3eebeae9cc775fd63"
+url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380863"
 
 [[tools."github:hay-kot/mi"]]
 version = "0.4.0"
@@ -521,63 +512,63 @@ url = "https://github.com/hay-kot/mi/releases/download/v0.4.0/mi_Windows_x86_64.
 url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/385979816"
 
 [[tools."github:hay-kot/mmdot"]]
-version = "0.7.0"
+version = "0.8.0"
 backend = "github:hay-kot/mmdot"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-arm64"]
-checksum = "sha256:2e51d90fb713269da47392d50cc2100ecb3e115215bf2c27d937cdf99f9f9730"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507467"
+checksum = "sha256:9bd6e7293756414daf9470f3e4bf05a008bfb620aac2b255b024ce33486cc4b7"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379671"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-arm64-musl"]
-checksum = "sha256:2e51d90fb713269da47392d50cc2100ecb3e115215bf2c27d937cdf99f9f9730"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507467"
+checksum = "sha256:9bd6e7293756414daf9470f3e4bf05a008bfb620aac2b255b024ce33486cc4b7"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379671"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64"]
-checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+checksum = "sha256:ece961e09b40f6ccbcf068707e5503c0b8fd43f2d02a5b63e85ff01511e507ac"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379684"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-baseline"]
-checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+checksum = "sha256:ece961e09b40f6ccbcf068707e5503c0b8fd43f2d02a5b63e85ff01511e507ac"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379684"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-musl"]
-checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+checksum = "sha256:ece961e09b40f6ccbcf068707e5503c0b8fd43f2d02a5b63e85ff01511e507ac"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379684"
 
 [tools."github:hay-kot/mmdot"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:1bb946a157e9c03c793be95733b91e88c58a154fe02e2332b1014ea361a25f80"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507463"
+checksum = "sha256:ece961e09b40f6ccbcf068707e5503c0b8fd43f2d02a5b63e85ff01511e507ac"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379684"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-arm64"]
-checksum = "sha256:2b033455f82bcd66bf298cfe1fe56440ba97b7402cad88ce23461696a863eab7"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507453"
+checksum = "sha256:13e4911126fd29385e5ac04ee9416df7745d10c051b6736daa172fe952551e5a"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379683"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-x64"]
-checksum = "sha256:7f8efd2dae5b89a5c3aa53e4879767d744d9f7f196c64dc5a94b897355651307"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507452"
+checksum = "sha256:bc3930385c0d177d4514f329820f3b6b5dcaa4c2801d14529827e981745838ec"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379682"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-x64-baseline"]
-checksum = "sha256:7f8efd2dae5b89a5c3aa53e4879767d744d9f7f196c64dc5a94b897355651307"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507452"
+checksum = "sha256:bc3930385c0d177d4514f329820f3b6b5dcaa4c2801d14529827e981745838ec"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379682"
 
 [tools."github:hay-kot/mmdot"."platforms.windows-x64"]
-checksum = "sha256:b5198606a0eb327471decc588ddeba5d19191a609edb5f8a9ee93bc7bcd1a55e"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507455"
+checksum = "sha256:c0f1a63e7a041673ba7f142f01aa5926266759ac9f84a7d6d3c0c2d2f8bfce21"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379670"
 
 [tools."github:hay-kot/mmdot"."platforms.windows-x64-baseline"]
-checksum = "sha256:b5198606a0eb327471decc588ddeba5d19191a609edb5f8a9ee93bc7bcd1a55e"
-url = "https://github.com/hay-kot/mmdot/releases/download/v0.7.0/mmdot_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/421507455"
+checksum = "sha256:c0f1a63e7a041673ba7f142f01aa5926266759ac9f84a7d6d3c0c2d2f8bfce21"
+url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379670"
 
 [[tools."github:hay-kot/scaffold"]]
 version = "0.13.1"
@@ -892,5 +883,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.93.1"
+version = "1.95.0"
 backend = "core:rust"
