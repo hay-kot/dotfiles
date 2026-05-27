@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # Usage:
-#   ghissues                         # open issues for current repo, page 1
-#   ghissues --repo owner/name        # open issues for explicit repo
-#   ghissues --limit 20 --page 2      # deterministic pagination
-#   ghissues --state all              # open and closed issues
+#   ghissues                              # open issues for current repo, page 1
+#   ghissues --repo owner/name             # open issues for explicit repo
+#   ghissues --limit 20 --page 2           # deterministic pagination
+#   ghissues --state all                   # open and closed issues
+#   ghissues --label "good first issue"    # filter by label (repeatable, AND)
+#   ghissues --assignee @me                # filter by assignee (@me, none, or login)
+#   ghissues --author octocat              # filter by author
+#   ghissues --search "in:title crash"     # raw GitHub search qualifiers
+#   ghissues --sort comments --order asc   # sort/order results
 #
 # Print GitHub issues as LLM-friendly markdown.
 set -euo pipefail
@@ -15,17 +20,27 @@ Usage: ghissues [flags]
 Print GitHub issues as LLM-friendly markdown.
 
 Flags:
-  --repo owner/name       Repository to query. Defaults to the current git repo.
-  --limit n              Issues per page, 1-100. Default: 20.
-  --page n               Page number, starting at 1. Default: 1.
-  --state open|closed|all Issue state. Default: open.
-  --excerpt n            Body excerpt length in characters. Default: 500.
-  -h, --help             Show this help.
+  --repo owner/name        Repository to query. Defaults to the current git repo.
+  --limit n                Issues per page, 1-100. Default: 20.
+  --page n                 Page number, starting at 1. Default: 1.
+  --state open|closed|all  Issue state. Default: open.
+  --label name             Filter by label. Repeatable; multiple labels are ANDed.
+  --assignee user          Filter by assignee. Accepts @me, none (unassigned), or a login.
+  --author user            Filter by author. Accepts @me or a login.
+  --search query           Raw GitHub search qualifiers appended to the query.
+  --sort updated|created|comments
+                           Sort field. Default: updated.
+  --order asc|desc         Sort order. Default: desc.
+  --excerpt n              Body excerpt length in characters. Default: 500.
+  -h, --help               Show this help.
 
 Examples:
   ghissues
   ghissues --repo cli/cli --limit 10 --page 3
   ghissues --state all --excerpt 1000
+  ghissues --label "good first issue" --label "help wanted"
+  ghissues --assignee none --sort created
+  ghissues --search "in:title panic" --order asc
 EOF
 }
 
@@ -34,6 +49,12 @@ limit=20
 page=1
 state="open"
 excerpt_length=500
+assignee=""
+author=""
+search=""
+sort="updated"
+order="desc"
+labels=()
 
 require_cmd() {
 	if ! command -v "$1" >/dev/null 2>&1; then
@@ -86,6 +107,54 @@ while [[ $# -gt 0 ]]; do
 		state="$2"
 		shift 2
 		;;
+	--label)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --label requires a name" >&2
+			exit 1
+		}
+		labels+=("$2")
+		shift 2
+		;;
+	--assignee)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --assignee requires a value" >&2
+			exit 1
+		}
+		assignee="$2"
+		shift 2
+		;;
+	--author)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --author requires a value" >&2
+			exit 1
+		}
+		author="$2"
+		shift 2
+		;;
+	--search)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --search requires a query" >&2
+			exit 1
+		}
+		search="$2"
+		shift 2
+		;;
+	--sort)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --sort requires updated, created, or comments" >&2
+			exit 1
+		}
+		sort="$2"
+		shift 2
+		;;
+	--order)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --order requires asc or desc" >&2
+			exit 1
+		}
+		order="$2"
+		shift 2
+		;;
 	--excerpt)
 		[[ $# -ge 2 ]] || {
 			echo "Error: --excerpt requires a value" >&2
@@ -126,6 +195,22 @@ open | closed | all) ;;
 	;;
 esac
 
+case "$sort" in
+updated | created | comments) ;;
+*)
+	echo "Error: --sort must be updated, created, or comments" >&2
+	exit 1
+	;;
+esac
+
+case "$order" in
+asc | desc) ;;
+*)
+	echo "Error: --order must be asc or desc" >&2
+	exit 1
+	;;
+esac
+
 if [[ -z "$repo" ]]; then
 	repo=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null || true)
 	if [[ -z "$repo" ]]; then
@@ -144,8 +229,38 @@ if [[ "$state" != "all" ]]; then
 	query="$query state:$state"
 fi
 
+# Reconstruct filter flags so the next-page command preserves them.
+extra_flags=""
+if [[ ${#labels[@]} -gt 0 ]]; then
+	for label in "${labels[@]}"; do
+		query="$query label:\"$label\""
+		extra_flags="$extra_flags --label $(printf '%q' "$label")"
+	done
+fi
+
+if [[ -n "$assignee" ]]; then
+	if [[ "$assignee" == "none" ]]; then
+		query="$query no:assignee"
+	else
+		query="$query assignee:$assignee"
+	fi
+	extra_flags="$extra_flags --assignee $(printf '%q' "$assignee")"
+fi
+
+if [[ -n "$author" ]]; then
+	query="$query author:$author"
+	extra_flags="$extra_flags --author $(printf '%q' "$author")"
+fi
+
+if [[ -n "$search" ]]; then
+	query="$query $search"
+	extra_flags="$extra_flags --search $(printf '%q' "$search")"
+fi
+
 json=$(gh api -X GET search/issues \
 	-f "q=$query" \
+	-f "sort=$sort" \
+	-f "order=$order" \
 	-f "per_page=$limit" \
 	-f "page=$page")
 
@@ -153,6 +268,9 @@ jq -r \
 	--arg repo "$repo" \
 	--arg query "$query" \
 	--arg state "$state" \
+	--arg sort "$sort" \
+	--arg order "$order" \
+	--arg extraFlags "$extra_flags" \
 	--argjson limit "$limit" \
 	--argjson page "$page" \
 	--argjson excerptLength "$excerpt_length" \
@@ -183,6 +301,7 @@ jq -r \
   "# GitHub Issues: \($repo)\n\n"
   + "- Query: `\($query)`\n"
   + "- State: \($state)\n"
+  + "- Sort: \($sort) \($order)\n"
   + "- Page: \($page)\n"
   + "- Limit: \($limit)\n"
   + "- Returned: \(.items | length)\n"
@@ -190,7 +309,7 @@ jq -r \
   + "- Total pages: \($totalPages)\n"
   + "- Has next page: \(if $page < $totalPages then "yes" else "no" end)\n\n"
   + "## Next page command\n\n"
-  + (if $page < $totalPages then "```sh\nghissues --repo \($repo) --state \($state) --limit \($limit) --page \($page + 1)\n```\n" else "No next page.\n" end)
+  + (if $page < $totalPages then "```sh\nghissues --repo \($repo) --state \($state) --sort \($sort) --order \($order)\($extraFlags) --limit \($limit) --page \($page + 1)\n```\n" else "No next page.\n" end)
   + "\n## Issues\n\n"
   + (if (.items | length) == 0 then "No issues found.\n" else (.items | map(issue_markdown) | join("\n")) end)
   ' <<<"$json"

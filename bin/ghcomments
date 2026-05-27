@@ -1,0 +1,311 @@
+#!/usr/bin/env bash
+# Usage:
+#   ghcomments                       # all comments on current branch's PR
+#   ghcomments 123                   # all comments on PR #123
+#   ghcomments --repo owner/name 123 # explicit repo
+#   ghcomments --type inline         # only inline (code) review comments
+#   ghcomments --unresolved          # only unresolved inline threads
+#   ghcomments --author octocat      # only comments by a given author
+#
+# Print GitHub PR comments as LLM-friendly markdown. Pulls three streams:
+#   reviews       - review submissions (APPROVED/CHANGES_REQUESTED/COMMENTED + body)
+#   inline        - threaded code comments, with file:line and resolution status
+#   conversation  - general PR conversation comments
+set -euo pipefail
+
+usage() {
+	cat <<'EOF'
+Usage: ghcomments [pr] [flags]
+
+Print GitHub PR comments as LLM-friendly markdown.
+
+Arguments:
+  pr                       PR number. Defaults to the current branch's PR.
+
+Flags:
+  --repo owner/name        Repository to query. Defaults to the current git repo.
+  --pr n                   PR number (alternative to the positional argument).
+  --type all|reviews|inline|conversation
+                           Which comment streams to show. Default: all.
+  --author user            Only show comments authored by this login.
+  --unresolved             Only show unresolved inline review threads.
+  --no-diff                Omit the diff hunk shown above each inline thread.
+  -h, --help               Show this help.
+
+Comment streams:
+  reviews       Review submissions (APPROVED / CHANGES_REQUESTED / COMMENTED + summary).
+  inline        Threaded code comments, with file:line and resolved/outdated status.
+  conversation  General PR conversation comments.
+
+Examples:
+  ghcomments
+  ghcomments 4521 --type inline --unresolved
+  ghcomments --repo cli/cli 9000 --author monalisa
+EOF
+}
+
+repo=""
+pr=""
+type="all"
+author=""
+unresolved=false
+show_diff=true
+
+require_cmd() {
+	if ! command -v "$1" >/dev/null 2>&1; then
+		echo "Error: required command not found: $1" >&2
+		exit 1
+	fi
+}
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--repo)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --repo requires owner/name" >&2
+			exit 1
+		}
+		repo="$2"
+		shift 2
+		;;
+	--pr)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --pr requires a number" >&2
+			exit 1
+		}
+		pr="$2"
+		shift 2
+		;;
+	--type)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --type requires all, reviews, inline, or conversation" >&2
+			exit 1
+		}
+		type="$2"
+		shift 2
+		;;
+	--author)
+		[[ $# -ge 2 ]] || {
+			echo "Error: --author requires a login" >&2
+			exit 1
+		}
+		author="$2"
+		shift 2
+		;;
+	--unresolved)
+		unresolved=true
+		shift
+		;;
+	--no-diff)
+		show_diff=false
+		shift
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	[0-9]*)
+		if [[ "$1" =~ ^[0-9]+$ ]] && [[ -z "$pr" ]]; then
+			pr="$1"
+			shift
+		else
+			echo "Error: unexpected argument: $1" >&2
+			usage >&2
+			exit 1
+		fi
+		;;
+	*)
+		echo "Error: unknown argument: $1" >&2
+		usage >&2
+		exit 1
+		;;
+	esac
+done
+
+require_cmd gh
+require_cmd jq
+
+case "$type" in
+all | reviews | inline | conversation) ;;
+*)
+	echo "Error: --type must be all, reviews, inline, or conversation" >&2
+	exit 1
+	;;
+esac
+
+if [[ -z "$repo" ]]; then
+	repo=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null || true)
+	if [[ -z "$repo" ]]; then
+		echo "Error: could not determine current GitHub repo. Pass --repo owner/name." >&2
+		exit 1
+	fi
+fi
+
+if [[ ! "$repo" =~ ^[^/[:space:]]+/[^/[:space:]]+$ ]]; then
+	echo "Error: --repo must be in owner/name format" >&2
+	exit 1
+fi
+
+owner="${repo%%/*}"
+name="${repo##*/}"
+
+if [[ -z "$pr" ]]; then
+	pr=$(gh pr view --json number --jq '.number' 2>/dev/null || true)
+	if [[ -z "$pr" ]]; then
+		echo "Error: no PR found for the current branch. Pass a PR number." >&2
+		exit 1
+	fi
+fi
+
+if [[ ! "$pr" =~ ^[0-9]+$ ]]; then
+	echo "Error: PR number must be a positive integer" >&2
+	exit 1
+fi
+
+read -r -d '' query <<'GRAPHQL' || true
+query($owner: String!, $name: String!, $number: Int!) {
+  repository(owner: $owner, name: $name) {
+    pullRequest(number: $number) {
+      number
+      title
+      url
+      state
+      author { login }
+      reviews(first: 50) {
+        totalCount
+        pageInfo { hasNextPage }
+        nodes { author { login } state body submittedAt url }
+      }
+      comments(first: 100) {
+        totalCount
+        pageInfo { hasNextPage }
+        nodes { author { login } body createdAt url }
+      }
+      reviewThreads(first: 100) {
+        totalCount
+        pageInfo { hasNextPage }
+        nodes {
+          isResolved
+          isOutdated
+          path
+          line
+          originalLine
+          comments(first: 50) {
+            nodes { author { login } body createdAt url diffHunk }
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL
+
+err_file=$(mktemp)
+trap 'rm -f "$err_file"' EXIT
+
+set +e
+json=$(gh api graphql \
+	-f query="$query" \
+	-f owner="$owner" \
+	-f name="$name" \
+	-F number="$pr" 2>"$err_file")
+gh_exit=$?
+set -e
+
+if [[ $gh_exit -ne 0 ]]; then
+	if grep -qi 'could not resolve to a pullrequest' "$err_file"; then
+		echo "Error: PR #$pr not found in $repo" >&2
+	else
+		echo "Error: gh api graphql failed:" >&2
+		cat "$err_file" >&2
+	fi
+	exit 1
+fi
+
+if [[ "$(jq -r '.data.repository.pullRequest // "null"' <<<"$json")" == "null" ]]; then
+	echo "Error: PR #$pr not found in $repo" >&2
+	exit 1
+fi
+
+jq -r \
+	--arg repo "$repo" \
+	--arg type "$type" \
+	--arg author "$author" \
+	--argjson unresolvedOnly "$unresolved" \
+	--argjson showDiff "$show_diff" \
+	'
+  def clean: (. // "") | gsub("\\r"; "") | sub("[[:space:]]+$"; "");
+
+  def by_author($items):
+    if $author == "" then $items
+    else ($items | map(select((.author.login // "") == $author))) end;
+
+  .data.repository.pullRequest as $pr |
+
+  # ---- reviews section -------------------------------------------------
+  ( by_author($pr.reviews.nodes)
+    | map(select(((.body // "") | length) > 0 or (.state != "COMMENTED")))
+  ) as $reviews |
+  (if ($type == "all" or $type == "reviews") and ($reviews | length) > 0 then
+    "## Reviews\n\n"
+    + ($reviews | map(
+        "### \(.author.login // "ghost") — \(.state) (\(.submittedAt))\n"
+        + "- URL: \(.url)\n\n"
+        + (if ((.body // "") | length) > 0 then (.body | clean) + "\n" else "_(no summary body)_\n" end)
+      ) | join("\n"))
+    + "\n"
+  else "" end) as $reviewsOut |
+
+  # ---- inline threads section -----------------------------------------
+  ( $pr.reviewThreads.nodes
+    | map(select(($unresolvedOnly | not) or (.isResolved == false)))
+    | map({thread: ., comments: by_author(.comments.nodes)})
+    | map(select((.comments | length) > 0))
+  ) as $threads |
+  (if ($type == "all" or $type == "inline") and ($threads | length) > 0 then
+    "## Inline review comments\n\n"
+    + ($threads | map(
+        .thread as $t | .comments as $cs |
+        "### \($t.path)\(if $t.line then ":\($t.line)" elif $t.originalLine then ":\($t.originalLine) (original)" else "" end) — \(if $t.isResolved then "resolved" else "unresolved" end)\(if $t.isOutdated then ", outdated" else "" end)\n"
+        + "- Comments: \($cs | length)\n\n"
+        + ( [ $cs | to_entries[] |
+              .key as $i | .value as $c |
+              (if $i == 0 and $showDiff and (($c.diffHunk // "") | length) > 0
+                 then "```diff\n\($c.diffHunk | clean)\n```\n\n" else "" end)
+              + "#### \($c.author.login // "ghost") (\($c.createdAt))\(if $i > 0 then " [reply]" else "" end)\n"
+              + "- URL: \($c.url)\n\n"
+              + (($c.body | clean) + "\n")
+            ] | join("\n") )
+      ) | join("\n"))
+    + "\n"
+  else "" end) as $inlineOut |
+
+  # ---- conversation section -------------------------------------------
+  ( by_author($pr.comments.nodes) ) as $convo |
+  (if ($type == "all" or $type == "conversation") and ($convo | length) > 0 then
+    "## Conversation\n\n"
+    + ($convo | map(
+        "### \(.author.login // "ghost") (\(.createdAt))\n"
+        + "- URL: \(.url)\n\n"
+        + (.body | clean) + "\n"
+      ) | join("\n"))
+    + "\n"
+  else "" end) as $convoOut |
+
+  # ---- truncation notes ------------------------------------------------
+  ( [ (if $pr.reviews.pageInfo.hasNextPage then "reviews (\($pr.reviews.totalCount))" else empty end),
+      (if $pr.comments.pageInfo.hasNextPage then "conversation (\($pr.comments.totalCount))" else empty end),
+      (if $pr.reviewThreads.pageInfo.hasNextPage then "inline threads (\($pr.reviewThreads.totalCount))" else empty end) ]
+  ) as $truncated |
+  ( [$reviewsOut, $inlineOut, $convoOut] | map(select(. != "")) ) as $sections |
+
+  "# PR Comments: \($repo) #\($pr.number) — \($pr.title)\n\n"
+  + "- URL: \($pr.url)\n"
+  + "- State: \($pr.state)\n"
+  + "- Author: \($pr.author.login // "ghost")\n"
+  + "- Filters: type=\($type), unresolved=\(if $unresolvedOnly then "yes" else "no" end), author=\(if $author == "" then "any" else $author end)\n"
+  + "- Counts: \($pr.reviews.totalCount) reviews, \($pr.reviewThreads.totalCount) inline threads, \($pr.comments.totalCount) conversation\n"
+  + (if ($truncated | length) > 0 then "- Truncated (only first page fetched): \($truncated | join(", "))\n" else "" end)
+  + "\n"
+  + (if ($sections | length) == 0 then "_No matching comments._\n" else ($sections | join("\n")) end)
+  ' <<<"$json"

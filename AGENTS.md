@@ -61,6 +61,8 @@ Use `hive hc` to track work and manage tasks across sessions. Create issues for 
 
 When selecting GitHub issues to work on, prefer `ghissues` for LLM-friendly issue summaries before using raw `gh issue list` output. Use `ghissues` with no arguments for the current repo, or `ghissues --repo owner/name` for an explicit repo.
 
+When reading PR feedback, prefer `ghcomments` for LLM-friendly comment summaries before using raw `gh` output. It pulls reviews, inline code comments (with file:line and resolved/outdated status), and conversation comments. Use `ghcomments` with no arguments for the current branch's PR, `ghcomments <number>` for a specific PR, and `--type inline --unresolved` to focus on feedback that still needs addressing.
+
 ## Maximize Efficiency
 
 **Parallel operations:** Run multiple searches, reads, and greps in single messages
