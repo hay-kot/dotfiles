@@ -7,10 +7,8 @@
   "hideThinkingBlock": true,
   "enableSkillCommands": true,
   "packages": [
-    "npm:pi-subagents",
-    "npm:pi-web-access",
-    "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@grafana/sigil-pi"
+    "npm:pi-subagents@0.25.0",
+    "npm:pi-web-access@0.10.7"
   ],
   "skills": [
     "./skills"
