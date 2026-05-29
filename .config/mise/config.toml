@@ -57,6 +57,7 @@ rust = "latest"
 "cargo:sleek" = "latest"                  # sql formatter
 
 [settings]
+minimum_release_age = "3d"
 idiomatic_version_file_enable_tools = ["python"]
 experimental = true
 lockfile = true
