@@ -137,7 +137,6 @@ brews:
       - hashicorp/tap
       - grafana/grafana
     casks:
-      - 1password
       - docker-desktop
       - gcloud-cli
       - google-cloud-sdk
@@ -158,8 +157,6 @@ brews:
       - tinygo-org/tools
     brews:
       - autorestic
-      - bitwarden-cli
-      - rbw
       - caddy
       - flyctl
       - mailpit
@@ -266,7 +263,8 @@ brews:
       - yank
       - yq
     casks:
-      - bitwarden
+      - 1password
+      - 1password-cli
       - brave-browser
       - chromedriver
       - cleanshot

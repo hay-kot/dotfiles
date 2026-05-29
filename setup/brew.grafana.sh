@@ -95,7 +95,8 @@ brew install \
 
 # Installing Homebrew Casks
 brew install --cask \
-  bitwarden \
+  1password \
+  1password-cli \
   brave-browser \
   chromedriver \
   cleanshot \
@@ -121,7 +122,6 @@ brew install --cask \
   vlc \
   zed \
   zoom \
-  1password \
   docker-desktop \
   gcloud-cli \
   google-cloud-sdk \

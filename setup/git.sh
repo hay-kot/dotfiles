@@ -26,6 +26,7 @@ git config --global gpg.format ssh
 git config --global user.signingkey "$SIGNING_KEY"
 git config --global commit.gpgsign true
 git config --global gpg.ssh.allowedSignersFile "$ALLOWED_SIGNERS_FILE"
+git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
 # -------------------------------------
 # Git Global Ignore File
