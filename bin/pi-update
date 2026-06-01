@@ -5,8 +5,8 @@
 # This script updates the pi tool via mise and reinstalls all npm packages
 # from ~/.pi/agent/settings.json.
 #
-# Uses --min-release-age=0 to bypass the global npmrc gate for pi packages,
-# which suppresses the "Package Updates Available" banner in pi.
+# Package installs intentionally honor the global npm security settings
+# (minimum release age, ignored lifecycle scripts, etc.).
 
 set -euo pipefail
 
@@ -43,11 +43,11 @@ if $UPDATE_PACKAGES; then
     exit 1
   fi
 
-  # Extract package names from settings, stripping "npm:" prefix and version pins
+  # Extract package specs from settings, stripping only the "npm:" prefix.
+  # Version pins are preserved to avoid silently floating to newly published code.
   mapfile -t packages < <(
     jq -r '.packages[]? | select(type == "string") | select(startswith("npm:"))' "$SETTINGS" \
-      | sed 's|^npm:||' \
-      | sed 's|@[0-9].*||'
+      | sed 's|^npm:||'
   )
 
   if [[ ${#packages[@]} -eq 0 ]]; then
@@ -56,6 +56,6 @@ if $UPDATE_PACKAGES; then
   fi
 
   echo "==> Updating pi packages: ${packages[*]}"
-  npm install -g --min-release-age=0 "${packages[@]}"
+  npm install -g "${packages[@]}"
   echo "==> Done."
 fi
