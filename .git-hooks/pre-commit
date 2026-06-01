@@ -1,11 +1,14 @@
 #!/bin/sh
 # TruffleHog pre-commit hook
-# Scans staged changes for verified and unknown secrets before each commit.
-# Set TRUFFLEHOG_PRE_COMMIT=1 to let TruffleHog auto-configure optimal settings.
+# Uses TruffleHog's pre-commit mode to scan staged content only. Verification is
+# disabled so provider/API key validation cannot trigger canary tokens.
 export TRUFFLEHOG_PRE_COMMIT=1
+
 CONFIG="$HOME/.config/trufflehog/config.yaml"
-if [ -f "$CONFIG" ]; then
-  trufflehog git file://. --config "$CONFIG"
-else
-  trufflehog git file://.
-fi
+[ -f "$CONFIG" ] && set -- --config "$CONFIG"
+
+trufflehog git file://. "$@" \
+  --trust-local-git-config \
+  --no-verification \
+  --results=unverified \
+  --fail
