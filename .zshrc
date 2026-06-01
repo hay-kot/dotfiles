@@ -256,6 +256,25 @@ fi
 
 alias rgnb="rg -- "
 
+# binz - select a script from $DOTFILES_DIR/bin and insert it at the prompt.
+_binz_insert_widget() {
+    emulate -L zsh
+
+    local token prefix selected
+    token="${LBUFFER##*[[:space:]]}"
+    prefix="${LBUFFER[1,$(( ${#LBUFFER} - ${#token} ))]}"
+
+    selected="$(binz "$token")" || return
+    [[ -z "$selected" ]] && return
+
+    LBUFFER="${prefix}${selected} "
+    zle reset-prompt
+}
+zle -N binz _binz_insert_widget
+bindkey -M emacs '^Xb' binz
+bindkey -M emacs '^X^B' binz
+bindkey -M viins '^Xb' binz
+bindkey -M viins '^X^B' binz
 
 # Difftastic
 export DFT_BACKGROUND=dark

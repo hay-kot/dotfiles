@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bin_dir="${DOTFILES_DIR:-$HOME/.dotfiles}/bin"
+query="${*:-}"
+
+if [[ ! -d "$bin_dir" ]]; then
+  echo "binz: bin directory not found: $bin_dir" >&2
+  exit 1
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "binz: fzf is required" >&2
+  exit 1
+fi
+
+export BINZ_BIN_DIR="$bin_dir"
+
+find "$bin_dir" -maxdepth 1 -type f -perm -u+x -print \
+  | while IFS= read -r script; do basename "$script"; done \
+  | sort \
+  | fzf \
+      --query "$query" \
+      --prompt 'bin> ' \
+      --preview 'script="$BINZ_BIN_DIR"/{}; file -b "$script"; printf "\n"; sed -n "1,120p" "$script" 2>/dev/null' \
+      --preview-window 'right:60%:wrap'
