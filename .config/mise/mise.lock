@@ -441,7 +441,6 @@ url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380836
 checksum = "sha256:c2a4a850465c2ba8618f30b63e6e4bddfa3bc9deb9b205c19aece8521df4866e"
 url = "https://github.com/colonyops/hive/releases/download/v0.51.0/hive_Darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/431380837"
-github_attestations = "unavailable"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64"]
 checksum = "sha256:aa5a4f099e48c261d5c0ce135fc95a1360c4f825b371dda3eebeae9cc775fd63"
@@ -550,7 +549,6 @@ url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379684"
 checksum = "sha256:13e4911126fd29385e5ac04ee9416df7745d10c051b6736daa172fe952551e5a"
 url = "https://github.com/hay-kot/mmdot/releases/download/v0.8.0/mmdot_Darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/hay-kot/mmdot/releases/assets/431379683"
-github_attestations = "unavailable"
 
 [tools."github:hay-kot/mmdot"."platforms.macos-x64"]
 checksum = "sha256:bc3930385c0d177d4514f329820f3b6b5dcaa4c2801d14529827e981745838ec"
@@ -857,7 +855,7 @@ version = "2.0.75"
 backend = "npm:@anthropic-ai/claude-code"
 
 [[tools."npm:@earendil-works/pi-coding-agent"]]
-version = "0.74.1"
+version = "v0.78.0"
 backend = "npm:@earendil-works/pi-coding-agent"
 
 [[tools."npm:eslint"]]
@@ -865,7 +863,7 @@ version = "10.4.0"
 backend = "npm:eslint"
 
 [[tools."npm:pnpm"]]
-version = "11.3.0"
+version = "11.5.0"
 backend = "npm:pnpm"
 
 [[tools."npm:prettier"]]
