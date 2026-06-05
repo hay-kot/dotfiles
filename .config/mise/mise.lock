@@ -63,6 +63,61 @@ backend = "forgejo:gitea/tea"
 [tools."forgejo:gitea/tea".options]
 api_url = "https://gitea.com/api/v1"
 
+[tools."forgejo:gitea/tea"."platforms.linux-arm64"]
+checksum = "sha256:1c9c90cabdff544193c7dc0c7137adfaf4927f8aff90758e6f2ddc5502de9d21"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-arm64"
+url_api = "https://gitea.com/attachments/544bb9d6-87e5-45c6-8f2a-0817e7cb02c9"
+
+[tools."forgejo:gitea/tea"."platforms.linux-arm64-musl"]
+checksum = "sha256:1c9c90cabdff544193c7dc0c7137adfaf4927f8aff90758e6f2ddc5502de9d21"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-arm64"
+url_api = "https://gitea.com/attachments/544bb9d6-87e5-45c6-8f2a-0817e7cb02c9"
+
+[tools."forgejo:gitea/tea"."platforms.linux-x64"]
+checksum = "sha256:254b50cee2635715aa3bb4e121e6f722f318fcc0ae860c80ca3269049027d3fb"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-amd64"
+url_api = "https://gitea.com/attachments/3fa51e33-7623-4cd8-92e9-91d88f7dc737"
+
+[tools."forgejo:gitea/tea"."platforms.linux-x64-baseline"]
+checksum = "sha256:254b50cee2635715aa3bb4e121e6f722f318fcc0ae860c80ca3269049027d3fb"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-amd64"
+url_api = "https://gitea.com/attachments/3fa51e33-7623-4cd8-92e9-91d88f7dc737"
+
+[tools."forgejo:gitea/tea"."platforms.linux-x64-musl"]
+checksum = "sha256:254b50cee2635715aa3bb4e121e6f722f318fcc0ae860c80ca3269049027d3fb"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-amd64"
+url_api = "https://gitea.com/attachments/3fa51e33-7623-4cd8-92e9-91d88f7dc737"
+
+[tools."forgejo:gitea/tea"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:254b50cee2635715aa3bb4e121e6f722f318fcc0ae860c80ca3269049027d3fb"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-linux-amd64"
+url_api = "https://gitea.com/attachments/3fa51e33-7623-4cd8-92e9-91d88f7dc737"
+
+[tools."forgejo:gitea/tea"."platforms.macos-arm64"]
+checksum = "sha256:1494fc312ecfc9c3ce50e340b155aa1830dee26d4c967599bf7ecd870cc38f5e"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-darwin-arm64"
+url_api = "https://gitea.com/attachments/c3f3bbc7-be92-45ab-b37d-f00bb9869350"
+
+[tools."forgejo:gitea/tea"."platforms.macos-x64"]
+checksum = "sha256:3ce9cd60d734688d81b704b5093e6753f055323c2627a257665ef38736b47e73"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-darwin-amd64"
+url_api = "https://gitea.com/attachments/4950f4df-80b7-48df-91cb-4736c0eefeae"
+
+[tools."forgejo:gitea/tea"."platforms.macos-x64-baseline"]
+checksum = "sha256:3ce9cd60d734688d81b704b5093e6753f055323c2627a257665ef38736b47e73"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-darwin-amd64"
+url_api = "https://gitea.com/attachments/4950f4df-80b7-48df-91cb-4736c0eefeae"
+
+[tools."forgejo:gitea/tea"."platforms.windows-x64"]
+checksum = "sha256:02d15c5fd1a1ed1abfa4e1412ad7eb727b728ad0e71b429c8ec1bedf2547b962"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-windows-amd64.exe"
+url_api = "https://gitea.com/attachments/f8cb7e83-b933-4852-b49b-2bb219e5d443"
+
+[tools."forgejo:gitea/tea"."platforms.windows-x64-baseline"]
+checksum = "sha256:02d15c5fd1a1ed1abfa4e1412ad7eb727b728ad0e71b429c8ec1bedf2547b962"
+url = "https://gitea.com/gitea/tea/releases/download/v0.11.1/tea-0.11.1-windows-amd64.exe"
+url_api = "https://gitea.com/attachments/f8cb7e83-b933-4852-b49b-2bb219e5d443"
+
 [[tools."github:Zxilly/go-size-analyzer"]]
 version = "1.13.0"
 backend = "github:Zxilly/go-size-analyzer"
@@ -402,53 +457,53 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476387"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.52.1"
+version = "0.53.0"
 backend = "github:hay-kot/hive"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64"]
-checksum = "sha256:2ec3913281a2a6b7208e0ce544a19db984b58a2f0472ee7092979fec0c0f7adf"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553141"
+checksum = "sha256:493f7220d9f4313c74068bbd35106d6ea3f6ae7876615e1a34e55de723b53f83"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409872"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64-musl"]
-checksum = "sha256:2ec3913281a2a6b7208e0ce544a19db984b58a2f0472ee7092979fec0c0f7adf"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553141"
+checksum = "sha256:493f7220d9f4313c74068bbd35106d6ea3f6ae7876615e1a34e55de723b53f83"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409872"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64"]
-checksum = "sha256:998da6834e2e251ea15e208fc7a816a5fd6a52b62b30f03649622d41a6db7271"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553138"
+checksum = "sha256:1a9391b948b1c0ee314999088c844b3a485cc25d4f428c56de8b2421fd03cab7"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409873"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-baseline"]
-checksum = "sha256:998da6834e2e251ea15e208fc7a816a5fd6a52b62b30f03649622d41a6db7271"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553138"
+checksum = "sha256:1a9391b948b1c0ee314999088c844b3a485cc25d4f428c56de8b2421fd03cab7"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409873"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl"]
-checksum = "sha256:998da6834e2e251ea15e208fc7a816a5fd6a52b62b30f03649622d41a6db7271"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553138"
+checksum = "sha256:1a9391b948b1c0ee314999088c844b3a485cc25d4f428c56de8b2421fd03cab7"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409873"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:998da6834e2e251ea15e208fc7a816a5fd6a52b62b30f03649622d41a6db7271"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553138"
+checksum = "sha256:1a9391b948b1c0ee314999088c844b3a485cc25d4f428c56de8b2421fd03cab7"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409873"
 
 [tools."github:hay-kot/hive"."platforms.macos-arm64"]
-checksum = "sha256:ab38e0f6842f4dc4a3962e8746d5213356e8964d0af2b6a0d22215baff5fa416"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553139"
+checksum = "sha256:3f77172a34ac67e7c4e175564f877a58dc0ebf05d6ad9ca3c446c3720625e97f"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409883"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64"]
-checksum = "sha256:75b7600e9e40e5c873d4d47aaa0ab1823fe669b5cfe364eddf15963f6b6da811"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553140"
+checksum = "sha256:bd3e7e7ab7538b21ed867eaf5f83b9bd6f3c7a49b50a95ccba7d54daebbfba01"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409874"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64-baseline"]
-checksum = "sha256:75b7600e9e40e5c873d4d47aaa0ab1823fe669b5cfe364eddf15963f6b6da811"
-url = "https://github.com/colonyops/hive/releases/download/v0.52.1/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/438553140"
+checksum = "sha256:bd3e7e7ab7538b21ed867eaf5f83b9bd6f3c7a49b50a95ccba7d54daebbfba01"
+url = "https://github.com/colonyops/hive/releases/download/v0.53.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/439409874"
 
 [[tools."github:hay-kot/mi"]]
 version = "0.4.0"
