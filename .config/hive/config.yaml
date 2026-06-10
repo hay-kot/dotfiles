@@ -6,8 +6,10 @@ workspaces:
 context:
   base_dir: "/Users/hayden/code/repos/hivemind/context"
 
+tui:
+  store: true
+
 tmux:
-  enabled: [tmux]
   poll_interval: 500ms
   preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, opencode, orchestrator]
 
@@ -25,8 +27,6 @@ agents:
     flags: ["--dangerously-bypass-approvals-and-sandbox"]
 
 views:
-  store:
-    enabled: true
   sessions:
     refresh_interval: 10s
     preview_enabled: true
@@ -43,11 +43,6 @@ views:
         cmd: WatchSession
       g:
         cmd: LazyGitOpen
-
-review:
-  comment_line_width: 100
-  max_width: 100
-  center_document: true
 
 todos:
   actions:
@@ -168,7 +163,14 @@ usercommands:
 
   ShareToBrain:
     scope: ["review"]
-    help: "share focused doc to grafana/adaptive-telemetry-brain"
+    help: "share focused doc to Adaptive Telemetry Brain"
     sh: |
-      cd "$(dirname {{ .Doc.Path | shq }})" && rice doc share {{ .Doc.Path | shq }}
+      doc={{ .Doc.Path | shq }}
+      dir=$(dirname "$doc")
+      base=$(basename "$doc")
+      target="docs/$(date -u +%Y%m%dT%H%M%SZ)-$base"
+
+      cd "$dir"
+      rice ingest "$target" --from "$base"
+      echo "shared $doc to $target"
     silent: false
