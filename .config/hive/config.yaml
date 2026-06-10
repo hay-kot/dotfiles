@@ -4,7 +4,7 @@ workspaces:
   - ~/code/repos
 
 context:
-  base_dir: "/Users/hayden/code/repos/hivemind/context"
+  base_dir: "~/code/repos/hivemind/context"
 
 tui:
   store: true
