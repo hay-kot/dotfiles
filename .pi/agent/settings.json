@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-8",
   "defaultThinkingLevel": "medium",
   "theme": "dark",
   "enableInstallTelemetry": false,
@@ -26,7 +26,7 @@
     "anthropicExtraUsage": false
   },
   "editorPaddingX": 1,
-  "lastChangelogVersion": "0.77.0",
+  "lastChangelogVersion": "0.79.6",
   "quietStartup": true,
   "collapseChangelog": true
 }

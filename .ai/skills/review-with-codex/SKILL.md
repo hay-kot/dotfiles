@@ -3,7 +3,7 @@ name: review-with-codex
 description: >
   Spawn codex as an independent external reviewer in a new tmux window. Codex performs a
   general PR review and publishes findings back via hive messaging. Use standalone for an
-  external second opinion, or alongside /review-code to run both concurrently.
+  external second opinion, or alongside /review to run both concurrently.
 allowed-tools: "Bash(tmux:*),Bash(hive msg:*),Bash(hive session:*),Bash(git:*),Bash(mktemp:*),Bash(chmod:*),Bash(printf:*),Bash(rm:*)"
 disable-model-invocation: true
 argument-hint: "[base-branch]"
@@ -104,22 +104,22 @@ Then produce a review report:
 - Challenge vague or unsupported findings — demand specific file/line evidence
 - Note issues codex caught that you would have missed
 - Note issues you can see that codex missed
-- Follow the `review-format` skill for structure and output format
+- Follow the output format in the `review` skill (Step 5) for structure
 
 ---
 
-## Integration with /review-code
+## Integration with /review
 
 When using both skills together, run them so codex and Claude's internal sub-agents
 execute **concurrently**. The pattern:
 
-1. **Step 2 of review-code (before dispatching sub-agents):** Run Steps 0–3 of this skill
+1. **Step 2 of review (before dispatching sub-agents):** Run Steps 0–3 of this skill
    to spawn codex in tmux. This is non-blocking — codex starts immediately in the background.
 
-2. **Step 3 of review-code:** Dispatch internal sub-agents in parallel as normal. They run
+2. **Step 3 of review:** Dispatch internal sub-agents in parallel as normal. They run
    concurrently with codex.
 
-3. **Step 4 of review-code:** After internal sub-agents complete, run Step 4 of this skill
+3. **Step 4 of review:** After internal sub-agents complete, run Step 4 of this skill
    (`hive msg sub --wait`) to collect codex's findings. By this point codex may already be
    done, so the wait is often short.
 

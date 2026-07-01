@@ -36,8 +36,10 @@ mkdir -p "$PI_AGENT_DIR"
 
 ensure_symlink "$DOTFILES_DIR/.pi/agent/AGENTS.md" "$PI_AGENT_DIR/AGENTS.md"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/settings.json" "$PI_AGENT_DIR/settings.json"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/models.json" "$PI_AGENT_DIR/models.json"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/skills" "$PI_AGENT_DIR/skills"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/extensions" "$PI_AGENT_DIR/extensions"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/agents" "$PI_AGENT_DIR/agents"
 
 echo "Linked Pi agent config: $PI_AGENT_DIR"
 

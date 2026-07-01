@@ -53,7 +53,7 @@ Run the command yourself. Don't ask the user to copy it into a terminal.
 - Plannotator review surfaces diff-anchored annotations; treat each one as a
   request for a specific code change, not a general suggestion.
 - For deep multi-dimensional review (correctness, design, tests, comments) use
-  `/review-code` instead — that runs parallel sub-agents. This skill is for the
+  `/review` instead — that runs parallel sub-agents. This skill is for the
   human-in-the-loop browser review, not automated review.
 - If the user wants to gate a markdown plan or research doc instead of code,
   use `/doc-review`.

@@ -56,7 +56,7 @@ decisions and dispatch work, but you never write or edit application code yourse
 | Planner        | claude | `/plan-mini` (small) or `/research` + `/plan-write` (large)  |
 | Plan reviewer  | codex  | Reviews the plan document for gaps, bad assumptions, scope   |
 | Worker         | codex  | Implements a single hive `hc` task; claude is fallback       |
-| Code reviewer  | claude | Runs `/review-code` (or `/catchup`) against base branch      |
+| Code reviewer  | claude | Runs `/review` (or `/catchup`) against base branch           |
 
 Default: **claude plans, codex works, claude reviews code, codex reviews plans.**
 
@@ -212,7 +212,7 @@ summarize to stdout and stop.
 ```
 
 For the planner and reviewers, the bootstrap is the slash command (e.g.
-`/plan-mini <description>`, `/review-code`) plus the same publishing
+`/plan-mini <description>`, `/review`) plus the same publishing
 contract. Adapt `task_id` to something descriptive like `"plan"` or
 `"final-review"`.
 
@@ -226,7 +226,7 @@ Pick the path based on the user's prompt:
 2. Poll until plan is written.
 3. Send `/plan-to-hc` in the same window to convert the plan to hive tasks.
 4. Spawn workers (see concurrency rules below) — codex by default.
-5. When all workers are done, spawn `claude-reviewer` and run `/review-code`.
+5. When all workers are done, spawn `claude-reviewer` and run `/review`.
 6. Surface the review to the user.
 
 ### Large / fuzzy change

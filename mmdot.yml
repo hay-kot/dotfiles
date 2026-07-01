@@ -8,8 +8,45 @@ variables:
   var_files:
     - ./mmdot/vault.yml?vault=true
     - ./mmdot/repos.yml
+    - ./mmdot/agents.yml
 
 templates:
+  # AI agents — rendered from the canonical definitions in mmdot/agents.yml into
+  # each harness's format. Outputs are committed to the repo; stow symlinks
+  # .claude/agents and setup/ai.sh symlinks ~/.pi/agent/agents (~/.pi holds
+  # local state, so it is excluded from stow via .stow-local-ignore).
+  # codex has no agent files and reviews via the shared `review` skill.
+  - name: Reviewer Agent (pi)
+    tags: [personal, ai]
+    output: .pi/agent/agents/diff-reviewer.md
+    perm: "0644"
+    trim: false
+    template: |
+      ---
+      name: diff-reviewer
+      description: {{ .ai_agents.diff_reviewer.description }}
+      tools: read, grep, find, ls, bash
+      thinking: high
+      systemPromptMode: replace
+      inheritProjectContext: true
+      inheritSkills: false
+      defaultContext: fork
+      ---
+
+      {{ .ai_agents.diff_reviewer.body }}
+  - name: Reviewer Agent (claude)
+    tags: [personal, ai]
+    output: .claude/agents/diff-reviewer.md
+    perm: "0644"
+    trim: false
+    template: |
+      ---
+      name: diff-reviewer
+      description: {{ .ai_agents.diff_reviewer.description }}
+      tools: Read, Grep, Glob, Bash
+      ---
+
+      {{ .ai_agents.diff_reviewer.body }}
   - name: Host File Template
     tags: [personal]
     template: |-

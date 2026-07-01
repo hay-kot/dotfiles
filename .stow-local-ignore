@@ -26,4 +26,5 @@ tools
 .hive
 .codex
 .haykot
+^\.pi$
 .scaffold
