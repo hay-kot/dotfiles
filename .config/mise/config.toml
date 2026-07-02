@@ -33,7 +33,7 @@ rust = "latest"
 "github:amir20/dtop" = "v0.7.7"             # docker tui
 
 # AI Planning Tools
-"github:backnotprop/plannotator" = { version = "v0.20.3", matching = "plannotator-" }
+"github:backnotprop/plannotator" = { version = "v0.21.1", matching = "plannotator-" }
 
 # Personal Go Tools
 "go:github.com/hay-kot/mdparse" = "v0.1.1"
