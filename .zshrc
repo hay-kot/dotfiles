@@ -296,7 +296,18 @@ export GUM_CONFIRM_SELECTED_FOREGROUND="#9ece6a" # Tokyo Night green
 export GUM_CONFIRM_UNSELECTED_FOREGROUND="#545c7e" # Tokyo Night comment
 
 alias k="kubectl"
-alias hv="tmux new-session -As hive hive"
+
+unalias hv 2>/dev/null
+hv() {
+    if [[ -f "$HOME/.shell.env" ]]; then
+        set -a
+        source "$HOME/.shell.env"
+        set +a
+    fi
+
+    tmux set-environment -g HIVE_DEFAULT_AGENT "${HIVE_DEFAULT_AGENT:-claude}"
+    tmux new-session -As hive "HIVE_DEFAULT_AGENT=${HIVE_DEFAULT_AGENT:-claude} hive"
+}
 
 alias llv="lnavlogs"
 

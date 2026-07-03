@@ -1,5 +1,6 @@
 version: 0.2.7
 git_path: git
+
 workspaces:
   - ~/code/repos
 
@@ -35,12 +36,8 @@ views:
         cmd: SendAccept
       ctrl+d:
         cmd: TmuxKill
-      p:
-        cmd: TmuxPopUp
       S:
         cmd: TmuxStart
-      M:
-        cmd: WatchSession
       g:
         cmd: LazyGitOpen
 
