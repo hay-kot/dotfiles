@@ -515,7 +515,7 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Darwin_
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476387"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.55.0"
+version = "0.56.0"
 backend = "github:hay-kot/hive"
 
 [[tools."github:hay-kot/mi"]]
@@ -905,5 +905,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.96.0"
+version = "1.97.0"
 backend = "core:rust"
