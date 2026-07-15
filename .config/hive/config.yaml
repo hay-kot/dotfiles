@@ -45,6 +45,34 @@ todos:
   actions:
     obsidian: "open {{ .URI | shq }}"
 
+sources:
+  external:
+    - name: adaptive-telemetry-alerts
+      command: [hive-source-gcx-adaptive-alerts]
+      env:
+        GCX_CONTEXT: ops
+      timeout: 30s
+      templates:
+        name: "adaptive-{{ .ID }}-{{ .Fields.signal_slug }}-{{ .Fields.target }}"
+        prompt: |
+          Investigate this firing Adaptive Telemetry alert.
+
+          Title: {{ .Title }}
+          Signal: {{ .Fields.signal }}
+          State: {{ .Fields.state }}
+          Service: {{ .Fields.service }}
+          Rule: {{ .Fields.rule }}
+          Value: {{ .Fields.value }}
+          Active since: {{ .Fields.active }}
+          URL: {{ .Fields.url }}
+
+          Labels: {{ .Fields.labels }}
+          Annotations: {{ .Fields.annotations }}
+        tags:
+          - adaptive-telemetry
+          - alert
+          - "{{ .Fields.signal_slug }}"
+
 plugins:
   shell_workers: 10 # shared subprocess concurrency limit
   github:

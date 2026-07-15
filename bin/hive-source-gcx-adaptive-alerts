@@ -1,0 +1,488 @@
+#!/usr/bin/env python3
+"""One-shot Hive JSON-RPC source for firing Adaptive Telemetry alerts."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+import unicodedata
+import unittest
+from typing import Any
+from unittest import mock
+from urllib.parse import urlsplit
+
+SOURCE_ID = "adaptive-telemetry-alerts"
+DISPLAY_NAME = "Adaptive Telemetry Alerts"
+PRODUCTS = (
+    ("metrics", "Adaptive Metrics"),
+    ("logs", "Adaptive Logs"),
+    ("traces", "Adaptive Traces"),
+    ("profiles", "Adaptive Profiles"),
+)
+URL_KEYS = (
+    "url",
+    "alert url",
+    "dashboard url",
+    "runbook url",
+    "instance url",
+    "query url",
+    "logs url",
+    "report url",
+    "page url",
+    "release process url",
+    "k8s resources url",
+    "grafana slo dashboard url",
+    "grafana ml forecast url",
+)
+MAX_REQUEST_BYTES = 1 << 20
+MAX_ERROR_CHARS = 1000
+GCX_TIMEOUT_SECONDS = 25
+
+
+def normalized_words(value: Any) -> str:
+    """Return lowercase words with camelCase and punctuation boundaries normalized."""
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", text)
+    text = text.encode("ascii", "ignore").decode("ascii").lower()
+    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+
+def sorted_map(value: Any) -> dict[str, Any]:
+    """Return a deterministic string-keyed map, or an empty map for missing data."""
+    if not isinstance(value, dict):
+        return {}
+    return {str(key): value[key] for key in sorted(value, key=lambda key: str(key))}
+
+
+def map_value(values: dict[str, Any], *names: str) -> str:
+    """Read the first nonempty map value using normalized, case-insensitive keys."""
+    indexed = {normalized_words(key): value for key, value in values.items()}
+    for name in names:
+        value = indexed.get(normalized_words(name))
+        if value is not None and str(value).strip():
+            return str(value).strip()
+    return ""
+
+
+def detect_product(record: dict[str, Any], labels: dict[str, Any]) -> tuple[str, str] | None:
+    """Detect an Adaptive product from strongest to weakest explicit marker."""
+    receiver = map_value(labels, "receiver", "__grafana_receiver__")
+    alert_name = map_value(labels, "alertname")
+    evidence = (
+        map_value(labels, "managed_by"),
+        receiver,
+        str(record.get("ruleName") or ""),
+        alert_name,
+    )
+    for marker in evidence:
+        words = f" {normalized_words(marker)} "
+        for slug, display_name in PRODUCTS:
+            if f" adaptive {slug} " in words:
+                return slug, display_name
+    return None
+
+
+def trusted_annotation_url(annotations: dict[str, Any]) -> str:
+    """Return the first recognized annotation containing a valid HTTP(S) URL."""
+    by_key: dict[str, list[Any]] = {}
+    for key, value in annotations.items():
+        by_key.setdefault(normalized_words(key), []).append(value)
+
+    for key in URL_KEYS:
+        for value in by_key.get(key, []):
+            candidate = str(value or "").strip()
+            if any(ord(char) < 32 or ord(char) == 127 for char in candidate):
+                continue
+            try:
+                parsed = urlsplit(candidate)
+                trusted = (
+                    parsed.scheme.lower() in {"http", "https"}
+                    and parsed.hostname is not None
+                    and parsed.username is None
+                )
+            except ValueError:
+                continue
+            if trusted:
+                return candidate
+    return ""
+
+
+def safe_target(value: str, fallback: str) -> str:
+    """Build a short session-name-safe target slug."""
+    target = normalized_words(value).replace(" ", "-").strip("-")
+    if not target:
+        target = normalized_words(fallback).replace(" ", "-").strip("-")
+    return (target or "alert")[:40].rstrip("-") or "alert"
+
+
+def stable_id(rule_uid: str, labels: dict[str, Any]) -> str:
+    canonical_labels = json.dumps(
+        labels, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+    )
+    digest = hashlib.sha256(f"{rule_uid}\0{canonical_labels}".encode()).hexdigest()
+    return f"ata-{digest[:20]}"
+
+
+def text(value: Any) -> str:
+    return "" if value is None else str(value).strip()
+
+
+def record_to_item(record: dict[str, Any]) -> dict[str, Any] | None:
+    labels = sorted_map(record.get("labels"))
+    annotations = sorted_map(record.get("annotations"))
+    product = detect_product(record, labels)
+    if product is None:
+        return None
+
+    signal_slug, signal = product
+    rule = text(record.get("ruleName"))
+    summary = map_value(annotations, "summary")
+    alert_name = map_value(labels, "alertname")
+    title = summary or alert_name or rule or f"{signal} alert"
+    service = map_value(labels, "service", "service_name")
+    url = trusted_annotation_url(annotations)
+    active = text(record.get("activeAt"))
+    state = text(record.get("state"))
+    target = safe_target(service or title, signal_slug)
+
+    subtitle = " · ".join(
+        (
+            signal,
+            state or "unknown state",
+            service or "unknown service",
+            f"active {active or 'time unknown'}",
+        )
+    )
+    fields = {
+        "signal": signal,
+        "signal_slug": signal_slug,
+        "target": target,
+        "rule": rule,
+        "group": text(record.get("groupName")),
+        "folder": text(record.get("folderUid")),
+        "state": state,
+        "active": active,
+        "value": record.get("value") if record.get("value") is not None else "",
+        "labels": labels,
+        "annotations": annotations,
+        "summary": summary,
+        "service": service,
+        "url": url,
+    }
+    return {
+        "id": stable_id(text(record.get("ruleUid")), labels),
+        "title": title,
+        "subtitle": subtitle,
+        "uri": url,
+        "fields": fields,
+    }
+
+
+def search_items(records: list[Any], query: str = "") -> list[dict[str, Any]]:
+    needle = query.strip().casefold()
+    items: list[dict[str, Any]] = []
+    for index, record in enumerate(records):
+        if not isinstance(record, dict):
+            raise ValueError(f"gcx item {index} is not an object")
+        item = record_to_item(record)
+        if item is None:
+            continue
+        if needle:
+            haystack = json.dumps(
+                item, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+            ).casefold()
+            if needle not in haystack:
+                continue
+        items.append(item)
+    return items
+
+
+def bounded_message(value: Any) -> str:
+    message = re.sub(r"[\x00-\x1f\x7f]+", " ", str(value or "")).strip()
+    return message[:MAX_ERROR_CHARS]
+
+
+def run_gcx() -> list[Any]:
+    context = os.environ.get("GCX_CONTEXT", "").strip() or "ops"
+    argv = [
+        "gcx",
+        "--context",
+        context,
+        "--agent",
+        "alert",
+        "instances",
+        "list",
+        "--state",
+        "firing",
+        "--output",
+        "json",
+    ]
+    try:
+        completed = subprocess.run(
+            argv,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=GCX_TIMEOUT_SECONDS,
+        )
+    except FileNotFoundError as exc:
+        raise RuntimeError("gcx executable was not found on PATH") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(f"gcx timed out after {GCX_TIMEOUT_SECONDS} seconds") from exc
+    except UnicodeError as exc:
+        raise RuntimeError("gcx returned output that is not valid text") from exc
+    except OSError as exc:
+        raise RuntimeError(f"could not execute gcx: {bounded_message(exc)}") from exc
+
+    if completed.returncode != 0:
+        detail = bounded_message(completed.stderr)
+        message = f"gcx exited with status {completed.returncode}"
+        if detail:
+            message += f": {detail}"
+        raise RuntimeError(message)
+
+    try:
+        payload = json.loads(completed.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"gcx returned malformed JSON at line {exc.lineno}, column {exc.colno}"
+        ) from exc
+    if not isinstance(payload, list):
+        raise RuntimeError("gcx JSON response must be an array")
+    return payload
+
+
+def rpc_error(request_id: Any, code: int, message: str) -> dict[str, Any]:
+    return {
+        "jsonrpc": "2.0",
+        "id": request_id,
+        "error": {"code": code, "message": bounded_message(message)},
+    }
+
+
+def handle_request(request: Any) -> dict[str, Any]:
+    if not isinstance(request, dict):
+        return rpc_error(None, -32600, "request must be a JSON object")
+    request_id = request.get("id")
+    if request.get("jsonrpc") != "2.0" or "id" not in request:
+        return rpc_error(request_id, -32600, "invalid JSON-RPC 2.0 request")
+
+    method = request.get("method")
+    params = request.get("params", {})
+    if not isinstance(params, dict):
+        return rpc_error(request_id, -32602, "params must be an object")
+
+    if method == "initialize":
+        result = {
+            "id": SOURCE_ID,
+            "displayName": DISPLAY_NAME,
+            "capabilities": {"fetchDetail": False},
+            "picker": {"search": {"debounceMS": 500}},
+        }
+        return {"jsonrpc": "2.0", "id": request_id, "result": result}
+
+    if method == "search":
+        try:
+            records = run_gcx()
+            result = {
+                "items": search_items(records, text(params.get("query"))),
+                "nextCursor": "",
+            }
+        except (RuntimeError, ValueError) as exc:
+            return rpc_error(request_id, -32000, exc)
+        return {"jsonrpc": "2.0", "id": request_id, "result": result}
+
+    return rpc_error(request_id, -32601, f"method not found: {method}")
+
+
+def read_request() -> tuple[Any, dict[str, Any] | None]:
+    raw = sys.stdin.buffer.readline(MAX_REQUEST_BYTES + 1)
+    if not raw:
+        return None, rpc_error(None, -32600, "expected one newline-terminated request")
+    if len(raw) > MAX_REQUEST_BYTES:
+        return None, rpc_error(None, -32600, "request exceeds size limit")
+    if not raw.endswith(b"\n"):
+        return None, rpc_error(None, -32600, "request is not newline-terminated")
+    if sys.stdin.buffer.read(1):
+        return None, rpc_error(None, -32600, "expected exactly one request line")
+    try:
+        return json.loads(raw), None
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        return None, rpc_error(None, -32700, f"parse error: {exc}")
+
+
+def serve_once() -> int:
+    request, framing_error = read_request()
+    response = framing_error or handle_request(request)
+    sys.stdout.write(json.dumps(response, ensure_ascii=False, separators=(",", ":")) + "\n")
+    sys.stdout.flush()
+    return 0
+
+
+def fixture(
+    product: str,
+    *,
+    marker: str = "name",
+    labels: dict[str, Any] | None = None,
+    annotations: dict[str, Any] | None = None,
+    state: str = "Alerting",
+) -> dict[str, Any]:
+    display = dict(PRODUCTS)[product]
+    record_labels = {"alertname": f"{display} Too Much Spend", "service": "collector"}
+    rule_name = f"{display} Rule"
+    if marker == "managed_by":
+        record_labels = {"managed_by": f"adaptive-{product}", "service": "collector"}
+        rule_name = "Generic Rule"
+    elif marker == "receiver":
+        record_labels = {"__grafana_receiver__": f"{display} Alerts", "service": "collector"}
+        rule_name = "Generic Rule"
+    elif marker == "alertname":
+        rule_name = "Generic Rule"
+    if labels is not None:
+        record_labels = labels
+    return {
+        "ruleUid": "rule-1",
+        "ruleName": rule_name,
+        "groupName": "group-a",
+        "folderUid": "folder-a",
+        "state": state,
+        "activeAt": "2026-07-15T10:00:00Z",
+        "value": "42",
+        "labels": record_labels,
+        "annotations": annotations or {},
+    }
+
+
+class AdapterSelfTest(unittest.TestCase):
+    def test_four_products_and_marker_precedence(self) -> None:
+        cases = (
+            fixture("metrics", marker="managed_by"),
+            fixture("logs", marker="receiver"),
+            fixture("traces", marker="name"),
+            fixture("profiles", marker="alertname"),
+        )
+        self.assertEqual(
+            [item["fields"]["signal_slug"] for item in search_items(list(cases))],
+            ["metrics", "logs", "traces", "profiles"],
+        )
+        conflicting = fixture("metrics", marker="name")
+        conflicting["labels"]["managed_by"] = "adaptive-traces"
+        self.assertEqual(record_to_item(conflicting)["fields"]["signal_slug"], "traces")
+
+    def test_unrelated_arbitrary_label_value_is_excluded(self) -> None:
+        record = fixture(
+            "metrics",
+            labels={"team": "Adaptive Metrics", "alertname": "Disk Full"},
+        )
+        record["ruleName"] = "Disk Full"
+        self.assertIsNone(record_to_item(record))
+
+    def test_stable_id_ignores_map_order_and_instances_are_unique(self) -> None:
+        first = fixture("logs", labels={"alertname": "AdaptiveLogsFailure", "pod": "a"})
+        reordered = fixture("logs", labels={"pod": "a", "alertname": "AdaptiveLogsFailure"})
+        second = fixture("logs", labels={"alertname": "AdaptiveLogsFailure", "pod": "b"})
+        self.assertEqual(record_to_item(first)["id"], record_to_item(reordered)["id"])
+        self.assertNotEqual(record_to_item(first)["id"], record_to_item(second)["id"])
+        self.assertEqual(list(record_to_item(first)["fields"]["labels"]), ["alertname", "pod"])
+
+    def test_title_and_url_fallbacks(self) -> None:
+        record = fixture(
+            "metrics",
+            annotations={
+                "summary": "Investigate tenant burn",
+                "url": "javascript:alert(1)",
+                "runbook_url": "https://grafana.example/runbook",
+            },
+        )
+        item = record_to_item(record)
+        self.assertEqual(item["title"], "Investigate tenant burn")
+        self.assertEqual(item["uri"], "https://grafana.example/runbook")
+        self.assertEqual(item["fields"]["url"], item["uri"])
+
+        record["annotations"] = {}
+        self.assertEqual(record_to_item(record)["title"], record["labels"]["alertname"])
+        record["labels"].pop("alertname")
+        self.assertEqual(record_to_item(record)["title"], record["ruleName"])
+
+    def test_missing_maps_and_alerting_state(self) -> None:
+        record = fixture("profiles", marker="name", state="Alerting")
+        record.pop("labels")
+        record.pop("annotations")
+        item = record_to_item(record)
+        self.assertEqual(item["fields"]["labels"], {})
+        self.assertEqual(item["fields"]["annotations"], {})
+        self.assertEqual(item["fields"]["state"], "Alerting")
+        self.assertNotIn("repo", item["fields"])
+
+    def test_query_filter_is_case_insensitive(self) -> None:
+        records = [
+            fixture("metrics", annotations={"summary": "Tenant Alpha is noisy"}),
+            {**fixture("logs", annotations={"summary": "Tenant Beta is noisy"}), "ruleUid": "rule-2"},
+        ]
+        result = search_items(records, "ALPHA")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["fields"]["signal_slug"], "metrics")
+
+    def test_gcx_failures_are_bounded_server_errors(self) -> None:
+        request = {"jsonrpc": "2.0", "id": 7, "method": "search", "params": {}}
+        with mock.patch(__name__ + ".run_gcx", side_effect=RuntimeError("x" * 2000)):
+            response = handle_request(request)
+        self.assertEqual(response["error"]["code"], -32000)
+        self.assertLessEqual(len(response["error"]["message"]), MAX_ERROR_CHARS)
+
+    def test_gcx_uses_direct_expected_argv_and_default_context(self) -> None:
+        completed = subprocess.CompletedProcess(["gcx"], 0, stdout="[]", stderr="")
+        with mock.patch.dict(os.environ, {}, clear=True):
+            with mock.patch(__name__ + ".subprocess.run", return_value=completed) as run:
+                self.assertEqual(run_gcx(), [])
+        self.assertEqual(
+            run.call_args.args[0],
+            [
+                "gcx",
+                "--context",
+                "ops",
+                "--agent",
+                "alert",
+                "instances",
+                "list",
+                "--state",
+                "firing",
+                "--output",
+                "json",
+            ],
+        )
+
+    def test_malformed_gcx_json_and_missing_binary(self) -> None:
+        malformed = subprocess.CompletedProcess(["gcx"], 0, stdout="not-json", stderr="")
+        with mock.patch(__name__ + ".subprocess.run", return_value=malformed):
+            with self.assertRaisesRegex(RuntimeError, "malformed JSON"):
+                run_gcx()
+        with mock.patch(__name__ + ".subprocess.run", side_effect=FileNotFoundError()):
+            with self.assertRaisesRegex(RuntimeError, "not found"):
+                run_gcx()
+
+    def test_fetch_detail_and_unknown_methods_are_not_supported(self) -> None:
+        for method in ("fetchDetail", "unknown"):
+            response = handle_request(
+                {"jsonrpc": "2.0", "id": 9, "method": method, "params": {}}
+            )
+            self.assertEqual(response["error"]["code"], -32601)
+
+
+def run_self_tests() -> int:
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(AdapterSelfTest)
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    return 0 if result.wasSuccessful() else 1
+
+
+if __name__ == "__main__":
+    if sys.argv[1:] == ["--self-test"]:
+        raise SystemExit(run_self_tests())
+    if len(sys.argv) != 1:
+        print(f"usage: {sys.argv[0]} [--self-test]", file=sys.stderr)
+        raise SystemExit(2)
+    raise SystemExit(serve_once())
