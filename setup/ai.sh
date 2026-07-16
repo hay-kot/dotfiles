@@ -47,3 +47,10 @@ echo "Linked Pi agent config: $PI_AGENT_DIR"
 ensure_symlink "$SOURCE_SKILLS" "$CODEX_CLAUDE_LINK"
 
 echo "Linked Codex skills: $CODEX_CLAUDE_LINK -> $SOURCE_SKILLS"
+
+# Global agent instructions. Root AGENTS.md/CLAUDE.md are repo-local docs,
+# so they are excluded from stow via .stow-local-ignore; the global file
+# lives in .ai/ and is linked here instead.
+ensure_symlink "$AI_ROOT/AGENTS.md" "$HOME/AGENTS.md"
+
+echo "Linked global agent instructions: $HOME/AGENTS.md -> $AI_ROOT/AGENTS.md"

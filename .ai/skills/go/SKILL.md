@@ -10,6 +10,15 @@ allowed-tools: "Read,Bash(go:*)"
 
 Guidelines for working effectively with Go projects.
 
+## Code Style
+
+- Concrete types over `interface{}`/`any` — interfaces hide bugs.
+- Channels for synchronization, not `time.Sleep()`.
+- Early returns to reduce nesting.
+- Wrap errors with `fmt.Errorf("context: %w", err)` to preserve chains.
+- Table tests for complex logic.
+- Godoc all exported symbols.
+
 ## Reading Dependency Source Files
 
 To see source files from a dependency, or to answer questions about a dependency:

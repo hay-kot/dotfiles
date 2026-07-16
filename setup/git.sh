@@ -53,6 +53,15 @@ echo "git: set global hooks path"
 git config --global core.hooksPath ~/.git-hooks
 
 # -------------------------------------
+# Git Performance
+#
+echo "git: enable feature.manyFiles (index v4 + untracked cache)"
+git config --global feature.manyFiles true
+
+echo "git: enable fetch.writeCommitGraph"
+git config --global fetch.writeCommitGraph true
+
+# -------------------------------------
 # Git Aliases
 #
 

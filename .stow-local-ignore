@@ -6,6 +6,9 @@ pkgs
 ^/LICENSE.*
 ^/COPYING
 
+^/AGENTS.md
+^/CLAUDE.md
+
 .DS_Store.*
 .mac/*
 makefile
