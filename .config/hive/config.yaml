@@ -32,14 +32,14 @@ views:
     refresh_interval: 10s
     preview_enabled: true
     keybindings:
-      A:
-        cmd: SendAccept
       ctrl+d:
         cmd: TmuxKill
       S:
         cmd: TmuxStart
       g:
         cmd: LazyGitOpen
+      O:
+        cmd: OpenRepo
 
 todos:
   actions:
@@ -127,12 +127,6 @@ usercommands:
     help: "Instructs claude to check it's inbox"
     silent: true
 
-  SendAccept:
-    scope: ["sessions"]
-    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}"'
-    help: "Send enter to claude window"
-    silent: true
-
   SendTidy:
     scope: ["sessions"]
     help: send /tidy
@@ -155,6 +149,12 @@ usercommands:
     scope: ["sessions"]
     sh: "zed {{ .Path }}"
     help: open in zed
+    silent: true
+
+  OpenRepo:
+    scope: ["sessions"]
+    sh: "~/.config/hive/scripts/open-repo.sh {{ .Path | shq }}"
+    help: open repo web page in browser
     silent: true
 
   PRLink:
