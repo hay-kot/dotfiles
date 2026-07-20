@@ -366,76 +366,76 @@ url = "https://github.com/amir20/dtop/releases/download/v0.7.9/source.tar.gz"
 url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505728"
 
 [[tools."github:backnotprop/plannotator"]]
-version = "0.22.0"
+version = "0.23.1"
 backend = "github:backnotprop/plannotator"
 
 [tools."github:backnotprop/plannotator".options]
 matching = "plannotator-"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-arm64"]
-checksum = "sha256:b53b486cb0d3b46b3451d2a9c9643f1a219bf48de7b7f29724687184cde8ca24"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-arm64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364643"
+checksum = "sha256:134501be44d071410a9e1531fe3019398ea25f3776f073c15333d7ac8a0f3b5f"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754084"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-arm64-musl"]
-checksum = "sha256:b53b486cb0d3b46b3451d2a9c9643f1a219bf48de7b7f29724687184cde8ca24"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-arm64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364643"
+checksum = "sha256:134501be44d071410a9e1531fe3019398ea25f3776f073c15333d7ac8a0f3b5f"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754084"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-x64"]
-checksum = "sha256:d371b78242a31d687badcd2772b7357e339567c874b44e7a50316d1d11d2a7d1"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364637"
+checksum = "sha256:1481f5143f8108177fe0cdb15d14f2dc3a18833b3012e30f188c7230e0343ba7"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754075"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-x64-baseline"]
-checksum = "sha256:d371b78242a31d687badcd2772b7357e339567c874b44e7a50316d1d11d2a7d1"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364637"
+checksum = "sha256:1481f5143f8108177fe0cdb15d14f2dc3a18833b3012e30f188c7230e0343ba7"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754075"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-x64-musl"]
-checksum = "sha256:d371b78242a31d687badcd2772b7357e339567c874b44e7a50316d1d11d2a7d1"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364637"
+checksum = "sha256:1481f5143f8108177fe0cdb15d14f2dc3a18833b3012e30f188c7230e0343ba7"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754075"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:d371b78242a31d687badcd2772b7357e339567c874b44e7a50316d1d11d2a7d1"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-linux-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364637"
+checksum = "sha256:1481f5143f8108177fe0cdb15d14f2dc3a18833b3012e30f188c7230e0343ba7"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-linux-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754075"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.macos-arm64"]
-checksum = "sha256:7babad6796af8f7ea3198bd9633aa6f2cce6ab97c5ec68c2fde0e74e4c2a0652"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-darwin-arm64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364640"
+checksum = "sha256:d81cc7d8caccfc46894cbe1641b96631770db2f396b49a58e2ad5fee271505f1"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-darwin-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754074"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.macos-x64"]
-checksum = "sha256:003317c515a1c44d284a9400a5efca0595221999f29bf2de671243976a2b390a"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-darwin-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364648"
+checksum = "sha256:5531d3e1fac8b684e149ec297243324c00cc235ce471db7c09016346739e9d35"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-darwin-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754068"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.macos-x64-baseline"]
-checksum = "sha256:003317c515a1c44d284a9400a5efca0595221999f29bf2de671243976a2b390a"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-darwin-x64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364648"
+checksum = "sha256:5531d3e1fac8b684e149ec297243324c00cc235ce471db7c09016346739e9d35"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-darwin-x64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754068"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.windows-x64"]
-checksum = "sha256:0b26d7ef826126313c5f4017cbeb7d69898f22aba5dbca45064d8028ecc8056b"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-win32-x64.exe"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364626"
+checksum = "sha256:df1d14edcb8b5364bb753d3ac6cef5f7d9cbe9e496f6bddade0ea97355448d92"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-win32-x64.exe"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754063"
 provenance = "github-attestations"
 
 [tools."github:backnotprop/plannotator"."platforms.windows-x64-baseline"]
-checksum = "sha256:0b26d7ef826126313c5f4017cbeb7d69898f22aba5dbca45064d8028ecc8056b"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.22.0/plannotator-win32-x64.exe"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/467364626"
+checksum = "sha256:df1d14edcb8b5364bb753d3ac6cef5f7d9cbe9e496f6bddade0ea97355448d92"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.23.1/plannotator-win32-x64.exe"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/474754063"
 provenance = "github-attestations"
 
 [[tools."github:caarlos0/svu"]]
