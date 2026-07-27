@@ -21,3 +21,6 @@ repomgr.log
 # tmux plugins (managed by TPM)
 .config/tmux/plugins/
 /mmdot/vault.yml
+
+# hive desktop config-dir pointer (absolute path, per-machine)
+.config/hive/desktop/bootstrap.yaml

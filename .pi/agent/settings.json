@@ -1,10 +1,10 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-8",
+  "defaultThinkingLevel": "high",
   "theme": "dark",
   "enableInstallTelemetry": false,
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "enableSkillCommands": true,
   "packages": [
     "npm:pi-subagents@0.25.0",
@@ -28,5 +28,9 @@
   "editorPaddingX": 1,
   "lastChangelogVersion": "0.80.3",
   "quietStartup": true,
-  "collapseChangelog": true
+  "collapseChangelog": true,
+  "terminal": {
+    "showTerminalProgress": false
+  },
+  "defaultProjectTrust": "ask"
 }
