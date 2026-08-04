@@ -1239,6 +1239,10 @@ backend = "go:golang.org/x/perf/cmd/benchstat"
 version = "0.45.0"
 backend = "go:golang.org/x/tools/cmd/deadcode"
 
+[[tools."go:golang.org/x/tools/gopls"]]
+version = "0.23.0"
+backend = "go:golang.org/x/tools/gopls"
+
 [[tools.node]]
 version = "25.9.0"
 backend = "core:node"

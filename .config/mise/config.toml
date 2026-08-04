@@ -2,7 +2,7 @@
 # -------------------------------------------------------
 # Environments
 
-go = "1.26.5"
+go = "1.26"
 node = "25"
 bun = "latest"
 rust = "latest"
@@ -55,6 +55,7 @@ rust = "latest"
 "github:thomasschafer/scooter" = "latest" # find and replace mechanism
 "github:agavra/tuicr" = "latest"          # tui code review
 "cargo:sleek" = "latest"                  # sql formatter
+"go:golang.org/x/tools/gopls" = "latest"
 
 [settings]
 minimum_release_age = "3d"

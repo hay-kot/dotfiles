@@ -11,8 +11,6 @@
   "permissions": {
     "allow": [
       "Read(.hive/**/*)",
-      "Glob(.hive/**/*)",
-      "Grep(.hive/**/*)",
       "Bash(basename:*)",
       "Bash(hive ctx init)",
       "Bash(hive ctx ls)",
@@ -121,13 +119,14 @@
       "Read(.env.*)"
     ]
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
   },
   "enabledPlugins": {
     "scaffold@hay-kot-scaffold": false,
-    "hive-hooks@hive": true,
+    "hive-hooks@hive": false,
     "hive@hive": true
   },
   "extraKnownMarketplaces": {
