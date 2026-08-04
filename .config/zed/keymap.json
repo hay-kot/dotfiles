@@ -1,0 +1,104 @@
+// Zed keymap — mirrors the Neovim config in .config/nvim.
+// Leader is <space>, matching vim.g.mapleader in lua/haykot/keymaps.lua.
+[
+  // ── LSP navigation & actions (normal mode) ────────────────────────────
+  // Mirrors lua/haykot/plugs/snacks.lua (goto pickers) and plugs/lsp.lua.
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      "g d": "editor::GoToDefinition",
+      "g D": "editor::GoToDeclaration",
+      "g r": "editor::FindAllReferences",
+      "g I": "editor::GoToImplementation",
+      "g y": "editor::GoToTypeDefinition",
+      "K": "editor::Hover",
+
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+
+      "space l e": "editor::GoToDiagnostic",
+      "space l E": "editor::GoToPreviousDiagnostic",
+      "space l x": "editor::Hover",
+      "space l c a": "editor::ToggleCodeActions",
+      "space l r": "editor::Rename",
+      "space l f": "editor::Format",
+
+      // ── Pickers / finders ──────────────────────────────────────────────
+      "space f f": "file_finder::Toggle",
+      "space f g": "pane::DeploySearch",
+      "space f b": "tab_switcher::Toggle",
+      "space f i b": "buffer_search::Deploy",
+      "space f s": "outline::Toggle",
+      "space f w s": "project_symbols::Toggle",
+      "space f x": "diagnostics::Deploy",
+      "space f r": "editor::FindAllReferences",
+      "space f c": "git_panel::ToggleFocus",
+      "space f p": "command_palette::Toggle",
+
+      // ── Panels ─────────────────────────────────────────────────────────
+      "space e e": "project_panel::ToggleFocus",
+      "space t": "terminal_panel::ToggleFocus",
+
+      // ── Git ────────────────────────────────────────────────────────────
+      "space g g": "git_panel::ToggleFocus",
+      "space g b": "git::Blame",
+      "space g o": "editor::OpenPermalinkToLine",
+
+      // ── Window / pane navigation ───────────────────────────────────────
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+
+      // ── Splits ─────────────────────────────────────────────────────────
+      "space s b r": "pane::SplitRight",
+      "space s b t": "pane::SplitDown",
+
+      // ── Buffers / tabs ─────────────────────────────────────────────────
+      "space q": "pane::CloseActiveItem",
+      "space b n": "pane::ActivateNextItem",
+      "space b p": "pane::ActivatePreviousItem",
+      "space tab": "pane::ActivateNextItem",
+      "space c b r": "pane::CloseItemsToTheRight",
+      "space c b l": "pane::CloseItemsToTheLeft",
+      "space c b o": "pane::CloseOtherItems",
+      "space c b a": "pane::CloseAllItems",
+
+      "space 1": ["pane::ActivateItem", 0],
+      "space 2": ["pane::ActivateItem", 1],
+      "space 3": ["pane::ActivateItem", 2],
+      "space 4": ["pane::ActivateItem", 3],
+      "space 5": ["pane::ActivateItem", 4],
+      "space 6": ["pane::ActivateItem", 5],
+      "space 7": ["pane::ActivateItem", 6],
+      "space 8": ["pane::ActivateItem", 7],
+      "space 9": ["pane::ActivateItem", 8],
+      "space 0": "pane::ActivateLastItem",
+
+      // ── Misc ───────────────────────────────────────────────────────────
+      // "D" deletes backward until a char (nnoremap D dT)
+      "D": ["workspace::SendKeystrokes", "d T"],
+      // Clear search highlight
+      "space /": ["workspace::SendKeystrokes", ": n o h l s e a r c h enter"]
+    }
+  },
+
+  // ── Visual mode ────────────────────────────────────────────────────────
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+      "J": "editor::MoveLineDown",
+      "K": "editor::MoveLineUp"
+    }
+  },
+
+  // ── Insert mode ────────────────────────────────────────────────────────
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "ctrl-h": "editor::ShowSignatureHelp"
+    }
+  }
+]
