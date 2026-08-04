@@ -307,63 +307,63 @@ url = "https://github.com/agavra/tuicr/releases/download/v0.16.1/tuicr-0.16.1-x8
 url_api = "https://api.github.com/repos/agavra/tuicr/releases/assets/430320802"
 
 [[tools."github:amir20/dtop"]]
-version = "0.7.9"
+version = "0.7.11"
 backend = "github:amir20/dtop"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64"]
-checksum = "sha256:6fdb19e7a63685b03ed1d540c504184e3325eef67afd6558141bd016bd5a8e5a"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505707"
+checksum = "sha256:17d63c851627c17fa2aa24a17069d0a1d15a244e28182aab6f6d545ad9b1f75e"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721396"
 
 [tools."github:amir20/dtop"."platforms.linux-arm64-musl"]
-checksum = "sha256:6fdb19e7a63685b03ed1d540c504184e3325eef67afd6558141bd016bd5a8e5a"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505707"
+checksum = "sha256:17d63c851627c17fa2aa24a17069d0a1d15a244e28182aab6f6d545ad9b1f75e"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721396"
 
 [tools."github:amir20/dtop"."platforms.linux-x64"]
-checksum = "sha256:d82a2fc664733561d6fe4ec9c29fc4e0956b3a23f91cc97c677e7c231e9e9ad3"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505725"
+checksum = "sha256:424fd023eff576198f42ed55d66dedb977bc7e4b36cb64772191ff9d88b5cf3a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721415"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-baseline"]
-checksum = "sha256:d82a2fc664733561d6fe4ec9c29fc4e0956b3a23f91cc97c677e7c231e9e9ad3"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505725"
+checksum = "sha256:424fd023eff576198f42ed55d66dedb977bc7e4b36cb64772191ff9d88b5cf3a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721415"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl"]
-checksum = "sha256:d82a2fc664733561d6fe4ec9c29fc4e0956b3a23f91cc97c677e7c231e9e9ad3"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505725"
+checksum = "sha256:424fd023eff576198f42ed55d66dedb977bc7e4b36cb64772191ff9d88b5cf3a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721415"
 
 [tools."github:amir20/dtop"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:d82a2fc664733561d6fe4ec9c29fc4e0956b3a23f91cc97c677e7c231e9e9ad3"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505725"
+checksum = "sha256:424fd023eff576198f42ed55d66dedb977bc7e4b36cb64772191ff9d88b5cf3a"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721415"
 
 [tools."github:amir20/dtop"."platforms.macos-arm64"]
-checksum = "sha256:eca723cf7754476e7844425b2982be5b2a9f92aafdab6bf1ca6b87ecbca6b727"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505704"
+checksum = "sha256:06a1667dad89274319713348e0189e1a73f397102c076f67e277c8d14626e499"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721402"
 
 [tools."github:amir20/dtop"."platforms.macos-x64"]
-checksum = "sha256:fb75af23510db127fe6809fd3943006c1eff90d1d5931845a26fbe4bf48ae7b2"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505713"
+checksum = "sha256:a74450662dea559f5757d554221c946f8dd05219d20b6dfc9767cf7f5724ef8e"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721411"
 
 [tools."github:amir20/dtop"."platforms.macos-x64-baseline"]
-checksum = "sha256:fb75af23510db127fe6809fd3943006c1eff90d1d5931845a26fbe4bf48ae7b2"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/dtop-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505713"
+checksum = "sha256:a74450662dea559f5757d554221c946f8dd05219d20b6dfc9767cf7f5724ef8e"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/dtop-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721411"
 
 [tools."github:amir20/dtop"."platforms.windows-x64"]
-checksum = "sha256:4cd7684b79cdd306734bbeb8604f637200f1e3b705b3b604ae4b1a8b03627e5a"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/source.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505728"
+checksum = "sha256:81cebf354c642d3860ff8bf40fe67f2cdf2d73e4642efbe934714e325e1639bd"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721418"
 
 [tools."github:amir20/dtop"."platforms.windows-x64-baseline"]
-checksum = "sha256:4cd7684b79cdd306734bbeb8604f637200f1e3b705b3b604ae4b1a8b03627e5a"
-url = "https://github.com/amir20/dtop/releases/download/v0.7.9/source.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/472505728"
+checksum = "sha256:81cebf354c642d3860ff8bf40fe67f2cdf2d73e4642efbe934714e325e1639bd"
+url = "https://github.com/amir20/dtop/releases/download/v0.7.11/source.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/491721418"
 
 [[tools."github:backnotprop/plannotator"]]
 version = "0.24.2"
