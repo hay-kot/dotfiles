@@ -1324,5 +1324,5 @@ version = "1.22.22"
 backend = "npm:yarn"
 
 [[tools.rust]]
-version = "1.97.1"
+version = "1.97.0"
 backend = "core:rust"
