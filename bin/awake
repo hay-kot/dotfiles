@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# awake — caffeinate -d with a Go-style duration instead of seconds.
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+awake — keep the display awake for a duration
+
+Usage:
+  awake [duration]
+
+Duration is a Go-style string built from h/m/s parts (d is also accepted):
+  awake 30m
+  awake 2h
+  awake 1h30m
+  awake 1.5h
+  awake          # until Ctrl-C
+
+Wraps: caffeinate -d -t <seconds>
+EOF
+}
+
+parse_duration() {
+  local rest="$1" value unit total=0
+  local re='^([0-9]+(\.[0-9]+)?)(d|h|m|s)(.*)$'
+
+  [[ -n "$rest" ]] || return 1
+
+  while [[ -n "$rest" ]]; do
+    [[ "$rest" =~ $re ]] || return 1
+    value="${BASH_REMATCH[1]}"
+    unit="${BASH_REMATCH[3]}"
+    rest="${BASH_REMATCH[4]}"
+    total="$(awk -v t="$total" -v v="$value" -v u="$unit" 'BEGIN {
+      mult = (u == "d") ? 86400 : (u == "h") ? 3600 : (u == "m") ? 60 : 1
+      printf "%d", t + v * mult
+    }')"
+  done
+
+  [[ "$total" -gt 0 ]] || return 1
+  printf '%s\n' "$total"
+}
+
+case "${1:-}" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+esac
+
+if [[ $# -gt 1 ]]; then
+  echo "awake: too many arguments" >&2
+  usage >&2
+  exit 1
+fi
+
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  BOLD='\033[1m'
+  DIM='\033[2m'
+  CYAN='\033[36m'
+  YELLOW='\033[33m'
+  RESET='\033[0m'
+else
+  BOLD='' DIM='' CYAN='' YELLOW='' RESET=''
+fi
+
+args=(-d)
+if [[ $# -eq 1 ]]; then
+  if ! secs="$(parse_duration "$1")"; then
+    echo "awake: invalid duration '$1' (try 30m, 2h, 1h30m)" >&2
+    exit 1
+  fi
+  args+=(-t "$secs")
+  # Weekday prefix so a long duration doesn't read as a time earlier today.
+  if [[ "$(date -v"+${secs}S" '+%F')" == "$(date '+%F')" ]]; then
+    ends="$(date -v"+${secs}S" '+%-I:%M %p')"
+  else
+    ends="$(date -v"+${secs}S" '+%a %-I:%M %p')"
+  fi
+  label="$1"
+else
+  ends="Ctrl-C"
+  label="indefinitely"
+fi
+
+printf '%b☀%b %b%s%b %b→%b %b%s%b\n' \
+  "$YELLOW" "$RESET" \
+  "$BOLD" "$label" "$RESET" \
+  "$DIM" "$RESET" \
+  "${BOLD}${CYAN}" "$ends" "$RESET"
+printf '%b  └ caffeinate %s%b\n' "$DIM" "${args[*]}" "$RESET"
+exec caffeinate "${args[@]}"
