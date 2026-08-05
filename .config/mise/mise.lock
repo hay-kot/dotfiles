@@ -414,6 +414,7 @@ checksum = "sha256:bc4da5b1a4f2b4bc37efdd8c721fa6679086aa935236edebee63cafc47482
 url = "https://github.com/backnotprop/plannotator/releases/download/v0.25.0/plannotator-darwin-arm64"
 url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/491175915"
 provenance = "github-attestations"
+provenance_verified = true
 
 [tools."github:backnotprop/plannotator"."platforms.macos-x64"]
 checksum = "sha256:e115a8d2cb8247f1b3e34a1dc3d48d356f2f9741a5ab2871274ed62cd309f465"
