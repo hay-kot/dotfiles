@@ -682,53 +682,53 @@ url = "https://github.com/hay-kot/gofind/releases/download/v0.5.1/gofind_Windows
 url_api = "https://api.github.com/repos/hay-kot/gofind/releases/assets/392476376"
 
 [[tools."github:hay-kot/hive"]]
-version = "0.57.0"
+version = "0.58.0"
 backend = "github:hay-kot/hive"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64"]
-checksum = "sha256:37a588aff42fc6b7f1efd2732c4625b5537eb8aa43804a8f3192a1d4387d9221"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652140"
+checksum = "sha256:5c660d5b64017501a1201715b32e5455a2276665977936e5cad189eca8635c79"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524389"
 
 [tools."github:hay-kot/hive"."platforms.linux-arm64-musl"]
-checksum = "sha256:37a588aff42fc6b7f1efd2732c4625b5537eb8aa43804a8f3192a1d4387d9221"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652140"
+checksum = "sha256:5c660d5b64017501a1201715b32e5455a2276665977936e5cad189eca8635c79"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524389"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64"]
-checksum = "sha256:0cd91421bfb1e021f9ae7398036ee6c562d81f9840a3183853b5e61443682df1"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652159"
+checksum = "sha256:4068eb2ef32fa0e84b4a6ef558e39e23822b4431a4e8cda6b286ade5180bfb69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524363"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-baseline"]
-checksum = "sha256:0cd91421bfb1e021f9ae7398036ee6c562d81f9840a3183853b5e61443682df1"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652159"
+checksum = "sha256:4068eb2ef32fa0e84b4a6ef558e39e23822b4431a4e8cda6b286ade5180bfb69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524363"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl"]
-checksum = "sha256:0cd91421bfb1e021f9ae7398036ee6c562d81f9840a3183853b5e61443682df1"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652159"
+checksum = "sha256:4068eb2ef32fa0e84b4a6ef558e39e23822b4431a4e8cda6b286ade5180bfb69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524363"
 
 [tools."github:hay-kot/hive"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:0cd91421bfb1e021f9ae7398036ee6c562d81f9840a3183853b5e61443682df1"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652159"
+checksum = "sha256:4068eb2ef32fa0e84b4a6ef558e39e23822b4431a4e8cda6b286ade5180bfb69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524363"
 
 [tools."github:hay-kot/hive"."platforms.macos-arm64"]
-checksum = "sha256:591ed9760a633447a38f28a3f18b0ff45c1031d2f07e80d97b880945077f4bd6"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652145"
+checksum = "sha256:2d4ce6e7b9d6386f35982224d2a0becc519d87efeab7c97b8f58f313d323c129"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524368"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64"]
-checksum = "sha256:44a5cd0ea5036532354e7bc2dbeb2f8744e3d70365b660c21332565e6068de6c"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652141"
+checksum = "sha256:4b52c8b9bd75affc70159a979e1a47efbd1b61e0085a2f7546c8b31c6e7c1d69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524364"
 
 [tools."github:hay-kot/hive"."platforms.macos-x64-baseline"]
-checksum = "sha256:44a5cd0ea5036532354e7bc2dbeb2f8744e3d70365b660c21332565e6068de6c"
-url = "https://github.com/colonyops/hive/releases/download/v0.57.0/hive_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/483652141"
+checksum = "sha256:4b52c8b9bd75affc70159a979e1a47efbd1b61e0085a2f7546c8b31c6e7c1d69"
+url = "https://github.com/colonyops/hive/releases/download/v0.58.0/hive_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/495524364"
 
 [[tools."github:hay-kot/mi"]]
 version = "0.4.0"
