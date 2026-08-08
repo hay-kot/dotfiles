@@ -25,6 +25,9 @@ agents:
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]
+  fable:
+    command: claude
+    flags: ["--dangerously-skip-permissions", "--model", "claude-fable-5"]
   codex:
     command: codex
     flags: ["--dangerously-bypass-approvals-and-sandbox"]

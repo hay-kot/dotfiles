@@ -1,4 +1,0 @@
-#!/bin/sh
-# TruffleHog pre-commit hook DISABLED
-# (too many false positives)
-exit 0

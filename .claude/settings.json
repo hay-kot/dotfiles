@@ -5,7 +5,8 @@
     "command": "claude-suggestions.sh"
   },
   "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "EDITOR": "nvim"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
