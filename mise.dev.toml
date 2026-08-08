@@ -1,0 +1,78 @@
+# Dev layer — shared by both Macs (personal + grafana).
+# Mac-only or workstation-only packages. Mac setup itself is imperative and
+# stays with mmdot (`exec:` scripts in mmdot.yml).
+
+[bootstrap.packages]
+"brew:ansible" = "latest"
+"brew:ansible-lint" = "latest"
+"brew:atlas" = "latest"      # now in homebrew-core; ariga/tap dropped
+"brew:bash" = "latest"       # macOS ships bash 3.2; Linux servers don't need this
+"brew:bfg" = "latest"
+"brew:cmake" = "latest"
+"brew:coreutils" = "latest"  # GNU userland for macOS
+"brew:dagger" = "latest"     # now in homebrew-core; dagger/tap dropped
+"brew:docker" = "latest"     # CLI client only (engine: Docker Desktop, escape script)
+"brew:editorconfig-checker" = "latest"
+"brew:gh" = "latest"
+"brew:git-lfs" = "latest"
+"brew:glow" = "latest"       # now in homebrew-core; charmbracelet/tap dropped
+"brew:gnupg" = "latest"
+"brew:gofumpt" = "latest"
+"brew:golang-migrate" = "latest"
+"brew:golangci-lint" = "latest"
+"brew:goose" = "latest"
+"brew:goreleaser" = "latest"
+"brew:hyperfine" = "latest"
+"brew:imagemagick" = "latest"
+"brew:infat" = "latest"      # mac-only: file-type associations (setup/mac.defaults.sh)
+"brew:ipython" = "latest"
+"brew:k9s" = "latest"
+"brew:kubernetes-cli" = "latest"
+"brew:kustomize" = "latest"
+"brew:lazygit" = "latest"
+"brew:mage" = "latest"
+"brew:mas" = "latest"        # mac-only: App Store CLI
+"brew:mise" = "latest"       # .zshrc activates /opt/homebrew/bin/mise on Macs; brew
+                             # keeps that binary current (server uses the curl installer)
+"brew:mole" = "latest"
+"brew:pinentry-mac" = "latest"
+"brew:pre-commit" = "latest"
+"brew:semgrep" = "latest"
+"brew:sqlc" = "latest"
+"brew:sqlfmt" = "latest"
+"brew:stylua" = "latest"
+"brew:tree-sitter-cli" = "latest"
+"brew:ttyd" = "latest"       # vhs dependency
+"brew:typos-cli" = "latest"
+"brew:wireguard-go" = "latest" # userspace wireguard; Linux has it in-kernel
+"brew:yank" = "latest"       # tmux-yank clipboard helper
+
+# Casks — everything mise's cask backend can install. The unsupported ones
+# (docker-desktop here in dev) live in setup/brew-casks.*.sh escape scripts.
+"brew-cask:1password" = "latest"
+"brew-cask:1password-cli" = "latest"
+"brew-cask:brave-browser" = "latest"
+"brew-cask:chromedriver" = "latest"
+"brew-cask:cleanshot" = "latest"
+"brew-cask:codex" = "latest"
+"brew-cask:firefox" = "latest"
+"brew-cask:font-fira-code" = "latest"
+"brew-cask:font-fira-code-nerd-font" = "latest"
+"brew-cask:font-hack-nerd-font" = "latest"
+"brew-cask:font-jetbrains-mono-nerd-font" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:google-chrome" = "latest"
+"brew-cask:hiddenbar" = "latest"
+"brew-cask:insomnia" = "latest"
+"brew-cask:keyboard-cleaner" = "latest"
+"brew-cask:obsidian" = "latest"
+"brew-cask:opensuperwhisper" = "latest"
+"brew-cask:raycast" = "latest"
+"brew-cask:rectangle-pro" = "latest"
+"brew-cask:sublime-text" = "latest"
+"brew-cask:tableplus" = "latest"
+"brew-cask:tailscale-app" = "latest"
+"brew-cask:vlc" = "latest"
+"brew-cask:zed" = "latest"
+"brew-cask:zen" = "latest"
+"brew-cask:zoom" = "latest"

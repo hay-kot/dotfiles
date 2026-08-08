@@ -1,0 +1,23 @@
+# Server (Linux) layer — minimal. CLI tooling comes from the base layer's brew
+# bottles; only system-level packages live here.
+# Placeholder list — deliberately finalized during phase 5 on the real server
+# (the only machine that can validate it). Not an open question.
+# NO [tasks.bootstrap]: mmdot's setup scripts are Mac-machine concerns; with no
+# task defined, `mise bootstrap` skips step 10 and the server converge is
+# unattended AFTER the runbook's one-time privileged step 0 (apt prerequisites
+# + chsh) — chsh/PAM may prompt otherwise.
+
+[bootstrap.packages]
+"apt:build-essential" = "latest"
+"apt:ufw" = "latest"
+"apt:zsh" = "latest" # .zshrc is the deployed shell config; Linux minimal images ship without zsh
+
+[bootstrap.user]
+# Declarative record of the login shell. The actual change happens in the
+# server runbook's privileged step 0 (`sudo chsh -s /usr/bin/zsh "$USER"`):
+# run unprivileged by bootstrap, chsh can hit a PAM password prompt (or fail
+# on locked/passwordless SSH accounts) and break the unattended converge —
+# `--yes` suppresses mise's confirmation, not authentication. Bootstrap
+# observes this as already converged and reports drift if the account ever
+# reverts to bash. Installing zsh alone does not change the login shell.
+login_shell = "/usr/bin/zsh"

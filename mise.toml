@@ -1,8 +1,98 @@
-# mise.toml
-# Converted from Taskfile.yml (https://taskfile.dev)
+# Base machine config — active on every machine (server, personal, grafana).
+# MISE_ENV (pinned in ~/.config/mise/miserc.toml) selects overlays:
+#   server   -> mise.toml + mise.server.toml
+#   personal -> mise.toml + mise.dev.toml + mise.personal.toml
+#   grafana  -> mise.toml + mise.dev.toml + mise.grafana.toml
 
 [env]
 MMDOT_CMD = "mmdot --log-level=info"
+# setup/*.sh scripts resolve the repo through DOTFILES_DIR. ~/.shell.env sets it
+# on configured machines, but on a fresh machine that file doesn't exist yet, so
+# pin it to this config's directory for anything mise runs.
+DOTFILES_DIR = "{{config_root}}"
+# brew: packages are HOST packages, not mise tools — they get no shims, and
+# `mise activate` does not add the Homebrew prefixes to PATH. Without this,
+# bootstrap tasks on a fresh machine can't find just-installed formulae
+# (tmux, infat, trufflehog, ...). Both platforms' prefixes are listed;
+# missing dirs are harmless.
+_.path = [
+  "/opt/homebrew/bin",
+  "/opt/homebrew/sbin",
+  "/home/linuxbrew/.linuxbrew/bin",
+  "/home/linuxbrew/.linuxbrew/sbin",
+]
+
+# ---------------------------------------------------------
+# Dotfiles (replaces stow)
+#
+# NOTE: no [bootstrap.mise_shell_activate] — .zshrc already runs
+# `mise activate zsh` (~line 126); bootstrap must never edit the
+# repo-managed rc file.
+
+[dotfiles]
+# Identical on every machine — GUI-app configs are inert on servers.
+# symlink-each == `stow --no-folding`: real directories, per-file symlinks.
+"~" = { source = ".", mode = "symlink-each", exclude = [
+  ".git",
+  ".git-hooks",
+  ".gitignore",
+  ".DS_Store",
+  "mise.toml",
+  "mise.dev.toml",
+  "mise.personal.toml",
+  "mise.grafana.toml",
+  "mise.server.toml",
+  "README.md",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "renovate.json",
+  ".taplo.toml",
+  "mmdot",
+  "mmdot.yml",
+  "setup",
+  "files",
+  "secrets",  # referenced as $DOTFILES_DIR/secrets (.zshrc); no ~/secrets link
+  "bin",      # on PATH via $DOTFILES_DIR/bin (.zshrc); not linked into ~
+  ".mac",
+  ".hive",
+  ".codex",   # ~/.codex holds local state; setup/ai.sh links individual items
+  ".pi",      # ~/.pi holds local state; setup/ai.sh links individual items
+  ".scaffold",
+] }
+
+# ---------------------------------------------------------
+# Packages — base formulae. Rule: everything here must earn its place on a
+# minimal Linux server; mac-only / workstation-only formulae live in
+# mise.dev.toml.
+
+[bootstrap.packages]
+"brew:age" = "latest"
+"brew:bat" = "latest"
+"brew:btop" = "latest"
+"brew:ctop" = "latest"
+"brew:eza" = "latest"
+"brew:fd" = "latest"
+"brew:fx" = "latest"
+"brew:fzf" = "latest"
+"brew:git" = "latest"
+"brew:git-delta" = "latest"
+"brew:go-task" = "latest"    # now in homebrew-core; go-task/tap dropped
+"brew:gping" = "latest"
+"brew:gum" = "latest"        # bin/ scripts (ghpr, tmkill, prlink, ...) depend on it
+"brew:jq" = "latest"
+"brew:lazydocker" = "latest" # now in homebrew-core; jesseduffield tap dropped
+"brew:neovim" = "latest"
+"brew:ripgrep" = "latest"
+"brew:starship" = "latest"
+"brew:tmux" = "latest"
+"brew:trufflehog" = "latest" # was installed by files/bootstrap.sh; git hooks use it
+"brew:wget" = "latest"
+"brew:yq" = "latest"
+
+# ---------------------------------------------------------
+# Repo tasks
+# No [tasks.bootstrap] here: bootstrap's step-10 task is defined per Mac
+# overlay as `mmdot run @<tag>`; the server has none and mise skips step 10.
 
 [tasks.fmt]
 description = "formats neovim files"
@@ -18,22 +108,50 @@ xcode-select --install || true
 sudo xcodebuild -license accept
 """
 
-[tasks.setup]
-description = "runs pre-setup steps for dotfiles configuraton"
-run = """
-chmod +x ./bin/*
-chmod +x ./setup/*.sh
-chmod +x ./files/bootstrap.sh
-./files/bootstrap.sh
-mise install
-"""
+[tasks.plusx]
+description = "Make all scripts in bin/ executable"
+run = "chmod +x ./bin/*"
 
-[tasks.stow]
-description = "runs stow command with arguments"
-run = "stow --no-folding -t ~/ ."
+[tasks.lock]
+description = "Update .config/mise/mise.lock"
+dir = "./.config/mise/"
+run = "mise install"
 
 # ---------------------------------------------------------
-# mmdot
+# Convergence
+
+[tasks.sync]
+# The contract behind the `dotsync` alias (.zshrc) — the daily converge on
+# every machine. Idempotent by construction: bootstrap skips satisfied
+# packages/dotfiles/repos/tools, and step 10's mmdot scripts are re-runnable.
+# --ff-only: a converge command must never invent a merge commit when local
+# and remote diverge — it fails loudly instead.
+# Macs may prompt for sudo once (mac.preferences.sh); the server has no
+# step-10 task and runs unattended after its one-time privileged step 0.
+description = "Converge this machine: pull latest config, re-run bootstrap (incl. mmdot via step 10)"
+run = ["git pull --autostash --ff-only", "mise bootstrap --yes"]
+
+# ---------------------------------------------------------
+# Machine identity
+
+[tasks.stamp]
+description = "Pin this machine's MISE_ENV in ~/.config/mise/miserc.toml (run once, explicitly)"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+if [ -z "${MISE_ENV:-}" ]; then
+  echo "stamp: MISE_ENV is not set; run as: MISE_ENV=dev,personal mise run stamp" >&2
+  exit 1
+fi
+mkdir -p ~/.config/mise
+# tr strips whitespace around commas so MISE_ENV="dev, personal" and
+# MISE_ENV=dev,personal both write exactly: env = ["dev","personal"]
+printf 'env = [%s]\n' "$(printf '%s' "$MISE_ENV" | tr -d '[:space:]' | sed 's/[^,]*/"&"/g')" > ~/.config/mise/miserc.toml
+echo "stamp: wrote ~/.config/mise/miserc.toml -> $(cat ~/.config/mise/miserc.toml)"
+'''
+
+# ---------------------------------------------------------
+# mmdot (templates + setup scripts + age vault)
 
 [tasks.encrypt]
 description = "encrypt vault using mmdot"
@@ -44,31 +162,8 @@ description = "decrypt vault using mmdot"
 run = '{{ get_env(name="MMDOT_CMD", default="") }} decrypt'
 
 [tasks.mmdot]
-description = "run mmdot run"
+# Overlays override this with tag-scoped runs (@personal / @grafana) so
+# tagged scripts/templates never run on the wrong machine. Always invoke
+# via `mise run mmdot`, never bare `mmdot run`.
+description = "run mmdot (vault-backed templates, then setup scripts)"
 run = '{{ get_env(name="MMDOT_CMD", default="") }} run'
-
-[tasks.lock]
-description = "run mise lock"
-dir = "./.config/mise/"
-run = "mise install"
-
-[tasks.plusx]
-description = "Make all scripts in bin/ executable"
-run = "chmod +x ./bin/*"
-
-[tasks."full-setup"]
-description = "Full machine setup: bootstrap, stow, lock"
-run = """
-#!/bin/bash
-set -e
-echo "==> Running setup (bootstrap + mise install)..."
-mise run setup
-echo "==> Running stow..."
-mise run stow
-echo "==> Installing mise tools..."
-mise run lock
-echo "==> Done!"
-echo "==> Next: run mmdot manually with your profile tag:"
-echo "    mmdot run @personal"
-echo "    mmdot run @grafana"
-"""
