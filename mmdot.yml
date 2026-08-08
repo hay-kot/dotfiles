@@ -7,14 +7,13 @@ macros:
 variables:
   var_files:
     - ./mmdot/vault.yml?vault=true
-    - ./mmdot/repos.yml
     - ./mmdot/agents.yml
 
 templates:
   # AI agents — rendered from the canonical definitions in mmdot/agents.yml into
-  # each harness's format. Outputs are committed to the repo; stow symlinks
-  # .claude/agents and setup/ai.sh symlinks ~/.pi/agent/agents (~/.pi holds
-  # local state, so it is excluded from stow via .stow-local-ignore).
+  # each harness's format. Outputs are committed to the repo; mise [dotfiles]
+  # symlinks .claude/agents and setup/ai.sh symlinks ~/.pi/agent/agents (~/.pi
+  # holds local state, so it is excluded from [dotfiles]).
   # codex has no agent files and reviews via the shared `review` skill.
   - name: Reviewer Agent (pi)
     tags: [personal, ai]
@@ -66,88 +65,26 @@ templates:
       {{ end }}
     output: secrets/.env.local
     perm: "0600"
-  - name: Clone Personal Repos
-    tags: [personal, repos]
-    template: |-
-      #!/bin/bash
-      set -e
-      REPO_DIR="$HOME/code/Repos"
-      mkdir -p "$REPO_DIR"
-      {{ range .personal_repos -}}
-      REPO_NAME=$(basename "{{ . }}" .git)
-      if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
-        echo "Cloning $REPO_NAME..."
-        git clone "{{ . }}" "$REPO_DIR/$REPO_NAME"
-      else
-        echo "Skipping $REPO_NAME (already exists)"
-      fi
-      {{ end -}}
-    output: ./setup/clones.personal.sh
-    perm: "0755"
-  - name: Clone Grafana Repos
-    tags: [grafana, repos]
-    template: |-
-      #!/bin/bash
-      set -e
-      REPO_DIR="$HOME/code/Repos"
-      mkdir -p "$REPO_DIR"
-      {{ range .grafana_repos -}}
-      REPO_NAME=$(basename "{{ . }}" .git)
-      if [ ! -d "$REPO_DIR/$REPO_NAME" ]; then
-        echo "Cloning $REPO_NAME..."
-        git clone "{{ . }}" "$REPO_DIR/$REPO_NAME"
-      else
-        echo "Skipping $REPO_NAME (already exists)"
-      fi
-      {{ end -}}
-    output: ./setup/clones.grafana.sh
-    perm: "0755"
-  - name: Brew Grafana
-    tags: [grafana, brew]
-    output: ./setup/brew.grafana.sh
-    perm: "0755"
-    template: |
-      #!/bin/bash
-      set -euo pipefail
-      {{template "brewfile" "grafana"}}
-  - name: Brew Personal
-    tags: [personal, brew]
-    output: ./setup/brew.personal.sh
-    perm: "0755"
-    template: |
-      #!/bin/bash
-      set -euo pipefail
-      {{template "brewfile" "personal"}}
 
 exec:
   shell: /bin/bash
   scripts:
-    # brew (run first, other scripts depend on installed packages)
-    - { path: "./setup/brew.grafana.sh", tags: ["grafana", "brew"] }
-    - { path: "./setup/brew.personal.sh", tags: ["personal", "brew"] }
-
-    # repos
-    - { path: "./setup/clones.personal.sh", tags: ["personal", "repos"] }
-    - { path: "./setup/clones.grafana.sh", tags: ["grafana", "repos"] }
-
     # dev
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
     - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
+    - { path: "./setup/cron.sh", tags: ["grafana", "personal", "cron"] }
+
+    # brew escape casks — mise can't install these; each script self-guards
+    # the Homebrew install and no-ops when its cask is already present
+    - { path: "./setup/brew-casks.dev.sh", tags: ["grafana", "personal", "brew"] }
+    - { path: "./setup/brew-casks.personal.sh", tags: ["personal", "brew"] }
+    - { path: "./setup/brew-casks.grafana.sh", tags: ["grafana", "brew"] }
 
     # mac
-    - {
-        path: "./setup/mac.dock.sh",
-        tags: ["grafana", "personal", "mac", "setup"],
-      }
-    - {
-        path: "./setup/mac.preferences.sh",
-        tags: ["grafana", "personal", "mac", "setup"],
-      }
-    - {
-        path: "./setup/mac.defaults.sh",
-        tags: ["grafana", "personal", "mac", "setup"],
-      }
+    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    - { path: "./setup/mac.defaults.sh", tags: ["grafana", "personal", "mac", "setup"] }
 
     # env & config
     - { path: "./setup/env.grafana.sh", tags: ["grafana", "env"] }
@@ -155,178 +92,6 @@ exec:
     - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
     - { path: "./setup/ai.sh", tags: ["personal", "ai"] }
     # SCAFFOLD:setup-script
-
-brews:
-  grafana:
-    includes:
-      - all
-    brews:
-      - awscli
-      - azure-cli
-      - hashicorp/tap/terraform
-      - jsonnet
-      - jsonnet-bundler
-      - shellcheck
-      - tanka
-      - helm
-      - zizmor
-    taps:
-      - hashicorp/tap
-      - grafana/grafana
-    casks:
-      - docker-desktop
-      - gcloud-cli
-      - google-cloud-sdk
-      - goland
-      - slack
-      - tailscale-app
-      - tuple
-      - zen
-    mas: []
-  personal:
-    includes:
-      - all
-    taps:
-      - hay-kot/dirwatch-tap
-      - hay-kot/flint-tap
-      - ariga/tap
-      - stripe/stripe-cli
-      - tinygo-org/tools
-    brews:
-      - autorestic
-      - caddy
-      - flyctl
-      - mailpit
-      - rustup
-      - vhs
-      - hugo
-      - tinygo-org/tools/tinygo
-      - stripe/stripe-cli/stripe
-      - hay-kot/flint-tap/flint
-      - hay-kot/dirwatch-tap/dirwatch
-    casks:
-      - aldente
-      - bambu-studio
-      - autodesk-fusion
-      - balenaetcher
-      - discord
-      - home-assistant
-      - orbstack
-      - pdf-expert
-      - proton-drive
-      - protonvpn
-      - signal
-      - steam
-      - transmit
-      - zwift
-
-  all:
-    taps:
-      - dagger/tap
-      - go-task/tap
-      - hay-kot/gotmpl-tap
-      - jdxcode/tap
-      - jesseduffield/lazydocker
-      - osx-cross/arm
-      - osx-cross/avr
-    brews:
-      - age
-      - ansible
-      - ansible-lint
-      - atlas
-      - bash
-      - bat
-      - bfg
-      - btop
-      - charmbracelet/tap/glow
-      - cmake
-      - coreutils
-      - ctop
-      - dagger
-      - docker
-      - editorconfig-checker
-      - eza
-      - fd
-      - fx
-      - fzf
-      - gh
-      - git
-      - git-delta
-      - git-lfs
-      - gnupg
-      - go
-      - go-task/tap/go-task
-      - gofumpt
-      - golang-migrate
-      - golangci-lint
-      - goose
-      - goreleaser
-      - gping
-      - gum
-      - hay-kot/gotmpl-tap/gotmpl
-      - hyperfine
-      - imagemagick
-      - infat
-      - ipython
-      - jesseduffield/lazydocker/lazydocker
-      - jq
-      - k9s
-      - kubernetes-cli
-      - kustomize
-      - lazygit
-      - mage
-      - mas
-      - mise
-      - mole
-      - neovim
-      - node
-      - pinentry-mac
-      - pnpm
-      - pre-commit
-      - ripgrep
-      - semgrep
-      - sqlc
-      - sqlfmt
-      - starship
-      - stow
-      - stylua
-      - tmux
-      - tree-sitter-cli
-      - ttyd
-      - typos-cli
-      - uv
-      - wget
-      - wireguard-go
-      - yank
-      - yq
-    casks:
-      - 1password
-      - 1password-cli
-      - brave-browser
-      - chromedriver
-      - cleanshot
-      - codex
-      - firefox
-      - font-fira-code
-      - font-fira-code-nerd-font
-      - font-hack-nerd-font
-      - font-jetbrains-mono-nerd-font
-      - ghostty
-      - google-chrome
-      - gpg-suite-no-mail
-      - insomnia
-      - hiddenbar
-      - keyboard-cleaner
-      - obsidian
-      - opensuperwhisper
-      - raycast
-      - rectangle-pro
-      - sublime-text
-      - tableplus
-      - visual-studio-code
-      - vlc
-      - zed
-      - zoom
 
 age:
   identity_file: ~/.age/key.txt
