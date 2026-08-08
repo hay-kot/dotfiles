@@ -59,8 +59,12 @@ Then:
 1. **Sign in to 1Password** (GUI app installed by bootstrap); enable the SSH
    agent and CLI integration; verify `ssh-add -L` lists a key. SSH keys and
    commit signing come from it — no key files on disk.
-2. `mise run age-key` — fetches this machine's age identity (task defined in
-   `mise.personal.toml`, item `AGE Key MMDOT_MBP_PERSONAL`) from 1Password.
+2. Fetch this machine's age identity from 1Password:
+   ```sh
+   mkdir -p ~/.age
+   op read 'op://Private/AGE Key MMDOT_MBP_PERSONAL/AGE/private key' > ~/.age/key.txt
+   chmod 600 ~/.age/key.txt
+   ```
 3. `mise bootstrap --yes` — the full run: repos clone now that the agent
    serves keys, and step 10 runs `mmdot run @personal` (vault-backed
    templates, then setup scripts — unlocked by the age key).
@@ -72,8 +76,7 @@ Then:
 ## New Mac — grafana
 
 Its own explicit sequence — not "personal with the env swapped" — because the
-age step is machine-specific: each Mac's `age-key` task fetches its own
-1Password item.
+age step is machine-specific: each Mac fetches its own 1Password item.
 
 ```sh
 xcode-select --install
@@ -92,13 +95,13 @@ Then:
 
 1. **Sign in to 1Password**; enable the SSH agent and CLI integration; verify
    `ssh-add -L` lists a key.
-2. `mise run age-key` — resolves to the grafana override in
-   `mise.grafana.toml`, which fetches **this machine's own** item (naming
-   pattern `AGE Key MMDOT_<machine>`) and validates against the grafana
-   recipient pinned in `mmdot.yml`. It never touches the personal item.
-   (With the reduced `mmdot.yml`, `@grafana` currently matches no templates —
-   the key is fetched for vault-var decryption and future grafana-tagged
-   templates.)
+2. Fetch **this machine's own** age identity (naming pattern
+   `AGE Key MMDOT_<machine>` — never the personal item):
+   ```sh
+   mkdir -p ~/.age
+   op read 'op://Private/AGE Key MMDOT_<machine>/AGE/private key' > ~/.age/key.txt
+   chmod 600 ~/.age/key.txt
+   ```
 3. `mise bootstrap --yes` — the full run; step 10 runs `mmdot run @grafana`.
 4. `git remote set-url origin git@github.com:hay-kot/dotfiles.git`
 
@@ -162,8 +165,8 @@ it when missing.
 
 - **SSH keys** live in 1Password's SSH agent — the agent serves them directly.
 - **age identity** at `~/.age/key.txt` decrypts `mmdot/vault.yml` and doubles
-  as `SOPS_AGE_KEY_FILE`. Fetch with `mise run age-key` (1Password `op`) —
-  a per-machine task override: each Mac fetches its own item.
+  as `SOPS_AGE_KEY_FILE`. Fetch it from 1Password with `op read` — each Mac
+  has its own item (`AGE Key MMDOT_<machine>`).
 - `mise run mmdot` renders vault-backed templates and then runs the machine's
   setup scripts; `mise run encrypt` / `mise run decrypt` manage the vault.
 

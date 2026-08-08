@@ -1,21 +1,19 @@
 # Dev layer — shared by both Macs (personal + grafana).
-# Mac-only or workstation-only packages. Mac setup itself is imperative and
-# stays with mmdot (`exec:` scripts in mmdot.yml).
 
 [bootstrap.packages]
 "brew:ansible" = "latest"
 "brew:ansible-lint" = "latest"
-"brew:atlas" = "latest"      # now in homebrew-core; ariga/tap dropped
-"brew:bash" = "latest"       # macOS ships bash 3.2; Linux servers don't need this
+"brew:atlas" = "latest"
+"brew:bash" = "latest"
 "brew:bfg" = "latest"
 "brew:cmake" = "latest"
-"brew:coreutils" = "latest"  # GNU userland for macOS
-"brew:dagger" = "latest"     # now in homebrew-core; dagger/tap dropped
-"brew:docker" = "latest"     # CLI client only (engine: Docker Desktop, escape script)
+"brew:coreutils" = "latest"
+"brew:dagger" = "latest"
+"brew:docker" = "latest"
 "brew:editorconfig-checker" = "latest"
 "brew:gh" = "latest"
 "brew:git-lfs" = "latest"
-"brew:glow" = "latest"       # now in homebrew-core; charmbracelet/tap dropped
+"brew:glow" = "latest"
 "brew:gnupg" = "latest"
 "brew:gofumpt" = "latest"
 "brew:golang-migrate" = "latest"
@@ -24,16 +22,15 @@
 "brew:goreleaser" = "latest"
 "brew:hyperfine" = "latest"
 "brew:imagemagick" = "latest"
-"brew:infat" = "latest"      # mac-only: file-type associations (setup/mac.defaults.sh)
+"brew:infat" = "latest"
 "brew:ipython" = "latest"
 "brew:k9s" = "latest"
 "brew:kubernetes-cli" = "latest"
 "brew:kustomize" = "latest"
 "brew:lazygit" = "latest"
 "brew:mage" = "latest"
-"brew:mas" = "latest"        # mac-only: App Store CLI
-"brew:mise" = "latest"       # .zshrc activates /opt/homebrew/bin/mise on Macs; brew
-                             # keeps that binary current (server uses the curl installer)
+"brew:mas" = "latest"
+"brew:mise" = "latest" # .zshrc activates /opt/homebrew/bin/mise on Macs; brew keeps it current
 "brew:mole" = "latest"
 "brew:pinentry-mac" = "latest"
 "brew:pre-commit" = "latest"
@@ -42,13 +39,12 @@
 "brew:sqlfmt" = "latest"
 "brew:stylua" = "latest"
 "brew:tree-sitter-cli" = "latest"
-"brew:ttyd" = "latest"       # vhs dependency
+"brew:ttyd" = "latest"
 "brew:typos-cli" = "latest"
-"brew:wireguard-go" = "latest" # userspace wireguard; Linux has it in-kernel
-"brew:yank" = "latest"       # tmux-yank clipboard helper
+"brew:wireguard-go" = "latest"
+"brew:yank" = "latest"
 
-# Casks — everything mise's cask backend can install. The unsupported ones
-# (docker-desktop here in dev) live in setup/brew-casks.*.sh escape scripts.
+# casks mise can't install (docker-desktop, ...) live in setup/brew-casks.sh
 "brew-cask:1password" = "latest"
 "brew-cask:1password-cli" = "latest"
 "brew-cask:brave-browser" = "latest"

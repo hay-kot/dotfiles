@@ -75,11 +75,9 @@ exec:
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
     - { path: "./setup/cron.sh", tags: ["grafana", "personal", "cron"] }
 
-    # brew escape casks — mise can't install these; each script self-guards
-    # the Homebrew install and no-ops when its cask is already present
-    - { path: "./setup/brew-casks.dev.sh", tags: ["grafana", "personal", "brew"] }
-    - { path: "./setup/brew-casks.personal.sh", tags: ["personal", "brew"] }
-    - { path: "./setup/brew-casks.grafana.sh", tags: ["grafana", "brew"] }
+    # brew escape casks — mise can't install these; cask list comes from
+    # BREW_ESCAPE_CASKS in the machine's mise overlay
+    - { path: "./setup/brew-casks.sh", tags: ["grafana", "personal", "brew"] }
 
     # mac
     - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }

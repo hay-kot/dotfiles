@@ -8,7 +8,7 @@ go = "1.26"
 node = "25"
 bun = "latest"
 rust = "latest"
-uv = "latest" # moved from brew: mise [tools] owns runtimes
+uv = "latest"
 
 # -------------------------------------------------------
 # npm
@@ -41,7 +41,7 @@ uv = "latest" # moved from brew: mise [tools] owns runtimes
 # Personal Go Tools
 "go:github.com/hay-kot/mdparse" = "v0.1.1"
 "github:hay-kot/gofind" = "v0.5.1"
-"github:hay-kot/gotmpl" = "latest" # moved from hay-kot/gotmpl-tap brew tap
+"github:hay-kot/gotmpl" = "latest"
 "github:hay-kot/mmdot" = "v0.8.0"
 "github:hay-kot/scaffold" = "v0.13.1"
 "github:hay-kot/hive" = "v0.57.0"

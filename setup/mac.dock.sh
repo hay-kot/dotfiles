@@ -35,7 +35,7 @@ apps_to_add=(
 # Function to refresh the Dock
 refresh_dock() {
   echo "Refreshing the Dock..."
-  killall Dock || true # may not be running
+  killall Dock
 }
 
 # Function to clear the Dock

@@ -29,9 +29,7 @@ if [ "$(uname)" = "Darwin" ]; then
   git config --global commit.gpgsign true
   git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 else
-  # Linux/server: no 1Password signer exists and server commits are not
-  # expected — signing-capable machines make corrective commits. Leave signing
-  # off, and clear any stale mac signer a previous run may have written.
+  # Linux: no 1Password signer — signing off, stale mac signer cleared
   git config --global commit.gpgsign false
   git config --global --unset gpg.ssh.program 2>/dev/null || true
 fi
@@ -54,9 +52,7 @@ git config --global init.defaultBranch main
 echo "git: enable rerere"
 git config --global rerere.enabled true
 
-# Fast-forward-only pulls everywhere: divergence should always be an explicit
-# human decision, never an implicit merge commit — the dotsync converge relies
-# on this failing loudly (its own --ff-only flag is defense in depth).
+# divergence is always an explicit human decision, never an implicit merge
 echo "git: set pull.ff only"
 git config --global pull.ff only
 

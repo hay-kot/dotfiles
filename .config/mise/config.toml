@@ -1,9 +1,5 @@
-# Global mise config — base layer, active on every machine from any directory.
-# Machine tool sets live in mise.{dev,personal,grafana}.toml beside this file,
-# selected by the MISE_ENV list pinned in ~/.config/mise/miserc.toml.
-# All of these files reach ~/.config/mise/ via the repo's [dotfiles] section —
-# `mise bootstrap` applies dotfiles before it installs tools, so mise deploys
-# its own config before reading it.
+# Global mise config — base layer, active everywhere. Machine tool sets live
+# in mise.{dev,personal,grafana}.toml beside this file, selected by miserc.toml.
 
 [settings]
 minimum_release_age = "3d"
@@ -14,7 +10,3 @@ lockfile = true
   [settings.npm]
   # use bun as the package manager for 'npm' register
   bun = true
-
-# [tools] intentionally empty in the base layer: servers take CLI tools from
-# [bootstrap.packages] brew bottles; dev runtimes and utilities are in
-# mise.dev.toml.

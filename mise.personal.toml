@@ -1,5 +1,8 @@
 # Personal-machine extras.
 
+[env]
+BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
+
 [bootstrap.packages]
 "brew:autorestic" = "latest"
 "brew:caddy" = "latest"
@@ -7,9 +10,6 @@
 "brew:mailpit" = "latest"
 "brew:vhs" = "latest"
 
-# Casks — today's personal list minus unsupported autodesk-fusion (escape
-# script) and orbstack (dropped — Docker Desktop replaces it); plus adopted
-# strays claudebar and lm-studio.
 "brew-cask:aldente" = "latest"
 "brew-cask:balenaetcher" = "latest"
 "brew-cask:bambu-studio" = "latest"
@@ -26,7 +26,7 @@
 "brew-cask:zwift" = "latest"
 
 # ---------------------------------------------------------
-# Repos (from mmdot/repos.yml; replaces setup/clones.personal.sh)
+# Repos (replaces setup/clones.personal.sh + mmdot/repos.yml)
 
 [bootstrap.repos]
 "~/code/repos/diff-review" = { url = "git@github.com:colonyops/diff-review.git" }
@@ -67,34 +67,10 @@
 # Tasks
 
 [tasks.mmdot]
-# Overrides the base task: run only personal-tagged scripts/templates so
-# grafana's machine never renders homelab ssh config / personal env secrets
-# (and vice versa).
+# @personal only — grafana's machine never renders homelab ssh config / env secrets
 description = "run mmdot (@personal: vault-backed templates, then setup scripts)"
 run = '{{ get_env(name="MMDOT_CMD", default="") }} run @personal'
 
 [tasks.bootstrap]
-# Step 10 of `mise bootstrap`: the imperative surface. mmdot renders the
-# tagged templates first, then runs the tagged setup scripts sequentially —
-# this is what makes `mise bootstrap --yes` a one-command converge.
 description = "Run mmdot with this machine's tag (bootstrap step 10)"
 run = "mmdot run @personal"
-
-[tasks.age-key]
-description = "Fetch this machine's age identity from 1Password (atomic; personal item)"
-run = '''
-#!/usr/bin/env bash
-set -euo pipefail
-# A plain `op read > key.txt` truncates the existing key BEFORE op succeeds —
-# a cancelled 1Password sign-in or missing item would destroy a valid
-# identity. Write to a temp file, verify content and public key, then rename
-# atomically; on any failure the existing key is untouched.
-# Per-overlay task: this is the PERSONAL machine's item; grafana has its own
-# override (naming pattern: AGE Key MMDOT_<machine>). The server has none.
-umask 077
-mkdir -p ~/.age
-op read 'op://Private/AGE Key MMDOT_MBP_PERSONAL/AGE/private key' > ~/.age/key.txt.tmp
-test -s ~/.age/key.txt.tmp
-test "$(age-keygen -y ~/.age/key.txt.tmp)" = "$(op read 'op://Private/AGE Key MMDOT_MBP_PERSONAL/AGE/public key')"
-mv ~/.age/key.txt.tmp ~/.age/key.txt
-'''

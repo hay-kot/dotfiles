@@ -19,9 +19,7 @@ install_cron() {
     return
   fi
 
-  # Replace, not skip: a name match with a different command is a stale entry
-  # (old ~/.dotfiles path, missing PATH prefix) that must converge on every
-  # machine.
+  # replace, not skip: a name match with a different command is a stale entry
   {
     printf '%s\n' "$current" | grep -vF "$name" | grep -v '^[[:space:]]*$' || true
     echo "$entry"
@@ -29,11 +27,8 @@ install_cron() {
   echo "cron: installed $name"
 }
 
-# Scan shell history for secrets daily at 9am. cron provides no useful PATH,
-# so the entry carries its own: the job needs uv (mise shims) and trufflehog
-# (Homebrew). Values are baked in at install time — cron inherits nothing
-# from any shell.
-# The script writes its own log to ~/.local/dotlogs/purge-history-secrets.log
+# Scan shell history for secrets daily at 9am. The entry carries its own PATH:
+# cron provides none, and the job needs uv (mise shims) and trufflehog (brew).
 install_cron \
   "purge-history-secrets" \
   "0 9 * * * PATH=/opt/homebrew/bin:$HOME/.local/share/mise/shims:/usr/bin:/bin ${DOTFILES_DIR:-$HOME/.dotfiles}/bin/purge-history-secrets"

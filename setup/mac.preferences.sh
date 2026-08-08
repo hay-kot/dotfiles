@@ -12,8 +12,8 @@ set -euo pipefail
 hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null
 
 # Close any open System Preferences panes, to prevent them from overriding
-# settings we’re about to change (best-effort — may not be running)
-osascript -e 'tell application "System Preferences" to quit' || true
+# settings we’re about to change
+osascript -e 'tell application "System Preferences" to quit'
 
 # Ask for the administrator password upfront
 echo "apple: need administrator rights for mac os configuration"
@@ -94,16 +94,14 @@ sudo chflags nohidden /Volumes
 defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool false
 
 # Enabling snap-to-grid for icons on the desktop and in other icon views
-# (PlistBuddy Set fails when a key doesn't exist yet — normal on a fresh
-# account before Finder has written these settings; harmless to skip)
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist || true
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist || true
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist || true
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 
 # List view icon size: 32px (one step up from default 16px)
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist || true
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ExtendedListViewSettingsV2:iconSize 32" ~/Library/Preferences/com.apple.finder.plist || true
-/usr/libexec/PlistBuddy -c "Set :FK_DefaultListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist || true
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ExtendedListViewSettingsV2:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_DefaultListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
 
 ###############################################################################
 # Misc                                                                        #
@@ -120,6 +118,6 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
 ## Restarts...
 
-killall Finder || true # may not be running
+killall Finder
 
 echo "apple: done!"
