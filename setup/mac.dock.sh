@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Ask for the administrator password upfront
 echo "apple: need administrator rights for macOS configuration"
@@ -34,7 +35,7 @@ apps_to_add=(
 # Function to refresh the Dock
 refresh_dock() {
   echo "Refreshing the Dock..."
-  killall Dock
+  killall Dock || true # may not be running
 }
 
 # Function to clear the Dock

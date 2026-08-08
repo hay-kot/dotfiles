@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Set Zed as the default for common text and config file types.
 # Uses infat: https://github.com/philocalyst/infat

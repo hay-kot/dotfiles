@@ -1,0 +1,100 @@
+# Personal-machine extras.
+
+[bootstrap.packages]
+"brew:autorestic" = "latest"
+"brew:caddy" = "latest"
+"brew:hugo" = "latest"
+"brew:mailpit" = "latest"
+"brew:vhs" = "latest"
+
+# Casks — today's personal list minus unsupported autodesk-fusion (escape
+# script) and orbstack (dropped — Docker Desktop replaces it); plus adopted
+# strays claudebar and lm-studio.
+"brew-cask:aldente" = "latest"
+"brew-cask:balenaetcher" = "latest"
+"brew-cask:bambu-studio" = "latest"
+"brew-cask:claudebar" = "latest"
+"brew-cask:discord" = "latest"
+"brew-cask:home-assistant" = "latest"
+"brew-cask:lm-studio" = "latest"
+"brew-cask:pdf-expert" = "latest"
+"brew-cask:proton-drive" = "latest"
+"brew-cask:protonvpn" = "latest"
+"brew-cask:signal" = "latest"
+"brew-cask:steam" = "latest"
+"brew-cask:transmit" = "latest"
+"brew-cask:zwift" = "latest"
+
+# ---------------------------------------------------------
+# Repos (from mmdot/repos.yml; replaces setup/clones.personal.sh)
+
+[bootstrap.repos]
+"~/code/repos/diff-review" = { url = "git@github.com:colonyops/diff-review.git" }
+"~/code/repos/hive" = { url = "git@github.com:colonyops/hive.git" }
+"~/code/repos/criterio" = { url = "git@github.com:hay-kot/criterio.git" }
+"~/code/repos/dirwatch" = { url = "git@github.com:hay-kot/dirwatch.git" }
+"~/code/repos/easyemails" = { url = "git@github.com:hay-kot/easyemails.git" }
+"~/code/repos/flint" = { url = "git@github.com:hay-kot/flint.git" }
+"~/code/repos/gobusgen" = { url = "git@github.com:hay-kot/gobusgen.git" }
+"~/code/repos/gofind" = { url = "git@github.com:hay-kot/gofind.git" }
+"~/code/repos/haykot.dev" = { url = "git@github.com:hay-kot/haykot.dev.git" }
+"~/code/repos/hivemind" = { url = "git@github.com:hay-kot/hivemind.git" }
+"~/code/repos/httpkit" = { url = "git@github.com:hay-kot/httpkit.git" }
+"~/code/repos/local-review" = { url = "git@github.com:hay-kot/local-review.git" }
+"~/code/repos/mdparse" = { url = "git@github.com:hay-kot/mdparse.git" }
+"~/code/repos/mi" = { url = "git@github.com:hay-kot/mi.git" }
+"~/code/repos/mmdot" = { url = "git@github.com:hay-kot/mmdot.git" }
+"~/code/repos/obsidian-dnd-ui-toolkit" = { url = "git@github.com:hay-kot/obsidian-dnd-ui-toolkit.git" }
+"~/code/repos/plugs" = { url = "git@github.com:hay-kot/plugs.git" }
+"~/code/repos/pres-bubble-tea-tuis" = { url = "git@github.com:hay-kot/pres-bubble-tea-tuis.git" }
+"~/code/repos/pres-building-a-saas-stack-in-go" = { url = "git@github.com:hay-kot/pres-building-a-saas-stack-in-go.git" }
+"~/code/repos/recipes-api" = { url = "git@github.com:hay-kot/recipes-api.git" }
+"~/code/repos/recipinned" = { url = "git@github.com:hay-kot/recipinned.git" }
+"~/code/repos/scaffold-go-cli" = { url = "git@github.com:hay-kot/scaffold-go-cli.git" }
+"~/code/repos/scaffold-go-pkg" = { url = "git@github.com:hay-kot/scaffold-go-pkg.git" }
+"~/code/repos/scaffold-go-web" = { url = "git@github.com:hay-kot/scaffold-go-web.git" }
+"~/code/repos/scaffold" = { url = "git@github.com:hay-kot/scaffold.git" }
+"~/code/repos/discord-bot" = { url = "git@github.com:mealie-recipes/discord-bot.git" }
+"~/code/repos/mealie" = { url = "git@github.com:mealie-recipes/mealie.git" }
+"~/code/repos/mealie.io" = { url = "git@github.com:mealie-recipes/mealie.io.git" }
+"~/code/repos/recipes-server" = { url = "git@github.com:mealie-recipes/recipes-server.git" }
+"~/code/repos/renovate-v2" = { url = "ssh://gitea@gitea.kotel.app:222/renovate/renovate-v2.git" }
+"~/code/repos/coros" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/coros.git" }
+"~/code/repos/infra" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/infra.git" }
+"~/code/repos/training-assistant" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/training-assistant.git" }
+
+# ---------------------------------------------------------
+# Tasks
+
+[tasks.mmdot]
+# Overrides the base task: run only personal-tagged scripts/templates so
+# grafana's machine never renders homelab ssh config / personal env secrets
+# (and vice versa).
+description = "run mmdot (@personal: vault-backed templates, then setup scripts)"
+run = '{{ get_env(name="MMDOT_CMD", default="") }} run @personal'
+
+[tasks.bootstrap]
+# Step 10 of `mise bootstrap`: the imperative surface. mmdot renders the
+# tagged templates first, then runs the tagged setup scripts sequentially —
+# this is what makes `mise bootstrap --yes` a one-command converge.
+description = "Run mmdot with this machine's tag (bootstrap step 10)"
+run = "mmdot run @personal"
+
+[tasks.age-key]
+description = "Fetch this machine's age identity from 1Password (atomic; personal item)"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+# A plain `op read > key.txt` truncates the existing key BEFORE op succeeds —
+# a cancelled 1Password sign-in or missing item would destroy a valid
+# identity. Write to a temp file, verify content and public key, then rename
+# atomically; on any failure the existing key is untouched.
+# Per-overlay task: this is the PERSONAL machine's item; grafana has its own
+# override (naming pattern: AGE Key MMDOT_<machine>). The server has none.
+umask 077
+mkdir -p ~/.age
+op read 'op://Private/AGE Key MMDOT_MBP_PERSONAL/AGE/private key' > ~/.age/key.txt.tmp
+test -s ~/.age/key.txt.tmp
+test "$(age-keygen -y ~/.age/key.txt.tmp)" = "$(op read 'op://Private/AGE Key MMDOT_MBP_PERSONAL/AGE/public key')"
+mv ~/.age/key.txt.tmp ~/.age/key.txt
+'''

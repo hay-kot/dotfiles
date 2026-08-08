@@ -138,6 +138,17 @@ mac_config() {
 ## MAC OS
 if (( AM_MAC > 0)); then;
     mac_config;
+else
+    # Linux: `mise activate` does not expose brew-installed binaries (host
+    # packages get no shims) — the Linuxbrew prefix must be on PATH
+    # explicitly (harmless if absent)
+    export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+    # mise comes from the curl installer (~/.local/bin), not homebrew
+    if command -v mise >/dev/null 2>&1; then
+        eval "$(mise activate zsh)"
+    elif [[ -x "$HOME/.local/bin/mise" ]]; then
+        eval "$("$HOME/.local/bin/mise" activate zsh)"
+    fi
 fi
 
 export DEFAULT_USER="$USER"
@@ -179,6 +190,11 @@ export FZF_DEFAULT_OPTS="\
 
 # Shortcut to making exicutable.
 alias plusx="chmod +x"
+# Converge this machine (packages, dotfiles, repos, tools, then mmdot) —
+# idempotent and safe anywhere, anytime. Lives in the shared path (not
+# mac_config) so it exists on the Linux server too; the fallback default
+# covers fresh machines where ~/.shell.env hasn't set DOTFILES_DIR yet.
+alias dotsync='mise -C "${DOTFILES_DIR:-$HOME/.dotfiles}" run sync'
 alias vim="nvim"
 alias v="nvim"
 alias rl="source ~/.zshrc"
@@ -338,7 +354,8 @@ eval "$(starship init zsh)"
 
 # Custom Completions
 PROG="scaffold" source $DOTFILES_DIR/files/urfave_completions.zsh
-source <(mi completion zsh)
+# mi is a dev-layer tool — absent on the server; guard so logins stay clean
+command -v mi >/dev/null 2>&1 && source <(mi completion zsh)
 
 # Load system local zshconfig if exists
 [[ -f "$HOME/.zshrc.system" ]] && source "$HOME/.zshrc.system"

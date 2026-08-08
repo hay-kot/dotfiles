@@ -24,9 +24,17 @@ mkdir -p "$(dirname "$ALLOWED_SIGNERS_FILE")"
 printf '64056131+hay-kot@users.noreply.github.com %s\n' "$SIGNING_KEY" >"$ALLOWED_SIGNERS_FILE"
 git config --global gpg.format ssh
 git config --global user.signingkey "$SIGNING_KEY"
-git config --global commit.gpgsign true
 git config --global gpg.ssh.allowedSignersFile "$ALLOWED_SIGNERS_FILE"
-git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+if [ "$(uname)" = "Darwin" ]; then
+  git config --global commit.gpgsign true
+  git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+else
+  # Linux/server: no 1Password signer exists and server commits are not
+  # expected — signing-capable machines make corrective commits. Leave signing
+  # off, and clear any stale mac signer a previous run may have written.
+  git config --global commit.gpgsign false
+  git config --global --unset gpg.ssh.program 2>/dev/null || true
+fi
 
 # -------------------------------------
 # Git Global Ignore File
@@ -45,6 +53,12 @@ git config --global init.defaultBranch main
 
 echo "git: enable rerere"
 git config --global rerere.enabled true
+
+# Fast-forward-only pulls everywhere: divergence should always be an explicit
+# human decision, never an implicit merge commit — the dotsync converge relies
+# on this failing loudly (its own --ff-only flag is defense in depth).
+echo "git: set pull.ff only"
+git config --global pull.ff only
 
 echo "git: set default editor"
 git config --global core.editor nvim

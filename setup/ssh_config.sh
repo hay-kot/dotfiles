@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Path to SSH config file
 SSH_CONFIG="${HOME}/.ssh/config"

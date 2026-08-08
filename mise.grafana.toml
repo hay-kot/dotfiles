@@ -1,0 +1,52 @@
+# Grafana (work) machine extras.
+
+[bootstrap.packages]
+"brew:awscli" = "latest"
+"brew:azure-cli" = "latest"
+"brew:hashicorp/tap/terraform" = "latest"
+"brew:helm" = "latest"
+"brew:jsonnet" = "latest"
+"brew:jsonnet-bundler" = "latest"
+"brew:shellcheck" = "latest"
+"brew:tanka" = "latest"
+"brew:zizmor" = "latest"
+
+# Casks — only slack remains: google-cloud-sdk dropped (stale duplicate of
+# gcloud-cli); goland + tuple dropped; tailscale-app + zen moved to the dev
+# layer; docker-desktop + gcloud-cli are unsupported -> escape scripts.
+"brew-cask:slack" = "latest"
+
+[bootstrap.brew.taps]
+"hashicorp/tap" = "https://github.com/hashicorp/homebrew-tap.git"
+
+# ---------------------------------------------------------
+# Tasks
+
+[tasks.mmdot]
+# Overrides the base task: grafana-tagged scripts/templates only — keeps
+# personal-tagged secrets from ever rendering on the work machine.
+description = "run mmdot (@grafana: vault-backed templates, then setup scripts)"
+run = '{{ get_env(name="MMDOT_CMD", default="") }} run @grafana'
+
+[tasks.bootstrap]
+description = "Run mmdot with this machine's tag (bootstrap step 10)"
+run = "mmdot run @grafana"
+
+[tasks.age-key]
+description = "Fetch this machine's age identity from 1Password (atomic; grafana item)"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+# Same atomic pattern as the personal override: temp file, validate, rename —
+# a failed fetch never clobbers an existing key. The item follows the
+# per-machine naming pattern (personal's is "AGE Key MMDOT_MBP_PERSONAL");
+# the exact item name is CONFIRMED on the grafana machine in phase 5 — update
+# this reference there if it differs, then commit.
+umask 077
+mkdir -p ~/.age
+op read 'op://Private/AGE Key MMDOT_<GRAFANA-MACHINE>/AGE/private key' > ~/.age/key.txt.tmp
+test -s ~/.age/key.txt.tmp
+# Validate against the grafana recipient pinned in mmdot.yml age.recipients
+test "$(age-keygen -y ~/.age/key.txt.tmp)" = "age1pq5slcxq6ncpr380j3p0ng9kfwek55leexea55prjx7yvw3h6gms7ly6nt"
+mv ~/.age/key.txt.tmp ~/.age/key.txt
+'''

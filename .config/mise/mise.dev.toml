@@ -1,0 +1,62 @@
+# Dev-layer tools — both Macs (personal + grafana).
+
+[tools]
+# -------------------------------------------------------
+# Environments
+
+go = "1.26"
+node = "25"
+bun = "latest"
+rust = "latest"
+uv = "latest" # moved from brew: mise [tools] owns runtimes
+
+# -------------------------------------------------------
+# npm
+
+"npm:prettier" = "latest"
+"npm:eslint" = "latest"
+"npm:typescript" = "latest"
+"npm:ts-node" = "latest"
+"npm:pnpm" = "latest"
+"npm:yarn" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "0.82.1"
+
+# -------------------------------------------------------
+# Go
+
+# Go Team Tools
+"go:golang.org/x/perf/cmd/benchstat" = "latest"
+"go:golang.org/x/tools/cmd/deadcode" = "latest"
+
+# Go Tools
+"github:abice/go-enum" = "latest"
+"github:Zxilly/go-size-analyzer" = "latest"
+"github:homeport/dyff" = "v1"               # yaml differ
+"github:caarlos0/svu" = "latest"
+"github:amir20/dtop" = "v0.7.11"             # docker tui
+
+# AI Planning Tools
+"github:backnotprop/plannotator" = { version = "v0.25.0", matching = "plannotator-" }
+
+# Personal Go Tools
+"go:github.com/hay-kot/mdparse" = "v0.1.1"
+"github:hay-kot/gofind" = "v0.5.1"
+"github:hay-kot/gotmpl" = "latest" # moved from hay-kot/gotmpl-tap brew tap
+"github:hay-kot/mmdot" = "v0.8.0"
+"github:hay-kot/scaffold" = "v0.13.1"
+"github:hay-kot/hive" = "v0.57.0"
+"github:hay-kot/mi" = "v0.4.0"
+"github:hay-kot/dirwatch" = "v0.1.1"
+"github:hay-kot/solo" = "v0.2.0"
+"github:hay-kot/gobusgen" = "v0.3.0"
+
+"forgejo:gitea/tea" = { version = "v0.11.1", api_url = "https://gitea.com/api/v1" }
+
+# -------------------------------------------------------
+# Rust
+
+"github:sxyazi/yazi" = "v26.5.6"          # file explorer tui
+"github:thomasschafer/scooter" = "v0.9.1" # find and replace mechanism
+"github:agavra/tuicr" = "v0.16.1"         # tui code review
+"cargo:sleek" = "0.5.0"                   # sql formatter
+"go:golang.org/x/tools/gopls" = "latest"
