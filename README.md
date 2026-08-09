@@ -73,6 +73,13 @@ Then:
 5. Post-setup: `ssh-copy-id` to homelab hosts; add the signing public key
    (`ssh-add -L`) to GitHub/Gitea so commits show verified.
 
+## Existing Mac — grafana adoption
+
+The work Mac migrates in place — see
+[docs/adopt-existing-mac.md](docs/adopt-existing-mac.md) for the full
+runbook (identity pin first, folded-link removal, MDM preflight, cask
+transfer). The fresh-Mac sequence below is for a wiped/replacement machine.
+
 ## New Mac — grafana
 
 Its own explicit sequence — not "personal with the env swapped" — because the
