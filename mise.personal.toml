@@ -26,50 +26,12 @@ BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
 "brew-cask:zwift" = "latest"
 
 # ---------------------------------------------------------
-# Repos (replaces setup/clones.personal.sh + mmdot/repos.yml)
-
-[bootstrap.repos]
-"~/code/repos/diff-review" = { url = "git@github.com:colonyops/diff-review.git" }
-"~/code/repos/hive" = { url = "git@github.com:colonyops/hive.git" }
-"~/code/repos/criterio" = { url = "git@github.com:hay-kot/criterio.git" }
-"~/code/repos/dirwatch" = { url = "git@github.com:hay-kot/dirwatch.git" }
-"~/code/repos/easyemails" = { url = "git@github.com:hay-kot/easyemails.git" }
-"~/code/repos/flint" = { url = "git@github.com:hay-kot/flint.git" }
-"~/code/repos/gobusgen" = { url = "git@github.com:hay-kot/gobusgen.git" }
-"~/code/repos/gofind" = { url = "git@github.com:hay-kot/gofind.git" }
-"~/code/repos/haykot.dev" = { url = "git@github.com:hay-kot/haykot.dev.git" }
-"~/code/repos/hivemind" = { url = "git@github.com:hay-kot/hivemind.git" }
-"~/code/repos/httpkit" = { url = "git@github.com:hay-kot/httpkit.git" }
-"~/code/repos/local-review" = { url = "git@github.com:hay-kot/local-review.git" }
-"~/code/repos/mdparse" = { url = "git@github.com:hay-kot/mdparse.git" }
-"~/code/repos/mi" = { url = "git@github.com:hay-kot/mi.git" }
-"~/code/repos/mmdot" = { url = "git@github.com:hay-kot/mmdot.git" }
-"~/code/repos/obsidian-dnd-ui-toolkit" = { url = "git@github.com:hay-kot/obsidian-dnd-ui-toolkit.git" }
-"~/code/repos/plugs" = { url = "git@github.com:hay-kot/plugs.git" }
-"~/code/repos/pres-bubble-tea-tuis" = { url = "git@github.com:hay-kot/pres-bubble-tea-tuis.git" }
-"~/code/repos/pres-building-a-saas-stack-in-go" = { url = "git@github.com:hay-kot/pres-building-a-saas-stack-in-go.git" }
-"~/code/repos/recipes-api" = { url = "git@github.com:hay-kot/recipes-api.git" }
-"~/code/repos/recipinned" = { url = "git@github.com:hay-kot/recipinned.git" }
-"~/code/repos/scaffold-go-cli" = { url = "git@github.com:hay-kot/scaffold-go-cli.git" }
-"~/code/repos/scaffold-go-pkg" = { url = "git@github.com:hay-kot/scaffold-go-pkg.git" }
-"~/code/repos/scaffold-go-web" = { url = "git@github.com:hay-kot/scaffold-go-web.git" }
-"~/code/repos/scaffold" = { url = "git@github.com:hay-kot/scaffold.git" }
-"~/code/repos/discord-bot" = { url = "git@github.com:mealie-recipes/discord-bot.git" }
-"~/code/repos/mealie" = { url = "git@github.com:mealie-recipes/mealie.git" }
-"~/code/repos/mealie.io" = { url = "git@github.com:mealie-recipes/mealie.io.git" }
-"~/code/repos/recipes-server" = { url = "git@github.com:mealie-recipes/recipes-server.git" }
-"~/code/repos/renovate-v2" = { url = "ssh://gitea@gitea.kotel.app:222/renovate/renovate-v2.git" }
-"~/code/repos/coros" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/coros.git" }
-"~/code/repos/infra" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/infra.git" }
-"~/code/repos/training-assistant" = { url = "ssh://gitea@gitea.kotel.app:222/hay-kot/training-assistant.git" }
-
-# ---------------------------------------------------------
 # Tasks
 
 [tasks.mmdot]
 # @personal only — grafana's machine never renders homelab ssh config / env secrets
 description = "run mmdot (@personal: vault-backed templates, then setup scripts)"
-run = '{{ get_env(name="MMDOT_CMD", default="") }} run @personal'
+run = "mmdot --log-level=info run @personal"
 
 [tasks.bootstrap]
 description = "Run mmdot with this machine's tag (bootstrap step 10)"

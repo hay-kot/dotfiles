@@ -2,7 +2,6 @@
 # ~/.config/mise/miserc.toml) selects overlays: server | dev,personal | dev,grafana
 
 [env]
-MMDOT_CMD = "mmdot --log-level=info"
 DOTFILES_DIR = "{{config_root}}"
 # brew packages get no mise shims; tasks need the prefixes on PATH themselves
 _.path = [
@@ -100,13 +99,13 @@ echo "stamp: wrote ~/.config/mise/miserc.toml -> $(cat ~/.config/mise/miserc.tom
 
 [tasks.encrypt]
 description = "encrypt vault using mmdot"
-run = '{{ get_env(name="MMDOT_CMD", default="") }} encrypt'
+run = "mmdot --log-level=info encrypt"
 
 [tasks.decrypt]
 description = "decrypt vault using mmdot"
-run = '{{ get_env(name="MMDOT_CMD", default="") }} decrypt'
+run = "mmdot --log-level=info decrypt"
 
 [tasks.mmdot]
 # overlays override this with @personal / @grafana; invoke via `mise run mmdot`
 description = "run mmdot (vault-backed templates, then setup scripts)"
-run = '{{ get_env(name="MMDOT_CMD", default="") }} run'
+run = "mmdot --log-level=info run"

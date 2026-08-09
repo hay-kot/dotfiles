@@ -150,6 +150,9 @@ prerequisites were satisfied once, at setup).
 - **Tool**: add to `.config/mise/mise.dev.toml` (or a machine overlay), then
   `mise install` and `mise run lock`.
 - **Dotfile**: drop the file in the repo; `mise bootstrap dotfiles apply`.
+- **Repo**: add to `mmdot/repos.yml`; mmdot regenerates and runs the clone
+  script on the next `dotsync` (working repos are mmdot's job, not
+  `[bootstrap.repos]` — that converges checkouts and fights WIP).
 
 ## Casks Homebrew still owns
 
