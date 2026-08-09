@@ -15,9 +15,7 @@
 "brew:git-lfs" = "latest"
 "brew:glow" = "latest"
 "brew:gnupg" = "latest"
-"brew:gofumpt" = "latest"
 "brew:golang-migrate" = "latest"
-"brew:golangci-lint" = "latest"
 "brew:goose" = "latest"
 "brew:goreleaser" = "latest"
 "brew:hyperfine" = "latest"
@@ -28,7 +26,6 @@
 "brew:kubernetes-cli" = "latest"
 "brew:kustomize" = "latest"
 "brew:lazygit" = "latest"
-"brew:mage" = "latest"
 "brew:mas" = "latest"
 "brew:mise" = "latest" # .zshrc activates /opt/homebrew/bin/mise on Macs; brew keeps it current
 "brew:mole" = "latest"
