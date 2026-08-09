@@ -7,8 +7,10 @@ set -euo pipefail
 infat set Zed --type plain-text
 
 # Extensions without a UTI binding fail with Launch Services error -50;
-# tolerated per-extension (the old script silently masked every failure)
-for ext in json yaml yml toml xml csv env md txt log html css js ts sh; do
+# tolerated per-extension (the old script silently masked every failure).
+# html is deliberately absent: binding public.html prompts to change the
+# default browser.
+for ext in json yaml yml toml xml csv env md txt log css js ts sh; do
   infat set Zed --ext "$ext" 2>/dev/null || echo "defaults: .$ext association skipped (LS error -50)"
 done
 
