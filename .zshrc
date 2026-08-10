@@ -189,6 +189,8 @@ export FZF_DEFAULT_OPTS="\
 alias plusx="chmod +x"
 # converge this machine — idempotent, safe anywhere, all machine classes
 alias dotsync='mise -C "${DOTFILES_DIR:-$HOME/.dotfiles}" run sync'
+# upgrade everything this machine declares (replaces the old `app upgrade`)
+alias dotup='mise -C "${DOTFILES_DIR:-$HOME/.dotfiles}" run upgrade'
 alias vim="nvim"
 alias v="nvim"
 alias rl="source ~/.zshrc"

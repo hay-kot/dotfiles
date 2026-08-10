@@ -83,6 +83,13 @@ run = "mise install"
 description = "Converge this machine: pull latest config, re-run bootstrap (incl. mmdot via step 10)"
 run = ["git pull --autostash --ff-only", "mise bootstrap --yes"]
 
+[tasks.upgrade]
+# Overridden by the dev overlay on Macs to also cover the brew escape casks
+# and uv tools. `mise bootstrap packages upgrade` refreshes the package
+# manager's metadata itself, so there is no separate `brew update`/`apt update`.
+description = "Upgrade this machine: declared [bootstrap.packages] and [tools]"
+run = ["mise bootstrap packages upgrade --yes", "mise upgrade"]
+
 [tasks.stamp]
 description = "Pin this machine's MISE_ENV in ~/.config/mise/miserc.toml (run once, explicitly)"
 run = '''

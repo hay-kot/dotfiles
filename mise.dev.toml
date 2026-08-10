@@ -69,3 +69,30 @@
 "brew-cask:zed" = "latest"
 "brew-cask:zen" = "latest"
 "brew-cask:zoom" = "latest"
+
+# ---------------------------------------------------------
+# Tasks
+
+[tasks.upgrade]
+# Mac override of the base task. The escape casks need an explicit pass: they
+# are installed by setup/brew-casks.sh and never appear in
+# [bootstrap.packages], so the declarative path would leave them behind.
+# uv tools are likewise undeclared — mise manages uv itself, not what uv installs.
+description = "Upgrade this machine: declared packages and tools, escape-hatch casks, uv tools"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+mise bootstrap packages upgrade --yes
+mise upgrade
+
+for cask in ${BREW_ESCAPE_CASKS:-}; do
+  # skip uninstalled: `brew upgrade --cask` errors out on them, and a machine
+  # that has not run setup/brew-casks.sh yet should not fail the whole upgrade
+  if brew list --cask "$cask" >/dev/null 2>&1; then
+    brew upgrade --cask "$cask"
+  fi
+done
+
+uv tool upgrade --all
+'''
