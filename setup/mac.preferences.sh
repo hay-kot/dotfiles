@@ -93,15 +93,28 @@ sudo chflags nohidden /Volumes
 # Don't warn when changing file extensions
 defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool false
 
+# Finder creates its view-settings dicts lazily, so which ones exist varies by
+# machine (FK_DefaultListViewSettings is absent until Finder writes it). Plain
+# `Set` exits non-zero on a missing key and `set -e` then aborts the whole
+# converge, so fall back to `Add`, which creates any missing parent dicts.
+FINDER_PLIST="$HOME/Library/Preferences/com.apple.finder.plist"
+
+plist_set() {
+  local keypath="$1" type="$2" value="$3"
+  /usr/libexec/PlistBuddy -c "Set ${keypath} ${value}" "$FINDER_PLIST" >/dev/null 2>&1 && return 0
+  /usr/libexec/PlistBuddy -c "Add ${keypath} ${type} ${value}" "$FINDER_PLIST" >/dev/null 2>&1 && return 0
+  echo "apple: skipped ${keypath} (Finder has not created it on this machine)"
+}
+
 # Enabling snap-to-grid for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+plist_set ":DesktopViewSettings:IconViewSettings:arrangeBy" string grid
+plist_set ":FK_StandardViewSettings:IconViewSettings:arrangeBy" string grid
+plist_set ":StandardViewSettings:IconViewSettings:arrangeBy" string grid
 
 # List view icon size: 32px (one step up from default 16px)
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ExtendedListViewSettingsV2:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_DefaultListViewSettings:iconSize 32" ~/Library/Preferences/com.apple.finder.plist
+plist_set ":StandardViewSettings:ListViewSettings:iconSize" integer 32
+plist_set ":FK_StandardViewSettings:ExtendedListViewSettingsV2:iconSize" integer 32
+plist_set ":FK_DefaultListViewSettings:iconSize" integer 32
 
 ###############################################################################
 # Misc                                                                        #

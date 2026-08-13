@@ -28,8 +28,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Define the list of applications to add to the Dock
 apps_to_add=(
   "/Applications/Ghostty.app"
-  "/Applications/Brave Browser.app"
+  "/Applications/Zen.app"
   "/Applications/Obsidian.app"
+  "/Applications/Hive.app"
 )
 
 # Function to refresh the Dock
