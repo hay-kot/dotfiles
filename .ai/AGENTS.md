@@ -80,11 +80,11 @@ If an install fails due to `min-release-age`, `minimum-release-age`, or `exclude
 
 ## Commit & PR Messages: Capture Intent, Not Just Change
 
-The diff already shows *what* changed. The commit/PR message is the only durable
+The diff already shows *what* changed. The commit message is the only durable
 record of *why* — write it while the reasoning is still in your context, because
 the plan, constraints, and rejected alternatives are lost when the session ends.
 
-For any non-trivial commit body and every PR description, cover three things:
+For any non-trivial commit body, cover three things:
 
 1. **Intent** — the problem or behavior change this is for, stated as a
    requirement or outcome, not as code ("uploads over 5GB must not buffer in
@@ -110,5 +110,9 @@ Rules:
 - Don't append a bullet summary of the diff for "discoverability" — `git log
   --stat` and pickaxe already provide the mechanical what, accurately. The
   subject line and intent sentence are the discovery index; invest there.
-- PR descriptions may include a short "changes at a glance" section for human
-  reviewers, but keep it at the design-decision level, not file-by-file.
+
+PR descriptions are governed separately, by the `pr-create-auto` skill — the
+three-section structure above does NOT apply to them. A PR body follows the
+repo's PR template when one exists and is otherwise shorter than the commit
+body, since the commits already carry the reasoning. Never add sections a
+template didn't ask for.
