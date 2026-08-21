@@ -26,7 +26,7 @@
     "anthropicExtraUsage": false
   },
   "editorPaddingX": 1,
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.1",
   "quietStartup": true,
   "collapseChangelog": true,
   "terminal": {

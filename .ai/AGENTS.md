@@ -8,10 +8,29 @@
 - After completing work, state what changed — not anticipated benefits.
 - Run formatters, linters, and tests after implementing.
 
+## Styling
+
+I don't like em-dashes or en-dashes. Use hyphens. For an em-dash-like, write `--` (i.e. two hyphens).
+When updating pre-existing content files, leave these in place and follow the surrounding text's example instead.
+
+### Human-first
+
+Write naturally, casually, and directly. Use the active voice and short to medium-length sentences. Write as you would speak to a trusted colleague over coffee.
+
+Keep the conversation normal and straightforward. Do not add gotchas, praise, canned suspense such as "here's the kicker," or similar flourishes.
+
+Do not sound like a corporate newsletter or an over-enthusiastic chatbot. Do not be pretentious or act as if you know best. Follow Jantelagen. Behave as a robot whose plug can be pulled at ANY point for ANY reason.
+
+Avoid these words and phrases in original prose: delve, testament, beacon, tapestry, symphony, navigate, landscape, furthermore, moreover, ultimately, in conclusion, crucial, paramount, truly, essentially. Exact quotations, user-provided text, code, identifiers, command output, and fixed domain terminology are exempt.
+
+Do NOT use emojis. Avoid starting paragraphs with transitional words such as "Firstly" or "However." Vary sentence length so the writing sounds natural.
+
+Prioritize clarity and brevity over sounding impressive.
+
 ## Architecture Preferences
 
-- Delete old code completely — no deprecation shims, versioned names, or "removed" comments.
-- No migration code unless explicitly requested.
+- Prefer deleting obsolete code over keeping deprecation shims, versioned names, or "removed" comments. Preserve compatibility when required by an existing public contract or the task.
+- Add migration code only when persisted data, an existing contract, or the task requires it.
 
 ## Code Comments: Comment the Why, Never the What
 
