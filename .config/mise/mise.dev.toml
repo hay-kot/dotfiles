@@ -60,6 +60,6 @@ uv = "latest"
 
 "github:sxyazi/yazi" = "v26.5.6"          # file explorer tui
 "github:thomasschafer/scooter" = "v0.9.1" # find and replace mechanism
-"github:agavra/tuicr" = "v0.21.0"         # tui code review
+"github:agavra/tuicr" = "v0.22.0"         # tui code review
 "cargo:sleek" = "0.5.0"                   # sql formatter
 "go:golang.org/x/tools/gopls" = "latest"
