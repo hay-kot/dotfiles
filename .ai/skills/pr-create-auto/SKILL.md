@@ -31,11 +31,11 @@ Conventional Commits prefixes.
 
 ```bash
 root=$(git rev-parse --show-toplevel)
-find "$root" "$root/.github" "$root/docs" -maxdepth 1 -iname 'pull_request_template*' 2>/dev/null
+find "$root" "$root/.github" "$root/.gitea" "$root/docs" -maxdepth 1 -iname 'pull_request_template*' 2>/dev/null
 ```
 
 GitHub accepts the file in the repo root, `.github/`, or `docs/`, in any case
-variant. A `PULL_REQUEST_TEMPLATE/` **directory** means the repo has multiple
+variant; Gitea repos also read `.gitea/`. A `PULL_REQUEST_TEMPLATE/` **directory** means the repo has multiple
 templates — list it, pick the one matching the change type, and say which you
 picked.
 

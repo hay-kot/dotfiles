@@ -4,7 +4,7 @@
 BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
 
 [bootstrap.packages]
-"brew:autorestic" = "latest"
+"brew:restic" = "latest"
 "brew:caddy" = "latest"
 "brew:hugo" = "latest"
 "brew:mailpit" = "latest"

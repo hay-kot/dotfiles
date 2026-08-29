@@ -79,9 +79,18 @@ run = "mise install"
 
 [tasks.sync]
 # behind the `dotsync` alias; --ff-only so an unattended converge never
-# invents a merge commit
+# invents a merge commit. The pull is best-effort: no network, a dead SSH
+# agent, or a diverged branch must not stop the machine from converging
+# against the config already checked out.
 description = "Converge this machine: pull latest config, re-run bootstrap (incl. mmdot via step 10)"
-run = ["git pull --autostash --ff-only", "mise bootstrap --yes"]
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+if ! git pull --autostash --ff-only; then
+  echo "sync: git pull failed -- converging with the currently checked-out config" >&2
+fi
+mise bootstrap --yes
+'''
 
 [tasks.upgrade]
 # Overridden by the dev overlay on Macs to also cover the brew escape casks

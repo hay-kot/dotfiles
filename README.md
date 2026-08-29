@@ -150,6 +150,10 @@ mmdot's setup scripts — they are re-runnable by design. The server has no
 step-10 task, so `dotsync` runs unattended there (its privileged
 prerequisites were satisfied once, at setup).
 
+The `git pull` is best-effort — an unreachable remote (no network, a dead
+SSH agent) or a diverged branch prints a warning and the bootstrap still
+runs against whatever config is checked out.
+
 ## Adding things
 
 - **Package**: `mise bootstrap packages use -e personal brew-cask:foo`
