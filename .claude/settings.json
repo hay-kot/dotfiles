@@ -120,6 +120,7 @@
       "Read(.env.*)"
     ]
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
@@ -151,5 +152,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
   },
-  "model": "opus[1m]"
+  "agentPushNotifEnabled": true
 }
