@@ -43,7 +43,7 @@ export default function (pi: ExtensionAPI) {
 
 					// Left: branch
 					const branch = footerData.getGitBranch();
-					const left = branch ? theme.fg("accent", " " + branch) : theme.fg("dim", "no branch");
+					const left = branch ? theme.fg("muted", " " + branch) : theme.fg("dim", "no branch");
 
 					// Right: ctx · model · effort
 					const modelId = ctx.model?.id ?? "no model";

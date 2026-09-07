@@ -130,6 +130,9 @@ exec:
     - { path: "./setup/env.personal.sh", tags: ["personal", "env"] }
     - { path: "./setup/ssh_config.sh", tags: ["personal", "ssh"] }
     - { path: "./setup/ai.sh", tags: ["personal", "ai"] }
+    # after ai.sh and env.*.sh: reads AGENTO11Y_OP_ITEM from ~/.shell.env, and
+    # the pi plugin registers into the ~/.pi/agent/settings.json ai.sh symlinks
+    - { path: "./setup/agento11y.sh", tags: ["grafana", "personal", "ai"] }
     # SCAFFOLD:setup-script
 
 age:

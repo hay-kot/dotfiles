@@ -27,6 +27,34 @@ Do NOT use emojis. Avoid starting paragraphs with transitional words such as "Fi
 
 Prioritize clarity and brevity over sounding impressive.
 
+### Commits and PRs: Simplified Technical English
+
+The Human-first rules above cover chat, docs, and code comments. Commit messages
+and pull request text are different — someone reads them once, out of context,
+usually while hunting for the cause of something. Write that text in
+[ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) instead.
+
+- Use words from the STE approved-vocabulary dictionary. Technical names that
+  are not in the dictionary can be used as-is: tool and command names, flags,
+  file paths, branch names, identifiers, and error codes.
+- Use one word for one meaning. Do not vary synonyms for style.
+- Use active voice only. Do not use passive constructions.
+- Use present or simple past tense. Do not use `-ing` gerunds or participles as
+  nouns.
+- Limit procedures to 20 words per sentence. Limit descriptions to 25 words per
+  sentence.
+- Put one instruction in each sentence.
+- Do not use idioms, metaphors, or hedging.
+
+The goal is text a reviewer understands in one read.
+
+Quoted material keeps its original words: log output, error text, issue titles,
+and the headings a PR template supplies.
+
+These rules govern wording, not content. "Commit & PR Messages" below still
+decides what a message has to cover, and the `pr-create-auto` skill still
+decides the shape of a PR body.
+
 ## Architecture Preferences
 
 - Prefer deleting obsolete code over keeping deprecation shims, versioned names, or "removed" comments. Preserve compatibility when required by an existing public contract or the task.
@@ -118,6 +146,8 @@ For any non-trivial commit body, cover three things:
 
 Rules:
 
+- Write the message in Simplified Technical English — see "Commits and PRs"
+  under Styling.
 - Scale detail to decision content, not diff size. A mechanical change gets one
   line; a small diff with a subtle reason gets a full explanation.
 - If the change deviates from a spec, ADR, or documented behavior, name the

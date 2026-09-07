@@ -13,6 +13,31 @@ This skill is the authority on PR body shape. The three-section Intent / What
 changed / Why this way structure in AGENTS.md governs **commit messages** and
 does not apply here.
 
+## Writing style
+
+Write the PR title and the PR body in Simplified Technical English. The rule
+list lives under "Commits and PRs: Simplified Technical English" in AGENTS.md,
+and it replaces the Human-first prose guidance for this text. The short version:
+active voice, one word per meaning, present or simple past tense, no `-ing`
+nouns, no idioms or hedging, and 25 words per sentence at most.
+
+STE governs wording only. Everything else in this skill still applies — the
+template wins on structure and headings, the source order decides what goes in,
+and "The cut pass" decides what stays. STE is also not a license to pad: a short
+sentence that says nothing still fails the cut pass.
+
+| Not STE | STE |
+|---|---|
+| A retry was added because the API returns 409 during a rollout. | The API returns 409 during a rollout, so the client retries. |
+| Refactoring the parser fixed the panic on empty input. | The new parser does not panic on empty input. |
+| This should hopefully make the timeout less flaky. | This change raises the timeout from 5s to 30s. The test no longer fails. |
+
+The commits on the branch may predate this rule, so treat them as a source and
+not as text. Rewrite their reasoning into STE sentences when you reflow it into
+the body, rather than pasting the wording across. Quoted material is the
+exception and stays verbatim: log output, error text, issue titles, and the
+template's own headings and prompts.
+
 ## Workflow
 
 1. **Assess state**: `git status`, `git log --oneline origin/HEAD..HEAD`, `git diff origin/HEAD...HEAD --stat`
@@ -113,18 +138,21 @@ claims for tests you didn't run.
 
 ## Examples
 
-**Good** — a version-pin fix. Why first; the mechanical part is one clause:
+**Good** — a version-pin fix. Why first; the mechanical part comes last and
+stays short:
 
 ```
-hay-kot/hive redirects to colonyops/hive, and mise's github backend does not follow the redirect when listing releases — a fresh `mise install` 404s resolving v0.58.0. The Macs never noticed because the lockfile's download URLs were recorded post-redirect; the nightshift server resolves without the lock and caught it.
+hay-kot/hive now redirects to colonyops/hive. The mise github backend does not follow the redirect, so it cannot list the releases. A fresh `mise install` returns 404 for v0.58.0. The Macs did not show this failure, because their lockfile holds the post-redirect download URLs. The nightshift server resolves the versions without the lock, so it found the break.
 
-Lock entry keys renamed to match the new backend name; versions/URLs refresh on the next `mise run lock`.
+This change renames the lock entry keys to the new backend name. The next `mise run lock` refreshes the versions and the URLs.
 ```
 
-Two paragraphs, two lines. Note the unwrapped lines — that is the shape that renders correctly.
+Two paragraphs, two lines. Note the unwrapped lines — that is the shape that
+renders correctly. Every sentence is active, and no sentence is longer than 20
+words.
 
 **Bad** — same change, diff-narrated. Every line is recoverable from the diff,
-the actual reason (redirects break release listing) never appears, and the
+the actual reason (the redirect breaks the release list) never appears, and the
 headings were invented:
 
 ```
@@ -142,3 +170,6 @@ This PR updates the hive tool reference in the dotfiles repository.
 
 Ran `mise install` and confirmed it works.
 ```
+
+STE would not rescue this body. The rules above govern wording; the cut pass
+governs content. A body can obey every STE rule and still be worth deleting.

@@ -1,6 +1,10 @@
 # Dev layer — shared by both Macs (personal + grafana).
 
+[bootstrap.brew.taps]
+"grafana/grafana" = "https://github.com/grafana/homebrew-grafana.git"
+
 [bootstrap.packages]
+"brew:grafana/grafana/agento11y" = "latest"
 "brew:ansible" = "latest"
 "brew:ansible-lint" = "latest"
 "brew:atlas" = "latest"

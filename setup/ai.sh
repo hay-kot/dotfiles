@@ -27,7 +27,7 @@ ensure_symlink() {
   ln -sfn "$target" "$link"
 }
 
-# Pi extensions, skills, and settings.
+# Pi extensions, skills, themes, and settings.
 # Stow can't manage ~/.pi as a single symlink because it contains local
 # state (auth.json, sessions/, run-history.jsonl). Individual items are
 # symlinked instead.
@@ -39,6 +39,7 @@ ensure_symlink "$DOTFILES_DIR/.pi/agent/settings.json" "$PI_AGENT_DIR/settings.j
 ensure_symlink "$DOTFILES_DIR/.pi/agent/models.json" "$PI_AGENT_DIR/models.json"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/skills" "$PI_AGENT_DIR/skills"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/extensions" "$PI_AGENT_DIR/extensions"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/themes" "$PI_AGENT_DIR/themes"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/agents" "$PI_AGENT_DIR/agents"
 
 echo "Linked Pi agent config: $PI_AGENT_DIR"

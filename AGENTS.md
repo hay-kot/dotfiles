@@ -20,3 +20,12 @@ Never use `~/.local/log/` or any other path. Log lines must include a UTC timest
 Custom detectors live in `.config/trufflehog/config.yaml` (deployed to `~/.config/trufflehog/config.yaml` via mise `[dotfiles]`).
 All trufflehog call sites check for this file and pass `--config` when present.
 Add new detectors to the config file — do not hardcode patterns in scripts.
+
+## Agent Observability Credentials
+
+`~/.config/agento11y/config.env` is rendered by `setup/agento11y.sh` from the
+1Password item in `AGENTO11Y_OP_ITEM`. It holds the token at 0600 and `dotsync`
+overwrites it, so fix credentials in 1Password, not in the file.
+
+Never run `agento11y login` — it hand-writes that file and the next converge
+discards the change.

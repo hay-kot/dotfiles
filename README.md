@@ -184,6 +184,57 @@ it when missing.
 - `mise run mmdot` renders vault-backed templates and then runs the machine's
   setup scripts; `mise run encrypt` / `mise run decrypt` manage the vault.
 
+## Coding agent observability
+
+`claude` and `pi` sessions are recorded by [Grafana Agent observability][o11y]
+(the `agento11y` CLI, formerly `sigil`). Model calls, tokens, cost, tool calls,
+and conversation content land in the personal Grafana Cloud stack.
+
+Capture is done by host plugins — the `agento11y-claude-code` Claude Code plugin
+and the `@grafana/agento11y-pi` extension — registered in `.claude/settings.json`
+and `.pi/agent/settings.json`, both symlinked into this repo so the versions stay
+tracked. Nothing wraps or shadows the agents; `claude` and `pi` are the real
+binaries and are started normally.
+
+`setup/agento11y.sh` renders `~/.config/agento11y/config.env` (0600) from the
+1Password item named by `AGENTO11Y_OP_ITEM`, then registers both plugins. It
+re-runs on every `dotsync`, so edit the 1Password item and converge — the file
+is a rendered copy, the same arrangement as the age identity at
+`~/.age/key.txt`.
+
+Do not run `agento11y login`. It writes the same file by hand and the next
+`dotsync` overwrites it.
+
+Missing item, locked vault, or no `op` leaves the file absent: agents run
+normally and the plugin records nothing.
+
+Setup is once per stack, not once per machine. Take the values from Grafana
+Cloud (Agent Observability → the setup-coding-agent page). Read the token into
+a variable first so it never lands in shell history:
+
+```sh
+printf 'token: ' >&2; IFS= read -rs TOKEN; echo >&2
+
+op item create --category "API Credential" --title agento11y --vault Private \
+  "endpoint[text]=https://agento11y-prod-<region>.grafana.net" \
+  "tenant_id[text]=<instance-id>" \
+  "otlp_endpoint[text]=https://otlp-gateway-prod-<region>.grafana.net/otlp" \
+  "credential[concealed]=$TOKEN"
+
+unset TOKEN
+```
+
+The field labels matter — `setup/agento11y.sh` looks them up by name. The token
+needs the `sigil:write`, `metrics:write`, and `traces:write` scopes. Then
+`dotsync`, and check with `agento11y doctor`.
+
+Content capture is `full`, so prompts, responses, and tool I/O leave the
+machine (the SDK redacts known secret formats first). Set
+`AGENTO11Y_CONTENT_CAPTURE_MODE=metadata_only` in `files/<machine>.local.env`
+to send only tokens, cost, timing, and tool names.
+
+[o11y]: https://grafana.com/docs/grafana-cloud/machine-learning/ai-observability/
+
 ## Git commit signing
 
 `setup/git.sh` configures SSH commit signing via 1Password's `op-ssh-sign`
