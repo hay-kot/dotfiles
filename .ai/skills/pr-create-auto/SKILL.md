@@ -97,6 +97,28 @@ Also render, don't dump: use ``` fences for code and logs, backticks for
 identifiers and paths, `> ` for quoted output, and a Markdown table if you have
 tabular data. Reference issues and PRs as `#12` so GitHub links them.
 
+### Sentence shape
+
+One idea per sentence, in the order a reader needs it. Plain and a little long
+beats compressed and clever.
+
+- **No dash-pair asides.** Never put two `--` in one sentence to bracket a
+  qualifier. If the qualifier matters, give it its own sentence or hang it off a
+  "because"; if it doesn't, cut it. One `--` per paragraph at most, and only
+  where a comma, colon, or full stop reads worse.
+- **Lead with the subject.** Don't stack a scene-setting clause in front of
+  it, and don't nest a clause inside another one.
+- **No intensifiers.** "genuinely", "simply", "actually", "quite" add
+  emphasis, not information.
+
+Bad, a bracketed aside with the subject arriving last:
+
+> On a genuinely quiet cell -- one with no organic archival traffic -- the archive canary cannot succeed.
+
+Good, same fact, read once:
+
+> A quiet cell has no archival traffic of its own, so the archive canary can never go green.
+
 ### Filling a template
 
 - Keep the headings **exactly** as written — don't add, remove, reorder, or
@@ -138,13 +160,13 @@ claims for tests you didn't run.
 
 ## Examples
 
-**Good** — a version-pin fix. Why first; the mechanical part comes last and
-stays short:
+**Good** — a dependency source fix. Why first; the mechanical part comes last
+and stays short:
 
 ```
-hay-kot/hive now redirects to colonyops/hive. The mise github backend does not follow the redirect, so it cannot list the releases. A fresh `mise install` returns 404 for v0.58.0. The Macs did not show this failure, because their lockfile holds the post-redirect download URLs. The nightshift server resolves the versions without the lock, so it found the break.
+The upstream project moved its release repository. The package manager does not follow repository redirects, so new installs cannot find version v2.4.0. Existing installs did not show the failure because their lockfiles contain direct download URLs.
 
-This change renames the lock entry keys to the new backend name. The next `mise run lock` refreshes the versions and the URLs.
+This change updates the package source. The next lockfile refresh records the new download URLs.
 ```
 
 Two paragraphs, two lines. Note the unwrapped lines — that is the shape that
@@ -158,17 +180,17 @@ headings were invented:
 ```
 ## Summary
 
-This PR updates the hive tool reference in the dotfiles repository.
+This PR updates the package source.
 
 ## Changes
 
-- Updated `mise.toml` to change the hive backend from `github:hay-kot/hive` to `github:colonyops/hive`
-- Updated `mise.lock` with the new lock entry keys
-- Updated `bin/hive-wrapper` to reference the new path
+- Updated the package configuration to use the new repository
+- Updated the lockfile with the new source and download URLs
+- Updated the install script to reference the new path
 
 ## Testing
 
-Ran `mise install` and confirmed it works.
+Ran the package install and confirmed it works.
 ```
 
 STE would not rescue this body. The rules above govern wording; the cut pass
