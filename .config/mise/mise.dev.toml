@@ -30,7 +30,7 @@ uv = "latest"
 
 # Go Tools
 "github:mvdan/gofumpt" = "v0.11.0"
-"github:golangci/golangci-lint" = "v2.13.1"
+"github:golangci/golangci-lint" = "v2.13.2"
 "github:magefile/mage" = "v1.17.2"
 "github:abice/go-enum" = "v0.9.4"
 "github:Zxilly/go-size-analyzer" = "v1.14.0"
