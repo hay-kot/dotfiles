@@ -116,9 +116,8 @@ exec:
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
     - { path: "./setup/cron.sh", tags: ["grafana", "personal", "cron"] }
 
-    # brew escape casks — mise can't install these; cask list comes from
-    # BREW_ESCAPE_CASKS in the machine's mise overlay
-    - { path: "./setup/brew-casks.sh", tags: ["grafana", "personal", "brew"] }
+    # packages mise cannot install directly; lists come from the active overlays
+    - { path: "./setup/brew-packages.sh", tags: ["grafana", "personal", "brew"] }
 
     # mac
     - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }

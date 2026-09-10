@@ -1,10 +1,11 @@
 # Dev layer — shared by both Macs (personal + grafana).
 
-[bootstrap.brew.taps]
-"grafana/grafana" = "https://github.com/grafana/homebrew-grafana.git"
+[env]
+# This tap does not publish the API metadata mise requires. The mmdot setup
+# pass installs it through the Homebrew CLI instead.
+BREW_ESCAPE_FORMULAS = "grafana/grafana/agento11y"
 
 [bootstrap.packages]
-"brew:grafana/grafana/agento11y" = "latest"
 "brew:ansible" = "latest"
 "brew:ansible-lint" = "latest"
 "brew:atlas" = "latest"
@@ -45,7 +46,7 @@
 "brew:wireguard-go" = "latest"
 "brew:yank" = "latest"
 
-# casks mise can't install (docker-desktop, ...) live in setup/brew-casks.sh
+# packages mise can't install directly live in setup/brew-packages.sh
 "brew-cask:1password" = "latest"
 "brew-cask:1password-cli" = "latest"
 "brew-cask:brave-browser" = "latest"
@@ -78,11 +79,11 @@
 # Tasks
 
 [tasks.upgrade]
-# Mac override of the base task. The escape casks need an explicit pass: they
-# are installed by setup/brew-casks.sh and never appear in
+# Mac override of the base task. Escape packages need an explicit pass: they
+# are installed by setup/brew-packages.sh and never appear in
 # [bootstrap.packages], so the declarative path would leave them behind.
-# uv tools are likewise undeclared — mise manages uv itself, not what uv installs.
-description = "Upgrade this machine: declared packages and tools, escape-hatch casks, uv tools"
+# uv tools are likewise undeclared -- mise manages uv itself, not what uv installs.
+description = "Upgrade this machine: declared packages and tools, Homebrew escape packages, uv tools"
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
@@ -90,9 +91,15 @@ set -euo pipefail
 mise bootstrap packages upgrade --yes
 mise upgrade
 
+for formula in ${BREW_ESCAPE_FORMULAS:-}; do
+  if brew list --formula "$formula" >/dev/null 2>&1; then
+    brew upgrade "$formula"
+  fi
+done
+
 for cask in ${BREW_ESCAPE_CASKS:-}; do
   # skip uninstalled: `brew upgrade --cask` errors out on them, and a machine
-  # that has not run setup/brew-casks.sh yet should not fail the whole upgrade
+  # that has not run setup/brew-packages.sh yet should not fail the whole upgrade
   if brew list --cask "$cask" >/dev/null 2>&1; then
     brew upgrade --cask "$cask"
   fi

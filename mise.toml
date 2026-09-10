@@ -93,7 +93,7 @@ mise bootstrap --yes
 '''
 
 [tasks.upgrade]
-# Overridden by the dev overlay on Macs to also cover the brew escape casks
+# Overridden by the dev overlay on Macs to also cover Homebrew escape packages
 # and uv tools. `mise bootstrap packages upgrade` refreshes the package
 # manager's metadata itself, so there is no separate `brew update`/`apt update`.
 description = "Upgrade this machine: declared [bootstrap.packages] and [tools]"

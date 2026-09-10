@@ -120,7 +120,7 @@ dotsync      # second run must be a clean no-op (plan: 0 pending)
 
 `goland`/`tuple` are no longer declared — uninstall opportunistically.
 Escape casks (`docker-desktop`, `gcloud-cli`) install via
-`setup/brew-casks.sh` from `BREW_ESCAPE_CASKS` in `mise.grafana.toml`.
+`setup/brew-packages.sh` from `BREW_ESCAPE_CASKS` in `mise.grafana.toml`.
 
 ## 8. Tailscale, last
 

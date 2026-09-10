@@ -38,8 +38,8 @@ xcode-select --install                   # GUI installer; wait for it to finish:
 until xcode-select -p >/dev/null 2>&1; do sleep 10; done
 curl https://mise.run | sh
 # The installer does not touch the current shell's PATH; /opt/homebrew/bin is
-# added now because Homebrew arrives mid-bootstrap (the brew-casks escape
-# scripts install it when missing).
+# added now because Homebrew arrives mid-bootstrap (the brew package escape
+# script installs it when missing).
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 mkdir -p ~/code/repos                    # git clone won't create parent dirs
 # HTTPS clone: the 1Password SSH agent doesn't exist yet
@@ -165,15 +165,16 @@ runs against whatever config is checked out.
   script on the next `dotsync` (working repos are mmdot's job, not
   `[bootstrap.repos]` — that converges checkouts and fights WIP).
 
-## Casks Homebrew still owns
+## Packages that use the Homebrew CLI
 
-mise can't install casks with complex installer steps. These stay behind
-idempotent mmdot-run escape scripts (`setup/brew-casks.*.sh`), and Homebrew
-remains installed solely for them: `docker-desktop` (both Macs),
-`autodesk-fusion` (personal), `gcloud-cli` (grafana).
+mise can't install casks with complex installer steps or formulas from taps
+that do not publish Homebrew API metadata. These stay behind the idempotent
+mmdot-run escape script (`setup/brew-packages.sh`): `agento11y` (both Macs),
+`docker-desktop` (both Macs), `autodesk-fusion` (personal), and `gcloud-cli`
+(grafana).
 
-A fresh Mac needs no manual Homebrew install — each escape script installs
-it when missing.
+A fresh Mac needs no manual Homebrew or tap setup -- the escape script installs
+Homebrew when missing, and a fully qualified formula name adds its tap.
 
 ## Secrets
 
@@ -196,9 +197,12 @@ and `.pi/agent/settings.json`, both symlinked into this repo so the versions sta
 tracked. Nothing wraps or shadows the agents; `claude` and `pi` are the real
 binaries and are started normally.
 
-`setup/agento11y.sh` renders `~/.config/agento11y/config.env` (0600) from the
-1Password item named by `AGENTO11Y_OP_ITEM`, then registers both plugins. It
-re-runs on every `dotsync`, so edit the 1Password item and converge — the file
+`setup/brew-packages.sh` installs the CLI from Grafana's Homebrew tap because
+the tap does not publish the API metadata mise requires. No manual tap setup is
+needed. `setup/agento11y.sh` then renders
+`~/.config/agento11y/config.env` (0600) from the 1Password item named by
+`AGENTO11Y_OP_ITEM` and registers both plugins. It re-runs on every `dotsync`,
+so edit the 1Password item and converge — the file
 is a rendered copy, the same arrangement as the age identity at
 `~/.age/key.txt`.
 

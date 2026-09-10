@@ -9,7 +9,8 @@
   "packages": [
     "npm:pi-subagents@0.25.0",
     "npm:pi-web-access@0.10.7",
-    "npm:@grafana/agento11y-pi@0.24.0"
+    "npm:@grafana/agento11y-pi@0.24.0",
+    "npm:pi-mcp-adapter@2.32.1"
   ],
   "skills": [
     "./skills"
