@@ -120,6 +120,7 @@
       "Read(.env.*)"
     ]
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
@@ -158,6 +159,5 @@
   "gitAttribution": false,
   "feedbackSurveyState": {
     "lastShownTime": 1754268608812
-  },
-  "model": "claude-fable-5-1[1m]"
+  }
 }
