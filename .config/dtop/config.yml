@@ -9,3 +9,15 @@ hosts:
     host: ssh://recipinned
   - name: Gitea Runner
     host: ssh://gitea
+columns:
+  - status
+  - name
+  - host
+  - cpu
+  - memory
+  - net_tx
+  - net_rx
+  - uptime
+sort: uptime
+sort_direction: desc
+all: false
