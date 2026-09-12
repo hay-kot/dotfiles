@@ -20,7 +20,11 @@ _.path = [
 "~/.bunfig.toml" = ".bunfig.toml"
 "~/.ai" = { source = ".ai", mode = "symlink-each" }
 "~/.claude" = { source = ".claude", mode = "symlink-each" }
-"~/.config" = { source = ".config", mode = "symlink-each" }
+"~/.config" = { source = ".config", mode = "symlink-each", exclude = ["dtop"] }
+# dtop saves preferences (Ctrl-S) by renaming a temp file over its config, which
+# replaces a per-file symlink with a regular file. Linking the directory keeps
+# that rename inside the repo.
+"~/.config/dtop" = ".config/dtop"
 
 # ---------------------------------------------------------
 # Packages — everything here must earn its place on a minimal Linux server;
