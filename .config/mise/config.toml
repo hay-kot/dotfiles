@@ -7,6 +7,13 @@ idiomatic_version_file_enable_tools = ["python"]
 experimental = true
 lockfile = true
 
+# git-lfs stays on Homebrew. A mise-managed git-lfs mints a global shim that
+# shadows the brew binary on PATH, and that shim exits 1 in a directory whose
+# mise.toml is untrusted. Git resolves git-lfs by name for the LFS filters and
+# the global post-checkout hook, so cloning a repo that ships a mise.toml fails
+# the hook and `git clone` exits 1.
+disable_tools = ["git-lfs"]
+
   [settings.npm]
   # use bun as the package manager for 'npm' register
   bun = true
