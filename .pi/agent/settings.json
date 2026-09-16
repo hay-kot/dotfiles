@@ -2,7 +2,6 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
-  "theme": "hive-dark",
   "enableInstallTelemetry": false,
   "hideThinkingBlock": false,
   "enableSkillCommands": true,
@@ -28,11 +27,12 @@
     "anthropicExtraUsage": false
   },
   "editorPaddingX": 1,
-  "lastChangelogVersion": "0.84.3",
+  "lastChangelogVersion": "0.85.1",
   "quietStartup": true,
   "collapseChangelog": true,
   "terminal": {
     "showTerminalProgress": false
   },
-  "defaultProjectTrust": "ask"
+  "defaultProjectTrust": "ask",
+  "theme": "dark"
 }
