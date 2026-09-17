@@ -9,6 +9,7 @@
     "EDITOR": "nvim"
   },
   "includeCoAuthoredBy": false,
+  "syncClaudeAiSkills": false,
   "permissions": {
     "allow": [
       "Read(.hive/**/*)",
