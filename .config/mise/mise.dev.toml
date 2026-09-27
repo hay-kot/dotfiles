@@ -19,7 +19,7 @@ uv = "latest"
 "npm:ts-node" = "latest"
 "npm:pnpm" = "latest"
 "npm:yarn" = "latest"
-"npm:@earendil-works/pi-coding-agent" = "0.85.1"
+"npm:@earendil-works/pi-coding-agent" = "0.86.1"
 
 # -------------------------------------------------------
 # Go
