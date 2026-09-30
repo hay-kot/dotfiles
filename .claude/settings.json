@@ -4,12 +4,12 @@
     "type": "command",
     "command": "claude-suggestions.sh"
   },
+  "syncClaudeAiSkills": false,
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "EDITOR": "nvim"
   },
   "includeCoAuthoredBy": false,
-  "syncClaudeAiSkills": false,
   "permissions": {
     "allow": [
       "Read(.hive/**/*)",
@@ -121,7 +121,7 @@
       "Read(.env.*)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
