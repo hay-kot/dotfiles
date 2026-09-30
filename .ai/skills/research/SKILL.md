@@ -1,134 +1,88 @@
 ---
 name: research
 description: >
-  Research codebase comprehensively using parallel sub-agents. Use when the user asks
-  for deep research, wants to understand how a feature works, or needs thorough analysis
-  of patterns and architecture across the codebase.
-allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(git branch:*),Bash(date:*),Bash(gh:*),WebSearch,Read,Write,Task(*),TodoWrite"
+  Research how a codebase works today and write a factual research doc to
+  .hive/research/. Use when the user asks for deep research, wants to understand how
+  a feature works, or needs analysis of patterns and architecture across the codebase.
+  Fans out parallel sub-agents only when the question spans several areas.
+allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(gh:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),WebSearch,Read,Write,Task(*)"
 ---
 
 # Research Codebase
 
-Conduct comprehensive research across the codebase by spawning parallel sub-agents and
-synthesizing their findings into a research document.
+Produce a factual map of the code as it exists today, saved to `.hive/research/`. The
+output feeds `/plan-write`, so it records facts, not proposals.
 
 ## Scope Constraint
 
-You are a documentarian, not a critic. Describe what exists, where it exists, and how
-it works. DO NOT suggest improvements, identify problems, or recommend changes unless
-the user explicitly asks. This constraint applies to all sub-agents you spawn.
+You are a documentarian, not a critic. Describe what exists, where, and how it works.
+Do not suggest improvements or changes unless the user asks. Sub-agents follow the
+same rule.
 
-## Context Directory
-
-Research documents are stored in `.hive/research/` managed by `hive ctx`.
-
-**IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run
-`hive ctx init` to create it — NEVER use `mkdir`.
+`.hive` must be a symlink. If it is missing, run `hive ctx init` -- never `mkdir`.
 
 ## Step 1: Read Mentioned Files
 
-If the user mentions specific files (tickets, docs, JSON), read them **fully** first
-using the Read tool WITHOUT limit/offset parameters. Do this before spawning any sub-tasks.
+Read any files the user mentions (tickets, docs, JSON) in full before anything else.
+Run `hive ctx ls` to see existing research. If you reuse a prior doc, compare its
+`commit` to HEAD and treat changed areas as unverified.
 
-## Step 2: Decompose the Research Question
+## Step 2: Write the Research Questions
 
-Break down the query into composable research areas. Identify:
-- Specific components, patterns, or concepts to investigate
-- Which directories, files, or architectural patterns are relevant
-- Cross-component connections and architectural implications
+Turn the request into 3-8 concrete questions about the current code: which components
+handle X, how data flows from A to B, what patterns exist for Y, where tests live.
+Phrase them as questions about what exists, not about the feature being built -- an
+agent that knows the goal starts forming opinions instead of collecting facts.
 
-Then use **TodoWrite** to record the decomposition as a task list — one item per
-sub-agent — before spawning anything. This makes the research plan visible and
-correctable before expensive work begins.
+Post the questions to the user in one short message, then continue without waiting.
 
-## Step 3: Spawn Parallel Sub-Agent Tasks
+## Step 3: Investigate
 
-Create multiple Task agents to research different aspects concurrently.
+For each question, pick the cheaper path:
 
-Strategy:
-- Start with **codebase-locator** agents to find what exists
-- Follow up with **codebase-analyzer** agents on the most promising findings
-- Only spawn **web-concepts-researcher** or **web-implementations-researcher** when
-  the question warrants external context
-- Run multiple agents in parallel when searching for different things
-- Tell agents **what** to look for, not **how** to search
+- **Answer it yourself** when a few searches and reads cover it.
+- **Delegate to a sub-agent** when it needs reading many files (roughly 10+), or when
+  3+ questions cover independent areas. Run them in parallel, at most 4.
 
-Each agent type must return structured YAML, not free-form prose:
+Agents to use:
 
-```yaml
-# codebase-locator returns:
-files:
-  - path: string
-    line: int           # anchor line, if applicable
-    relevance: high|medium|low
-    rationale: string   # one sentence
-gaps:
-  - string              # areas searched but not found
+| Need | Claude Code | pi |
+|------|-------------|----|
+| Codebase exploration | `codebase-analyzer` (or `Explore`) | `scout` |
+| External docs, issues, prior art | `web-search-researcher` | `researcher` |
 
-# codebase-analyzer returns:
-findings:
-  - file: string
-    line_range: "start-end"
-    pattern: string
-    confidence: high|medium|low
-    evidence: string    # one sentence quote or description
-open_questions:
-  - string
+Use web agents only when the question depends on external behavior (library
+semantics, API contracts, known bugs).
 
-# web-concepts-researcher returns:
-# Focus: official docs, specs, architectural theory, canonical patterns.
-# Search: documentation sites, RFCs, language specs, primary sources.
-sources:
-  - url: string
-    title: string
-    key_insight: string
-gaps:
-  - string
+Give each sub-agent its questions, the relevant paths if known, and this return
+format. Do not pass the ticket or the intended change.
 
-# web-implementations-researcher returns:
-# Focus: real-world usage, known pitfalls, Stack Overflow, GitHub issues,
-# blog case studies, version-specific gotchas.
-sources:
-  - url: string
-    title: string
-    key_insight: string
-gaps:
-  - string
+```
+## Findings
+- `path/to/file.ext:12-40` -- what exists and how it works (one or two sentences)
+
+## Gaps
+- What you searched for and did not find
 ```
 
-## Step 4: Synthesize Findings
-
-Wait for **all** sub-agents to complete before proceeding.
-
-- Prioritize live codebase findings as primary source of truth
-- Use `.hive/` as supplementary historical context
-- Connect findings across components
-- Include specific file paths and line numbers
-- Collect all `gaps` from sub-agent outputs for the Open Questions section
-
-## Step 5: Gather Metadata
-
-Before writing the document, run all of these and record the actual values:
+## Step 4: Gather Metadata
 
 ```bash
-git branch --show-current
-git rev-parse --short HEAD
-date +"%Y-%m-%d"
-gh repo view --json nameWithOwner -q .nameWithOwner
-git config user.name
+~/.claude/skills/research/scripts/doc-meta.sh
 ```
 
-**NEVER proceed with placeholder values.** If a command fails, re-run it or ask the
-user. A document with `[branch]` or `abc1234` as its commit hash is worse than no
-document.
+Use its values in the frontmatter. Never write placeholder values. If `pushed: yes`,
+write links in Resources as
+`https://github.com/{repository}/blob/{commit_full}/{file}#L{line}`.
 
-## Step 6: Write the Research Document
+## Step 5: Write the Document
 
-**Filename format:** `.hive/research/YYYY-MM-DD-description.md`
-- With ticket: `2025-01-08-ENG-1478-parent-child-tracking.md`
-- Without ticket: `2025-01-08-authentication-flow.md`
+Path: `.hive/research/YYYY-MM-DD-description.md` (prefix a ticket ID when there is
+one, e.g. `2026-01-08-ENG-1478-parent-child-tracking.md`).
 
-Write the **TL;DR section last**, after all other sections are complete.
+Keep it to the facts the planner needs -- usually under 300 lines. Every finding cites
+a `file:line` or URL. Leave out sections that have nothing in them. Write the TL;DR
+last.
 
 ```markdown
 ---
@@ -137,90 +91,55 @@ date: YYYY-MM-DD
 repository: owner/repo
 branch: branch-name
 commit: abc1234
+author: Name
 tags: [component, topic]
-topic: "exact research question verbatim"
-agents_used:
-  - codebase-locator
-  - codebase-analyzer
+topic: "research request verbatim"
 confidence: high|medium|low
-confidence_rationale: "one sentence explaining the confidence level"
+confidence_rationale: "one sentence"
 updates:
   - YYYY-MM-DD: Initial research
 ---
 
 # Research: [Topic]
 
-**Date**: YYYY-MM-DD
-**Researcher**: [git config user.name]
-**Commit**: [short hash]
-**Branch**: [branch]
-**Repository**: owner/repo
-
 ## Research Question
 
-[Original query verbatim]
+[Original request verbatim, then the numbered questions from Step 2]
 
 ## TL;DR
 
-[2-3 sentences. Written last — summarize the most important finding and its
-implication. Optimized for a 10-second human scan.]
+[2-3 sentences for a 10-second scan]
 
 ## Key Findings
 
-- Finding with source reference (`file.ext:line` or URL)
-- Each bullet must cite a source — no unsourced claims
-- Connection to other components if relevant
-
-## Decisions
-
-[Decisions made during or after this research. Update this section if the user
-communicates a decision while the research is in progress.]
-
-## Open Questions
-
-[Real unknowns the research could not resolve — sourced from sub-agent `gaps` outputs.
-Not rhetorical questions.]
+- Finding with source (`file.ext:line` or URL)
 
 ## Detailed Findings
 
-### [Component/Area 1]
+### [Component/Area]
 
-- Finding with reference (`file.ext:line`)
-- Connection to other components
-- Implementation details
+- How it works, with `file.ext:line` references and connections to other areas
 
-### [Component/Area 2]
+## Patterns and Conventions
 
-...
+[Patterns a new change in this area would be expected to follow, with examples]
 
-## Architecture Insights
+## Decisions
 
-[Patterns, conventions, and design decisions discovered]
+[Decisions the user states during the research]
 
-## Historical Context
+## Open Questions
 
-[Relevant insights from `.hive/` directory]
+[Real unknowns, from your own gaps and sub-agent Gaps]
 
 ## Resources
 
-### Code
-
-- `path/to/file.go:123` — description
-- `path/to/other.go:45-67` — description
-
-### Related Documents
-
-- [[YYYY-MM-DD-related-research-slug]] — one-line description
-- [[YYYY-MM-DD-related-plan-slug]] — one-line description
-
-### URLs
-
-- https://... — description
+- `path/to/file.go:123` -- description
+- [[YYYY-MM-DD-related-doc-slug]] -- related `.hive/` doc
+- https://... -- external source
 ```
 
-## Step 6a: Create Review Todo
-
-After writing the research document, create a todo for human review:
+## Step 6: Finish
 
 ```bash
 hive todo add \
@@ -228,38 +147,7 @@ hive todo add \
   --uri "review://.hive/research/<filename>"
 ```
 
-## Step 7: Add GitHub Permalinks (if applicable)
+Give the user the doc path, the TL;DR, and the open questions.
 
-If on main or a pushed branch, replace local `file:line` references in the Resources
-section with GitHub permalinks:
-
-```bash
-gh repo view --json owner,name
-```
-
-Format: `https://github.com/{owner}/{repo}/blob/{commit}/{file}#L{line}`
-
-## Step 8: Present Findings
-
-Summarize key findings concisely to the user. Include file references for navigation.
-Ask if follow-up questions or clarification is needed.
-
-## Step 9: Handle Follow-up Questions
-
-Append follow-up research to the same document:
-- Append a new entry to the `updates` list in frontmatter: `- YYYY-MM-DD: [brief description]`
-- Add a new section: `## Follow-up Research [timestamp]`
-- Spawn new sub-agents as needed
-
-## Important Notes
-
-- Always run fresh codebase research — never rely solely on existing research documents
-- Read mentioned files FULLY before spawning sub-tasks
-- Wait for ALL sub-agents to complete before synthesizing
-- Gather metadata before writing — NEVER use placeholder values
-- Keep the main agent focused on synthesis, not deep file reading
-- Sub-agents return structured YAML — not prose summaries, not raw tool output
-- Check `.hive/` for existing research and context; if reusing a prior document,
-  compare its `commit` to current HEAD (`git rev-parse --short HEAD`) and note
-  staleness if they differ
-- Related Documents links use Obsidian wiki-link syntax: `[[filename-without-extension]]`
+For follow-ups, append a `## Follow-up: [topic]` section to the same doc and add an
+entry to `updates` in the frontmatter.
