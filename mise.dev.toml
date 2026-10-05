@@ -5,6 +5,13 @@
 # pass installs it through the Homebrew CLI instead.
 BREW_ESCAPE_FORMULAS = "grafana/grafana/agento11y"
 
+# Finder Quick Actions (right-click > Quick Actions). Mac-only, so they live
+# here rather than in the base [dotfiles]. Each .workflow bundle is linked
+# whole: Automator loads a workflow through NSFileWrapper, which aborts when
+# document.wflow inside the bundle is itself a symlink (symlink-each breaks it).
+[dotfiles]
+"~/Library/Services/Copy Path.workflow" = "files/services/Copy Path.workflow"
+
 [bootstrap.packages]
 "brew:ansible" = "latest"
 "brew:ansible-lint" = "latest"

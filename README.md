@@ -161,6 +161,9 @@ runs against whatever config is checked out.
 - **Tool**: add to `.config/mise/mise.dev.toml` (or a machine overlay), then
   `mise install` and `mise run lock`.
 - **Dotfile**: drop the file in the repo; `mise bootstrap dotfiles apply`.
+- **Finder Quick Action**: put the `.workflow` bundle in `files/services/` and
+  add a whole-bundle `[dotfiles]` entry in `mise.dev.toml`; `mise bootstrap
+  dotfiles apply` links it into `~/Library/Services`.
 - **Repo**: add to `mmdot/repos.yml`; mmdot regenerates and runs the clone
   script on the next `dotsync` (working repos are mmdot's job, not
   `[bootstrap.repos]` — that converges checkouts and fights WIP).

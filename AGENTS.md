@@ -10,6 +10,10 @@ NOT deploy it; add an explicit `[dotfiles]` entry for it. Directories under
 `~/.config` need no new entry (`~/.config` is `symlink-each`, so files added
 beneath it deploy on the next apply).
 
+Finder Quick Actions are `.workflow` bundles in `files/services/`, each with
+its own whole-bundle entry in `mise.dev.toml` (Automator cannot load a bundle
+whose inner files are symlinks, so `symlink-each` does not work for them).
+
 ## Logging
 
 Tools in `bin/` that produce persistent logs write to `~/.local/dotlogs/<toolname>.log`.
