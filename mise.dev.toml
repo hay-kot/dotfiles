@@ -113,3 +113,12 @@ done
 
 uv tool upgrade --all
 '''
+
+[tasks.winctl]
+# Raycast script commands in .config/raycast/scripts call winctl by absolute
+# path: Raycast runs them without the login shell's PATH.
+description = "Build winctl (window placement for Raycast hotkeys) into ~/.local/bin"
+run = '''
+mkdir -p ~/.local/bin
+swiftc -O -o ~/.local/bin/winctl src/winctl/main.swift
+'''

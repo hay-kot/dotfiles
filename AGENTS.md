@@ -33,3 +33,11 @@ overwrites it, so fix credentials in 1Password, not in the file.
 
 Never run `agento11y login` — it hand-writes that file and the next converge
 discards the change.
+
+## Window Management (winctl)
+
+Hotkey window placement is `winctl` (`src/winctl/`), run by Raycast Script
+Commands in `.config/raycast/scripts/`. Read `src/winctl/README.md` before
+changing either: it lists the workflows, the setup steps that live outside
+the repo (Raycast hotkeys), and why Hammerspoon, Rectangle Pro layouts, and a
+Raycast extension were rejected.
