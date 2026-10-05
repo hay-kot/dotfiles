@@ -118,6 +118,11 @@ rules:
   - pattern: ".*[:/]hay-kot/mealie"
     commands:
       - task setup
+  - pattern: ".*[:/]hay-kot/hive-desktop"
+    commands:
+      # Not `mise install`: its postinstall runs the same task but exits 0
+      # when it fails, so a clone would silently end up without lefthook.
+      - mise run setup
 
 usercommands:
   ReviewRequest:
