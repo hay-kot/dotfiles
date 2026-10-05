@@ -1,6 +1,7 @@
 ---
 name: wrap
 description: Wrap up a work session - organize commits, push branch to remote, update task state
+disable-model-invocation: true
 ---
 
 # Wrap - Session Wrap-Up

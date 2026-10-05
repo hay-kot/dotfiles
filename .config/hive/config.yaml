@@ -12,7 +12,7 @@ tui:
 
 tmux:
   poll_interval: 500ms
-  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, opencode, orchestrator]
+  preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, orchestrator]
   capture_recording:
     enabled: true
 

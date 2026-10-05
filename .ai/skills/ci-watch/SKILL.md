@@ -8,6 +8,7 @@ description: >
   CI passes and no unresolved comments remain.
 allowed-tools: "Bash(bash:*),Bash(gh:*),Bash(tea:*),Bash(teaapi:*),Bash(git:*),Read,Edit,Task(*)"
 argument-hint: "[PR_NUMBER]"
+disable-model-invocation: true
 ---
 
 # CI Watch

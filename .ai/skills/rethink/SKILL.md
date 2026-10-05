@@ -12,6 +12,7 @@ description: >
   feature branch before PR. Not for bug-hunting (/review) or expression-level polish
   (/simplify) — this questions the design those skills preserve.
 argument-hint: "[base-branch]"
+disable-model-invocation: true
 ---
 
 # Rethink

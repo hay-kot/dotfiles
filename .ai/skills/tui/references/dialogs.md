@@ -1,24 +1,6 @@
----
-name: tui-dialog
-description: >
-  Specialized guidance for implementing dialog and overlay systems in Bubbletea v2
-  applications, including modal patterns, command palettes, and compositor-based
-  overlay rendering.
----
-
 # TUI Dialog System Expert
 
 Specialized guidance for implementing dialog and overlay systems in Bubbletea v2 applications.
-
-## When to Use This Skill
-
-Activate when:
-- Implementing modal dialogs
-- Creating overlay systems
-- Building confirmation dialogs
-- Implementing command palettes
-- Managing dialog state
-- Handling modal input routing
 
 ## Core Modal Pattern (Bubble Tea v2)
 

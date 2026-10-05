@@ -1,24 +1,6 @@
----
-name: tui-test
-description: >
-  Specialized guidance for testing TUI applications with Bubbletea, including
-  golden file testing, component testing, and integration testing with teatest.
----
-
 # TUI Testing Expert
 
 Specialized guidance for testing Terminal User Interface applications with Bubbletea, focusing on golden file testing, component testing, and integration testing.
-
-## When to Use This Skill
-
-Activate when:
-
-- Writing tests for TUI applications
-- Setting up golden file testing
-- Testing rendering output
-- Testing state transitions
-- Debugging test failures
-- Implementing test fixtures
 
 ## Testing Strategy
 

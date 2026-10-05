@@ -103,6 +103,10 @@ To find `.hive/` documents, run exactly `hive ctx ls` (no arguments, no piping) 
 - `ghissues` — LLM-friendly GitHub issue summaries; prefer over raw `gh issue list`. No arguments for the current repo, `--repo owner/name` for an explicit repo.
 - `ghcomments` — LLM-friendly PR feedback (reviews, inline comments with file:line and resolved/outdated status, conversation comments); prefer over raw `gh`. No arguments for the current branch's PR, `<number>` for a specific PR, `--type inline --unresolved` for feedback that still needs addressing.
 
+## Hive Canvas
+
+In a hive session, the `hive-canvas` MCP server shows content in a pane beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-canvas` skill before the first write. Outside hive the tools answer `not_found` — skip the canvas and answer in chat.
+
 ## Task Runners
 
 Run `mi --ls` to list available tasks (`mi` auto-detects Taskfile, Makefile, and mise). Prefer `mi <task-name>` over direct commands — tasks capture project-specific configuration and environment setup. Fall back to direct commands only when no task exists.

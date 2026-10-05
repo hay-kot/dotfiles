@@ -6,6 +6,7 @@ description: >
   to strip false positives, and reports a ranked, evidence-backed review. Use when the
   user asks to review local changes, a branch, or a PR before it goes to humans.
 argument-hint: "[base-branch]"
+disable-model-invocation: true
 ---
 
 # Code Review
@@ -23,9 +24,7 @@ things trains the author to ignore all thirty.
 2. **Evidence or silence.** Every Critical/Major finding cites `file:line`, quotes the
    offending code, and gives a concrete fix. No "consider reviewing…".
 3. **Route, don't blanket.** Review only the concerns the diff actually touches.
-4. **Fresh eyes.** Reviewer sub-agents get clean context (see the `diff-reviewer` agent), so
-   they can catch mistakes the author/orchestrator already rationalized.
-5. **"Nothing blocks" is a valid result.** If a concern is clean, it returns
+4. **"Nothing blocks" is a valid result.** If a concern is clean, it returns
    `no_findings`. Do not manufacture concerns to look thorough.
 
 ## Step 1 — Gather the diff
@@ -60,7 +59,7 @@ Classify the change shape, then pick the concerns to run. State your routing dec
 ### Conditional
 - **Design** — new public APIs, new abstractions, refactors spanning multiple files.
 - **Comments** — any added/modified comments or missing "why" on non-obvious code.
-- **Security** — auth, tokens, secrets, input parsing, URL/path construction, SQL, dependency manifests. Never suppress for these.
+- **Security** — auth, tokens, secrets, input parsing, URL/path construction, SQL, shell commands, dependency manifests. Never suppress for these.
 
 **When genuinely uncertain, include the concern.** Omit only when the area is clearly
 absent from the diff.
@@ -82,12 +81,12 @@ reviewing it yourself.
 many agents to spawn based on size, complexity, and risk; you do not choose whether to
 spawn any.
 
-| Diff shape | Sub-agents | Verification (Step 4) |
-|------------|-----------|-----------------------|
-| trivial / docs / one-liner | 1 reviewer covering all activated concerns | none |
-| small | 1–2 reviewers, batching related concerns | Critical only |
-| medium | one reviewer per activated concern (parallel) | Major+ |
-| large / cross-file / risky | per-concern, split further per file/area | Major+ skeptics |
+| Diff shape | Sub-agents |
+|------------|-----------|
+| trivial / docs / one-liner | 1 reviewer covering all activated concerns |
+| small | 1–2 reviewers, batching related concerns |
+| medium | one reviewer per activated concern (parallel) |
+| large / cross-file / risky | per-concern, split further per file/area |
 
 When uncertain, dispatch **more** agents, not fewer.
 
@@ -110,7 +109,14 @@ Find bugs before users do. Trace the happy path, then break the sad paths.
 - Edge cases: nil/zero/empty, boundaries, overflow, missing map key, cancelled context, very large input.
 - Concurrency: unsynchronized shared state, races, deadlocks, goroutine/task leaks.
 - Resources: unclosed files/connections/bodies; cleanup on every early return.
-- Security (when routed): unvalidated input, injection, path traversal, hardcoded secrets, weak randomness, missing authz.
+
+### Concern: Security
+Treat every input as hostile until the code proves otherwise.
+- Injection: SQL, shell, and template injection; path traversal from unvalidated input.
+- Secrets: hardcoded credentials; tokens or secrets written to logs, errors, or URLs.
+- Authz: missing or bypassable permission checks on new endpoints, handlers, or commands.
+- Randomness: `math/rand`-style generators used for tokens, ids, or anything guessable.
+- Dependencies: new or changed manifest entries — unpinned versions, unfamiliar packages, install scripts.
 
 ### Concern: Design
 Simple beats clever; obvious beats implicit.
@@ -137,31 +143,9 @@ Why over what.
 
 ## Language notes
 
-Apply the notes matching the detected language. These sharpen the concerns above and
-**prevent common false positives** for each ecosystem.
-
-### Go
-- Errors: expect `fmt.Errorf("context: %w", err)`; flag dropped errors, but `_ =` on
-  genuinely ignorable returns (e.g. `w.Write` in some handlers) is idiomatic — don't over-flag.
-- `defer resp.Body.Close()` immediately after the nil-error check.
-- Concurrency: unsynchronized map access, goroutines with no lifecycle owner, channels not
-  closed by the sender. Suggest `testing/synctest` over `time.Sleep` in tests (Go 1.24+).
-- Dead code: for larger changes, `deadcode -test ./...` can confirm orphaned functions —
-  treat exported symbols as possible external API, not automatic dead code.
-- Not-a-bug: unused struct fields set via reflection/JSON tags; interface-satisfying methods
-  that look unused; `context.Context` passed but unused in a stub. Verify before flagging.
-
-### TypeScript
-- Prefer `unknown` over `any`; flag `any` that erases a real type, but generated/`.d.ts`
-  and truly dynamic boundaries are acceptable.
-- Async: unawaited promises, missing `await` in try/catch, floating promises in effects.
-  Don't flag intentionally fire-and-forget calls that are commented as such.
-- Null safety: optional chaining / nullish coalescing where values can be undefined;
-  non-null assertions (`!`) that hide a real nullable.
-- React (if present): missing/incorrect hook deps, state updates in render, keys on lists,
-  effects without cleanup. Don't flag deps a lint rule would already own unless the diff
-  disables the rule.
-- Not-a-bug: type-only imports, `satisfies` usage, framework-required prop shapes.
+For each detected language with a file in `references/` (`go.md`, `typescript.md`), read
+it and pass it to the sub-agents. The notes sharpen the concerns above and **prevent common
+false positives** for each ecosystem.
 
 ## Step 4 — Verify findings (always on)
 
@@ -259,11 +243,3 @@ base_branch: main
 tags: [component, topic]
 ---
 ```
-
-## External reviewer (optional)
-
-For an independent second opinion from a different model, run `/review-with-codex`
-alongside this skill — spawn it before Step 3 so codex reviews concurrently, then merge
-its findings during Step 5 under an **External Review (Codex)** heading. Codex gets clean
-context by design; do not feed it this skill's findings before it reviews (avoid
-"context laundering" — a second reviewer is only useful if it can independently disagree).

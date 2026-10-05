@@ -154,7 +154,7 @@ DISABLE_AUTO_TITLE="true"
 POETRY_VIRTUALENVS_IN_PROJECT=true
 alias activate="source ./.venv/bin/activate"
 
-export PATH="$HOME/.poetry/bin:$HOME/.npm/bin:$HOME/.opencode/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$HOME/.npm/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

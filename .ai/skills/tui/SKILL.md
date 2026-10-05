@@ -1,25 +1,21 @@
 ---
-name: tui-dev
+name: tui
 description: >
-  Expert guidance for building TUI applications with the Charm Bracelet ecosystem
-  (Bubbletea, Lipgloss, Bubbles). Use when implementing components, styling, or
-  working with MVU architecture.
+  Guidance for building, debugging, and testing TUI applications with the Charm Bracelet
+  ecosystem (Bubbletea v2, Lipgloss, Bubbles): MVU architecture, components, styling,
+  keyboard handling, dialogs and overlays, and golden-file or teatest testing.
 ---
 
 # TUI Development Expert
 
 Expert guidance for building Terminal User Interfaces with the Charm Bracelet ecosystem (Bubbletea, Lipgloss, Bubbles).
 
-## When to Use This Skill
+## References
 
-Activate this skill when:
-- Building or debugging TUI applications
-- Implementing Bubbletea components
-- Styling with Lipgloss
-- Creating dialogs or overlays
-- Testing TUI rendering
-- Implementing keyboard/mouse handling
-- Managing application state with MVU pattern
+Read the matching reference before you start that kind of work:
+
+- `references/dialogs.md` -- modals, overlays, confirm and input dialogs, command palettes, modal input routing, compositor layers.
+- `references/testing.md` -- golden files, testing Update functions, teatest integration tests, test helpers, debugging test failures.
 
 ## Core Principles
 
@@ -214,7 +210,7 @@ func NewThemedStyles(hasDarkBG bool) Styles {
 
 ### 5. Dialog Pattern
 
-**Implement overlay system for dialogs:**
+See `references/dialogs.md` for the full modal patterns. The core shape:
 
 ```go
 // Dialog interface
@@ -262,7 +258,7 @@ if m.overlay.HasDialogs() {
 
 ### 6. Testing Strategy
 
-**Write testable TUI code:**
+See `references/testing.md` for helpers, table-driven view tests, and debugging. The core shape:
 
 ```go
 // 1. Golden file testing for rendering
