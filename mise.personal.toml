@@ -1,4 +1,6 @@
 # Personal-machine extras.
+[tools]
+"npm:@posthog/cli" = "latest"
 
 [env]
 BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
