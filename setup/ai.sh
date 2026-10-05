@@ -37,12 +37,27 @@ mkdir -p "$PI_AGENT_DIR"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/AGENTS.md" "$PI_AGENT_DIR/AGENTS.md"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/settings.json" "$PI_AGENT_DIR/settings.json"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/models.json" "$PI_AGENT_DIR/models.json"
+ensure_symlink "$DOTFILES_DIR/.pi/agent/mcp.json" "$PI_AGENT_DIR/mcp.json"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/skills" "$PI_AGENT_DIR/skills"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/extensions" "$PI_AGENT_DIR/extensions"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/themes" "$PI_AGENT_DIR/themes"
 ensure_symlink "$DOTFILES_DIR/.pi/agent/agents" "$PI_AGENT_DIR/agents"
 
 echo "Linked Pi agent config: $PI_AGENT_DIR"
+
+# Claude Code keeps user-scoped MCP servers in ~/.claude.json beside session
+# state, so that file can't be symlinked. Mirror the HTTP servers from Pi's
+# MCP config instead. Remove-then-add picks up a changed URL; </dev/null stops
+# claude from reading the rest of the server list off the loop's stdin.
+PI_MCP_CONFIG="$DOTFILES_DIR/.pi/agent/mcp.json"
+if command -v claude >/dev/null 2>&1; then
+  jq -r '.mcpServers | to_entries[] | select(.value.url) | "\(.key)\t\(.value.url)"' "$PI_MCP_CONFIG" |
+    while IFS=$'\t' read -r name url; do
+      claude mcp remove --scope user "$name" </dev/null >/dev/null 2>&1 || true
+      claude mcp add --scope user --transport http "$name" "$url" </dev/null >/dev/null
+      echo "Registered Claude Code user MCP server: $name -> $url"
+    done
+fi
 
 # Codex links need manual setup.
 ensure_symlink "$SOURCE_SKILLS" "$CODEX_CLAUDE_LINK"
