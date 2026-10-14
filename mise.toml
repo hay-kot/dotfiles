@@ -17,7 +17,7 @@ _.path = [
 [dotfiles]
 "~/.zshrc" = ".zshrc"
 "~/.npmrc" = ".npmrc"
-"~/.bunfig.toml" = ".bunfig.toml"
+"~/.bunfig.toml" = ".config/.bunfig.toml"
 "~/.ai" = { source = ".ai", mode = "symlink-each" }
 "~/.claude" = { source = ".claude", mode = "symlink-each" }
 "~/.config" = { source = ".config", mode = "symlink-each", exclude = ["dtop"] }

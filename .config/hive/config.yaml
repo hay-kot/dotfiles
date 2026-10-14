@@ -22,6 +22,15 @@ agents:
   pi:
     command: pi
     flags: []
+  pi-sol6:
+    command: pi
+    flags: ["--model", "openai-codex/gpt-6-sol"]
+  pi-astra:
+    command: pi
+    flags: ["--model", "openai-codex/gpt-6-astra"]
+  pi-opus:
+    command: pi
+    flags: ["--model", "anthropic/claude-opus-5-5"]
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]

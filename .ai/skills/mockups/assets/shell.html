@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>REPLACE: mockup title</title>
+  <!-- SHELL STYLES: do not edit. They style the review frame only (ms- classes). -->
+  <style id="shell">
+    /* Shell tokens (ms-): Hive Desktop's default "Signal" dark palette, from
+       desktop/frontend/src/styles/main.css. They style the review frame only. */
+    :root {
+      --ms-app: #101318; --ms-raised: #1b2029; --ms-sidebar: #151922; --ms-toolbar: #1b2029; --ms-stage: #0b0d11; --ms-track: #12161d;
+      --ms-chip: #232a36; --ms-border: #232936; --ms-strong: #414d5e;
+      --ms-text: #e9edf4; --ms-text-2: #a6b0c0; --ms-text-3: #7a8698; --ms-text-4: #55606f;
+      --ms-accent: #f5b23f; --ms-accent-contrast: #101318; --ms-accent-tint: rgba(245,178,63,.13);
+      --ms-ok: #4ade80;
+    }
+    :root {
+      --font-sans: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --radius-sm: 4px; --radius-md: 6px; --radius-lg: 8px; --radius-xl: 11px;
+      --header-height: 53px;
+      --stage-pad: 32px;
+      --brief-width: 300px;
+      font-family: var(--font-sans);
+      background: var(--ms-app);
+      color: var(--ms-text);
+    }
+    * { box-sizing: border-box; }
+    html, body { min-width: 320px; margin: 0; }
+    body { background: var(--ms-app); font-size: 13.5px; -webkit-font-smoothing: antialiased; font-variant-ligatures: none; }
+    button { font: inherit; color: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
+    button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--ms-accent); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+
+    /* ---------- Standard shell: ms- ---------- */
+    .ms-shell { min-height: 100vh; }
+    .ms-header, .ms-brief { color-scheme: dark; }
+    .ms-frame { color-scheme: light; } /* products that are dark set color-scheme: dark on their own root */
+    .ms-header { position: sticky; top: 0; z-index: 50; height: var(--header-height); display: flex; align-items: center; gap: 16px; padding: 0 18px; background: var(--ms-toolbar); border-bottom: 1px solid var(--ms-accent); box-shadow: 0 6px 16px -10px rgba(0,0,0,.7); }
+    .ms-eyebrow { color: var(--ms-accent); font: 600 10px/1.1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+    .ms-tabs { display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--ms-strong); border-radius: 14px; background: var(--ms-track); overflow-x: auto; scrollbar-width: none; }
+    .ms-tabs::-webkit-scrollbar { display: none; }
+    .ms-round { margin: 0 6px 0 10px; padding-left: 12px; border-left: 1px solid var(--ms-strong); color: var(--ms-text-4); font: 600 9.5px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .ms-tab { display: flex; align-items: center; gap: 9px; border: 1px solid transparent; border-radius: 10px; padding: 7px 14px 7px 10px; background: transparent; color: var(--ms-text-2); cursor: pointer; white-space: nowrap; font-size: 13px; }
+    .ms-tab:hover { background: var(--ms-toolbar); color: var(--ms-text); }
+    .ms-tab[aria-selected="true"] { border-color: var(--ms-strong); background: var(--ms-chip); color: var(--ms-text); font-weight: 600; }
+    .ms-id { font: 600 10px/1 var(--font-mono); padding: 4px 6px; border-radius: 6px; border: 1px solid var(--ms-border); background: var(--ms-app); color: var(--ms-text-3); }
+    .ms-tab[aria-selected="true"] .ms-id { border-color: var(--ms-accent); background: var(--ms-accent-tint); color: var(--ms-accent); }
+    .ms-status { margin-left: auto; color: var(--ms-text-3); font: 10.5px/1.2 var(--font-mono); white-space: nowrap; }
+    .ms-button { border: 1px solid var(--ms-strong); border-radius: var(--radius-md); background: transparent; color: var(--ms-text-2); padding: 7px 11px; cursor: pointer; font-size: 12.5px; }
+    .ms-button:hover { background: var(--ms-chip); color: var(--ms-text); }
+    .ms-button[aria-expanded="true"] { border-color: var(--ms-accent); background: var(--ms-accent-tint); color: var(--ms-text); }
+
+    .ms-body { display: grid; grid-template-columns: var(--brief-width) minmax(0, 1fr); align-items: start; }
+    .ms-shell[data-brief="closed"] .ms-body { grid-template-columns: minmax(0, 1fr); }
+    .ms-shell[data-brief="closed"] .ms-brief { display: none; }
+    .ms-canvas { min-width: 0; padding: var(--stage-pad); background: var(--ms-stage); }
+    .ms-option { min-width: 0; }
+    /* The frame is the window under review; the mockup fills it with its own look. */
+    .ms-frame { display: flex; flex-direction: column; min-height: calc(100vh - var(--header-height) - 2 * var(--stage-pad)); overflow: hidden; border: 1px solid var(--ms-strong); border-radius: var(--radius-xl); box-shadow: 0 18px 40px -18px rgba(0,0,0,.8); background: #fff; color: #111; } /* neutral default; each option sets its own look */
+
+
+    /* Brief: the shared requirements, persistent and slim. */
+    .ms-brief { position: sticky; top: var(--header-height); height: calc(100vh - var(--header-height)); overflow: auto; border-right: 1px solid var(--ms-border); background: var(--ms-sidebar); padding: 18px 18px 28px; }
+    .ms-label { margin: 0 0 8px; color: var(--ms-text-3); font: 600 9.5px/1.2 var(--font-mono); letter-spacing: .11em; text-transform: uppercase; }
+    .ms-brief p { margin: 0 0 18px; color: var(--ms-text-2); font-size: 12px; line-height: 1.5; }
+    .ms-brief ol, .ms-brief ul { margin: 0 0 18px; padding: 0; list-style: none; }
+    .ms-brief li { display: flex; gap: 9px; padding: 7px 0; border-top: 1px solid var(--ms-border); color: var(--ms-text-2); font-size: 12px; line-height: 1.45; }
+    .ms-brief li { transition: opacity .12s; }
+    .ms-brief .ms-problems li { opacity: .5; }
+    .ms-brief .ms-problems li.solved { opacity: 1; color: var(--ms-text); }
+    .ms-brief .ms-problems li.solved b::after { content: " \2713"; color: var(--ms-ok); }
+    .ms-brief h2 { margin: 0 0 10px; font-size: 14px; line-height: 1.3; }
+    .ms-brief .ms-option-notes { margin: 0 0 18px; padding: 12px; border: 1px solid var(--ms-border); border-left: 2px solid var(--ms-accent); border-radius: var(--radius-md); background: var(--ms-accent-tint); }
+    .ms-brief .ms-option-notes p { margin-bottom: 12px; color: var(--ms-text); }
+    .ms-brief .ms-option-notes p:last-child { margin-bottom: 0; }
+    .ms-brief li b { flex: none; width: 30px; color: var(--ms-accent); font: 600 10px/1.7 var(--font-mono); }
+
+    @media (max-width: 1100px) {
+      :root { --brief-width: 250px; --stage-pad: 22px; }
+    }
+    @media (max-width: 860px) {
+      :root { --stage-pad: 12px; }
+      .ms-header { position: relative; padding: 0 8px 0 12px; gap: 10px; }
+      .ms-eyebrow, .ms-status { display: none; }
+      .ms-tabs { flex: 1; min-width: 0; }
+      .ms-body, .ms-shell[data-brief="closed"] .ms-body { display: flex; flex-direction: column; align-items: stretch; }
+      .ms-canvas { order: 1; }
+      .ms-brief { order: 2; }
+      .ms-frame { min-height: 0; }
+      .ms-brief { position: static; height: auto; overflow: visible; border-right: 0; border-top: 1px solid var(--ms-border); padding: 16px 12px 28px; }
+    }
+  </style>
+
+  <!-- PRODUCT STYLES: yours. Define whatever look the concept needs. It does not have to match Hive.
+       The shell never reads --ui-* tokens; keep product classes out of the ms- namespace. -->
+  <style id="product">
+    :root {
+      --ui-app: #ffffff; --ui-text: #1f1d19; --ui-text-2: #55514a; --ui-border: #e1ddd3; --ui-accent: #2f6fed;
+    }
+    .ms-frame { background: var(--ui-app); color: var(--ui-text); }
+    .app-placeholder { margin: auto; padding: 40px; color: var(--ui-text-2); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="ms-shell" data-mockup-shell data-brief="open">
+    <header class="ms-header">
+      <div class="ms-eyebrow">Mockup review</div>
+      <nav class="ms-tabs" role="tablist" aria-label="Design options">
+        <!-- SLOT tabs: one button per option. Add a <span class="ms-round" role="presentation">Round 2</span>
+             before the first tab of each later round. The id (1a, 1b, 2a...) is permanent. -->
+        <button class="ms-tab" type="button" role="tab" id="tab-1a" aria-controls="option-1a" aria-selected="true" data-mockup-tab="1a" data-round="1"><span class="ms-id">1a</span>REPLACE: option name</button>
+      </nav>
+      <span class="ms-status" aria-live="polite" data-status>Round 1 - option 1a</span>
+      <button class="ms-button" type="button" data-brief-toggle aria-expanded="true" aria-controls="mockup-brief">Brief</button>
+    </header>
+
+    <div class="ms-body">
+      <aside class="ms-brief" id="mockup-brief" data-mockup-brief aria-label="Brief">
+        <div class="ms-label">Goal</div>
+        <!-- SLOT goal -->
+        <p>REPLACE: one sentence on what the screen must help the user do.</p>
+        <div class="ms-label">Problems</div>
+        <!-- SLOT problems: one li per problem the user listed, ids P1, P2, ... -->
+        <ol class="ms-problems">
+          <li data-problem="P1"><b>P1</b>REPLACE: first problem the user listed.</li>
+        </ol>
+        <div class="ms-label">Selected option</div>
+        <!-- SLOT notes: one article per option. data-mockup-note matches the tab id.
+             data-solves lists the problem ids this option addresses. The shell script shows the selected one. -->
+        <article class="ms-option-notes" data-mockup-note="1a" data-solves="P1">
+          <h2>1a REPLACE: option name</h2>
+          <div class="ms-label">Approach</div><p><strong>REPLACE: the core idea.</strong> One or two sentences.</p>
+          <div class="ms-label">Trade-off</div><p>REPLACE: what this option costs.</p>
+        </article>
+        <div class="ms-label">Assumptions</div>
+        <!-- SLOT assumptions -->
+        <ul>
+          <li>REPLACE: an assumption or open question.</li>
+        </ul>
+      </aside>
+
+      <main class="ms-canvas">
+        <!-- SLOT panels: one section per option. id option-<id>; the shell script hides all but the first at load.
+             Put the whole product UI inside .ms-frame. Do not put rationale text here; it belongs in the brief. -->
+        <section class="ms-option" id="option-1a" role="tabpanel" aria-labelledby="tab-1a" data-mockup-option="1a">
+          <div class="ms-frame">
+            <div class="app-placeholder">REPLACE: option 1a product UI</div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- SHELL SCRIPT: do not edit. It wires tabs, the brief toggle and the problem highlighting. -->
+  <script>
+    const shell = document.querySelector('[data-mockup-shell]');
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+    const status = document.querySelector('[data-status]');
+    const notes = [...document.querySelectorAll('[data-mockup-note]')];
+    const problems = [...document.querySelectorAll('[data-problem]')];
+    const briefToggle = document.querySelector('[data-brief-toggle]');
+
+    function selectTab(tab, moveFocus = false) {
+      tabs.forEach(candidate => candidate.setAttribute('aria-selected', String(candidate === tab)));
+      panels.forEach(panel => { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+      const note = notes.find(candidate => candidate.dataset.mockupNote === tab.dataset.mockupTab);
+      notes.forEach(candidate => { candidate.hidden = candidate !== note; });
+      const solved = (note?.dataset.solves ?? '').split(' ');
+      problems.forEach(problem => problem.classList.toggle('solved', solved.includes(problem.dataset.problem)));
+      status.textContent = `Round ${tab.dataset.round} - option ${tab.dataset.mockupTab}`;
+      if (moveFocus) tab.focus();
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        const keys = { ArrowRight: (index + 1) % tabs.length, ArrowLeft: (index - 1 + tabs.length) % tabs.length, Home: 0, End: tabs.length - 1 };
+        if (event.key in keys) { event.preventDefault(); selectTab(tabs[keys[event.key]], true); }
+      });
+    });
+    selectTab(tabs[0]);
+    briefToggle.addEventListener('click', () => {
+      const open = shell.dataset.brief !== 'open';
+      shell.dataset.brief = open ? 'open' : 'closed';
+      briefToggle.setAttribute('aria-expanded', String(open));
+    });
+
+  </script>
+
+  <!-- PRODUCT SCRIPT: yours. Light interactions for the mockups only. -->
+  <script id="product-js">
+  </script>
+</body>
+</html>
