@@ -11,7 +11,7 @@ tui:
   store: true
 
 tmux:
-  poll_interval: 500ms
+  poll_interval: 1.5s
   preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, orchestrator]
   capture_recording:
     enabled: true
