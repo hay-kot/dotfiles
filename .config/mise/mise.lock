@@ -908,63 +908,63 @@ url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Wi
 url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661413"
 
 [[tools."github:hay-kot/solo"]]
-version = "0.2.0"
+version = "0.3.0"
 backend = "github:hay-kot/solo"
 
 [tools."github:hay-kot/solo"."platforms.linux-arm64"]
-checksum = "sha256:b3c0c2bc384e35224e16483c319c356d2612bee0c28e7723a47cba8e77eb15c3"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527984"
+checksum = "sha256:9d2a8231add111187c1a89760c9f9c7366c994c2af16261cc1e79082daa66e00"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900124"
 
 [tools."github:hay-kot/solo"."platforms.linux-arm64-musl"]
-checksum = "sha256:b3c0c2bc384e35224e16483c319c356d2612bee0c28e7723a47cba8e77eb15c3"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527984"
+checksum = "sha256:9d2a8231add111187c1a89760c9f9c7366c994c2af16261cc1e79082daa66e00"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900124"
 
 [tools."github:hay-kot/solo"."platforms.linux-x64"]
-checksum = "sha256:933eb1f9de20db362362c9bdfdadd2ea4fedb393f7920e262cb7225c6fd261a9"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527986"
+checksum = "sha256:976bba282523e4168e402a18195e1945bcbc8f4874e0513f90e72e024e206abf"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900119"
 
 [tools."github:hay-kot/solo"."platforms.linux-x64-baseline"]
-checksum = "sha256:933eb1f9de20db362362c9bdfdadd2ea4fedb393f7920e262cb7225c6fd261a9"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527986"
+checksum = "sha256:976bba282523e4168e402a18195e1945bcbc8f4874e0513f90e72e024e206abf"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900119"
 
 [tools."github:hay-kot/solo"."platforms.linux-x64-musl"]
-checksum = "sha256:933eb1f9de20db362362c9bdfdadd2ea4fedb393f7920e262cb7225c6fd261a9"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527986"
+checksum = "sha256:976bba282523e4168e402a18195e1945bcbc8f4874e0513f90e72e024e206abf"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900119"
 
 [tools."github:hay-kot/solo"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:933eb1f9de20db362362c9bdfdadd2ea4fedb393f7920e262cb7225c6fd261a9"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527986"
+checksum = "sha256:976bba282523e4168e402a18195e1945bcbc8f4874e0513f90e72e024e206abf"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900119"
 
 [tools."github:hay-kot/solo"."platforms.macos-arm64"]
-checksum = "sha256:32af1126281707a1ace5eef88043e85373a0c6528514dd9a518b14f0e1fae685"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380528010"
+checksum = "sha256:966790740d7c2156bc774723fe4adf68d554f5cf63a975097daefe0862d08be0"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900136"
 
 [tools."github:hay-kot/solo"."platforms.macos-x64"]
-checksum = "sha256:c8aff02e15f21810c4da697085572b2a3fa6fe84a28d21050b77f3079d65cdf3"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527987"
+checksum = "sha256:262054e54ac73eb1d6ca19624c3af1b5fdcabfa3466d1c124016b6b313b6d39c"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900129"
 
 [tools."github:hay-kot/solo"."platforms.macos-x64-baseline"]
-checksum = "sha256:c8aff02e15f21810c4da697085572b2a3fa6fe84a28d21050b77f3079d65cdf3"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380527987"
+checksum = "sha256:262054e54ac73eb1d6ca19624c3af1b5fdcabfa3466d1c124016b6b313b6d39c"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900129"
 
 [tools."github:hay-kot/solo"."platforms.windows-x64"]
-checksum = "sha256:77a07d553403cf6b0e4752c420456e4c2aa7dfaf93745350bd37b26bdc55a195"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380528009"
+checksum = "sha256:7e0275d5218e2428c056f60d1e561793d7c6cfad55f45f8ef83ea647f7aa64b3"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900121"
 
 [tools."github:hay-kot/solo"."platforms.windows-x64-baseline"]
-checksum = "sha256:77a07d553403cf6b0e4752c420456e4c2aa7dfaf93745350bd37b26bdc55a195"
-url = "https://github.com/hay-kot/solo/releases/download/v0.2.0/solo_Windows_x86_64.zip"
-url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/380528009"
+checksum = "sha256:7e0275d5218e2428c056f60d1e561793d7c6cfad55f45f8ef83ea647f7aa64b3"
+url = "https://github.com/hay-kot/solo/releases/download/v0.3.0/solo_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/hay-kot/solo/releases/assets/513900121"
 
 [[tools."github:homeport/dyff"]]
 version = "1.12.0"

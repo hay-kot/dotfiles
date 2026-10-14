@@ -9,8 +9,8 @@ Lazygit|Open lazygit popup|tmux display-popup -E -w 80% -h 80% "lazygit"
 Diff Review|Review diff against main|tmux new-window -n review "dr"
 Code Review (tuicr)|Interactive TUI code review with comments|tmux display-popup -E -w 95% -h 95% -d "#{pane_current_path}" "tuicr"
 Code Review PR (tuicr)|Review a GitHub PR interactively|tmux display-popup -E -w 95% -h 95% -d "#{pane_current_path}" "$SHELL -lic 'echo -n \"PR number: \"; read pr; tuicr pr $pr'"
-Solo Up|Start solo environment|solo up
-Solo Down|Stop solo environment|solo down
+Svx Up|Start the dev stack for this repo|svx up
+Svx Down|Stop the dev stack for this repo|svx down
 Lazydocker|Docker management|tmux display-popup -E -w 90% -h 90% "lazydocker"
 Neovim Split|Vertical split with Neovim|tmux split-window -h "nvim"
 PR Link|Copy current branch PR link to clipboard|tmux display-popup -E -w 60% -h 40% -d "#{pane_current_path}" "prlink; echo; echo 'Press enter to close'; read"
