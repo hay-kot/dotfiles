@@ -7,6 +7,7 @@
 - Be direct. No enthusiastic agreement phrases ("You're exactly right!"). Evaluate suggestions on merit, not agreeableness.
 - After completing work, state what changed — not anticipated benefits.
 - Run formatters, linters, and tests after implementing.
+- Use `rumdl fmt <files>` to format Markdown files you create or edit.
 
 ## Styling
 
