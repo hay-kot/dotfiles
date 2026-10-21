@@ -52,7 +52,7 @@ uv = "latest"
 "go:github.com/josharian/impl" = "v1.4.0"
 "go:github.com/koron/iferr" = "v0.0.0-20240122035601-9c3e2fbe4bd1"
 "go:gotest.tools/gotestsum" = "v1.13.0"
-"go:github.com/google/go-jsonnet/cmd/jsonnet" = "v0.21.0"
+"go:github.com/google/go-jsonnet/cmd/jsonnet" = "v0.22.0"
 "go:github.com/google/go-jsonnet/cmd/jsonnetfmt" = "v0.21.0"
 
 # AI Planning Tools
