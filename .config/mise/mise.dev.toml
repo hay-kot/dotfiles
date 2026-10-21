@@ -39,7 +39,7 @@ uv = "latest"
 "github:amir20/dtop" = "v0.10.1"             # docker tui
 
 # AI Planning Tools
-"github:backnotprop/plannotator" = { version = "v0.28.17", matching = "plannotator-" }
+"github:backnotprop/plannotator" = { version = "v0.28.19", matching = "plannotator-" }
 
 # Personal Go Tools
 "go:github.com/hay-kot/mdparse" = "v0.1.1"
