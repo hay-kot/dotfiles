@@ -114,7 +114,7 @@ mac_config() {
     export XDG_CONFIG_HOME="$HOME/.config"
     export GPG_TTY=$(tty)
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/libpq/bin:$PATH"
-    export PATH="$HOME/Go/bin:$HOME/.tmuxifier/bin:$PATH"
+    export PATH="$HOME/.tmuxifier/bin:$PATH"
 
     # pnpm
     export PNPM_HOME="$HOME/Library/pnpm"

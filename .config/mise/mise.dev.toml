@@ -4,8 +4,8 @@
 # -------------------------------------------------------
 # Environments
 
-go = "1.27.2"
-node = "25"
+go = "1.27.3"
+node = "26.12.1"
 bun = "latest"
 rust = "latest"
 uv = "latest"
@@ -27,16 +27,33 @@ uv = "latest"
 # Go Team Tools
 "go:golang.org/x/perf/cmd/benchstat" = "latest"
 "go:golang.org/x/tools/cmd/deadcode" = "latest"
+"go:golang.org/x/tools/cmd/callgraph" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "latest"
+"go:golang.org/x/tools/cmd/gonew" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"go:golang.org/x/vuln/cmd/govulncheck" = "latest"
 
 # Go Tools
 "github:mvdan/gofumpt" = "v0.12.0"
 "github:golangci/golangci-lint" = "v2.14.0"
 "github:magefile/mage" = "v1.17.2"
-"github:abice/go-enum" = "v0.9.5"
+"go:github.com/abice/go-enum" = "v0.9.5"
 "github:Zxilly/go-size-analyzer" = "v1.14.1"
 "github:homeport/dyff" = "v1"               # yaml differ
 "github:caarlos0/svu" = "v3.4.1"
 "github:amir20/dtop" = "v0.10.1"             # docker tui
+"go:github.com/go-delve/delve/cmd/dlv" = "v1.27.2"
+"go:github.com/fatih/faillint" = "v1.15.0"
+"go:github.com/fatih/gomodifytags" = "v1.17.0"
+"go:github.com/segmentio/golines" = "v0.13.0"
+"go:github.com/twpayne/go-jsonstruct/v3/cmd/gojsonstruct" = "v3.3.0"
+"go:github.com/tmc/json-to-struct" = "v0.1.0"
+"go:github.com/abenz1267/gomvp" = "v0.0.4"
+"go:github.com/josharian/impl" = "v1.4.0"
+"go:github.com/koron/iferr" = "v0.0.0-20240122035601-9c3e2fbe4bd1"
+"go:gotest.tools/gotestsum" = "v1.13.0"
+"go:github.com/google/go-jsonnet/cmd/jsonnet" = "v0.21.0"
+"go:github.com/google/go-jsonnet/cmd/jsonnetfmt" = "v0.21.0"
 
 # AI Planning Tools
 "github:backnotprop/plannotator" = { version = "v0.28.19", matching = "plannotator-" }
@@ -63,4 +80,3 @@ uv = "latest"
 "github:agavra/tuicr" = "v0.27.0"         # tui code review
 "github:rvben/rumdl" = "v0.2.79"         # markdown linter and formatter
 "cargo:sleek" = "0.5.0"                   # sql formatter
-"go:golang.org/x/tools/gopls" = "latest"
