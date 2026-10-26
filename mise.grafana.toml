@@ -5,7 +5,6 @@ BREW_ESCAPE_CASKS = "docker-desktop gcloud-cli"
 
 [bootstrap.packages]
 "brew:awscli" = "latest"
-"brew:azure-cli" = "latest"
 "brew:hashicorp/tap/terraform" = "latest"
 "brew:helm" = "latest"
 "brew:jsonnet" = "latest"
@@ -14,6 +13,7 @@ BREW_ESCAPE_CASKS = "docker-desktop gcloud-cli"
 "brew:tanka" = "latest"
 "brew:zizmor" = "latest"
 
+"brew-cask:azure-cli" = "latest"
 "brew-cask:slack" = "latest"
 
 [bootstrap.brew.taps]
