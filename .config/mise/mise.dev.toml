@@ -78,5 +78,5 @@ uv = "0.13.4"
 "github:sxyazi/yazi" = "v26.9.1"          # file explorer tui
 "github:thomasschafer/scooter" = "v0.10.0" # find and replace mechanism
 "github:agavra/tuicr" = "v0.27.0"         # tui code review
-"github:rvben/rumdl" = "v0.2.79"         # markdown linter and formatter
+"github:rvben/rumdl" = "v0.3.0"         # markdown linter and formatter
 "cargo:sleek" = "0.5.0"                   # sql formatter
