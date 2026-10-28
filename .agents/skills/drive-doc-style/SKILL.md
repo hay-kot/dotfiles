@@ -48,10 +48,9 @@ values). Redefine the same tokens under `@media (prefers-color-scheme: dark)`
 and set `color-scheme: dark` there. `body` sets an explicit `background` from a
 token. No literal colors in component rules.
 
-**Baseline palette.** Use these exact values, shared with `assets/doc.html`. The
-baseline is slate neutrals with a teal accent, as used in the Hive daemon
-PR 732 brief. Do not invent a new palette for each document. Change it only
-when the user explicitly requests another one.
+**Baseline palette.** Use these exact values, shared with `assets/doc.html`:
+slate neutrals with a teal accent. Do not invent a new palette for each
+document. Change it only when the user explicitly requests another one.
 
 | Token           | Light     | Dark      |
 | --------------- | --------- | --------- |
