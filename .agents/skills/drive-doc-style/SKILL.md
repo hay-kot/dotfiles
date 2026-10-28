@@ -87,9 +87,21 @@ not a separate character-width cap. `text-wrap: balance` on headings.
 Uppercase labels get a little letter-spacing.
 
 **Structure is information.** Number sections only when order matters (a
-procedure, a timeline, rollout phases). Use a table of contents only when the
-doc has more than about five sections. Do not add eyebrows or dividers that
-encode nothing.
+procedure, a timeline, rollout phases) or the text cross-references them by
+number. Use a table of contents only when the doc has more than about five
+sections. Do not add eyebrows or dividers that encode nothing.
+
+**Contents block, not a row of links.** A table of contents is a bordered block
+with a `Contents` label and a grid of entries (`.toc` in the template): number
+in muted mono, title in the body text color, no underline, and the accent with
+a `--surface-2` fill on hover. List only the numbered sections; do not mix in
+unnumbered sub-entries. A wrapping row of underlined accent links is hard to
+scan.
+
+**Links.** Prose links use the accent with a thin underline
+(`text-decoration-thickness: 1px; text-underline-offset: 2px`). Navigation
+links (contents, cross-references in a block) drop the underline and rely on
+the hover state.
 
 **Summary before detail.** Open with the problem, the decision or finding, and
 what the reader must do or approve. Put the reasoning after. A reader who stops
@@ -101,9 +113,31 @@ pill, not just a word in a sentence. Keep one pill style across the doc.
 **Cards by role.** Border, fill, and radius mark a separate object. Use them for
 figures, callouts, and option panels. Do not wrap ordinary paragraphs.
 
-**Tables.** Compare options in a table with the criteria as rows. Put the
-recommendation in its own column or row, marked with a pill. Wrap each wide
-table in an `overflow-x: auto` container.
+**Tables hold short values.** Use a table only when every cell is a short,
+comparable value (a date, a status pill, a number, a name, a path) and the
+reader scans down a column. If a cell needs a sentence, a list, or more than
+about ten words, the table is the wrong form: use entries or a month rail
+instead. Never put a list inside a table cell, and never build a grid of
+months by lanes or people where every cell is a stack of bullets. Compare
+options in a table with the criteria as rows when the values are short. Put
+the recommendation in its own column or row, marked with a pill. Wrap each
+wide table in an `overflow-x: auto` container.
+
+**Entries for items with prose.** Risks, constraints, options with reasoning,
+gates, and similar items that each carry a sentence or more go in an entry
+grid (`.entries` in the template): one bordered card per item, the item name
+as an `h4`, the body, and an optional footer under a label (`Mitigation`,
+`Plan`, `Risk`) separated by a rule. A verdict or status goes in a pill in the
+`h4`. When the items fall into meaningful groups (risks by kind, for example),
+put each group under its own `h3` instead of one long flat list.
+
+**Timelines are month rails.** Draw a schedule as one row per month (`.months`
+in the template): the month on the left, its items on the right in date
+order, each with the date in mono (`11-13`, `wk 1`) and its lane or track as a
+neutral pill. Undated work follows the dated items in the same month.
+Checkpoints use the warn fill and a `Checkpoint` pill. A per-person plan uses
+the same rail with one labeled list per person inside each month. The rail
+reads top to bottom on a phone with no sideways scroll.
 
 **Diagrams.** Draw the real mechanism: the actual components, queues, and limits
 from the code, not a generic box-and-arrow. Inline SVG with a `viewBox`, every
@@ -149,6 +183,10 @@ what breaks and what to do about it.
 - [ ] Prose, lists, and callouts use the same content width as tables and
       figures
 - [ ] No horizontal page scroll at 400px
+- [ ] No table cell holds a list or more than a short phrase; prose items are
+      entries, schedules are month rails
+- [ ] A contents list, if any, is a `.toc` block, not a row of underlined
+      links
 - [ ] Figures use token colors and have captions that say what to look at
 - [ ] No literal hex values outside the `:root` token blocks
 - [ ] No em-dashes, en-dashes, or emoji in the text
