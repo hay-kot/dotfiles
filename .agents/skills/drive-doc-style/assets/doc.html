@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REPLACE: Short specific doc name</title>
+<style>
+  /* Single reading column. Summary first, detail after. One accent, separate semantic colors. */
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface-2: #eef2f6;
+    --border: #d5dde6;
+    --text: #1b2430;
+    --muted: #5b6878;
+    --accent: #0b6e8a;
+    --accent-soft: #dcecf2;
+    --good: #1a7f4b;
+    --good-soft: #dff2e7;
+    --warn: #9a6700;
+    --warn-soft: #f7ebcf;
+    --bad: #c23030;
+    --bad-soft: #f8e0e0;
+    --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --step--1: 0.8125rem;
+    --step-0: 1rem;
+    --step-1: 1.25rem;
+    --step-2: 1.6rem;
+    --step-3: 2.1rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f151c;
+      --surface: #161e27;
+      --surface-2: #1d2733;
+      --border: #2b3745;
+      --text: #dbe3ec;
+      --muted: #93a1b3;
+      --accent: #5cc3dd;
+      --accent-soft: #17323d;
+      --good: #4cc380;
+      --good-soft: #14301f;
+      --warn: #e0ae45;
+      --warn-soft: #36290f;
+      --bad: #f07272;
+      --bad-soft: #3a1a1a;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: var(--step-0)/1.65 var(--font-body);
+    padding-block: 48px 96px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  main { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  section { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  p, ul, ol, dl { margin: 0; }
+  ul, ol { padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+  p, li { max-width: 70ch; }
+
+  h1, h2, h3 { margin: 0; line-height: 1.25; text-wrap: balance; }
+  h1 { font-size: var(--step-3); }
+  h2 { font-size: var(--step-2); padding-top: 18px; border-top: 1px solid var(--border); }
+  h3 { font-size: var(--step-1); }
+  a { color: var(--accent); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .label { font-size: var(--step--1); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: var(--step--1); }
+  code, .mono { font-family: var(--font-mono); font-size: 0.88em; }
+  code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  pre { margin: 0; padding: 14px 16px; background: var(--surface-2); border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+
+  header { display: flex; flex-direction: column; gap: 12px; }
+
+  .summary { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .summary > div { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+  .callout { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; max-width: 70ch; }
+  .callout.warn { background: var(--warn-soft); }
+  .callout.bad { background: var(--bad-soft); }
+
+  .pill { display: inline-block; font-size: var(--step--1); font-weight: 600; padding: 1px 10px; border-radius: 999px; white-space: nowrap; }
+  .pill.good { color: var(--good); background: var(--good-soft); }
+  .pill.warn { color: var(--warn); background: var(--warn-soft); }
+  .pill.bad { color: var(--bad); background: var(--bad-soft); }
+
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.94rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  th { font-size: var(--step--1); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  figure { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  figure svg { width: 100%; height: auto; max-width: 100%; }
+  figcaption { font-size: var(--step--1); color: var(--muted); }
+  svg text { font-family: var(--font-mono); fill: var(--text); font-size: 12px; }
+  svg .node { fill: var(--surface-2); stroke: var(--border); }
+  svg .edge { stroke: var(--muted); fill: none; stroke-width: 1.5; }
+  svg .hot { stroke: var(--accent); }
+  svg .blocked { stroke: var(--bad); stroke-dasharray: 4 4; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes flow { to { stroke-dashoffset: -16; } }
+    svg .flow { stroke-dasharray: 6 6; animation: flow 1s linear infinite; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="label">REPLACE: Design doc | Research | Investigation | Decision</span>
+    <h1>REPLACE: Doc name</h1>
+    <div class="meta">
+      <span>REPLACE: YYYY-MM-DD</span>
+      <span>Status <span class="pill warn">Draft</span></span>
+      <span>Source of truth: <code>REPLACE: path.md</code></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="summary">
+      <div><span class="label">Problem</span><p>REPLACE: One or two sentences, in the codebase's terms.</p></div>
+      <div><span class="label">Decision or finding</span><p>REPLACE: What this doc recommends or found.</p></div>
+      <div><span class="label">Needed from the reader</span><p>REPLACE: Approve X, answer Y, or nothing.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Context</h2>
+    <p>REPLACE: What exists today, with real names, units, and numbers.</p>
+    <figure>
+      <svg viewBox="0 0 480 90" role="img" aria-label="REPLACE: describe the diagram">
+        <rect class="node" x="10" y="25" width="120" height="40" rx="6"/>
+        <text x="70" y="50" text-anchor="middle">REPLACE a</text>
+        <rect class="node" x="350" y="25" width="120" height="40" rx="6"/>
+        <text x="410" y="50" text-anchor="middle">REPLACE b</text>
+        <line class="edge hot flow" x1="130" y1="45" x2="350" y2="45"/>
+      </svg>
+      <figcaption>REPLACE: Say what to look at in this figure.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Options</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Option</th><th>Memory</th><th>Complexity</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>REPLACE A</td><td>REPLACE</td><td>REPLACE</td><td><span class="pill good">Recommended</span></td></tr>
+          <tr><td>REPLACE B</td><td>REPLACE</td><td>REPLACE</td><td><span class="pill bad">Rejected</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn"><strong>Risk.</strong> REPLACE: what breaks, and what to do about it.</div>
+  </section>
+
+  <section>
+    <h2>Rollout</h2>
+    <ol>
+      <li>REPLACE: Use an ordered list only when the order matters.</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>
