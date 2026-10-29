@@ -52,15 +52,15 @@ url = "https://github.com/agavra/tuicr/releases/download/v0.27.0/tuicr-0.27.0-aa
 url_api = "https://api.github.com/repos/agavra/tuicr/releases/assets/584424400"
 
 [[tools."github:amir20/dtop"]]
-version = "0.10.1"
+version = "0.10.4"
 backend = "github:amir20/dtop"
-specifiers = ["v0.10.1"]
+specifiers = ["v0.10.4"]
 
 [tools."github:amir20/dtop"."platforms.macos-arm64"]
-checksum = "sha256:5383cb0e6ea684a87083c0a646653e9d9b39a2525c801c32ffe1f491a6e70bf0"
+checksum = "sha256:42f7428e74f08f1b0033d2784e69d4807e4c76c9ac241734b3c63e18c9d4a946"
 checksum_source = "mise-versions"
-url = "https://github.com/amir20/dtop/releases/download/v0.10.1/dtop-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/634889247"
+url = "https://github.com/amir20/dtop/releases/download/v0.10.4/dtop-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/650512872"
 
 [[tools."github:backnotprop/plannotator"]]
 version = "0.28.20"
