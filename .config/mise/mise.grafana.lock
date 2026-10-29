@@ -3,12 +3,12 @@
 lockfile_version = 3
 
 [[tools."github:grafana/gcx"]]
-version = "1.6.0"
+version = "1.7.1"
 backend = "github:grafana/gcx"
-specifiers = ["v1.6.0"]
+specifiers = ["v1.7.1"]
 
 [tools."github:grafana/gcx"."platforms.macos-arm64"]
-checksum = "sha256:4eb4cd9c31a38281c2f9e147b0108cf3b201bef8f4279fddbdc7a30b32706603"
+checksum = "sha256:61b0f912d21abf7d8e22bdcc0199b56403dcf19f29bef73d74119d53782f479d"
 checksum_source = "mise-versions"
-url = "https://github.com/grafana/gcx/releases/download/v1.6.0/gcx_1.6.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/grafana/gcx/releases/assets/636664103"
+url = "https://github.com/grafana/gcx/releases/download/v1.7.1/gcx_1.7.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/grafana/gcx/releases/assets/662320581"
