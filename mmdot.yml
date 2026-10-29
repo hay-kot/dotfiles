@@ -114,14 +114,11 @@ exec:
     - { path: "./setup/dirs.sh", tags: ["grafana", "personal", "dirs"] }
     - { path: "./setup/git.sh", tags: ["grafana", "personal", "git"] }
     - { path: "./setup/tmux.sh", tags: ["grafana", "personal", "tmux"] }
-    - { path: "./setup/cron.sh", tags: ["grafana", "personal", "cron"] }
 
     # packages mise cannot install directly; lists come from the active overlays
     - { path: "./setup/brew-packages.sh", tags: ["grafana", "personal", "brew"] }
 
-    # mac
-    - { path: "./setup/mac.dock.sh", tags: ["grafana", "personal", "mac", "setup"] }
-    - { path: "./setup/mac.preferences.sh", tags: ["grafana", "personal", "mac", "setup"] }
+    # mac (Dock and preferences are [bootstrap.macos.*] in mise.dev.toml)
     - { path: "./setup/mac.defaults.sh", tags: ["grafana", "personal", "mac", "setup"] }
 
     # env & config

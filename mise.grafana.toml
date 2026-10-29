@@ -1,8 +1,5 @@
 # Grafana (work) machine extras.
 
-[env]
-BREW_ESCAPE_CASKS = "docker-desktop gcloud-cli"
-
 [bootstrap.packages]
 "brew:awscli" = "latest"
 "brew:hashicorp/tap/terraform" = "latest"
@@ -14,6 +11,7 @@ BREW_ESCAPE_CASKS = "docker-desktop gcloud-cli"
 "brew:zizmor" = "latest"
 
 "brew-cask:azure-cli" = "latest"
+"brew-cask:gcloud-cli" = "latest"
 "brew-cask:slack" = "latest"
 
 [bootstrap.brew.taps]

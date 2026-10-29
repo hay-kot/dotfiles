@@ -2,9 +2,6 @@
 [tools]
 "npm:@posthog/cli" = "latest"
 
-[env]
-BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
-
 [bootstrap.packages]
 "brew:restic" = "latest"
 "brew:caddy" = "latest"
@@ -13,12 +10,14 @@ BREW_ESCAPE_CASKS = "docker-desktop autodesk-fusion"
 "brew:vhs" = "latest"
 
 "brew-cask:aldente" = "latest"
+"brew-cask:autodesk-fusion" = "latest"
 "brew-cask:balenaetcher" = "latest"
 "brew-cask:bambu-studio" = "latest"
 "brew-cask:claudebar" = "latest"
 "brew-cask:discord" = "latest"
 "brew-cask:home-assistant" = "latest"
 "brew-cask:lm-studio" = "latest"
+"brew-cask:orbstack" = "latest"
 "brew-cask:pdf-expert" = "latest"
 "brew-cask:proton-drive" = "latest"
 "brew-cask:protonvpn" = "latest"

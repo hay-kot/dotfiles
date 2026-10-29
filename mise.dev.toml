@@ -1,8 +1,9 @@
 # Dev layer — shared by both Macs (personal + grafana).
 
 [env]
-# This tap does not publish the API metadata mise requires. The mmdot setup
-# pass installs it through the Homebrew CLI instead.
+# mise reads taps through the GitHub API, and this private tap answers 403
+# (grafana org SSO). The mmdot setup pass installs it through the Homebrew CLI
+# instead, which clones the tap with git credentials.
 BREW_ESCAPE_FORMULAS = "grafana/grafana/agento11y"
 
 # Finder Quick Actions (right-click > Quick Actions). Mac-only, so they live
@@ -52,13 +53,13 @@ BREW_ESCAPE_FORMULAS = "grafana/grafana/agento11y"
 "brew:wireguard-go" = "latest"
 "brew:yank" = "latest"
 
-# packages mise can't install directly live in setup/brew-packages.sh
 "brew-cask:1password" = "latest"
 "brew-cask:1password-cli" = "latest"
 "brew-cask:brave-browser" = "latest"
 "brew-cask:chromedriver" = "latest"
 "brew-cask:cleanshot" = "latest"
 "brew-cask:codex" = "latest"
+"brew-cask:docker-desktop" = "latest"
 "brew-cask:firefox" = "latest"
 "brew-cask:font-fira-code" = "latest"
 "brew-cask:font-fira-code-nerd-font" = "latest"
@@ -82,14 +83,158 @@ BREW_ESCAPE_FORMULAS = "grafana/grafana/agento11y"
 "brew-cask:zoom" = "latest"
 
 # ---------------------------------------------------------
+# macOS preferences -- written as this user, the way `defaults write` would,
+# so none of this needs sudo.
+
+[bootstrap.macos.dock]
+tilesize = 52
+autohide = true
+autohide_delay = 0.0
+autohide_time_modifier = 0.0
+show_recents = false
+# mise will not change the layout while any listed app is missing. Hive.app
+# has no cask (it is installed by hand and updates itself), so a fresh Mac
+# needs it installed before this applies.
+apps = [
+  "/Applications/Ghostty.app",
+  "/Applications/Zen.app",
+  "/Applications/Obsidian.app",
+  "/Applications/Hive.app",
+]
+
+[bootstrap.macos.finder]
+show_pathbar = true
+show_extensions_warning = false
+preferred_view_style = "list"
+
+[bootstrap.macos.keyboard]
+key_repeat = 2
+initial_key_repeat = 25
+press_and_hold = false
+
+[bootstrap.macos.defaults.NSGlobalDomain]
+AppleInterfaceStyle = "Dark"
+AppleShowAllExtensions = true
+WebKitDeveloperExtras = true
+
+[bootstrap.macos.defaults."com.apple.dock"]
+minimize-to-application = true
+launchanim = false
+# folders and stacks; dock.apps above only owns the application tiles
+persistent-others = []
+
+[bootstrap.macos.defaults."com.apple.finder"]
+ShowSidebar = true
+ShowExternalHardDrivesOnDesktop = false
+ShowHardDrivesOnDesktop = false
+ShowRemovableMediaOnDesktop = false
+_FXShowPosixPathInTitle = true
+FXDefaultSearchScope = "SCcf" # search the current folder
+
+[bootstrap.macos.defaults."com.apple.desktopservices"]
+DSDontWriteNetworkStores = true
+DSDontWriteUSBStores = true
+
+[bootstrap.macos.defaults."com.apple.screensaver"]
+askForPassword = 1
+askForPasswordDelay = 0
+
+[bootstrap.macos.defaults."com.apple.TimeMachine"]
+DoNotOfferNewDisksForBackup = true
+
+[bootstrap.macos.defaults."com.apple.print.PrintingPrefs"]
+"Quit When Finished" = true
+
+# Finder creates its view-settings dicts lazily, so which ones exist varies by
+# machine. A path entry creates missing parents and leaves sibling keys alone.
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "DesktopViewSettings"
+path = ["IconViewSettings", "arrangeBy"]
+value = "grid"
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "FK_StandardViewSettings"
+path = ["IconViewSettings", "arrangeBy"]
+value = "grid"
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "StandardViewSettings"
+path = ["IconViewSettings", "arrangeBy"]
+value = "grid"
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "StandardViewSettings"
+path = ["ListViewSettings", "iconSize"]
+value = 32
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "FK_StandardViewSettings"
+path = ["ExtendedListViewSettingsV2", "iconSize"]
+value = 32
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.finder"
+key = "FK_DefaultListViewSettings"
+path = ["iconSize"]
+value = 32
+
+[bootstrap.directories]
+"~/Downloads/Screenshots" = {}
+
+# The screenshot location lives here because [bootstrap.macos.defaults] values
+# are not templated and the home directory differs per Mac. Dock and Finder
+# read most preferences only at launch, and mise never restarts them. chflags
+# is guarded so sudo prompts only when /Volumes is hidden again (macOS updates
+# can reset it).
+[bootstrap.hooks.post-defaults]
+description = "Set screenshot folder, restart Dock and Finder, unhide /Volumes if needed"
+run = [
+  'defaults write com.apple.screencapture location -string "$HOME/Downloads/Screenshots"',
+  "killall Dock Finder || true",
+  "if stat -f %Sf /Volumes | grep -q hidden; then sudo chflags nohidden /Volumes; fi",
+]
+
+# ---------------------------------------------------------
+# LaunchAgents (~/Library/LaunchAgents/dev.mise.<name>.plist)
+
+# hidutil mappings reset at reboot, so reapply Caps Lock -> Escape at login.
+[bootstrap.macos.launchd.agents.capslock-escape]
+program = "/usr/bin/hidutil"
+args = [
+  "property",
+  "--set",
+  '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}',
+]
+run_at_load = true
+
+# Runs through the mise shim so the agent follows the version pinned in
+# .config/mise/mise.dev.toml; `dirwatch install` instead copies a binary that
+# mise upgrades never touch. The watcher scripts need Homebrew's `magick`.
+[bootstrap.macos.launchd.agents.dirwatch]
+program = "~/.local/share/mise/shims/dirwatch"
+args = ["watch"]
+run_at_load = true
+keep_alive_on_failure = true
+process_type = "Background"
+working_directory = "~"
+environment = { HOME = "{{ env.HOME }}", PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" }
+stdout_path = "~/Library/Logs/dirwatch.log"
+stderr_path = "~/Library/Logs/dirwatch-errors.log"
+
+# ---------------------------------------------------------
 # Tasks
 
 [tasks.upgrade]
-# Mac override of the base task. Escape packages need an explicit pass: they
+# Mac override of the base task. Escape formulae need an explicit pass: they
 # are installed by setup/brew-packages.sh and never appear in
 # [bootstrap.packages], so the declarative path would leave them behind.
 # uv tools are likewise undeclared -- mise manages uv itself, not what uv installs.
-description = "Upgrade this machine: declared packages and tools, Homebrew escape packages, uv tools"
+description = "Upgrade this machine: declared packages and tools, Homebrew escape formulae, uv tools, then prune unused versions"
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
@@ -103,15 +248,8 @@ for formula in ${BREW_ESCAPE_FORMULAS:-}; do
   fi
 done
 
-for cask in ${BREW_ESCAPE_CASKS:-}; do
-  # skip uninstalled: `brew upgrade --cask` errors out on them, and a machine
-  # that has not run setup/brew-packages.sh yet should not fail the whole upgrade
-  if brew list --cask "$cask" >/dev/null 2>&1; then
-    brew upgrade --cask "$cask"
-  fi
-done
-
 uv tool upgrade --all
+mise prune --yes
 '''
 
 [tasks.winctl]

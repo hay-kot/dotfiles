@@ -14,11 +14,6 @@ Finder Quick Actions are `.workflow` bundles in `files/services/`, each with
 its own whole-bundle entry in `mise.dev.toml` (Automator cannot load a bundle
 whose inner files are symlinks, so `symlink-each` does not work for them).
 
-## Logging
-
-Tools in `bin/` that produce persistent logs write to `~/.local/dotlogs/<toolname>.log`.
-Never use `~/.local/log/` or any other path. Log lines must include a UTC timestamp.
-
 ## TruffleHog Config
 
 Custom detectors live in `.config/trufflehog/config.yaml` (deployed to `~/.config/trufflehog/config.yaml` via mise `[dotfiles]`).

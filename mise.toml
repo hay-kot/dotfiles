@@ -77,9 +77,15 @@ description = "Make all scripts in bin/ executable"
 run = "chmod +x ./bin/*"
 
 [tasks.lock]
-description = "Update .config/mise/mise.lock"
-dir = "./.config/mise/"
-run = "mise install"
+# Global config is locked only with --global, into one mise.<env>.lock per
+# overlay; -E locks both Macs (arm64) from either one. A new overlay's lockfile
+# must exist in the repo before its first lock, or mise writes a regular file
+# into ~/.config/mise that symlink-each never links back.
+description = "Update the global tool lockfiles in .config/mise/"
+run = [
+  "mise -E dev,personal lock --global --platform macos-arm64",
+  "mise -E dev,grafana lock --global --platform macos-arm64",
+]
 
 [tasks.sync]
 # behind the `dotsync` alias; --ff-only so an unattended converge never
@@ -97,11 +103,13 @@ mise bootstrap --yes
 '''
 
 [tasks.upgrade]
-# Overridden by the dev overlay on Macs to also cover Homebrew escape packages
+# Overridden by the dev overlay on Macs to also cover Homebrew escape formulae
 # and uv tools. `mise bootstrap packages upgrade` refreshes the package
 # manager's metadata itself, so there is no separate `brew update`/`apt update`.
-description = "Upgrade this machine: declared [bootstrap.packages] and [tools]"
-run = ["mise bootstrap packages upgrade --yes", "mise upgrade"]
+# `mise upgrade` only prunes versions it upgraded away from itself; pins that
+# Renovate bumps leave the old version installed, so prune catches those.
+description = "Upgrade this machine: declared [bootstrap.packages] and [tools], then prune unused versions"
+run = ["mise bootstrap packages upgrade --yes", "mise upgrade", "mise prune --yes"]
 
 [tasks.stamp]
 description = "Pin this machine's MISE_ENV in ~/.config/mise/miserc.toml (run once, explicitly)"

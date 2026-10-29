@@ -251,6 +251,19 @@ return {
 
     local servers = config_servers()
 
+    -- Kept out of `servers`: that table feeds Mason's ensure_installed, and the
+    -- server ships inside mise itself. It ignores TOML files that are not mise
+    -- config, so attaching to every toml buffer leaves Cargo.toml etc. alone.
+    if vim.fn.executable("mise") == 1 then
+      vim.lsp.config("mise", {
+        cmd = { "mise", "lsp" },
+        filetypes = { "toml" },
+        root_markers = { "mise.toml", ".mise.toml", ".git" },
+        capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
+      })
+      vim.lsp.enable("mise")
+    end
+
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
       callback = function()

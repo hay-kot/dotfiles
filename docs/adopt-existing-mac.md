@@ -67,8 +67,8 @@ brew-owned / MDM-managed / manual. Rules:
   `mise.dev.toml` to `mise.personal.toml` (never delete from dev — that
   strips the personal machine). Grafana-only MDM casks: delete from
   `mise.grafana.toml`. Commit the edits.
-- MDM-locked `defaults` values are expected drift — trim conflicting lines
-  from `setup/mac.*.sh` rather than fighting the MDM.
+- MDM-locked `defaults` values are expected drift — trim conflicting keys
+  from `[bootstrap.macos.*]` in `mise.dev.toml` rather than fighting the MDM.
 - Record MDM-owned tokens in `/tmp/mdm-owned.txt` (one per line).
 - `sudo -v` must work — a non-admin account stops here.
 
@@ -119,8 +119,8 @@ dotsync      # second run must be a clean no-op (plan: 0 pending)
 ```
 
 `goland`/`tuple` are no longer declared — uninstall opportunistically.
-Escape casks (`docker-desktop`, `gcloud-cli`) install via
-`setup/brew-packages.sh` from `BREW_ESCAPE_CASKS` in `mise.grafana.toml`.
+`docker-desktop` and `gcloud-cli` are ordinary declared casks now. Copies
+that Homebrew already installed stay Homebrew-owned until you transfer them.
 
 ## 8. Tailscale, last
 

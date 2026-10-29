@@ -170,11 +170,11 @@ runs against whatever config is checked out.
 
 ## Packages that use the Homebrew CLI
 
-mise can't install casks with complex installer steps or formulas from taps
-that do not publish Homebrew API metadata. These stay behind the idempotent
-mmdot-run escape script (`setup/brew-packages.sh`): `agento11y` (both Macs),
-`docker-desktop` (both Macs), `autodesk-fusion` (personal), and `gcloud-cli`
-(grafana).
+mise reads Homebrew taps through the GitHub API, so it can't read a private
+tap without an SSO-authorized token. Formulas from those taps stay behind the
+idempotent mmdot-run escape script (`setup/brew-packages.sh`): today that is
+only `agento11y` (both Macs). Every cask, including ones with pkg or script
+installers, is declared in `[bootstrap.packages]`.
 
 A fresh Mac needs no manual Homebrew or tap setup -- the escape script installs
 Homebrew when missing, and a fully qualified formula name adds its tap.
@@ -201,7 +201,7 @@ tracked. Nothing wraps or shadows the agents; `claude` and `pi` are the real
 binaries and are started normally.
 
 `setup/brew-packages.sh` installs the CLI from Grafana's Homebrew tap because
-the tap does not publish the API metadata mise requires. No manual tap setup is
+the tap is private and mise cannot read it. No manual tap setup is
 needed. `setup/agento11y.sh` then renders
 `~/.config/agento11y/config.env` (0600) from the 1Password item named by
 `AGENTO11Y_OP_ITEM` and registers both plugins. It re-runs on every `dotsync`,
