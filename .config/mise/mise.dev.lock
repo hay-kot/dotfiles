@@ -398,9 +398,9 @@ checksum = "sha256:1901d539912c02afa10d1cc126943a8855a7eedebe830119463470db5e6c5
 url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-darwin-arm64.tar.gz"
 
 [[tools."npm:@earendil-works/pi-coding-agent"]]
-version = "1.2.0"
+version = "1.4.0"
 backend = "npm:@earendil-works/pi-coding-agent"
-specifiers = ["1.2.0"]
+specifiers = ["1.4.0"]
 
 [[tools."npm:eslint"]]
 version = "10.13.0"
