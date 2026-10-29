@@ -99,14 +99,14 @@ url = "https://github.com/colonyops/hive/releases/download/v0.66.0/hive_Darwin_a
 url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/673555787"
 
 [[tools."github:golangci/golangci-lint"]]
-version = "2.14.0"
+version = "2.15.0"
 backend = "github:golangci/golangci-lint"
-specifiers = ["v2.14.0"]
+specifiers = ["v2.15.0"]
 
 [tools."github:golangci/golangci-lint"."platforms.macos-arm64"]
-checksum = "sha256:5ef5f36a7147e91dc58ef9ef4d11bb7bad5ead0c76eb6c01327a73c641d1dcc3"
-url = "https://github.com/golangci/golangci-lint/releases/download/v2.14.0/golangci-lint-2.14.0-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/golangci/golangci-lint/releases/assets/585813591"
+checksum = "sha256:d1e409481a8ca846c4bc97e781eb5cb1bd5c23353a0b3977a1cbda1b1b6447d5"
+url = "https://github.com/golangci/golangci-lint/releases/download/v2.15.0/golangci-lint-2.15.0-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/golangci/golangci-lint/releases/assets/647132534"
 provenance = "github-attestations"
 
 [[tools."github:hay-kot/dirwatch"]]
