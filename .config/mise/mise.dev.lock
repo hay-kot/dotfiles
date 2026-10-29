@@ -314,9 +314,9 @@ backend = "go:github.com/google/go-jsonnet/cmd/jsonnet"
 specifiers = ["v0.22.0"]
 
 [[tools."go:github.com/google/go-jsonnet/cmd/jsonnetfmt"]]
-version = "0.21.0"
+version = "0.22.0"
 backend = "go:github.com/google/go-jsonnet/cmd/jsonnetfmt"
-specifiers = ["v0.21.0"]
+specifiers = ["v0.22.0"]
 
 [[tools."go:github.com/hay-kot/mdparse"]]
 version = "0.1.1"
