@@ -57,7 +57,7 @@ uv = "0.13.4"
 "go:github.com/google/go-jsonnet/cmd/jsonnetfmt" = "v0.22.0"
 
 # AI Planning Tools
-"github:backnotprop/plannotator" = { version = "v0.28.20", matching = "plannotator-" }
+"github:backnotprop/plannotator" = { version = "v0.28.30", matching = "plannotator-" }
 
 # Personal Go Tools
 "go:github.com/hay-kot/mdparse" = "v0.1.1"
