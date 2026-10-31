@@ -329,9 +329,9 @@ backend = "go:github.com/josharian/impl"
 specifiers = ["v1.5.0"]
 
 [[tools."go:github.com/koron/iferr"]]
-version = "0.0.0-20240122035601-9c3e2fbe4bd1"
+version = "1.0.0"
 backend = "go:github.com/koron/iferr"
-specifiers = ["v0.0.0-20240122035601-9c3e2fbe4bd1"]
+specifiers = ["v1.0.0"]
 
 [[tools."go:github.com/segmentio/golines"]]
 version = "0.13.0"
