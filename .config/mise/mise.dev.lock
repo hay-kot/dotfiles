@@ -88,15 +88,15 @@ url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/410001878"
 provenance = "github-attestations"
 
 [[tools."github:colonyops/hive"]]
-version = "0.66.0"
+version = "0.66.1"
 backend = "github:colonyops/hive"
-specifiers = ["v0.66.0"]
+specifiers = ["v0.66.1"]
 
 [tools."github:colonyops/hive"."platforms.macos-arm64"]
-checksum = "sha256:c558a0df591aec4f9ec8e84764b6843f6a352db4b1ee02442701556659da57a7"
+checksum = "sha256:ef7dced957162b05194dae43c2021aa591f15d7336b0a34f38d0c0c93b07a5f4"
 checksum_source = "mise-versions"
-url = "https://github.com/colonyops/hive/releases/download/v0.66.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/673555787"
+url = "https://github.com/colonyops/hive/releases/download/v0.66.1/hive_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/674052267"
 
 [[tools."github:golangci/golangci-lint"]]
 version = "2.15.0"
