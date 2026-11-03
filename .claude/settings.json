@@ -7,7 +7,8 @@
   "syncClaudeAiSkills": false,
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "EDITOR": "nvim"
+    "EDITOR": "nvim",
+    "CLAUDE_CODE_SCROLL_SPEED": "3"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -156,6 +157,7 @@
   "effortLevel": "xhigh",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "switchModelsOnFlag": false,
   "agentPushNotifEnabled": true,
   "gitAttribution": false,
   "feedbackSurveyState": {

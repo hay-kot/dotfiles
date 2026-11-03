@@ -88,15 +88,14 @@ url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/410001878"
 provenance = "github-attestations"
 
 [[tools."github:colonyops/hive"]]
-version = "0.66.0"
+version = "v0.69.0"
 backend = "github:colonyops/hive"
-specifiers = ["v0.66.0"]
+specifiers = ["v0.69.0"]
 
 [tools."github:colonyops/hive"."platforms.macos-arm64"]
-checksum = "sha256:c558a0df591aec4f9ec8e84764b6843f6a352db4b1ee02442701556659da57a7"
-checksum_source = "mise-versions"
-url = "https://github.com/colonyops/hive/releases/download/v0.66.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/673555787"
+checksum = "sha256:ccd5c2cd2f2d167bce54d7b3466f921601ba40bff2585a88bae7eae5635a6046"
+url = "https://github.com/colonyops/hive/releases/download/v0.69.0/hive_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/702834913"
 
 [[tools."github:golangci/golangci-lint"]]
 version = "2.15.0"
@@ -187,15 +186,14 @@ url = "https://github.com/hay-kot/scaffold/releases/download/v0.13.1/scaffold_Da
 url_api = "https://api.github.com/repos/hay-kot/scaffold/releases/assets/372661411"
 
 [[tools."github:hay-kot/svx"]]
-version = "0.5.0"
+version = "0.6.0"
 backend = "github:hay-kot/svx"
-specifiers = ["v0.5.0"]
+specifiers = ["v0.6.0"]
 
 [tools."github:hay-kot/svx"."platforms.macos-arm64"]
-checksum = "sha256:0b768f6db075b0638b2064ffe499733695a9938c2249829f60f26082aa98232c"
-checksum_source = "mise-versions"
-url = "https://github.com/hay-kot/svx/releases/download/v0.5.0/svx_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/svx/releases/assets/631216356"
+checksum = "sha256:6a60108b8a6c334216ac9d8ded50be2a433d7e49c0a23d373b499e774aae5636"
+url = "https://github.com/hay-kot/svx/releases/download/v0.6.0/svx_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/svx/releases/assets/694337982"
 
 [[tools."github:hay-kot/weft"]]
 version = "0.1.0"

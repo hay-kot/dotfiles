@@ -29,6 +29,15 @@ overwrites it, so fix credentials in 1Password, not in the file.
 Never run `agento11y login` — it hand-writes that file and the next converge
 discards the change.
 
+## Docker Engines
+
+OrbStack and Docker Desktop are both installed. `bin/docker-use orb|desktop`
+switches the engine, the docker context, and the `/var/run/docker.sock` link
+together.
+
+Do not export `DOCKER_HOST` in shell config. It overrides `docker context use`,
+and a tmux server keeps it in its global environment until the server restarts.
+
 ## Window Management (winctl)
 
 Hotkey window placement is `winctl` (`src/winctl/`), run by Raycast Script

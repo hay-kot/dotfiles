@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# docker-use - point every Docker client at one engine.
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+docker-use - switch between OrbStack and Docker Desktop
+
+Usage:
+  docker-use            # show the current state
+  docker-use orb
+  docker-use desktop
+
+Switching stops the other engine, so its containers stop too.
+EOF
+}
+
+readonly DEFAULT_SOCKET=/var/run/docker.sock
+readonly ORB_SOCKET="$HOME/.orbstack/run/docker.sock"
+readonly DESKTOP_SOCKET="$HOME/.docker/run/docker.sock"
+
+# Both variables beat `docker context use`. Clear them here so the context is
+# what this script reads and writes, and warn about the caller's copies.
+caller_host="${DOCKER_HOST:-}"
+caller_context="${DOCKER_CONTEXT:-}"
+unset DOCKER_HOST DOCKER_CONTEXT
+
+reachable() {
+  curl -fsS --max-time 2 --unix-socket "$1" http://localhost/_ping >/dev/null 2>&1
+}
+
+state() {
+  if reachable "$1"; then echo up; else echo down; fi
+}
+
+wait_for() {
+  local attempts=60
+  until reachable "$1"; do
+    ((--attempts)) || return 1
+    sleep 1
+  done
+}
+
+# Tools that ignore contexts (lazydocker, testcontainers) only use this link.
+# Each engine sets it when it starts, but not when it is already running.
+link_default_socket() {
+  [[ "$(readlink "$DEFAULT_SOCKET" 2>/dev/null)" == "$1" ]] && return 0
+  echo "docker-use: updating $DEFAULT_SOCKET (needs sudo)"
+  if ! sudo ln -sfn "$1" "$DEFAULT_SOCKET"; then
+    echo "docker-use: could not update $DEFAULT_SOCKET; tools that ignore contexts will miss this engine" >&2
+  fi
+}
+
+activate() {
+  if ! wait_for "$2"; then
+    echo "docker-use: $1 did not answer on $2" >&2
+    exit 1
+  fi
+  docker context use "$1" >/dev/null
+  link_default_socket "$2"
+}
+
+# Docker Desktop re-checks the socket link every minute while it runs, so it
+# has to stop for the link to stay on OrbStack.
+use_orb() {
+  if docker desktop status >/dev/null 2>&1; then
+    echo "docker-use: stopping Docker Desktop"
+    docker desktop stop
+  fi
+  [[ "$(orb status 2>/dev/null)" == Running ]] || orb start
+  activate orbstack "$ORB_SOCKET"
+}
+
+use_desktop() {
+  if [[ "$(orb status 2>/dev/null)" == Running ]]; then
+    echo "docker-use: stopping OrbStack"
+    orb stop
+  fi
+  docker desktop start
+  activate desktop-linux "$DESKTOP_SOCKET"
+}
+
+show_status() {
+  printf 'context   %s\n' "$(docker context show)"
+  printf 'socket    %s -> %s\n' "$DEFAULT_SOCKET" "$(readlink "$DEFAULT_SOCKET" 2>/dev/null || echo missing)"
+  printf 'orbstack  %s\n' "$(state "$ORB_SOCKET")"
+  printf 'desktop   %s\n' "$(state "$DESKTOP_SOCKET")"
+  if [[ -n "$caller_host" ]]; then
+    echo "warning: DOCKER_HOST=$caller_host overrides the context in this shell. Run: unset DOCKER_HOST" >&2
+  fi
+  if [[ -n "$caller_context" ]]; then
+    echo "warning: DOCKER_CONTEXT=$caller_context overrides the context in this shell. Run: unset DOCKER_CONTEXT" >&2
+  fi
+}
+
+case "${1:-}" in
+  "") ;;
+  orb) use_orb ;;
+  desktop) use_desktop ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac
+
+show_status

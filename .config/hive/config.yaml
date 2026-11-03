@@ -103,6 +103,10 @@ rules:
     max_recycled: 3
     commands:
       - hive ctx init
+    windows:
+      - name: "{{ agentWindow }}"
+        command: '{{ agentCommand }} {{ agentFlags }} {{ .Prompt | shq }}'
+        focus: true
   - pattern: ".*[:/]grafana/.*"
     commands:
       - mise trust
@@ -219,3 +223,6 @@ usercommands:
       rice ingest "$target" --from "$base"
       echo "shared $doc to $target"
     silent: false
+
+experimental:
+  daemon: true

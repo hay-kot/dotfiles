@@ -124,9 +124,6 @@ mac_config() {
     esac
 
     eval "$(/opt/homebrew/bin/mise activate zsh)"
-    # Not sure this is still needed with OrbStack -- it sets its own docker context.
-    # export DOCKER_HOST=unix:///var/run/docker.sock
-    alias docker-shim="sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock"
     alias lzd=lazydocker
     alias lg=lazygit
     alias mockmail="mailpit --smtp-auth-accept-any --smtp-auth-allow-insecure"
