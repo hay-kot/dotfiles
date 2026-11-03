@@ -1,6 +1,9 @@
 version: 0.2.7
 git_path: git
 
+git:
+  clone_protocol: ssh
+
 workspaces:
   - ~/code/repos
 
