@@ -1,8 +1,13 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@earendil-works/pi-coding-agent";
 import {
+  Input,
   Key,
   matchesKey,
   truncateToWidth,
+  visibleWidth,
   wrapTextWithAnsi,
 } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
@@ -12,7 +17,6 @@ const MIN_OPTIONS = 2;
 const MAX_OPTIONS = 4;
 const MAX_HEADER_LENGTH = 16;
 const MAX_LABEL_LENGTH = 60;
-
 const CUSTOM_LABEL = "Type something.";
 const CHAT_LABEL = "Chat about this";
 const RESERVED_LABELS = new Set([
@@ -30,18 +34,15 @@ interface QuestionOption {
   description: string;
   preview?: string;
 }
-
 interface QuestionData {
   question: string;
   header: string;
   options: QuestionOption[];
   multiSelect?: boolean;
 }
-
 interface QuestionParams {
   questions: QuestionData[];
 }
-
 interface QuestionAnswer {
   questionIndex: number;
   question: string;
@@ -51,755 +52,497 @@ interface QuestionAnswer {
   notes?: string;
   preview?: string;
 }
-
 interface QuestionnaireResult {
   answers: QuestionAnswer[];
   cancelled: boolean;
   error?: string;
 }
 
-const OptionSchema = Type.Object({
-  label: Type.String({
-    maxLength: MAX_LABEL_LENGTH,
-    description: `MAX ${MAX_LABEL_LENGTH} CHARACTERS — hard limit, requests over the limit are rejected.`,
-  }),
-  description: Type.String({
-    description:
-      "Explanation of what this option means or what will happen if chosen.",
-  }),
-  preview: Type.Optional(
-    Type.String({
-      description:
-        "Optional preview content rendered when this option is focused.",
-    }),
-  ),
-});
-
-const QuestionSchema = Type.Object({
-  question: Type.String({
-    description:
-      "The complete question to ask the user. Should be clear, specific, and end with a question mark.",
-  }),
-  header: Type.String({
-    maxLength: MAX_HEADER_LENGTH,
-    description: `MAX ${MAX_HEADER_LENGTH} CHARACTERS — hard limit. Very short chip/tag shown next to the question.`,
-  }),
-  options: Type.Array(OptionSchema, {
-    minItems: MIN_OPTIONS,
-    maxItems: MAX_OPTIONS,
-    description:
-      "The available choices for this question. Must have 2-4 options.",
-  }),
-  multiSelect: Type.Optional(
-    Type.Boolean({
-      default: false,
-      description:
-        "Set to true to allow the user to select multiple options instead of just one.",
-    }),
-  ),
-});
-
 const QuestionParamsSchema = Type.Object({
-  questions: Type.Array(QuestionSchema, {
-    minItems: 1,
-    maxItems: MAX_QUESTIONS,
-    description: "Questions to ask the user (1-4 questions)",
-  }),
+  questions: Type.Array(
+    Type.Object({
+      question: Type.String({
+        description:
+          "The complete question to ask the user. Should be clear, specific, and end with a question mark.",
+      }),
+      header: Type.String({
+        maxLength: MAX_HEADER_LENGTH,
+        description:
+          "MAX 16 CHARACTERS. Very short chip/tag shown next to the question.",
+      }),
+      options: Type.Array(
+        Type.Object({
+          label: Type.String({
+            maxLength: MAX_LABEL_LENGTH,
+            description: "MAX 60 CHARACTERS. Longer labels are rejected.",
+          }),
+          description: Type.String({
+            description:
+              "Explanation of what this option means or what will happen if chosen.",
+          }),
+          preview: Type.Optional(
+            Type.String({
+              description:
+                "Optional preview content rendered when this option is focused and returned when selected.",
+            }),
+          ),
+        }),
+        {
+          minItems: MIN_OPTIONS,
+          maxItems: MAX_OPTIONS,
+          description: "Available choices (2-4 options).",
+        },
+      ),
+      multiSelect: Type.Optional(
+        Type.Boolean({
+          default: false,
+          description: "Allow multiple answers and custom text.",
+        }),
+      ),
+    }),
+    {
+      minItems: 1,
+      maxItems: MAX_QUESTIONS,
+      description: "Questions to ask the user (1-4 questions).",
+    },
+  ),
 });
 
-function validate(
-  params: QuestionParams,
-): { ok: true } | { ok: false; error: string; message: string } {
-  if (!Array.isArray(params.questions) || params.questions.length === 0) {
-    return {
-      ok: false,
-      error: "no_questions",
-      message: "Error: At least one question is required",
-    };
-  }
-  if (params.questions.length > MAX_QUESTIONS) {
-    return {
-      ok: false,
-      error: "too_many_questions",
-      message: `Error: At most ${MAX_QUESTIONS} questions are allowed per invocation`,
-    };
-  }
-
+function validate(params: QuestionParams): string | undefined {
+  if (!params.questions?.length || params.questions.length > MAX_QUESTIONS)
+    return "Provide 1-4 questions";
   const seenQuestions = new Set<string>();
   for (const question of params.questions) {
-    if (seenQuestions.has(question.question)) {
-      return {
-        ok: false,
-        error: "duplicate_question",
-        message: "Error: Question text must be unique within an invocation",
-      };
-    }
+    if (seenQuestions.has(question.question))
+      return "Question text must be unique";
     seenQuestions.add(question.question);
-
+    if (question.header.length > MAX_HEADER_LENGTH)
+      return "Question headers must contain at most 16 characters";
     if (
-      !Array.isArray(question.options) ||
-      question.options.length < MIN_OPTIONS
-    ) {
-      return {
-        ok: false,
-        error: "empty_options",
-        message: `Error: Each question requires at least ${MIN_OPTIONS} options`,
-      };
-    }
-    if (question.options.length > MAX_OPTIONS) {
-      return {
-        ok: false,
-        error: "too_many_options",
-        message: `Error: Each question allows at most ${MAX_OPTIONS} options`,
-      };
-    }
-
-    const seenLabels = new Set<string>();
+      question.options.length < MIN_OPTIONS ||
+      question.options.length > MAX_OPTIONS
+    )
+      return "Each question requires 2-4 options";
+    const labels = new Set<string>();
     for (const option of question.options) {
-      if (RESERVED_LABELS.has(option.label)) {
-        return {
-          ok: false,
-          error: "reserved_label",
-          message: `Error: Option label is reserved (${Array.from(RESERVED_LABELS).join(", ")})`,
-        };
-      }
-      if (seenLabels.has(option.label)) {
-        return {
-          ok: false,
-          error: "duplicate_option_label",
-          message: "Error: Option labels must be unique within a question",
-        };
-      }
-      seenLabels.add(option.label);
+      if (RESERVED_LABELS.has(option.label))
+        return `Reserved option label: ${option.label}`;
+      if (labels.has(option.label))
+        return "Option labels must be unique within a question";
+      if (option.label.length > MAX_LABEL_LENGTH)
+        return "Option labels must contain at most 60 characters";
+      labels.add(option.label);
     }
   }
-
-  return { ok: true };
 }
 
-function buildToolResult(text: string, details: QuestionnaireResult) {
-  return {
-    content: [{ type: "text" as const, text }],
-    details,
-  };
+function result(text: string, details: QuestionnaireResult) {
+  return { content: [{ type: "text" as const, text }], details };
 }
 
 function formatAnswer(answer: QuestionAnswer): string {
-  switch (answer.kind) {
-    case "chat":
-      return CHAT_MESSAGE;
-    case "multi":
-      return answer.selected?.length
-        ? answer.selected.join(", ")
-        : "(no input)";
-    case "custom":
-      return answer.answer?.length ? answer.answer : "(no input)";
-    case "option":
-      return answer.answer ?? "(no input)";
-  }
+  if (answer.kind === "chat") return CHAT_MESSAGE;
+  if (answer.kind === "multi")
+    return answer.selected?.join(", ") || "(no input)";
+  return answer.answer || "(no input)";
 }
 
-function buildResponse(
-  result: QuestionnaireResult | null | undefined,
-  params: QuestionParams,
-) {
-  if (!result || result.cancelled) {
-    return buildToolResult(DECLINE_MESSAGE, {
-      answers: result?.answers ?? [],
-      cancelled: true,
-    });
-  }
-
-  const segments: string[] = [];
-  for (let i = 0; i < params.questions.length; i++) {
-    const answer = result.answers.find(
-      (candidate) => candidate.questionIndex === i,
-    );
-    if (!answer) continue;
-
+function buildResponse(details: QuestionnaireResult) {
+  if (details.cancelled || !details.answers.length)
+    return result(DECLINE_MESSAGE, details);
+  const segments = details.answers.map((answer) => {
     const parts = [`"${answer.question}"="${formatAnswer(answer)}"`];
     if (answer.preview) parts.push(`selected preview: ${answer.preview}`);
     if (answer.notes) parts.push(`user notes: ${answer.notes}`);
-    segments.push(`${parts.join(". ")}.`);
-  }
-
-  if (segments.length === 0) {
-    return buildToolResult(DECLINE_MESSAGE, {
-      answers: result.answers,
-      cancelled: true,
-    });
-  }
-
-  return buildToolResult(
+    return `${parts.join(". ")}.`;
+  });
+  return result(
     `User has answered your questions: ${segments.join(" ")} You can now continue with the user's answers in mind.`,
-    result,
+    details,
   );
 }
 
-type ThemeLike = {
-  fg: (color: any, text: string) => string;
-  bold?: (text: string) => string;
-};
-
-type CustomUIContext = {
-  ui: {
-    custom: <T>(
-      factory: (
-        tui: { requestRender: () => void },
-        theme: ThemeLike,
-        keybindings: unknown,
-        done: (value: T) => void,
-      ) => {
-        render: (width: number) => string[];
-        handleInput: (data: string) => void;
-        invalidate: () => void;
-      },
-    ) => Promise<T>;
-  };
-};
-
-function optionLabel(option: QuestionOption): string {
-  const previewFlag = option.preview ? " [preview]" : "";
-  return `${option.label}${previewFlag}`;
-}
-
-function titleFor(
-  question: QuestionData,
-  index: number,
-  total: number,
-  theme: ThemeLike,
-): string {
-  const count = total > 1 ? theme.fg("dim", ` ${index + 1}/${total}`) : "";
-  return `${chip(question.header)}${count}`;
-}
-
-function chip(text: string): string {
-  return `\x1b[48;2;65;68;89m\x1b[38;2;202;211;245m ${text} \x1b[0m`;
-}
-
-function questionLine(question: QuestionData, theme: ThemeLike): string {
-  const text = theme.bold ? theme.bold(question.question) : question.question;
-  return theme.fg("text", text);
-}
-
-function addWrapped(lines: string[], text: string, width: number, indent = "") {
-  const wrapped = wrapTextWithAnsi(text, Math.max(1, width - indent.length));
-  for (const line of wrapped) {
-    lines.push(truncateToWidth(`${indent}${line}`, width));
-  }
-}
-
-function addPaddedWrapped(
-  lines: string[],
-  text: string,
-  width: number,
-  indent = "",
+async function questionnaire(
+  ctx: ExtensionContext,
+  questions: QuestionData[],
+  signal?: AbortSignal,
 ) {
-  addWrapped(lines, text, width, ` ${indent}`);
-}
+  return ctx.ui.custom<QuestionnaireResult>((tui, theme, _kb, done) => {
+    const states = questions.map(() => ({
+      focused: 0,
+      selected: new Set<number>(),
+      input: new Input(),
+    }));
+    const answers = new Map<number, QuestionAnswer>();
+    let current = 0;
+    let focused = false;
+    let completed = false;
 
-function isPrintable(data: string): boolean {
-  return data.length === 1 && data >= " " && data !== "\x7f";
-}
+    function finish(cancelled: boolean) {
+      if (completed) return;
+      completed = true;
+      signal?.removeEventListener("abort", cancel);
+      done({
+        answers: [...answers.values()].sort(
+          (a, b) => a.questionIndex - b.questionIndex,
+        ),
+        cancelled,
+      });
+    }
+    function cancel() {
+      finish(true);
+    }
+    signal?.addEventListener("abort", cancel, { once: true });
+    if (signal?.aborted) queueMicrotask(cancel);
 
-function customTextLabel(value: string, theme: ThemeLike): string {
-  if (value.length === 0) {
-    return `${CUSTOM_LABEL} ${theme.fg("dim", "Type here...")}`;
-  }
-  return `${CUSTOM_LABEL} ${theme.fg("accent", value)}`;
-}
-
-async function askSingle(
-  ctx: CustomUIContext,
-  question: QuestionData,
-  index: number,
-  total: number,
-): Promise<QuestionAnswer | null> {
-  return await ctx.ui.custom<QuestionAnswer | null>(
-    (
-      tui: { requestRender: () => void },
-      theme: ThemeLike,
-      _kb: unknown,
-      done: (value: QuestionAnswer | null) => void,
-    ) => {
-      let focused = 0;
-      let customText = "";
-      let cachedLines: string[] | undefined;
-      const customRow = question.options.length;
-      const submitRow = question.options.length + 1;
-      const chatRow = question.options.length + 2;
-      const totalRows = question.options.length + 3;
-
-      function refresh() {
-        cachedLines = undefined;
-        tui.requestRender();
+    function syncFocus() {
+      states.forEach((state, i) => {
+        state.input.focused =
+          focused &&
+          current === i &&
+          state.focused === questions[i]!.options.length;
+      });
+    }
+    function refresh() {
+      syncFocus();
+      tui.requestRender();
+    }
+    function navigate(delta: number) {
+      current =
+        (current + delta + questions.length + 1) % (questions.length + 1);
+      refresh();
+    }
+    function save(answer: QuestionAnswer) {
+      answers.set(current, answer);
+      if (answer.kind === "chat" || questions.length === 1) {
+        finish(false);
+        return;
       }
-
-      function submit() {
-        if (focused === chatRow) {
-          done({
-            questionIndex: index,
-            question: question.question,
-            kind: "chat",
-            answer: CHAT_LABEL,
-          });
-          return;
-        }
-
-        const option = question.options[focused];
-        if (option) {
-          done({
-            questionIndex: index,
-            question: question.question,
-            kind: "option",
-            answer: option.label,
-            preview: option.preview,
-          });
-          return;
-        }
-
-        const trimmed = customText.trim();
-        if (trimmed) {
-          done({
-            questionIndex: index,
-            question: question.question,
-            kind: "custom",
-            answer: trimmed,
-          });
-        }
-      }
-
-      function styledRow(
-        isFocused: boolean,
-        indexLabel: string,
-        label: string,
-      ): string {
-        const prefix = isFocused ? theme.fg("accent", "❯ ") : "  ";
-        const number = indexLabel
-          ? theme.fg(isFocused ? "accent" : "text", `${indexLabel}. `)
-          : "";
-        const text = theme.fg(isFocused ? "accent" : "text", label);
-        return `${prefix}${number}${text}`;
-      }
-
-      function renderOption(
-        lines: string[],
-        width: number,
-        row: number,
-        label: string,
-        description?: string,
-      ) {
-        addWrapped(
-          lines,
-          styledRow(row === focused, String(row + 1), label),
-          width,
+      const missing = questions.findIndex((_q, index) => !answers.has(index));
+      current = missing < 0 ? questions.length : missing;
+      refresh();
+    }
+    function canSubmit() {
+      const state = states[current]!;
+      return Boolean(
+        questions[current]?.multiSelect &&
+        (state.selected.size || state.input.getValue().trim()),
+      );
+    }
+    function chatRow() {
+      const q = questions[current]!;
+      return q.options.length + (q.multiSelect ? 2 : 1);
+    }
+    function submitQuestion() {
+      const q = questions[current]!;
+      const state = states[current]!;
+      const custom = state.input.getValue().trim();
+      if (q.multiSelect) {
+        const selected = q.options.filter((_option, i) =>
+          state.selected.has(i),
         );
-        if (description) {
-          const descriptionIndent = " ".repeat(2 + `${row + 1}. `.length);
-          addWrapped(
-            lines,
-            theme.fg("dim", description),
-            width,
-            descriptionIndent,
-          );
-        }
-      }
-
-      function render(width: number): string[] {
-        if (cachedLines) return cachedLines;
-
-        const lines: string[] = [];
-        const add = (line: string) => lines.push(truncateToWidth(line, width));
-
-        add(theme.fg("borderMuted", "─".repeat(width)));
-        lines.push("");
-        add(` ${titleFor(question, index, total, theme)}`);
-        lines.push("");
-        add(` ${questionLine(question, theme)}`);
-        lines.push("");
-
-        for (let i = 0; i < question.options.length; i++) {
-          const option = question.options[i]!;
-          renderOption(
-            lines,
-            width,
-            i,
-            optionLabel(option),
-            option.description,
-          );
-        }
-        renderOption(
-          lines,
-          width,
-          customRow,
-          customTextLabel(customText, theme),
-        );
-        lines.push("");
-        addPaddedWrapped(
-          lines,
-          styledRow(focused === submitRow, "", "Submit"),
-          width,
-        );
-        addPaddedWrapped(
-          lines,
-          styledRow(focused === chatRow, "", CHAT_LABEL),
-          width,
-        );
-        lines.push("");
-        add(theme.fg("borderMuted", "─".repeat(width)));
-
-        cachedLines = lines;
-        return lines;
-      }
-
-      function handleInput(data: string) {
-        if (matchesKey(data, Key.up)) {
-          focused = Math.max(0, focused - 1);
-          refresh();
-          return;
-        }
-        if (matchesKey(data, Key.down)) {
-          focused = Math.min(totalRows - 1, focused + 1);
-          refresh();
-          return;
-        }
-        if (matchesKey(data, Key.enter)) {
-          if (focused === customRow && !customText.trim()) {
-            focused = submitRow;
-            refresh();
-            return;
-          }
-          submit();
-          return;
-        }
-        if (matchesKey(data, Key.escape)) {
-          done(null);
-          return;
-        }
-        if (focused !== customRow) return;
-        if (matchesKey(data, Key.backspace)) {
-          customText = customText.slice(0, -1);
-          refresh();
-          return;
-        }
-        if (isPrintable(data)) {
-          customText += data;
-          refresh();
-        }
-      }
-
-      return {
-        render,
-        handleInput,
-        invalidate: () => {
-          cachedLines = undefined;
-        },
-      };
-    },
-  );
-}
-
-async function askMulti(
-  ctx: CustomUIContext,
-  question: QuestionData,
-  index: number,
-  total: number,
-): Promise<QuestionAnswer | null> {
-  return await ctx.ui.custom<QuestionAnswer | null>(
-    (
-      tui: { requestRender: () => void },
-      theme: ThemeLike,
-      _kb: unknown,
-      done: (value: QuestionAnswer | null) => void,
-    ) => {
-      const selected = new Set<string>();
-      let customText = "";
-      let focused = 0;
-      let cachedLines: string[] | undefined;
-
-      function refresh() {
-        cachedLines = undefined;
-        tui.requestRender();
-      }
-
-      function selectedValues(): string[] {
-        const values = Array.from(selected);
-        const custom = customText.trim();
+        const values = selected.map((option) => option.label);
         if (custom) values.push(custom);
-        return values;
-      }
-
-      function submit() {
-        done({
-          questionIndex: index,
-          question: question.question,
+        if (!values.length) return;
+        save({
+          questionIndex: current,
+          question: q.question,
           kind: "multi",
           answer: null,
-          selected: selectedValues(),
+          selected: values,
+          preview:
+            selected
+              .map((option) => option.preview)
+              .filter(Boolean)
+              .join("\n") || undefined,
+        });
+      } else if (state.focused < q.options.length) {
+        const option = q.options[state.focused]!;
+        save({
+          questionIndex: current,
+          question: q.question,
+          kind: "option",
+          answer: option.label,
+          preview: option.preview,
+        });
+      } else if (custom) {
+        save({
+          questionIndex: current,
+          question: q.question,
+          kind: "custom",
+          answer: custom,
         });
       }
+    }
 
-      function customRowIndex(): number {
-        return question.options.length;
+    function wrapped(
+      lines: string[],
+      prefix: string,
+      text: string,
+      width: number,
+    ) {
+      const indent = visibleWidth(prefix);
+      if (indent >= width) {
+        lines.push(...wrapTextWithAnsi(prefix + text, Math.max(1, width)));
+        return;
       }
+      wrapTextWithAnsi(text, width - indent).forEach((line, i) => {
+        lines.push(`${i ? " ".repeat(indent) : prefix}${line}`);
+      });
+    }
 
-      function submitRowIndex(): number {
-        return question.options.length + 1;
-      }
-
-      function chatRowIndex(): number {
-        return question.options.length + 2;
-      }
-
-      function totalRows(): number {
-        return question.options.length + 3;
-      }
-
-      function toggleFocused() {
-        const option = question.options[focused];
-        if (!option) return;
-        if (selected.has(option.label)) {
-          selected.delete(option.label);
+    return {
+      get focused() {
+        return focused;
+      },
+      set focused(value: boolean) {
+        focused = value;
+        syncFocus();
+      },
+      dispose() {
+        signal?.removeEventListener("abort", cancel);
+      },
+      invalidate() {
+        for (const state of states) state.input.invalidate();
+      },
+      render(width) {
+        width = Math.max(1, width);
+        const lines = [theme.fg("borderMuted", "─".repeat(width)), ""];
+        const steps = questions.map((q, i) => {
+          const marker = i === current ? "> " : answers.has(i) ? "x " : "";
+          const label = `[${marker}${i + 1} ${q.header}]`;
+          return i === current
+            ? theme.bg("selectedBg", theme.fg("accent", label))
+            : theme.fg(answers.has(i) ? "success" : "muted", label);
+        });
+        if (questions.length > 1)
+          steps.push(
+            theme.fg(
+              current === questions.length ? "accent" : "dim",
+              `[${current === questions.length ? "> " : ""}Review]`,
+            ),
+          );
+        wrapped(lines, " ", steps.join(" "), width);
+        lines.push("");
+        const q = questions[current];
+        if (!q) {
+          for (let i = 0; i < questions.length; i++) {
+            const answer = answers.get(i);
+            wrapped(
+              lines,
+              " ",
+              `${questions[i]!.header}: ${answer ? formatAnswer(answer) : "(unanswered)"}`,
+              width,
+            );
+          }
+          lines.push("");
+          wrapped(
+            lines,
+            " ",
+            theme.fg(
+              answers.size === questions.length ? "success" : "warning",
+              answers.size === questions.length
+                ? "Enter to submit answers"
+                : "Answer each question before submitting",
+            ),
+            width,
+          );
         } else {
-          selected.add(option.label);
+          wrapped(lines, " ", theme.fg("text", theme.bold(q.question)), width);
+          lines.push("");
+          const state = states[current]!;
+          for (let i = 0; i <= q.options.length; i++) {
+            const active = state.focused === i;
+            const checked =
+              i < q.options.length
+                ? state.selected.has(i)
+                : Boolean(state.input.getValue().trim());
+            const prefix = `${active ? "> " : "  "}${i + 1}. ${q.multiSelect ? `${checked ? "[x]" : "[ ]"} ` : ""}`;
+            const option = q.options[i];
+            const styledPrefix = theme.fg(active ? "accent" : "text", prefix);
+            if (!option) {
+              const inputPrefix =
+                visibleWidth(prefix) < width ? styledPrefix : "";
+              const inputWidth = Math.max(1, width - visibleWidth(inputPrefix));
+              const content =
+                active || state.input.getValue()
+                  ? (state.input.render(inputWidth)[0] ?? "")
+                  : truncateToWidth(theme.fg("dim", CUSTOM_LABEL), inputWidth);
+              lines.push(inputPrefix + content);
+              continue;
+            }
+            wrapped(
+              lines,
+              styledPrefix,
+              theme.fg(active ? "accent" : "text", option.label),
+              width,
+            );
+            wrapped(
+              lines,
+              " ".repeat(visibleWidth(prefix)),
+              theme.fg("dim", option.description),
+              width,
+            );
+          }
+          lines.push("");
+          if (q.multiSelect) {
+            if (canSubmit())
+              wrapped(
+                lines,
+                state.focused === q.options.length + 1 ? "> " : "  ",
+                "Submit",
+                width,
+              );
+            else lines.push("");
+          }
+          wrapped(
+            lines,
+            state.focused === chatRow() ? "> " : "  ",
+            CHAT_LABEL,
+            width,
+          );
+          const previews = q.options.map((option) => {
+            const rows: string[] = [];
+            if (option.preview)
+              wrapped(rows, " ", theme.fg("muted", option.preview), width);
+            return rows;
+          });
+          const previewHeight = Math.max(
+            0,
+            ...previews.map((rows) => rows.length),
+          );
+          if (previewHeight) {
+            const preview = previews[state.focused] ?? [];
+            lines.push(
+              "",
+              ...preview,
+              ...Array<string>(previewHeight - preview.length).fill(""),
+            );
+          }
         }
-        refresh();
-      }
-
-      function styledOptionRow(
-        isFocused: boolean,
-        isSelected: boolean,
-        indexLabel: string,
-        label: string,
-      ): string {
-        const prefix = isFocused ? theme.fg("accent", "❯ ") : "  ";
-        const number = theme.fg(
-          isFocused ? "accent" : "text",
-          `${indexLabel}. `,
-        );
-        const marker = theme.fg(
-          isSelected ? "success" : "dim",
-          isSelected ? "[x]" : "[ ]",
-        );
-        const text = theme.fg(isFocused ? "accent" : "text", label);
-        return `${prefix}${number}${marker} ${text}`;
-      }
-
-      function styledActionRow(
-        isFocused: boolean,
-        indexLabel: string,
-        label: string,
-      ): string {
-        const prefix = isFocused ? theme.fg("accent", "❯ ") : "  ";
-        const number = indexLabel
-          ? theme.fg(isFocused ? "accent" : "text", `${indexLabel}. `)
-          : "";
-        return `${prefix}${number}${theme.fg(isFocused ? "accent" : "text", label)}`;
-      }
-
-      function renderOption(
-        lines: string[],
-        width: number,
-        row: number,
-        option: QuestionOption,
-      ) {
-        addWrapped(
+        lines.push("");
+        wrapped(
           lines,
-          styledOptionRow(
-            row === focused,
-            selected.has(option.label),
-            String(row + 1),
-            optionLabel(option),
+          " ",
+          theme.fg(
+            "dim",
+            "Tab/Shift+Tab questions | Up/Down options | Enter confirm | Esc cancel",
           ),
           width,
         );
-        const descriptionIndent = " ".repeat(
-          2 + `${row + 1}. `.length + "[ ] ".length,
-        );
-        addWrapped(
-          lines,
-          theme.fg("dim", option.description),
-          width,
-          descriptionIndent,
-        );
-      }
-
-      function render(width: number): string[] {
-        if (cachedLines) return cachedLines;
-
-        const lines: string[] = [];
-        const add = (line: string) => lines.push(truncateToWidth(line, width));
-
-        add(theme.fg("borderMuted", "─".repeat(width)));
-        lines.push("");
-        add(` ${titleFor(question, index, total, theme)}`);
-        lines.push("");
-        add(` ${questionLine(question, theme)}`);
-        lines.push("");
-
-        for (let i = 0; i < question.options.length; i++) {
-          renderOption(lines, width, i, question.options[i]!);
-        }
-
-        addWrapped(
-          lines,
-          styledOptionRow(
-            focused === customRowIndex(),
-            customText.trim().length > 0,
-            String(customRowIndex() + 1),
-            customTextLabel(customText, theme),
-          ),
-          width,
-        );
-        lines.push("");
-        addPaddedWrapped(
-          lines,
-          styledActionRow(focused === submitRowIndex(), "", "Submit"),
-          width,
-        );
-        addPaddedWrapped(
-          lines,
-          styledActionRow(focused === chatRowIndex(), "", CHAT_LABEL),
-          width,
-        );
-        lines.push("");
-        add(theme.fg("borderMuted", "─".repeat(width)));
-
-        cachedLines = lines;
-        return lines;
-      }
-
-      function handleInput(data: string) {
-        if (focused === customRowIndex()) {
-          if (matchesKey(data, Key.backspace)) {
-            customText = customText.slice(0, -1);
-            refresh();
-            return;
-          }
-          if (isPrintable(data) && !matchesKey(data, Key.enter)) {
-            customText += data;
-            refresh();
-            return;
-          }
-        }
-
-        if (matchesKey(data, Key.up)) {
-          focused = Math.max(0, focused - 1);
-          refresh();
+        lines.push(theme.fg("borderMuted", "─".repeat(width)));
+        return lines.map((line) => truncateToWidth(line, width));
+      },
+      handleInput(data) {
+        if (matchesKey(data, Key.escape) || matchesKey(data, Key.ctrl("c"))) {
+          cancel();
           return;
         }
-        if (matchesKey(data, Key.down)) {
-          focused = Math.min(totalRows() - 1, focused + 1);
+        if (matchesKey(data, Key.tab)) {
+          navigate(1);
+          return;
+        }
+        if (matchesKey(data, Key.shift("tab"))) {
+          navigate(-1);
+          return;
+        }
+        const q = questions[current];
+        if (!q) {
+          if (matchesKey(data, Key.enter) && answers.size === questions.length)
+            finish(false);
+          else if (matchesKey(data, Key.left)) navigate(-1);
+          else if (matchesKey(data, Key.right)) navigate(1);
+          return;
+        }
+        const state = states[current]!;
+        if (matchesKey(data, Key.up) || matchesKey(data, Key.down)) {
+          const direction = matchesKey(data, Key.up) ? -1 : 1;
+          let next = state.focused + direction;
+          if (q.multiSelect && !canSubmit() && next === q.options.length + 1)
+            next += direction;
+          state.focused = Math.max(0, Math.min(chatRow(), next));
           refresh();
           return;
         }
         if (matchesKey(data, Key.enter)) {
-          if (focused === chatRowIndex()) {
-            done({
-              questionIndex: index,
-              question: question.question,
+          if (state.focused === chatRow()) {
+            save({
+              questionIndex: current,
+              question: q.question,
               kind: "chat",
               answer: CHAT_LABEL,
             });
-            return;
-          }
-          if (focused === submitRowIndex()) {
-            submit();
-            return;
-          }
-          toggleFocused();
+          } else if (q.multiSelect && state.focused < q.options.length) {
+            if (state.selected.has(state.focused))
+              state.selected.delete(state.focused);
+            else state.selected.add(state.focused);
+            answers.delete(current);
+          } else submitQuestion();
+          refresh();
           return;
         }
-        if (matchesKey(data, Key.escape)) {
-          done(null);
+        if (state.focused === q.options.length) {
+          const before = state.input.getValue();
+          state.input.handleInput(data);
+          if (before !== state.input.getValue()) answers.delete(current);
+        } else if (matchesKey(data, Key.left)) {
+          navigate(-1);
           return;
-        }
-        if (data === " " || data === "Space") {
-          toggleFocused();
+        } else if (matchesKey(data, Key.right)) {
+          navigate(1);
           return;
+        } else if (
+          q.multiSelect &&
+          data === " " &&
+          state.focused < q.options.length
+        ) {
+          if (state.selected.has(state.focused))
+            state.selected.delete(state.focused);
+          else state.selected.add(state.focused);
+          answers.delete(current);
+        } else if (
+          /^[1-9]$/.test(data) &&
+          Number(data) <= q.options.length + 1
+        ) {
+          state.focused = Number(data) - 1;
         }
-        if (data.toLowerCase() === "c") {
-          done({
-            questionIndex: index,
-            question: question.question,
-            kind: "chat",
-            answer: CHAT_LABEL,
-          });
-        }
-      }
-
-      return {
-        render,
-        handleInput,
-        invalidate: () => {
-          cachedLines = undefined;
-        },
-      };
-    },
-  );
+        refresh();
+      },
+    };
+  });
 }
 
 export default function askUserQuestionExtension(pi: ExtensionAPI) {
   pi.registerTool({
     name: "ask_user_question",
     label: "Ask User Question",
-    description: `Ask the user one or more structured questions during execution. Use when you need to:
-1. Gather user preferences or requirements
-2. Clarify ambiguous instructions
-3. Get decisions on implementation choices as you work
-4. Offer choices to the user about what direction to take
-
-Usage notes:
-- Users can type a custom answer directly into the automatically appended "Type something." row, or pick "Chat about this" to continue in free-form conversation.
-- Use multiSelect: true to allow multiple answers. Multi-select includes a custom answer row where the user can type an additional selection inline.
-- If an option has preview text, that preview text is echoed back to the model when the option is selected.
-- Do not author "Other", "Type something.", "Chat about this", or "Next question" as option labels.`,
-    promptSnippet: `Ask the user up to ${MAX_QUESTIONS} structured questions (${MIN_OPTIONS}-${MAX_OPTIONS} options each) when requirements are ambiguous`,
+    description: `Ask the user one or more structured questions during execution. Use to gather preferences, clarify requirements, get implementation decisions, or offer choices.
+Users can type a custom answer in the automatically appended "Type something." row, or pick "Chat about this" to continue in free-form conversation.
+Use multiSelect:true for multiple answers, including custom text. Preview text appears when an option is focused and returns with selected answers.
+Do not author "Other", "Type something.", "Chat about this", or "Next question" as option labels.`,
+    promptSnippet:
+      "Ask the user up to 4 structured questions (2-4 options each) when requirements are ambiguous",
     promptGuidelines: [
-      `Use ask_user_question whenever the user's request is underspecified and you cannot proceed without concrete decisions — you can ask up to ${MAX_QUESTIONS} questions per invocation.`,
-      `Each ask_user_question question MUST have ${MIN_OPTIONS}-${MAX_OPTIONS} options. Every option requires a concise label and a description explaining the trade-off.`,
-      `Set multiSelect: true in ask_user_question when multiple answers are valid. Do not stack multiple ask_user_question calls back-to-back — group clarifying questions into one invocation.`,
+      "Use ask_user_question whenever the user's request is underspecified and you cannot proceed without concrete decisions. Ask up to 4 questions per invocation.",
+      "Each question MUST have 2-4 options, each with a concise label and a description explaining the trade-off.",
+      "Set multiSelect:true when multiple answers are valid. Group clarifying questions into one invocation instead of stacking calls.",
     ],
     parameters: QuestionParamsSchema,
-
-    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
-      const typed = params as QuestionParams;
-      if (!ctx.hasUI) {
-        return buildToolResult(
-          "Error: UI not available (running in non-interactive mode)",
-          {
-            answers: [],
-            cancelled: true,
-            error: "no_ui",
-          },
-        );
-      }
-
-      const validation = validate(typed);
-      if (!validation.ok) {
-        return buildToolResult(validation.message, {
+    async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      if (ctx.mode !== "tui")
+        return result("Error: Terminal UI not available", {
           answers: [],
           cancelled: true,
-          error: validation.error,
+          error: "no_ui",
         });
-      }
-
-      const answers: QuestionAnswer[] = [];
-      for (let i = 0; i < typed.questions.length; i++) {
-        const question = typed.questions[i]!;
-        const answer = question.multiSelect
-          ? await askMulti(ctx, question, i, typed.questions.length)
-          : await askSingle(ctx, question, i, typed.questions.length);
-
-        if (!answer) {
-          return buildResponse({ answers, cancelled: true }, typed);
-        }
-
-        answers.push(answer);
-        if (answer.kind === "chat") break;
-      }
-
-      return buildResponse({ answers, cancelled: false }, typed);
+      const error = validate(params);
+      if (error)
+        return result(`Error: ${error}`, {
+          answers: [],
+          cancelled: true,
+          error: "invalid_questions",
+        });
+      return buildResponse(await questionnaire(ctx, params.questions, signal));
     },
   });
 }

@@ -66,6 +66,14 @@ templates:
       {{ end }}
     output: secrets/.env.local
     perm: "0600"
+  - name: Grafana Secrets File
+    tags: [grafana]
+    template: |-
+      {{ range $key, $value := .grafana_env_secrets }}
+      {{ $key }}={{ $value }}
+      {{ end }}
+    output: secrets/.env.local
+    perm: "0600"
   - name: Clone Personal Repos
     tags: [personal, repos]
     template: |-

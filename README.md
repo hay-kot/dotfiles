@@ -188,6 +188,13 @@ Homebrew when missing, and a fully qualified formula name adds its tap.
 - `mise run mmdot` renders vault-backed templates and then runs the machine's
   setup scripts; `mise run encrypt` / `mise run decrypt` manage the vault.
 
+## Pi extensions
+
+Local extensions add managed background shells, Claude-style `/goal`, and a
+structured question UI. See [Pi extensions](docs/pi-extensions.md) for commands,
+limits, and checks. `setup/ai.sh` deploys the extension directory; run `/reload`
+in Pi to load changes.
+
 ## Coding agent observability
 
 `claude` and `pi` sessions are recorded by [Grafana Agent observability][o11y]

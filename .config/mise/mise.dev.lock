@@ -88,7 +88,7 @@ url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/410001878"
 provenance = "github-attestations"
 
 [[tools."github:colonyops/hive"]]
-version = "v0.69.0"
+version = "0.69.0"
 backend = "github:colonyops/hive"
 specifiers = ["v0.69.0"]
 
@@ -401,12 +401,12 @@ backend = "npm:@earendil-works/pi-coding-agent"
 specifiers = ["1.4.0"]
 
 [[tools."npm:eslint"]]
-version = "10.13.0"
+version = "10.14.0"
 backend = "npm:eslint"
 specifiers = ["latest"]
 
 [[tools."npm:pnpm"]]
-version = "12.16.0"
+version = "12.16.1"
 backend = "npm:pnpm"
 specifiers = ["latest"]
 

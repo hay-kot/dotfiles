@@ -64,6 +64,18 @@ run = """
 stylua --config-path="./.config/nvim/stylua.toml" ./.config/nvim/
 """
 
+[tasks."pi:test"]
+description = "Test local Pi extensions against the installed Pi runtime"
+run = "node --test --test-timeout=10000 tests/pi/*.test.mjs"
+
+[tasks."pi:check"]
+description = "Type-check local Pi extensions against the installed Pi runtime"
+run = "node tests/pi/check.mjs"
+
+[tasks."pi:fmt"]
+description = "Format local Pi extension changes and tests"
+run = "prettier --write .pi/agent/extensions/ask-user-question.ts .pi/agent/extensions/custom-footer.ts .pi/agent/extensions/background-shell/*.ts .pi/agent/extensions/goal/*.ts tests/pi/*.mjs"
+
 [tasks.xcode]
 description = "setups software update and enables xcode"
 run = """
