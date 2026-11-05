@@ -1,17 +1,18 @@
 ---
 name: hive-drive
 description: >
-  Save documents and canvases to Hive Drive and manage the tabs beside the session through the
-  hive-drive MCP server. Use when a result reads better rendered than as terminal text (tables,
-  comparisons, reports, diagrams), when a skill saves a doc or mockup to Drive, or when the user
-  asks to open, move, or close a tab.
+  Save documents to Hive Drive and manage the tabs beside the session through the hive-drive MCP
+  server, and push documents or create share links with the hive CLI when the user asks. Use when
+  a result reads better rendered than as terminal text (tables, comparisons, reports, diagrams),
+  when a skill saves a doc or mockup to Drive, when the user asks to open, move, or close a tab, or
+  when the user asks to push a doc or share a link to it.
 ---
 
 # Hive Drive
 
-Hive Drive is the folder of documents beside a chat or Code session: markdown, html, and
-canvases. The `hive-drive` MCP server writes them and arranges the tabs that show them. Hive chat
-workspaces may still list the server as `hive-canvas`. It is the same server with the same tools.
+Hive Drive is the folder of markdown and html documents beside a chat or Code session. The
+`hive-drive` MCP server writes them and arranges the tabs that show them. The `hive drive` CLI
+copies them to a drive server and makes share links.
 
 ## Session
 
@@ -24,40 +25,32 @@ A `not_found` on that value means this is not a hive session. Say so and answer 
 retry with other values, and don't fall back to `global`: the shared space sits beside no session,
 so nothing written there can open as a tab.
 
-## Pick a format
-
-- **Document** for something the user keeps and rereads: plans, research, design docs, mockups.
-  `document_put` takes `.md` or `.html`. For styled HTML pages, follow `drive-doc-style`.
-- **Canvas** for a surface you revise in place while work runs: a status report, a comparison,
-  stat tiles. Blocks are sanitized and use the `hv-` classes below.
-
 In a hive session the space is the repo's `.hive` folder, so `research/x.md` here is the file
 `.hive/research/x.md`.
+
+## Pick a format
+
+- **Markdown** (`.md`) by default: plans, research, notes, reports, tables. The body may open
+  with YAML front matter, and `title` sets the name the user sees. Front matter that doesn't parse
+  is refused, not saved.
+- **HTML** (`.html`) when the layout is the point: styled reports, drawn diagrams, mockups. The
+  page renders in a sandboxed frame. Follow `drive-doc-style`, which lists what the frame allows.
 
 ## Documents
 
 1. `document_list` on the folder before you pick a path, and follow the sibling naming
-   (`research/YYYY-MM-DD-<slug>.md`).
+   (`research/YYYY-MM-DD-<slug>.md`). Folders in the path are created as needed.
 2. If the path exists, `document_get` it first. The user or another chat may have changed it.
 3. `document_put` replaces the whole document. Keep the same path for revisions.
-4. Only move or delete documents you wrote or were asked to touch.
-
-## Canvases
-
-1. Name the canvas after the artifact (`perf-report`), not the conversation. Set `canvasTitle` on
-   the first write.
-2. `canvas_list` first. If the name exists, `canvas_get` it before you overwrite it.
-3. Lay out the first version with `canvas_blocks_put` in one call.
-4. Revise with `canvas_block_put` and the same `id`, so the block updates in place instead of stacking a
-   copy.
+4. Only move or delete documents you wrote or were asked to touch. `document_delete` has no trash.
 
 ## Tabs
 
 Writes never open a tab. A write to a Drive tab that is open behind another tab only lights an
-unseen dot on it. When a document or canvas is ready to read, show it once:
+unseen dot on it. When a document is ready to read, show it once:
 
 ```text
-tab_open  view: drive  path: <document path, or canvas name>
+tab_open  view: drive  path: <document path>
 ```
 
 - Leave `placement` at its default, `behind`. The doc opens as a new tab in the session, behind
@@ -79,64 +72,27 @@ tab_open  view: drive  path: <document path, or canvas name>
   it.
 - `diff`, `tasks`, and terminal windows exist only in Code sessions. A chat has `drive`.
 
-## Blocks
+## Push and share
 
-- `markdown`: prose, lists, simple tables. Raw HTML is escaped. A standalone ` ```mermaid ` fence
-  renders as a diagram. Use this by default.
-- `html`: only when the layout is the point: stat tiles, columns, cards, drawn diagrams.
-- `link`: `title` plus an `http`, `https`, or `mailto` URL.
+`push` uploads documents to a drive server, and `share` prints a public link to a pushed
+document. Run them only when the user asks, and only for the documents they named.
 
-## HTML block rules
-
-Hive refuses a block it can't sanitize and names the problem. It doesn't silently drop anything.
-
-- Refused: `script`, the `style` element (the `style` attribute is fine), `iframe`, `object`,
-  `embed`, `form` and its controls, `on*` handlers, and the `id` attribute.
-- Allowed: normal sectioning, text, list, table, and code tags, `details`/`summary`, `a`, and
-  `img` with an `http`, `https`, or base64 `data:` source.
-- SVG: `svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon`, `text`,
-  `tspan`. There's no `defs`, `marker`, or `use`, so draw arrowheads as a `polygon`. Give the
-  `svg` a `viewBox` so it scales to the pane.
-
-Use the `hv-` classes before you write your own colors. They follow the user's light or dark
-theme.
-
-| Purpose    | Classes                                                                                                  |
-| ---------- | -------------------------------------------------------------------------------------------------------- |
-| Layout     | `hv-stack`, `hv-row`, `hv-grid` + `hv-cols-2` to `hv-cols-6` (collapse when the panel is narrow)         |
-| Containers | `hv-card`, `hv-panel`, `hv-callout`                                                                      |
-| Data       | `hv-stat-card` > `hv-stat-value` (+ `hv-stat-unit`), `hv-stat-label`, `hv-stat-sub`; `hv-kv` on a `<dl>` |
-| Emphasis   | `hv-badge`, `hv-muted`, `hv-mono`                                                                        |
-| Tones      | `hv-info`, `hv-success`, `hv-warn`, `hv-error`, `hv-accent`                                              |
-| SVG roles  | `hv-node`, `hv-edge`, `hv-arrow`, `hv-label`, `hv-dashed` (with `hv-edge`)                               |
-
-`hv-stat` is the `hv-stat-card` layout without the card border, for a figure inside your own
-container. Put a tone on a stat card only for the number that needs attention.
-
-```html
-<div class="hv-grid hv-cols-3">
-  <div class="hv-stat-card hv-success">
-    <span class="hv-stat-value">98.2<span class="hv-stat-unit">%</span></span>
-    <span class="hv-stat-label">Success</span>
-  </div>
-  <div class="hv-stat-card">
-    <span class="hv-stat-value">412<span class="hv-stat-unit">ms</span></span>
-    <span class="hv-stat-sub">was 530ms last week</span>
-    <span class="hv-stat-label">p95</span>
-  </div>
-  <div class="hv-stat-card hv-error">
-    <span class="hv-stat-value">3</span>
-    <span class="hv-stat-label">Failing</span>
-  </div>
-</div>
-<div class="hv-callout hv-warn">
-  <strong>Migration 0042 is not reversible.</strong> Back up first.
-</div>
+```sh
+hive drive push plans/ship.md
+hive drive share plans/ship.md --expires 7d
 ```
 
-The `hv-` classes mean nothing outside Hive. If the canvas is meant to leave the app, use inline
-`style`, `fill`, and `stroke` instead.
+- Paths are space paths, the same ones the MCP tools take. From the repo checkout the CLI picks
+  the repo's space. Elsewhere pass `--repo owner/name` or `--workspace <name>`.
+- Always pass paths to `push`. With none it uploads the whole space.
+- `push` skips unchanged documents, so push again after a revision. `share` on the same path
+  returns the same link.
+- Anyone with the link can read the document. Without `--expires` (`1d`, `7d`, `30d`) a new link
+  never expires, so say which in chat.
+- If `push` fails for a missing login or server, ask the user to run
+  `! hive drive login <server>`. It reads a token from a prompt.
 
 ## In chat
 
-Still give a one or two line summary in chat, with the document path or canvas name.
+Still give a one or two line summary in chat, with the document path, and the link when you
+shared one.

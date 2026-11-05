@@ -89,23 +89,23 @@ Never write comments that:
   When refactoring, never leave comments describing code that was removed
   in the same PR.
 
-## Generated Assets
+## Hive Drive
 
-Store generated markdown files (plans, context, notes) in `.hive/` when available.
+Store generated documents (plans, research, notes) in `.hive/`, the repo's Hive Drive space.
 
-`.hive` must ONLY be a symlink, never a regular directory. If it doesn't exist, run `hive ctx init` — never `mkdir`. Once the symlink exists, subdirectories (`plans/`, `research/`, etc.) can be created normally. It points to `$XDG_DATA_HOME/hive/context/<repo-owner>/<repo-name>/`.
+`.hive` must ONLY be a symlink, never a regular directory. If it doesn't exist, run `hive drive init` — never `mkdir`. Once the symlink exists, subdirectories (`plans/`, `research/`, etc.) can be created normally.
 
-To find `.hive/` documents, run exactly `hive ctx ls` (no arguments, no piping) — Glob and standard `ls` do not follow the symlink and fail silently. Then Read the full path from the output.
+To find `.hive/` documents, run exactly `hive drive ls` (no arguments, no piping) — Glob and standard `ls` do not follow the symlink and fail silently. Then Read the full path from the output.
+
+In a hive session, the `hive-drive` MCP server writes documents to Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write; it covers which tab placement to use so a result never takes the screen. Outside hive the tools answer `not_found` — skip them and answer in chat.
+
+When asked, `hive drive push <path>` uploads a document and `hive drive share <path>` prints a public link to it. The `hive-drive` skill covers the flags.
 
 ## Work Tracking
 
 - `hive hc` — track work and manage tasks across sessions. Create issues for non-trivial tasks, update status as work progresses, organize with epics and parent/child hierarchy.
 - `ghissues` — LLM-friendly GitHub issue summaries; prefer over raw `gh issue list`. No arguments for the current repo, `--repo owner/name` for an explicit repo.
 - `ghcomments` — LLM-friendly PR feedback (reviews, inline comments with file:line and resolved/outdated status, conversation comments); prefer over raw `gh`. No arguments for the current branch's PR, `<number>` for a specific PR, `--type inline --unresolved` for feedback that still needs addressing.
-
-## Hive Drive
-
-In a hive session, the `hive-drive` MCP server saves documents and canvases to Hive Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write; it covers which tab placement to use so a result never takes the screen. Outside hive the tools answer `not_found` — skip Drive and answer in chat.
 
 ## Task Runners
 

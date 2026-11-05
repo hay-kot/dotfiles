@@ -17,6 +17,8 @@
       "Bash(basename:*)",
       "Bash(hive ctx init)",
       "Bash(hive ctx ls)",
+      "Bash(hive drive init)",
+      "Bash(hive drive ls)",
       "Bash(npm run lint)",
       "Bash(npm run test:*)",
       "Bash(make test)",
