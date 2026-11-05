@@ -87,16 +87,6 @@ url = "https://github.com/caarlos0/svu/releases/download/v3.4.1/svu_3.4.1_darwin
 url_api = "https://api.github.com/repos/caarlos0/svu/releases/assets/410001878"
 provenance = "github-attestations"
 
-[[tools."github:colonyops/hive"]]
-version = "0.69.0"
-backend = "github:colonyops/hive"
-specifiers = ["v0.69.0"]
-
-[tools."github:colonyops/hive"."platforms.macos-arm64"]
-checksum = "sha256:ccd5c2cd2f2d167bce54d7b3466f921601ba40bff2585a88bae7eae5635a6046"
-url = "https://github.com/colonyops/hive/releases/download/v0.69.0/hive_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/colonyops/hive/releases/assets/702834913"
-
 [[tools."github:golangci/golangci-lint"]]
 version = "2.15.0"
 backend = "github:golangci/golangci-lint"
@@ -196,15 +186,14 @@ url = "https://github.com/hay-kot/svx/releases/download/v0.6.0/svx_Darwin_arm64.
 url_api = "https://api.github.com/repos/hay-kot/svx/releases/assets/694337982"
 
 [[tools."github:hay-kot/weft"]]
-version = "0.1.0"
+version = "0.3.0"
 backend = "github:hay-kot/weft"
-specifiers = ["v0.1.0"]
+specifiers = ["v0.3.0"]
 
 [tools."github:hay-kot/weft"."platforms.macos-arm64"]
-checksum = "sha256:a44b318612be597437e86785342b08d66b9a1b748a15e2473f664cc3a9b069d7"
-checksum_source = "mise-versions"
-url = "https://github.com/hay-kot/weft/releases/download/v0.1.0/weft_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/weft/releases/assets/683165623"
+checksum = "sha256:4db5288098d56711df1d92701dd963badadad8619f863762f029edc59d1d1bd0"
+url = "https://github.com/hay-kot/weft/releases/download/v0.3.0/weft_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/weft/releases/assets/710882302"
 
 [[tools."github:homeport/dyff"]]
 version = "1.12.0"

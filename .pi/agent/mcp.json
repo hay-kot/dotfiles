@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "hive-canvas": {
+    "hive-drive": {
       "url": "http://127.0.0.1:51774/mcp/drive"
     }
   }

@@ -28,8 +28,10 @@ markdown is fine.
    Follow the date-slug convention of the sibling files.
 3. If a markdown doc with the same slug exists, keep it. The HTML is a rendered
    companion, so say which one is the source of truth in the doc's meta line.
-4. Open it with the Hive Drive tools (see the `mockups` skill for the save/open
-   steps and the snapshot helper).
+4. Save and open it with the Hive Drive tools as the `hive-drive` skill
+   describes: `write_document`, then `open_tab` with `view: drive` and the
+   path, leaving `placement` at `behind` so it opens as a new tab in the
+   session. The `mockups` skill has the snapshot helper for a visual check.
 
 ## Constraints from the Drive frame
 
@@ -105,13 +107,26 @@ the hover state.
 
 **Summary before detail.** Open with the problem, the decision or finding, and
 what the reader must do or approve. Put the reasoning after. A reader who stops
-after the first screen should still have the answer.
+after the first screen should still have the answer. The summary is open text
+(`.summary` in the template): labeled columns separated by a rule, not a row of
+boxed cards.
 
 **Show state in form.** Decision status, option verdicts, and risk levels use a
 pill, not just a word in a sentence. Keep one pill style across the doc.
 
-**Cards by role.** Border, fill, and radius mark a separate object. Use them for
-figures, callouts, and option panels. Do not wrap ordinary paragraphs.
+**Cards are rare.** Border, fill, and radius mark a separate object, and most
+content is not one. Default to open text on the page background: headings,
+paragraphs, lists, and rules do the structuring. A box is earned only by:
+
+- a figure (diagram, chart, screenshot)
+- a callout that the reader must not miss, at most one per section
+- the contents block
+- a side-by-side option comparison where the panels are read against each other
+
+Never box the summary, a list of items, a definition, or an ordinary paragraph.
+If a section would show three or more boxes, the boxes are carrying no
+information; remove them. A first screen of boxes reads as a dashboard, not a
+document.
 
 **Tables hold short values.** Use a table only when every cell is a short,
 comparable value (a date, a status pill, a number, a name, a path) and the
@@ -125,10 +140,11 @@ wide table in an `overflow-x: auto` container.
 
 **Entries for items with prose.** Risks, constraints, options with reasoning,
 gates, and similar items that each carry a sentence or more go in an entry
-grid (`.entries` in the template): one bordered card per item, the item name
-as an `h4`, the body, and an optional footer under a label (`Mitigation`,
-`Plan`, `Risk`) separated by a rule. A verdict or status goes in a pill in the
-`h4`. When the items fall into meaningful groups (risks by kind, for example),
+list (`.entries` in the template): one item per row, separated by a rule, with
+no border box or fill. Each has the item name as an `h4`, the body, and an
+optional follow-up line led by an inline label (`Mitigation`, `Plan`, `Fix`).
+A verdict or status goes in a pill in the `h4`. A short item that is one
+sentence is a plain bulleted list with a bold lead term, not an entry. When the items fall into meaningful groups (risks by kind, for example),
 put each group under its own `h3` instead of one long flat list.
 
 **Timelines are month rails.** Draw a schedule as one row per month (`.months`
@@ -187,6 +203,8 @@ what breaks and what to do about it.
       entries, schedules are month rails
 - [ ] A contents list, if any, is a `.toc` block, not a row of underlined
       links
+- [ ] Boxes only on figures, the contents block, and at most one callout per
+      section; the summary and entries are open text
 - [ ] Figures use token colors and have captions that say what to look at
 - [ ] No literal hex values outside the `:root` token blocks
 - [ ] No em-dashes, en-dashes, or emoji in the text

@@ -103,9 +103,9 @@ To find `.hive/` documents, run exactly `hive ctx ls` (no arguments, no piping) 
 - `ghissues` — LLM-friendly GitHub issue summaries; prefer over raw `gh issue list`. No arguments for the current repo, `--repo owner/name` for an explicit repo.
 - `ghcomments` — LLM-friendly PR feedback (reviews, inline comments with file:line and resolved/outdated status, conversation comments); prefer over raw `gh`. No arguments for the current branch's PR, `<number>` for a specific PR, `--type inline --unresolved` for feedback that still needs addressing.
 
-## Hive Canvas
+## Hive Drive
 
-In a hive session, the `hive-canvas` MCP server shows content in a pane beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-canvas` skill before the first write. Outside hive the tools answer `not_found` — skip the canvas and answer in chat.
+In a hive session, the `hive-drive` MCP server saves documents and canvases to Hive Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write; it covers which tab placement to use so a result never takes the screen. Outside hive the tools answer `not_found` — skip Drive and answer in chat.
 
 ## Task Runners
 

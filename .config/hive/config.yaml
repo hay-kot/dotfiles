@@ -22,27 +22,12 @@ tmux:
 agents:
   agent_selector: true
   default: claude
-  pi:
-    command: pi
-    flags: []
-  pi-sol6:
-    command: pi
-    flags: ["--model", "openai-codex/gpt-6-sol"]
-  pi-astra:
-    command: pi
-    flags: ["--model", "openai-codex/gpt-6-astra"]
-  pi-opus:
-    command: pi
-    flags: ["--model", "anthropic/claude-opus-5-5"]
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]
-  fable:
-    command: claude
-    flags: ["--dangerously-skip-permissions", "--model", "claude-fable-5"]
-  codex:
-    command: codex
-    flags: ["--dangerously-bypass-approvals-and-sandbox"]
+  pi:
+    command: pi
+    flags: []
 
 views:
   sessions:

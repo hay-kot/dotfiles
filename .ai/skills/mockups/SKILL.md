@@ -108,7 +108,7 @@ Legacy `tidy` is not a useful gate for these HTML5 mockups. The rendered snapsho
 
 ## Save with Hive Drive
 
-Use the Hive Drive MCP document tools when they are available. The server may be named `hive-drive` or its legacy name, `hive-canvas`.
+Use the Hive Drive MCP tools when they are available, and follow the `hive-drive` skill for sessions and tabs. The server may be named `hive-drive` or its legacy name, `hive-canvas`.
 
 1. Set `session` to `$HIVE_AGENT_SESSION` when it is present. Otherwise use the absolute output of `pwd`. Never guess or reuse a session value.
 2. Use `list_documents` on `mockups` before choosing a path. If continuing an existing mockup, use `read_document` before replacing it.
@@ -119,7 +119,7 @@ Use the Hive Drive MCP document tools when they are available. The server may be
    ```
 
    Keep the same path for revisions in the same design thread.
-4. Call `open_document` with that path after the write succeeds. Open once, when the artifact is ready to inspect, not after every edit.
+4. After the write succeeds, call `open_tab` with `view: drive` and that `path`. Leave `placement` at its default, `behind`, so the mockup opens as a new tab in the session without taking the screen. Open once, when the artifact is ready to inspect, not after every edit.
 
 Do not use the shared `global` space as a fallback. It has no session pane to open.
 
@@ -130,14 +130,7 @@ If Hive Drive document tools are unavailable:
 1. Confirm `.hive` is a symlink. If it is missing, run `hive drive init`. Never create `.hive` as a directory.
 2. Create `.hive/mockups/` and write the same dated HTML path there.
 3. Complete the bounded visual check against the `.hive` HTML file.
-4. Resolve the repository as `owner/repo`, then open the document through Hive Desktop:
-
-   ```bash
-   repo="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
-   hive desktop open "hive://drive/${repo}/mockups/YYYY-MM-DD-<short-artifact-slug>.html"
-   ```
-
-If the repository cannot be resolved or Hive Desktop cannot open the link, keep the HTML in Hive Drive and report the exact relative path.
+4. Report the exact `.hive/mockups/...` path in chat. Do not open it with a `hive://` link: that raises Hive Desktop and leaves the session for the Drive page.
 
 ## Iteration
 
