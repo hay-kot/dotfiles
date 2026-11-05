@@ -130,8 +130,10 @@
   "enabledPlugins": {
     "scaffold@hay-kot-scaffold": false,
     "hive-hooks@hive": false,
-    "hive@hive": true,
-    "agento11y-claude-code@agento11y": true
+    "agento11y-claude-code@agento11y": true,
+    "cc-plugin-diff@builtin": false,
+    "cc-plugin-telemetry@builtin": false,
+    "cc-plugin-plugin-authoring@builtin": false
   },
   "extraKnownMarketplaces": {
     "hive": {
