@@ -15,11 +15,11 @@ You write the plan yourself -- you already hold the research and every decision,
 handing drafting to a sub-agent only costs a re-read. Most of the value comes from
 aligning with the user in Steps 2-3, before the plan exists.
 
-`.hive` must be a symlink. If it is missing, run `hive ctx init` -- never `mkdir`.
+`.hive` must be a symlink. If it is missing, run `hive drive init` -- never `mkdir`.
 
 ## Step 1: Read the Research
 
-Read the research doc in full. If none was given, run `hive ctx ls` and ask which to
+Read the research doc in full. If none was given, run `hive drive ls` and ask which to
 use. If there is none at all, suggest `/research` first.
 
 If the doc's `commit` differs from HEAD, run `git diff --stat <commit>..HEAD` and

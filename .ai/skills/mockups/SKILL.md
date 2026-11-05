@@ -83,7 +83,7 @@ Do not use Hive Canvas `hv-` classes. They do not apply to standalone HTML docum
 
 Do not show the mockup before looking at rendered snapshots yourself. Source review and HTML validation do not catch collapsed columns, accidental clipping, broken responsive states, or unusable whitespace.
 
-1. Keep the draft as a local HTML file (copied from the shell template). With the Hive Drive MCP tools, use a temporary file and pass its contents to `write_document` after the check. With the CLI fallback, the `.hive` file itself is the draft.
+1. Keep the draft as a local HTML file (copied from the shell template). With the Hive Drive MCP tools, use a temporary file and pass its contents to `document_put` after the check. With the CLI fallback, the `.hive` file itself is the draft.
 2. Run the bundled snapshot helper:
 
    ```bash
@@ -110,16 +110,16 @@ Legacy `tidy` is not a useful gate for these HTML5 mockups. The rendered snapsho
 
 Use the Hive Drive MCP tools when they are available, and follow the `hive-drive` skill for sessions and tabs. The server may be named `hive-drive` or its legacy name, `hive-canvas`.
 
-1. Set `session` to `$HIVE_AGENT_SESSION` when it is present. Otherwise use the absolute output of `pwd`. Never guess or reuse a session value.
-2. Use `list_documents` on `mockups` before choosing a path. If continuing an existing mockup, use `read_document` before replacing it.
-3. Write the visually checked page with `write_document` to:
+1. Set `caller` to `$HIVE_AGENT_SESSION` when it is present. Otherwise use the absolute output of `pwd`. Never guess or reuse a caller value.
+2. Use `document_list` on `mockups` before choosing a path. If continuing an existing mockup, use `document_get` before replacing it.
+3. Write the visually checked page with `document_put` to:
 
    ```text
    mockups/YYYY-MM-DD-<short-artifact-slug>.html
    ```
 
    Keep the same path for revisions in the same design thread.
-4. After the write succeeds, call `open_tab` with `view: drive` and that `path`. Leave `placement` at its default, `behind`, so the mockup opens as a new tab in the session without taking the screen. Open once, when the artifact is ready to inspect, not after every edit.
+4. After the write succeeds, call `tab_open` with `view: drive` and that `path`. Leave `placement` at its default, `behind`, so the mockup opens as a new tab in the session without taking the screen. Open once, when the artifact is ready to inspect, not after every edit.
 
 Do not use the shared `global` space as a fallback. It has no session pane to open.
 

@@ -5,7 +5,7 @@ description: >
   review and act on the returned annotations. Use when the user says "review the
   plan", "open the doc in plannotator", "let me annotate the research", "review
   the latest doc", or returns to a session to gate work the agent produced.
-allowed-tools: "Bash(plannotator:*),Bash(hive ctx ls),Bash(ls:*),Bash(find:*),Bash(stat:*),Read"
+allowed-tools: "Bash(plannotator:*),Bash(hive drive ls),Bash(ls:*),Bash(find:*),Bash(stat:*),Read"
 disable-model-invocation: true
 ---
 
@@ -30,7 +30,7 @@ approves or denies, and returns their feedback as command output.
 
 To find the newest file, use `find` with `-printf` (or `stat` on macOS) and pick
 the highest mtime. Resolve `.hive/` via the symlink — do NOT use Glob, it won't
-follow it. If the symlink doesn't exist, run `hive ctx init` first.
+follow it. If the symlink doesn't exist, run `hive drive init` first.
 
 If no candidate file is found, tell the user which directory was empty and stop.
 Don't guess a path.

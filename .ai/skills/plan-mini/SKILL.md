@@ -17,7 +17,7 @@ Use this when the change touches about 5 files or fewer and the scope is already
 clear. Use `/research` + `/plan-write` for cross-cutting changes, new patterns, or
 architectural decisions.
 
-`.hive` must be a symlink. If it is missing, run `hive ctx init` -- never `mkdir`.
+`.hive` must be a symlink. If it is missing, run `hive drive init` -- never `mkdir`.
 
 ## Step 1: Investigate
 

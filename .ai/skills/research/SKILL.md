@@ -19,12 +19,12 @@ You are a documentarian, not a critic. Describe what exists, where, and how it w
 Do not suggest improvements or changes unless the user asks. Sub-agents follow the
 same rule.
 
-`.hive` must be a symlink. If it is missing, run `hive ctx init` -- never `mkdir`.
+`.hive` must be a symlink. If it is missing, run `hive drive init` -- never `mkdir`.
 
 ## Step 1: Read Mentioned Files
 
 Read any files the user mentions (tickets, docs, JSON) in full before anything else.
-Run `hive ctx ls` to see existing research. If you reuse a prior doc, compare its
+Run `hive drive ls` to see existing research. If you reuse a prior doc, compare its
 `commit` to HEAD and treat changed areas as unverified.
 
 ## Step 2: Write the Research Questions

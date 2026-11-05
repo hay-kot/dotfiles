@@ -16,8 +16,6 @@ tui:
 tmux:
   poll_interval: 1.5s
   preview_window_matcher: [claude, aider, codex, cursor, crush, agent, ^pi$, llm, orchestrator]
-  capture_recording:
-    enabled: true
 
 agents:
   agent_selector: true
@@ -47,50 +45,18 @@ todos:
   actions:
     obsidian: "open {{ .URI | shq }}"
 
-sources:
-  external:
-    - name: adaptive-telemetry-alerts
-      command: [hive-source-gcx-adaptive-alerts]
-      env:
-        GCX_CONTEXT: ops
-      timeout: 30s
-      templates:
-        name: "adaptive-{{ .ID }}-{{ .Fields.signal_slug }}-{{ .Fields.target }}"
-        prompt: |
-          Investigate this firing Adaptive Telemetry alert.
-
-          Title: {{ .Title }}
-          Signal: {{ .Fields.signal }}
-          State: {{ .Fields.state }}
-          Service: {{ .Fields.service }}
-          Rule: {{ .Fields.rule }}
-          Value: {{ .Fields.value }}
-          Active since: {{ .Fields.active }}
-          URL: {{ .Fields.url }}
-
-          Labels: {{ .Fields.labels }}
-          Annotations: {{ .Fields.annotations }}
-        tags:
-          - adaptive-telemetry
-          - alert
-          - "{{ .Fields.signal_slug }}"
-
 plugins:
   shell_workers: 10 # shared subprocess concurrency limit
   github:
     enabled: true
     results_cache: 30m
-  claude:
-    yellow_threshold: 60 # % to turn yellow
-    red_threshold: 80 # % to turn red
-    model_limit: 200000 # context window size
 
 rules:
   - pattern: ""
     branch_template: "hay-kot/{{ .Slug }}"
     max_recycled: 3
     commands:
-      - hive ctx init
+      - hive drive init
     windows:
       - name: "{{ agentWindow }}"
         command: '{{ agentCommand }} {{ agentFlags }} {{ .Prompt | shq }}'
@@ -128,14 +94,14 @@ rules:
 usercommands:
   ReviewRequest:
     scope: ["sessions"]
-    sh: "~/.config/hive/scripts/request-review.sh {{ .Name }}"
+    sh: "~/.config/hive/scripts/request-review.sh {{ .Name | shq }} {{ agentSend | shq }} {{ .TmuxWindow | shq }}"
     help: "Request code review of current branch"
     silent: true
 
   CheckInbox:
     scope: ["sessions"]
-    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "/hive-msg check you input for messages hive msg sub -t agent.{{ .ID }}.inbox --new"'
-    help: "Instructs claude to check it's inbox"
+    sh: '{{ agentSend }} "{{ .Name }}:{{ .TmuxWindow }}" "Check your inbox for new messages with: hive msg inbox --ack"'
+    help: "Instructs the agent to check its inbox"
     silent: true
 
   SendTidy:

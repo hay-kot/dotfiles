@@ -228,7 +228,7 @@ Critical: N | Major: N | Minor: N | Nits: N
 ## Step 6 — Save the review
 
 Save a copy to `.hive/reviews/YYYY-MM-DD-<slug>.md` (slug from branch/scope). If `.hive/`
-is not a symlink, run `hive ctx init` first — never create it as a plain directory. Always
+is not a symlink, run `hive drive init` first — never create it as a plain directory. Always
 use the lowercase `reviews/` directory so tooling can aggregate review feedback consistently.
 
 Include frontmatter:
@@ -243,3 +243,36 @@ base_branch: main
 tags: [component, topic]
 ---
 ```
+
+## Step 7 — Post inline in Hive Desktop
+
+In a hive session, also put the verified findings on the branch diff. Hive Desktop shows them
+inline in the session's Changes view. The user dismisses the ones they disagree with and sends
+the rest, with their own comments, to the session's agent. Do this only when the review covered
+the session's own branch against its base. Skip it for a PR or another diff, because the line
+numbers will not match.
+
+```bash
+hive review diff put <<'JSON'
+{
+  "author": "claude",
+  "summary": "<overview sentence> Verdict: REQUEST CHANGES.",
+  "comments": [
+    {"path": "auth.go", "startLine": 45, "severity": "issue",
+     "text": "Swallowed error: the caller sees success on failure. Fix: return fmt.Errorf(\"creating user: %w\", err)"}
+  ]
+}
+JSON
+```
+
+- Set `author` to your agent's name (`claude`, `pi`, ...).
+- Write one comment per finding. Map severity: Critical and Major to `issue`, Minor to
+  `suggestion`, Nit to `note`. Leave out findings dropped in verification.
+- Line numbers count the branch's version of the file. Add `endLine` for a range. For removed
+  code, add `"startSide": "deletions"` and use the base's line numbers. For a whole-file
+  comment, use `"kind": "file"` with no lines.
+- Write `text` for the agent that will act on it: the problem, why it matters, and the fix.
+- A later put from the same `author` replaces the earlier review, so always put the whole review.
+- A refused review stores nothing and lists each comment to fix. Fix those and put again.
+- The `diff_review_put` tool on the `hive-drive` MCP server takes the same fields plus `caller`.
+- If the command answers `not in a hive session`, skip this step.

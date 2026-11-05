@@ -69,7 +69,7 @@ hive hc update <issue-id> --status done
 hive hc comment <issue-id> "Progress: <what was done>"
 
 # Create follow-up tasks for incomplete work
-hive hc create --title "Follow-up: description"
+hive hc create "Follow-up: description"
 ```
 
 Skip this step entirely if no `hive hc` tasks were part of this session.

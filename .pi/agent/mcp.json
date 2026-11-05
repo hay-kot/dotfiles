@@ -1,7 +1,8 @@
 {
   "mcpServers": {
     "hive-drive": {
-      "url": "http://127.0.0.1:51774/mcp/drive"
+      "command": "hive",
+      "args": ["mcp", "serve", "--toolset", "drive,layout"]
     }
   }
 }

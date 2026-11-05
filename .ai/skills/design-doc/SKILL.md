@@ -22,10 +22,10 @@ Read the template file before generating. If the template is missing, tell the u
 
 ## Context Directory
 
-Design docs are stored in `.hive/design-docs/` managed by `hive ctx`.
+Design docs are stored in `.hive/design-docs/` managed by `hive drive`.
 
 **IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run
-`hive ctx init` to create it — NEVER use `mkdir`.
+`hive drive init` to create it — NEVER use `mkdir`.
 
 After confirming `.hive` exists, create the subdirectory if needed:
 

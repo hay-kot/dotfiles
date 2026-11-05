@@ -12,7 +12,7 @@ import type {
 interface HiveSessionInfo {
   id: string;
   name?: string;
-  repository?: string;
+  repo?: string;
   inbox?: string;
   path?: string;
   state?: string;

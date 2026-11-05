@@ -1,32 +1,39 @@
 #!/bin/bash
-# Usage: request-review.sh
+# Usage: request-review.sh <session-name> <agent-send> <agent-window>
 # Requests a code review of the current branch
 
-# Get current session info
+CURRENT_SESSION_NAME="${1:-}"
+AGENT_SEND="${2:-agent-send}"
+AGENT_WINDOW="${3:-claude}"
+
+if [ -z "$CURRENT_SESSION_NAME" ]; then
+    echo "Error: Session name required"
+    exit 1
+fi
+
 CURRENT_SESSION=$(hive session info --json)
 CURRENT_REPO=$(echo "$CURRENT_SESSION" | jq -r '.remote')
 CURRENT_BRANCH=$(git branch --show-current)
-CURRENT_SESSION_NAME="${1:-}"
 
 if [ -z "$CURRENT_BRANCH" ]; then
     echo "Error: Not on a git branch"
     exit 1
 fi
 
-# Sanitize branch name for use in session name (replace / with -)
-SAFE_BRANCH=$(echo "$CURRENT_BRANCH" | tr '/' '-')
+# hive rejects session names over 60 characters; "review-" and "-<id>" take 12.
+SAFE_BRANCH=$(echo "$CURRENT_BRANCH" | tr '/' '-' | cut -c1-48)
 
 NEW_SESSION=$(hive msg topic --prefix "")
+REVIEWER_INBOX="agent.$NEW_SESSION.inbox"
 
-# Create new review session with instructions
 BATCH_JSON=$(cat <<EOF
 {
   "sessions": [
     {
       "session_id": "$NEW_SESSION",
       "name": "review-$SAFE_BRANCH-$NEW_SESSION",
-      "origin": "$CURRENT_REPO",
-      "prompt": "You are a code reviewer. Check your inbox (agent.$NEW_SESSION.inbox) for review instructions using: hive msg sub -t agent.{session-id}.inbox --new, wait until you recieve a message. If no messages are available use hive msg sub --topic=<topic> --wait to wait for a message"
+      "remote": "$CURRENT_REPO",
+      "prompt": "You are a code reviewer. Review instructions arrive in your inbox ($REVIEWER_INBOX). Read them with: hive msg inbox --ack. If the inbox is empty, wait for the first message with: hive msg inbox --wait --ack --timeout 30m"
     }
   ]
 }
@@ -35,6 +42,4 @@ EOF
 
 echo "$BATCH_JSON" | hive batch
 
-# Send review context to new session's inbox
-#
-claude-send "$CURRENT_SESSION_NAME:claude" "/hive-msg a reviwer is wating for a message from you at agent.$NEW_SESSION.inbox. Please send them context on the work you are doing and how they can access your branch and review the code. Wait up to 1 hour for a response"
+"$AGENT_SEND" "$CURRENT_SESSION_NAME:$AGENT_WINDOW" "A reviewer is waiting for a message from you at $REVIEWER_INBOX. Send them context on the work you are doing, how to access your branch, and what to review, with: hive msg pub -t $REVIEWER_INBOX -m '<message>'. Then wait up to 1 hour for their response with: hive msg inbox --wait --ack --timeout 1h"

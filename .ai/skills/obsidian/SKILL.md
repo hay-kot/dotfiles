@@ -13,7 +13,7 @@ Save structured documents into the `.hive/` context directory. This directory is
 ## Context Directory
 
 **IMPORTANT:** `.hive` must be a symlink, not a directory. If it doesn't exist, run
-`hive ctx init` to create it — NEVER use `mkdir` for `.hive` itself.
+`hive drive init` to create it — NEVER use `mkdir` for `.hive` itself.
 
 ## Document Types and Paths
 
@@ -27,7 +27,7 @@ For research documents, use the `research` skill. For design docs, use the `desi
 
 ## Writing a Document
 
-1. **Confirm `.hive/` exists** — if not, run `hive ctx init`
+1. **Confirm `.hive/` exists** — if not, run `hive drive init`
 2. **Create the target subdirectory** if it doesn't exist:
    ```bash
    mkdir -p .hive/<subdirectory>

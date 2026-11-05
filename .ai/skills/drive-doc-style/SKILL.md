@@ -29,7 +29,7 @@ markdown is fine.
 3. If a markdown doc with the same slug exists, keep it. The HTML is a rendered
    companion, so say which one is the source of truth in the doc's meta line.
 4. Save and open it with the Hive Drive tools as the `hive-drive` skill
-   describes: `write_document`, then `open_tab` with `view: drive` and the
+   describes: `document_put`, then `tab_open` with `view: drive` and the
    path, leaving `placement` at `behind` so it opens as a new tab in the
    session. The `mockups` skill has the snapshot helper for a visual check.
 

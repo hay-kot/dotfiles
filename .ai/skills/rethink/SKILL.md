@@ -63,7 +63,7 @@ git diff --stat <base>...HEAD            # changed files
 git log --oneline <base>...HEAD          # iteration history — read it; it shows the search path
 ```
 
-Also check `hive ctx ls` for a plan or research doc for this feature. If history was
+Also check `hive drive ls` for a plan or research doc for this feature. If history was
 squashed or rewritten, skip the archaeology — the lenses fall back to reference
 analysis (who calls what today), which is the stronger evidence anyway.
 
@@ -209,7 +209,7 @@ If all lenses return `design-sound` and the delete list is empty, say so in thre
 lines and stop. That outcome is the skill working, not failing.
 
 Save the report to `.hive/reviews/YYYY-MM-DD-rethink-<slug>.md` (if `.hive/` is
-missing, run `hive ctx init` — never mkdir). Frontmatter: `type: rethink`, date,
+missing, run `hive drive init` — never mkdir). Frontmatter: `type: rethink`, date,
 branch, commit, base_branch, tags.
 
 ## Step 5 — Gate and apply

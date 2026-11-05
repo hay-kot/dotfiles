@@ -101,6 +101,8 @@ In a hive session, the `hive-drive` MCP server writes documents to Drive and ope
 
 When asked, `hive drive push <path>` uploads a document and `hive drive share <path>` prints a public link to it. The `hive-drive` skill covers the flags.
 
+When you review a hive session's branch, you can also put the findings inline in Hive Desktop's Changes view with `hive review diff put` (JSON on stdin; `hive review diff --help` has the format) or the `diff_review_put` MCP tool. The user dismisses the comments they disagree with and sends the rest back to the session's agent. The `review` skill has the mapping from findings to comments. Outside a hive session the command answers `not in a hive session` -- skip it.
+
 ## Work Tracking
 
 - `hive hc` — track work and manage tasks across sessions. Create issues for non-trivial tasks, update status as work progresses, organize with epics and parent/child hierarchy.

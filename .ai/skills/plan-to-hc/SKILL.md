@@ -40,15 +40,15 @@ When this command is invoked:
    - Each major work item becomes a child task
    - Use clear, actionable titles for subtasks
 
-   **CRITICAL**: Do NOT use `--desc` flag for long text. Always use the JSON stdin format to avoid the description being added as a comment instead.
+   **CRITICAL**: Do NOT use `--desc` flag for long text. Always use the JSON stdin format: plan text breaks shell quoting, and the flags create only one item.
 
 4. **Copy the epic id**: Put the epic id on the clipboard
    - echo <epic id> | bpcopy
 
 ## Notes
 
-- **ALWAYS use the JSON stdin format** — never pass plan text via `--desc` flag (it gets added as a comment instead of description)
+- **ALWAYS use the JSON stdin format** — never pass plan text via `--desc` flag (shell quoting mangles it)
 - The epic description must contain the COMPLETE plan text
 - Subtasks should capture all trackable work items from the plan
 - Escape the plan text properly for JSON (newlines as `\n`, quotes as `\"`)
-- Preserve any dependencies or sequential ordering from the plan
+- Preserve any dependencies or sequential ordering from the plan: give a task a `"ref"` label and list it in a later task's `"blockers"` array (see `hive hc create --help`)
