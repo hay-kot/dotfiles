@@ -229,15 +229,15 @@ url_api = "https://api.github.com/repos/mvdan/gofumpt/releases/assets/549473536"
 provenance = "github-attestations"
 
 [[tools."github:nektos/act"]]
-version = "0.2.89"
+version = "0.2.92"
 backend = "github:nektos/act"
-specifiers = ["v0.2.89"]
+specifiers = ["v0.2.92"]
 
 [tools."github:nektos/act"."platforms.macos-arm64"]
-checksum = "sha256:48ae218af96725f7635a66de2b87e1e346893b02add0f16b92f560296b2151fc"
-checksum_source = "mise-versions"
-url = "https://github.com/nektos/act/releases/download/v0.2.89/act_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/nektos/act/releases/assets/434891257"
+checksum = "sha256:fb9594d4ebc589a5bb4a490fbb4abae9964a530b1e6316bbba3b788a754a3919"
+url = "https://github.com/nektos/act/releases/download/v0.2.92/act_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/nektos/act/releases/assets/685898613"
+provenance = "github-attestations"
 
 [[tools."github:sxyazi/yazi"]]
 version = "26.9.1"
