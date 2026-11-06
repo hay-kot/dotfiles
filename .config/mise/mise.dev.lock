@@ -395,7 +395,7 @@ backend = "npm:eslint"
 specifiers = ["latest"]
 
 [[tools."npm:pnpm"]]
-version = "12.16.1"
+version = "12.17.0"
 backend = "npm:pnpm"
 specifiers = ["latest"]
 
