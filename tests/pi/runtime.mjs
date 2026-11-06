@@ -50,6 +50,7 @@ export async function harness(file, sharedEvents = new EventEmitter()) {
   const tools = new Map();
   const commands = new Map();
   const shortcuts = new Map();
+  const messageRenderers = new Map();
   const entries = [];
   const messages = [];
   const prompts = [];
@@ -73,7 +74,9 @@ export async function harness(file, sharedEvents = new EventEmitter()) {
     registerShortcut(key, shortcut) {
       shortcuts.set(key, shortcut);
     },
-    registerMessageRenderer() {},
+    registerMessageRenderer(name, renderer) {
+      messageRenderers.set(name, renderer);
+    },
     appendEntry(customType, data) {
       entries.push({ type: "custom", customType, data: structuredClone(data) });
     },
@@ -140,6 +143,7 @@ export async function harness(file, sharedEvents = new EventEmitter()) {
     tools,
     commands,
     shortcuts,
+    messageRenderers,
     entries,
     messages,
     prompts,
