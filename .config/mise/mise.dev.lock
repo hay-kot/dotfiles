@@ -63,17 +63,17 @@ url = "https://github.com/amir20/dtop/releases/download/v0.10.4/dtop-aarch64-app
 url_api = "https://api.github.com/repos/amir20/dtop/releases/assets/650512872"
 
 [[tools."github:backnotprop/plannotator"]]
-version = "0.28.31"
+version = "0.28.42"
 backend = "github:backnotprop/plannotator"
-specifiers = ["v0.28.31"]
+specifiers = ["v0.28.42"]
 
 [tools."github:backnotprop/plannotator".options]
 matching = "plannotator-"
 
 [tools."github:backnotprop/plannotator"."platforms.macos-arm64"]
-checksum = "sha256:5d550114c01cab4f75d92298fafb9a0c1408a676123d018be39f9e1fdca63bfa"
-url = "https://github.com/backnotprop/plannotator/releases/download/v0.28.31/plannotator-darwin-arm64"
-url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/676973153"
+checksum = "sha256:78739ce77af66949f0d1a105d7f83af543ef68d925cb5ef11579a8628e625781"
+url = "https://github.com/backnotprop/plannotator/releases/download/v0.28.42/plannotator-darwin-arm64"
+url_api = "https://api.github.com/repos/backnotprop/plannotator/releases/assets/694961007"
 provenance = "github-attestations"
 
 [[tools."github:caarlos0/svu"]]
