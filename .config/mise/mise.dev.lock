@@ -143,15 +143,15 @@ url = "https://github.com/hay-kot/gotmpl/releases/download/v1.0.1/gotmpl_Darwin_
 url_api = "https://api.github.com/repos/hay-kot/gotmpl/releases/assets/98493564"
 
 [[tools."github:hay-kot/mi"]]
-version = "0.4.0"
+version = "0.5.0"
 backend = "github:hay-kot/mi"
-specifiers = ["v0.4.0"]
+specifiers = ["v0.5.0"]
 
 [tools."github:hay-kot/mi"."platforms.macos-arm64"]
-checksum = "sha256:6c32ab32ed24ec8a05651c0974c2b1e492bbc58e00fd9c3711aae42dddc8606e"
+checksum = "sha256:6536fd19bcf80fc07361992a9870204d32adf04024c9621606d4778238ccf3cc"
 checksum_source = "mise-versions"
-url = "https://github.com/hay-kot/mi/releases/download/v0.4.0/mi_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/385979825"
+url = "https://github.com/hay-kot/mi/releases/download/v0.5.0/mi_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/mi/releases/assets/694430096"
 
 [[tools."github:hay-kot/mmdot"]]
 version = "0.9.0"
