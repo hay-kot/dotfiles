@@ -3,6 +3,6 @@
 lockfile_version = 1
 
 [[tools."npm:@posthog/cli"]]
-version = "0.18.12"
+version = "0.19.0"
 backend = "npm:@posthog/cli"
 specifiers = ["latest"]
