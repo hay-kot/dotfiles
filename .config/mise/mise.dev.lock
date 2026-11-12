@@ -186,14 +186,15 @@ url = "https://github.com/hay-kot/svx/releases/download/v0.6.0/svx_Darwin_arm64.
 url_api = "https://api.github.com/repos/hay-kot/svx/releases/assets/694337982"
 
 [[tools."github:hay-kot/weft"]]
-version = "0.3.0"
+version = "0.4.0"
 backend = "github:hay-kot/weft"
-specifiers = ["v0.3.0"]
+specifiers = ["v0.4.0"]
 
 [tools."github:hay-kot/weft"."platforms.macos-arm64"]
-checksum = "sha256:4db5288098d56711df1d92701dd963badadad8619f863762f029edc59d1d1bd0"
-url = "https://github.com/hay-kot/weft/releases/download/v0.3.0/weft_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/hay-kot/weft/releases/assets/710882302"
+checksum = "sha256:383f99b4973cd21d8dbcdfc399ea6eb4bc039600201284b35c5e346f2c683824"
+checksum_source = "mise-versions"
+url = "https://github.com/hay-kot/weft/releases/download/v0.4.0/weft_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/hay-kot/weft/releases/assets/711701724"
 
 [[tools."github:homeport/dyff"]]
 version = "1.12.0"
