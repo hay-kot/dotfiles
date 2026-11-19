@@ -401,7 +401,7 @@ backend = "npm:pnpm"
 specifiers = ["latest"]
 
 [[tools."npm:prettier"]]
-version = "3.9.10"
+version = "3.10.1"
 backend = "npm:prettier"
 specifiers = ["latest"]
 
