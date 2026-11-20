@@ -421,7 +421,7 @@ backend = "npm:yarn"
 specifiers = ["latest"]
 
 [[tools.rust]]
-version = "1.99.1"
+version = "1.100.0"
 backend = "core:rust"
 specifiers = ["latest"]
 
