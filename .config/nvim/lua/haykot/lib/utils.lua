@@ -33,7 +33,7 @@ M = {
 
   windows = function()
     if is_windows == nil then
-      if vim.loop.os_uname().sysname == "Windows_NT" then
+      if vim.uv.os_uname().sysname == "Windows_NT" then
         is_windows = true
       else
         is_windows = false

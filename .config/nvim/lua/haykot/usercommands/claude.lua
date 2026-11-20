@@ -5,7 +5,7 @@ local function get_buffer_files()
 
   for _, buf in ipairs(buffers) do
     -- Include all buffers that are listed (which includes bufferline tabs)
-    if vim.api.nvim_buf_get_option(buf, "buflisted") then
+    if vim.bo[buf].buflisted then
       local name = vim.api.nvim_buf_get_name(buf)
       -- Check if buffer has a valid file path and exists on disk
       if name ~= "" and vim.fn.filereadable(name) == 1 then
@@ -63,7 +63,7 @@ vim.api.nvim_create_user_command("ClaudeFiles", function(opts)
   -- Get all listed buffers (all open files, not just active)
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     -- Check if buffer is listed (shows up in :ls)
-    if vim.api.nvim_buf_get_option(bufnr, "buflisted") then
+    if vim.bo[bufnr].buflisted then
       local bufname = vim.api.nvim_buf_get_name(bufnr)
 
       -- Only include actual files (not empty buffers or special buffers)

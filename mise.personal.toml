@@ -1,6 +1,7 @@
 # Personal-machine extras.
 [tools]
 "npm:@posthog/cli" = "latest"
+"forgejo:hay-kot/infra" = { version = "0.26.1", api_url = "https://gitea.kotel.app/api/v1", version_prefix = "ops/v" }
 
 [bootstrap.packages]
 "brew:restic" = "latest"

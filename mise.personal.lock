@@ -2,6 +2,45 @@
 
 lockfile_version = 1
 
+[[tools."forgejo:hay-kot/infra"]]
+version = "0.26.1"
+backend = "forgejo:hay-kot/infra"
+specifiers = ["0.26.1"]
+
+[tools."forgejo:hay-kot/infra".options]
+api_url = "https://gitea.kotel.app/api/v1"
+version_prefix = "ops/v"
+
+[tools."forgejo:hay-kot/infra"."platforms.linux-arm64"]
+checksum = "sha256:98891ac1396899e48d5012fea11ef3ee2d7825622fd01507561353036144c171"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Linux_arm64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/b9e46485-c618-4f4b-b304-baafaa490b22"
+
+[tools."forgejo:hay-kot/infra"."platforms.linux-arm64-musl"]
+checksum = "sha256:98891ac1396899e48d5012fea11ef3ee2d7825622fd01507561353036144c171"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Linux_arm64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/b9e46485-c618-4f4b-b304-baafaa490b22"
+
+[tools."forgejo:hay-kot/infra"."platforms.linux-x64"]
+checksum = "sha256:ba4e85d31f5f44d977336bad817f96915bde496ab0cad9f95c3f0a371a00dd09"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Linux_x86_64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/331d4a23-3041-42a9-a4b7-0e606e10e733"
+
+[tools."forgejo:hay-kot/infra"."platforms.linux-x64-musl"]
+checksum = "sha256:ba4e85d31f5f44d977336bad817f96915bde496ab0cad9f95c3f0a371a00dd09"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Linux_x86_64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/331d4a23-3041-42a9-a4b7-0e606e10e733"
+
+[tools."forgejo:hay-kot/infra"."platforms.macos-arm64"]
+checksum = "sha256:a118bf33769c3eeb4c2436115716ba57426a1b4b81f28e7900cbdc6e320f3006"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Darwin_arm64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/8fd60510-cf74-421e-92a5-fdcf1d0df038"
+
+[tools."forgejo:hay-kot/infra"."platforms.macos-x64"]
+checksum = "sha256:c9ecac9f5f7467ad218d3e348eb74ecde485c6a62918a915b7412f051302482b"
+url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/infra_Darwin_x86_64.tar.gz"
+url_api = "https://gitea.kotel.app/attachments/bc735348-7486-4d4f-9d74-9390c7c5bda8"
+
 [[tools."npm:@posthog/cli"]]
 version = "0.20.0"
 backend = "npm:@posthog/cli"

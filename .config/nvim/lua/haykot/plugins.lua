@@ -1,7 +1,7 @@
 -- !Important: Leader key must be set before any plugins are loaded
 local ensure_lazy = function()
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-  if not vim.loop.fs_stat(lazypath) then
+  if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
       "git",
       "clone",
@@ -19,7 +19,7 @@ ensure_lazy()
 -- To use a local development version of diff-review, clone the repo to ~/dev/diff-review.
 -- When that directory exists, lazy.nvim will load from it instead of the remote repo.
 local local_path = vim.fn.expand("~/dev/diff-review")
-local use_local = vim.loop.fs_stat(local_path) ~= nil
+local use_local = vim.uv.fs_stat(local_path) ~= nil
 
 require("lazy").setup({
   -- Base Plugins
@@ -46,10 +46,9 @@ require("lazy").setup({
     end,
   },
   {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
+    "catgoose/nvim-colorizer.lua",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {},
   },
   -- Auto Session Manager
   {
@@ -141,7 +140,9 @@ require("lazy").setup({
 
   {
     "ray-x/go.nvim",
-    dependencies = { -- optional packages
+    dependencies = {
+      -- go.nvim's treesitter helpers (GoAddTag, GoFillStruct, ...) require it
+      "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
@@ -161,7 +162,9 @@ require("lazy").setup({
     end,
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
-    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+    -- No build hook: go.nvim's installer puts @latest tools into GOBIN, which
+    -- mise points at the Go toolchain's bin dir, ahead of the versions pinned
+    -- in mise.dev.toml on PATH. Run :GoInstallBinaries by hand if needed.
     keys = {
       {
         "<leader>gdb",

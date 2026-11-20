@@ -164,41 +164,10 @@ return {
           end,
         },
 
-        -- Patch init options to support v1 & v2
-        golangci_lint_ls = {
-          init_options = (function()
-            local pipe = io.popen("golangci-lint version --short 2>/dev/null")
-            if pipe == nil then
-              return {}
-            end
-
-            local version = pipe:read("*a")
-            pipe:close()
-
-            local major_version = tonumber(version:match("^v?(%d+)%."))
-            if major_version and major_version >= 2 then
-              return {
-                command = {
-                  "golangci-lint", "run",
-                  "--show-stats=false",
-                  "--issues-exit-code=1",
-                  "--output.json.path", "stdout",   -- JSON goes to stdout (LS parses this)
-                  "--output.text.path", "stderr",   -- force text to stderr (ignored by LS)
-                },
-              }
-            else
-              -- Default v1 config - NOTE: major_version is nil for v1 since --short is an invalid flag
-              return {
-                command = {
-                  "golangci-lint",
-                  "run",
-                  "--output-format=json",
-                  "--issues-exit-code=1",
-                },
-              }
-            end
-          end)(),
-        },
+        -- lspconfig's defaults already pick the v1 or v2 command in
+        -- before_init, so the version probe only runs when a Go buffer starts
+        -- the server instead of on every nvim launch.
+        golangci_lint_ls = {},
 
         --[[ harper_ls = { ]]
         --[[   settings = { ]]
@@ -268,15 +237,15 @@ return {
       group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
       callback = function()
         km.nnoremap("<leader>le", function()
-          vim.diagnostic.goto_next()
+          vim.diagnostic.jump({ count = 1, float = true })
         end, { desc = "Go to next diagnostic", buffer = true })
 
         km.nnoremap("<leader>lE", function()
-          vim.diagnostic.goto_prev()
+          vim.diagnostic.jump({ count = -1, float = true })
         end, { desc = "Go to previous diagnostic", buffer = true })
 
         km.nnoremap("K", function()
-          vim.lsp.buf.hover()
+          vim.lsp.buf.hover({ border = "rounded" })
         end, { desc = "Show hover information" })
 
         km.nnoremap("<leader>lx", function()
@@ -284,11 +253,11 @@ return {
         end, { desc = "Open diagnostic float" })
 
         km.nnoremap("[d", function()
-          vim.diagnostic.goto_prev()
+          vim.diagnostic.jump({ count = -1, float = true })
         end, { desc = "Jump to previous diagnostic" })
 
         km.nnoremap("]d", function()
-          vim.diagnostic.goto_next()
+          vim.diagnostic.jump({ count = 1, float = true })
         end, { desc = "Jump to next diagnostic" })
 
         km.nnoremap("<leader>lca", function()
@@ -300,23 +269,13 @@ return {
         end, { desc = "Rename symbol" })
 
         km.inoremap("<C-h>", function()
-          vim.lsp.buf.signature_help()
+          vim.lsp.buf.signature_help({ border = "rounded" })
         end, { desc = "Show signature help" })
 
         km.nnoremap("<leader>lf", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", { desc = "format file" })
         -- command Format
         vim.cmd([[command! Fmt execute 'lua vim.lsp.buf.format()']])
       end,
-    })
-
-    --  Configure LSP hover with borders
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "rounded",
-    })
-
-    -- Also add borders to signature help if you want consistency
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-      border = "rounded",
     })
 
     -- Diagnostic Config
