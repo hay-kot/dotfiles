@@ -62,7 +62,7 @@
     .ms-frame { display: flex; flex-direction: column; min-height: calc(100vh - var(--header-height) - 2 * var(--stage-pad)); overflow: hidden; border: 1px solid var(--ms-strong); border-radius: var(--radius-xl); box-shadow: 0 18px 40px -18px rgba(0,0,0,.8); background: #fff; color: #111; } /* neutral default; each option sets its own look */
 
 
-    /* Brief: the shared requirements, persistent and slim. */
+    /* Brief: the shared requirements, closed by default and slim. */
     .ms-brief { position: sticky; top: var(--header-height); height: calc(100vh - var(--header-height)); overflow: auto; border-right: 1px solid var(--ms-border); background: var(--ms-sidebar); padding: 18px 18px 28px; }
     .ms-label { margin: 0 0 8px; color: var(--ms-text-3); font: 600 9.5px/1.2 var(--font-mono); letter-spacing: .11em; text-transform: uppercase; }
     .ms-brief p { margin: 0 0 18px; color: var(--ms-text-2); font-size: 12px; line-height: 1.5; }
@@ -105,7 +105,7 @@
   </style>
 </head>
 <body>
-  <div class="ms-shell" data-mockup-shell data-brief="open">
+  <div class="ms-shell" data-mockup-shell data-brief="closed">
     <header class="ms-header">
       <div class="ms-eyebrow">Mockup review</div>
       <nav class="ms-tabs" role="tablist" aria-label="Design options">
@@ -114,7 +114,7 @@
         <button class="ms-tab" type="button" role="tab" id="tab-1a" aria-controls="option-1a" aria-selected="true" data-mockup-tab="1a" data-round="1"><span class="ms-id">1a</span>REPLACE: option name</button>
       </nav>
       <span class="ms-status" aria-live="polite" data-status>Round 1 - option 1a</span>
-      <button class="ms-button" type="button" data-brief-toggle aria-expanded="true" aria-controls="mockup-brief">Brief</button>
+      <button class="ms-button" type="button" data-brief-toggle aria-expanded="false" aria-controls="mockup-brief">Brief</button>
     </header>
 
     <div class="ms-body">

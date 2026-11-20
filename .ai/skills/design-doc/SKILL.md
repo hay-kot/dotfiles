@@ -2,7 +2,8 @@
 name: design-doc
 description: >
   Generate a design doc from template and save to .hive/design-docs/. Use when the user asks to create, draft, or
-  write a design doc, design proposal, or technical proposal.
+  write a design doc, design proposal, or technical proposal for others to review.
+  Not for product/UX design before planning (/plan-design).
 allowed-tools: "Read,Write,Bash(mkdir:*),Bash(git:*),Bash(hive:*),Bash(date:*)"
 ---
 

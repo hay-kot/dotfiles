@@ -37,7 +37,7 @@ Produce one self-contained HTML document containing every option. Start from the
 
 The template has two halves:
 
-- **Shell (fixed).** The `<style id="shell">` block, the `<script>` block, the header, and the left Brief panel provide option tabs and a persistent brief, styled like Hive. Do not edit them. The shell follows Hive's look. The mockups do not have to.
+- **Shell (fixed).** The `<style id="shell">` block, the `<script>` block, the header, and the left Brief panel provide option tabs and a brief, styled like Hive. The Brief starts closed so the mockup gets the full width; the header's Brief button opens it. Do not edit them. The shell follows Hive's look. The mockups do not have to.
 - **Slots (yours).** Marked with `SLOT` comments. Everything else is the product UI you are designing.
 
 Copy the template to your draft path, then edit only the slots:
@@ -142,4 +142,4 @@ When the user comments on an option:
 - Remove an abandoned option only when the user clearly rejects it.
 - Run the bounded visual check again, then reopen the document so the updated mockup is in view.
 
-Finish chat responses with the Hive Drive path and a one-line summary of the options or revision. Refer to options by ID. Do not paste the full HTML into chat.
+Finish chat responses with the Hive Drive path and a one-line summary of the options or revision. Refer to options by ID. Mention that each option's rationale is in the Brief panel, which starts closed. Do not paste the full HTML into chat.

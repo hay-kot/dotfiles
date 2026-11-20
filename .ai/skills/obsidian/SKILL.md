@@ -21,9 +21,10 @@ Save structured documents into the `.hive/` context directory. This directory is
 | ----------- | ----------------------------- | ---------------------------- |
 | research    | `.hive/research/`             | `YYYY-MM-DD-<slug>.md`      |
 | design-doc  | `.hive/design-docs/`          | `YYYY-MM-DD-<slug>.md`      |
+| design      | `.hive/designs/`              | `YYYY-MM-DD-<slug>.md`      |
 | plan        | `.hive/plans/`                | `YYYY-MM-DD-<slug>.md`      |
 
-For research documents, use the `research` skill. For design docs, use the `design-doc` skill. For plans, use the `plan-write` skill. This skill handles ad-hoc documents or types not covered by a dedicated skill.
+For research documents, use the `research` skill. For design docs, use the `design-doc` skill. For designs, use the `plan-design` skill. For plans, use the `plan-code` skill. This skill handles ad-hoc documents or types not covered by a dedicated skill.
 
 ## Writing a Document
 

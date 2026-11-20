@@ -11,7 +11,7 @@ allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev
 # Research Codebase
 
 Produce a factual map of the code as it exists today, saved to `.hive/research/`. The
-output feeds `/plan-write`, so it records facts, not proposals.
+output feeds `/plan-design` or `/plan-code`, so it records facts, not proposals.
 
 ## Scope Constraint
 

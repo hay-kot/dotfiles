@@ -3,7 +3,7 @@ name: plan-mini
 description: >
   Mini research → plan for small, self-contained changes. Use for well-scoped tasks
   like bug fixes, adding a single field, or small feature additions where the overall
-  system impact is limited. Faster than /research + /plan-write -- no sub-agents, no
+  system impact is limited. Faster than /research + /plan-code -- no sub-agents, no
   user interview, lighter output.
 allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),Read,Write"
 ---
@@ -14,7 +14,7 @@ Research and plan a small change in one pass, in your own context. No sub-agents
 no interview loop: proceed on reasonable assumptions and flag gaps inline.
 
 Use this when the change touches about 5 files or fewer and the scope is already
-clear. Use `/research` + `/plan-write` for cross-cutting changes, new patterns, or
+clear. Use `/research` + `/plan-code` for cross-cutting changes, new patterns, or
 architectural decisions.
 
 `.hive` must be a symlink. If it is missing, run `hive drive init` -- never `mkdir`.
@@ -32,7 +32,7 @@ Note constraints visible in the code: generated files, migrations, caches, flags
 
 If the change turns out bigger than expected (more than about 5 files, or a design
 choice with real alternatives), stop and tell the user to use `/research` +
-`/plan-write` instead.
+`/plan-code` instead.
 
 ## Step 2: Write the Plan
 

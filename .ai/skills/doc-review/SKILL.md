@@ -21,8 +21,9 @@ approves or denies, and returns their feedback as command output.
 
 | Argument      | Behavior                                                                    |
 | ------------- | --------------------------------------------------------------------------- |
-| _empty_       | Newest `.md` across `.hive/plans/`, `.hive/research/`, `.hive/design-docs/` |
+| _empty_       | Newest `.md` across `.hive/plans/`, `.hive/designs/`, `.hive/research/`, `.hive/design-docs/` |
 | `plans`       | Newest `.md` in `.hive/plans/`                                              |
+| `designs`     | Newest `.md` in `.hive/designs/`                                            |
 | `research`    | Newest `.md` in `.hive/research/`                                           |
 | `design-docs` | Newest `.md` in `.hive/design-docs/`                                        |
 | any path      | That file directly (relative to cwd or absolute)                            |
