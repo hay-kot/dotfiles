@@ -1,6 +1,11 @@
 import { stripVTControlCharacters } from "node:util";
 import { keyHint, type MessageRenderer } from "@earendil-works/pi-coding-agent";
-import { MouseRegion, Text, truncateToWidth } from "@earendil-works/pi-tui";
+import {
+  mixColors,
+  MouseRegion,
+  Text,
+  truncateToWidth,
+} from "@earendil-works/pi-tui";
 
 interface CompletionDetails {
   status?: string;
@@ -43,34 +48,55 @@ export function createCompletionRenderer(): MessageRenderer<CompletionDetails> {
         : status === "killed"
           ? "warning"
           : "success";
+    const background =
+      status === "failed" || status === "timed_out" || status === "killed"
+        ? mixColors(
+            theme.colors.toolPendingBg,
+            theme.colors.toolErrorBg,
+            0.4,
+            "srgb",
+          )
+        : "toolSuccessBg";
 
     return new MouseRegion(
       {
         render(width) {
+          const padding = Math.min(
+            options.outputPad,
+            Math.max(0, Math.floor((width - 1) / 2)),
+          );
+          const contentWidth = Math.max(1, width - padding * 2);
           const action = expansion.expanded ? "collapse" : "expand";
           const lines = [
             truncateToWidth(
-              theme.fg(color, `${expansion.expanded ? "v" : ">"} ${summary}`),
-              width,
+              `${theme.fg(color, expansion.expanded ? "v" : ">")} ${theme.fg("toolTitle", theme.bold(summary))}`,
+              contentWidth,
             ),
             truncateToWidth(
               theme.fg(
                 "dim",
                 `Click to ${action} | ${keyHint("app.tools.expand", action)}`,
               ),
-              width,
+              contentWidth,
             ),
           ];
           if (expansion.expanded)
-            lines.push(
-              ...new Text(theme.fg("toolOutput", content), 0, 0).render(width),
-            );
-          return lines;
+            lines.push("", theme.fg("toolOutput", content));
+          return new Text(lines.join("\n"), padding, 1, (line) =>
+            theme.style(line, { bg: background }),
+          )
+            .render(width)
+            .map((line) => truncateToWidth(line, width));
         },
         invalidate() {},
       },
       (event) => {
-        if (event.type !== "click" || event.button !== "left" || event.y > 1)
+        if (
+          event.type !== "click" ||
+          event.button !== "left" ||
+          event.y < 1 ||
+          event.y > 2
+        )
           return undefined;
         expansion.expanded = !expansion.expanded;
         return { handled: true, render: true };

@@ -169,7 +169,9 @@ export class ShellJobs {
         process.kill(-job.pid, signal);
       }
     } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+      const code = (error as NodeJS.ErrnoException).code;
+      // OS permission restrictions on group cleanup must not crash Pi.
+      if (code !== "ESRCH" && code !== "EPERM") throw error;
     }
   }
 

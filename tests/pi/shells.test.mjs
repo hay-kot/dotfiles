@@ -41,6 +41,82 @@ test("short command preserves exit code and stdout/stderr in private log", async
   assert.equal(completed.length, 0);
 });
 
+for (const background of [false, true]) {
+  for (const exitCode of [0, 7]) {
+    test(
+      `${background ? "background" : "foreground"} exit ${exitCode} completes when group cleanup gets EPERM`,
+      { skip: process.platform === "win32" },
+      async (t) => {
+        const { jobs, completed } = await queue(t);
+        const kill = t.mock.method(process, "kill", () => {
+          throw Object.assign(new Error("kill EPERM"), { code: "EPERM" });
+        });
+        const job = jobs.start(
+          `sleep 0.1; printf done; exit ${exitCode}`,
+          cwd,
+          process.env,
+        );
+        const pending = jobs.wait(
+          job,
+          waitOptions({ yieldMs: background ? 0 : 1000 }),
+        );
+        if (background) await assert.rejects(pending, Backgrounded);
+        else assert.equal((await pending).exitCode, exitCode);
+        await job.finished;
+        assert.equal(job.exitCode, exitCode);
+        assert.equal(job.status, exitCode === 0 ? "completed" : "failed");
+        assert.equal(readJobOutput(job), "done");
+        assert.deepEqual(completed, background ? [job] : []);
+        assert.equal(jobs.running().length, 0);
+        assert.deepEqual(
+          kill.mock.calls.map((call) => call.arguments),
+          [[-job.pid, "SIGKILL"]],
+        );
+      },
+    );
+  }
+}
+
+for (const action of ["stop", "abort", "timeout", "close"]) {
+  test(
+    `${action} tolerates EPERM from process-group signals`,
+    { skip: process.platform === "win32" },
+    async (t) => {
+      const { jobs } = await queue(t);
+      const kill = t.mock.method(process, "kill", () => {
+        throw Object.assign(new Error("kill EPERM"), { code: "EPERM" });
+      });
+      const controller = new AbortController();
+      const job = jobs.start(
+        "sleep 0.65",
+        cwd,
+        process.env,
+        undefined,
+        action === "timeout" ? 0.01 : undefined,
+      );
+      const pending = jobs.wait(
+        job,
+        waitOptions({ signal: controller.signal }),
+      );
+      if (action === "stop") jobs.stop(job.id);
+      else if (action === "abort") controller.abort();
+      else if (action === "close") await jobs.close();
+      if (action === "abort") await assert.rejects(pending, /aborted/);
+      else if (action === "timeout") await assert.rejects(pending, /timed out/);
+      else await pending;
+      assert.equal(job.status, action === "timeout" ? "timed_out" : "killed");
+      assert.equal(jobs.running().length, 0);
+      const signals = kill.mock.calls.map((call) => call.arguments[1]);
+      assert.deepEqual(
+        signals,
+        action === "close"
+          ? ["SIGKILL", "SIGKILL"]
+          : ["SIGTERM", "SIGKILL", "SIGKILL"],
+      );
+    },
+  );
+}
+
 test("auto-yield returns a job, keeps running and notifies exactly once", async (t) => {
   const { jobs, completed } = await queue(t);
   const job = jobs.start(

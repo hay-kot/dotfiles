@@ -3,9 +3,15 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { stripVTControlCharacters } from "node:util";
 import test from "node:test";
-import { harness, load, piDirectory, plainTheme, tui } from "./runtime.mjs";
+import {
+  harness,
+  load,
+  piDirectory,
+  plainTheme as unstyledTheme,
+  tui,
+} from "./runtime.mjs";
 
-const { initTheme } = await import(
+const themeModule = await import(
   pathToFileURL(join(piDirectory, "dist/modes/interactive/theme/theme.js"))
 );
 const { CustomMessageComponent } = await import(
@@ -16,7 +22,12 @@ const { CustomMessageComponent } = await import(
 const { KeybindingsManager } = await import(
   pathToFileURL(join(piDirectory, "dist/core/keybindings.js"))
 );
-initTheme("dark", false);
+themeModule.initTheme("dark", false);
+const plainTheme = {
+  ...unstyledTheme,
+  colors: themeModule.theme.colors,
+  style: (text) => text,
+};
 tui.setKeybindings(new KeybindingsManager());
 const { createCompletionRenderer } = await load(
   ".pi/agent/extensions/background-shell/completion.ts",
@@ -40,31 +51,117 @@ const mouse = (overrides = {}) => ({
   type: "click",
   button: "left",
   x: 0,
-  y: 0,
+  y: 1,
   screenX: 0,
   screenY: 0,
   width: 80,
-  height: 2,
+  height: 4,
   shift: false,
   alt: false,
   ctrl: false,
   ...overrides,
 });
 
-test("completion output collapses to two bounded lines, even with a huge command", () => {
+test("completion output collapses to two padded rows, even with a huge command", () => {
   const render = createCompletionRenderer();
   const entry = message();
   entry.details.summary += " 測試 argument".repeat(1000);
   const component = render(entry, options, plainTheme);
   for (const width of [1, 5, 20, 80, 160]) {
     const lines = component.render(width);
-    assert.equal(lines.length, 2);
+    assert.equal(lines.length, 4);
     for (const line of lines) assert.ok(tui.visibleWidth(line) <= width);
   }
   assert.match(plain(component), /shell-275 completed 783s \(exit 0\)/);
   assert.match(plain(component), /Click to expand.*ctrl\+o/);
   assert.doesNotMatch(plain(component), /output-line|Log:|Treat its output/);
   assert.match(entry.content, /output-line/);
+});
+
+test("completion blocks use native tool colors, title styles and output padding", () => {
+  const { theme } = themeModule;
+  for (const [status, background] of [
+    ["completed", "toolSuccessBg"],
+    ["failed", "toolErrorBg"],
+    ["timed_out", "toolErrorBg"],
+    ["killed", "toolErrorBg"],
+  ]) {
+    for (const outputPad of [0, 1, 3]) {
+      for (const expanded of [false, true]) {
+        const entry = message();
+        entry.details.status = status;
+        entry.content = "short output";
+        const component = createCompletionRenderer()(
+          entry,
+          { expanded, outputPad },
+          theme,
+        );
+        const lines = component.render(80);
+        const blockBackground =
+          background === "toolErrorBg"
+            ? tui.mixColors(
+                theme.colors.toolPendingBg,
+                theme.colors.toolErrorBg,
+                0.4,
+                "srgb",
+              )
+            : background;
+        const nativeBlock = new tui.Text("native", outputPad, 1, (line) =>
+          theme.style(line, { bg: blockBackground }),
+        ).render(80);
+        assert.equal(lines[0], nativeBlock[0]);
+        assert.equal(lines.at(-1), nativeBlock.at(-1));
+        assert.ok(
+          lines[1].includes(theme.fg("toolTitle", theme.bold(summary))),
+        );
+        assert.ok(
+          stripVTControlCharacters(lines[1]).startsWith(
+            " ".repeat(outputPad) + (expanded ? "v" : ">"),
+          ),
+        );
+        for (const line of lines) assert.equal(tui.visibleWidth(line), 80);
+        if (expanded) assert.match(plain(component), /short output/);
+      }
+    }
+  }
+});
+
+test("error backgrounds use a softer red tint in light and dark themes", () => {
+  for (const name of ["dark", "light"]) {
+    const theme = themeModule.getThemeByName(name);
+    const entry = message();
+    entry.details.status = "failed";
+    const component = createCompletionRenderer()(entry, options, theme);
+    const background = tui.mixColors(
+      theme.colors.toolPendingBg,
+      theme.colors.toolErrorBg,
+      0.4,
+      "srgb",
+    );
+    assert.ok(
+      tui.colorToOklch(background).c <
+        tui.colorToOklch(theme.colors.toolErrorBg).c,
+    );
+    const line = component.render(80)[0];
+    assert.equal(line, theme.style(" ".repeat(80), { bg: background }));
+    assert.notEqual(line, theme.bg("toolErrorBg", " ".repeat(80)));
+  }
+});
+
+test("expanded completion blocks fit narrow terminals with wide text and padding", () => {
+  const entry = message();
+  entry.content = "測試 output\n".repeat(5);
+  for (const outputPad of [0, 1, 3]) {
+    const component = createCompletionRenderer()(
+      entry,
+      { expanded: true, outputPad },
+      themeModule.theme,
+    );
+    for (const width of [1, 2, 5, 20, 80]) {
+      for (const line of component.render(width))
+        assert.ok(tui.visibleWidth(line) <= width);
+    }
+  }
 });
 
 test("header clicks expand and collapse without intercepting output selection or scrolling", () => {
@@ -74,7 +171,9 @@ test("header clicks expand and collapse without intercepting output selection or
     { type: "press" },
     { type: "drag" },
     { button: "right" },
-    { y: 2 },
+    { y: 0 },
+    { y: 3 },
+    { y: 4 },
   ])
     assert.equal(component.handleMouse(mouse(event)), undefined);
   assert.deepEqual(component.handleMouse(mouse()), {
@@ -84,8 +183,8 @@ test("header clicks expand and collapse without intercepting output selection or
   assert.match(plain(component), /output-line/);
   assert.match(plain(component), /Log: \/tmp\/shell-275.log/);
   assert.match(plain(component), /Click to collapse/);
-  assert.equal(component.handleMouse(mouse({ y: 2 })), undefined);
-  component.handleMouse(mouse({ y: 1 }));
+  assert.equal(component.handleMouse(mouse({ y: 4 })), undefined);
+  component.handleMouse(mouse({ y: 2 }));
   assert.doesNotMatch(plain(component), /output-line/);
 });
 
@@ -95,11 +194,11 @@ test("click state survives Pi message invalidation and stays separate for each m
   const first = new CustomMessageComponent(entry, render);
   const second = new CustomMessageComponent(message(), render);
   first.render(80);
-  assert.ok(first.handleMouse(mouse({ y: 1, height: 3 }))?.handled);
+  assert.ok(first.handleMouse(mouse({ y: 2, height: 5 }))?.handled);
   first.invalidate();
   assert.match(plain(first), /output-line/);
   assert.doesNotMatch(plain(second), /output-line/);
-  assert.ok(first.handleMouse(mouse({ y: 1, height: 1005 }))?.handled);
+  assert.ok(first.handleMouse(mouse({ y: 2, height: 1008 }))?.handled);
   first.invalidate();
   assert.doesNotMatch(plain(first), /output-line/);
 });
@@ -153,7 +252,7 @@ test("completion renderers show failure states and sanitize terminal controls in
     const output = plain(component);
     assert.ok(styles.includes(color));
     assert.match(output, new RegExp(`shell-1 ${status} command`));
-    assert.match(output, /log\nnext  line/);
+    assert.match(output, /log\n next  line/);
     assert.doesNotMatch(output, /[\x00-\x09\x0b-\x1f\x7f]/);
   }
 });
@@ -182,7 +281,7 @@ test("the shell extension registers its completion renderer without changing del
   assert.match(entry.details.summary, /shell-1 completed/);
   assert.deepEqual(entry.options, { triggerTurn: true, deliverAs: "followUp" });
   const component = renderer(entry, options, plainTheme);
-  assert.equal(component.render(80).length, 2);
+  assert.equal(component.render(80).length, 4);
   assert.doesNotMatch(plain(component), /Treat its output/);
   component.handleMouse(mouse());
   assert.match(plain(component), /completion-output/);
