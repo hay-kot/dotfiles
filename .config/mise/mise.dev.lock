@@ -41,15 +41,15 @@ url_api = "https://api.github.com/repos/Zxilly/go-size-analyzer/releases/assets/
 provenance = "github-attestations"
 
 [[tools."github:agavra/tuicr"]]
-version = "0.28.0"
+version = "0.29.0"
 backend = "github:agavra/tuicr"
-specifiers = ["v0.28.0"]
+specifiers = ["v0.29.0"]
 
 [tools."github:agavra/tuicr"."platforms.macos-arm64"]
-checksum = "sha256:4138f2d243422aff68b32ec52fb1524cbadffcf6763b34fc180f25f0ac971674"
+checksum = "sha256:3f4677eded21a470c3a14fee01c3a6d04146194a05d7d346a42fc7e612743b84"
 checksum_source = "mise-versions"
-url = "https://github.com/agavra/tuicr/releases/download/v0.28.0/tuicr-0.28.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/agavra/tuicr/releases/assets/677485838"
+url = "https://github.com/agavra/tuicr/releases/download/v0.29.0/tuicr-0.29.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/agavra/tuicr/releases/assets/748377554"
 
 [[tools."github:amir20/dtop"]]
 version = "0.11.1"
