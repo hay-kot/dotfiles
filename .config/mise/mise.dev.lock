@@ -391,7 +391,7 @@ backend = "npm:@earendil-works/pi-coding-agent"
 specifiers = ["1.5.2"]
 
 [[tools."npm:eslint"]]
-version = "10.14.0"
+version = "10.15.0"
 backend = "npm:eslint"
 specifiers = ["latest"]
 
