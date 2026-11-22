@@ -141,12 +141,6 @@ Why over what.
 - Flag missing "why" on non-obvious decisions (magic numbers, workarounds, ordering constraints).
 - Fix by renaming, not commenting, where naming is the real issue. Godoc/JSDoc on exported symbols is expected, not noise.
 
-## Language notes
-
-For each detected language with a file in `references/` (`go.md`, `typescript.md`), read
-it and pass it to the sub-agents. The notes sharpen the concerns above and **prevent common
-false positives** for each ecosystem.
-
 ## Step 4 — Verify findings (always on)
 
 Before reporting, run an adversarial verification pass to kill plausible-but-wrong findings.

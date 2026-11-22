@@ -27,33 +27,9 @@ Do NOT use emojis. Avoid starting paragraphs with transitional words such as "Fi
 
 Prioritize clarity and brevity over sounding impressive.
 
-### Commits and PRs: Simplified Technical English
+### Line wrapping
 
-The Human-first rules above cover chat, docs, and code comments. Commit messages
-and pull request text are different — someone reads them once, out of context,
-usually while hunting for the cause of something. Write that text in
-[ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) instead.
-
-- Use words from the STE approved-vocabulary dictionary. Technical names that
-  are not in the dictionary can be used as-is: tool and command names, flags,
-  file paths, branch names, identifiers, and error codes.
-- Use one word for one meaning. Do not vary synonyms for style.
-- Use active voice only. Do not use passive constructions.
-- Use present or simple past tense. Do not use `-ing` gerunds or participles as
-  nouns.
-- Limit procedures to 20 words per sentence. Limit descriptions to 25 words per
-  sentence.
-- Put one instruction in each sentence.
-- Do not use idioms, metaphors, or hedging.
-
-The goal is text a reviewer understands in one read.
-
-Quoted material keeps its original words: log output, error text, issue titles,
-and the headings a PR template supplies.
-
-These rules govern wording, not content. "Commit & PR Messages" below still
-decides what a message has to cover, and the `pr-create-auto` skill still
-decides the shape of a PR body.
+Don't hard-wrap prose in Markdown that people read rendered: docs, plans, research, Hive Drive documents, PR and issue bodies. Put each paragraph and list item on one line. GitHub bodies and the Hive Drive viewer turn every newline into a line break, so wrapped text renders as a ragged column. When editing an existing file, follow its wrapping. Commit messages and code comments wrap as usual.
 
 ## Architecture Preferences
 
@@ -97,11 +73,9 @@ Store generated documents (plans, research, notes) in `.hive/`, the repo's Hive 
 
 To find `.hive/` documents, run exactly `hive drive ls` (no arguments, no piping) — Glob and standard `ls` do not follow the symlink and fail silently. Then Read the full path from the output.
 
-In a hive session, the `hive-drive` MCP server writes documents to Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write; it covers which tab placement to use so a result never takes the screen. Outside hive the tools answer `not_found` — skip them and answer in chat.
+In a hive session, the `hive-drive` MCP server writes documents to Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write. It also covers `hive drive push` and `share`.
 
-When asked, `hive drive push <path>` uploads a document and `hive drive share <path>` prints a public link to it. The `hive-drive` skill covers the flags.
-
-When you review a hive session's branch, you can also put the findings inline in Hive Desktop's Changes view with `hive review diff put` (JSON on stdin; `hive review diff --help` has the format) or the `diff_review_put` MCP tool. The user dismisses the comments they disagree with and sends the rest back to the session's agent. The `review` skill has the mapping from findings to comments. Outside a hive session the command answers `not in a hive session` -- skip it.
+When you review a hive session's branch, you can put the findings inline in Hive Desktop's Changes view with `hive review diff put`. The `review` skill covers the format.
 
 ## Work Tracking
 
@@ -117,7 +91,7 @@ Run `mi --ls` to list available tasks (`mi` auto-detects Taskfile, Makefile, and
 
 - **Never push to main.** If on main, create a branch before making changes.
 - **Branch naming:** `hay-kot/` prefix for repos in the 'grafana' org; otherwise `feat/`, `chore/`, `fix/`.
-- **Commit messages:** See "Commit & PR Messages" below. Assume readers understand the codebase.
+- **Commit messages:** See "Commit & PR Messages". Assume readers understand the codebase.
 - **Commit signing:** All commits MUST be signed. NEVER bypass signing — no `--no-gpg-sign`, `-c commit.gpgsign=false`, or similar. If signing fails, fix the underlying issue.
 - **NEVER @-mention users** on GitHub, Slack, or any platform unless explicitly asked — including PR descriptions, issue bodies, commit messages, and review comments. Reviewer assignments and CODEOWNERS handle notifications.
 
@@ -152,8 +126,6 @@ For any non-trivial commit body, cover three things:
 
 Rules:
 
-- Write the message in Simplified Technical English — see "Commits and PRs"
-  under Styling.
 - Scale detail to decision content, not diff size. A mechanical change gets one
   line; a small diff with a subtle reason gets a full explanation.
 - If the change deviates from a spec, ADR, or documented behavior, name the
@@ -171,3 +143,27 @@ three-section structure above does NOT apply to them. A PR body follows the
 repo's PR template when one exists and is otherwise shorter than the commit
 body, since the commits already carry the reasoning. Never add sections a
 template didn't ask for.
+
+### Wording: Simplified Technical English
+
+The Human-first rules above cover chat, docs, and code comments. Commit messages
+and pull request text are different — someone reads them once, out of context,
+usually while hunting for the cause of something. Write that text in
+[ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) instead.
+
+- Use words from the STE approved-vocabulary dictionary. Technical names that
+  are not in the dictionary can be used as-is: tool and command names, flags,
+  file paths, branch names, identifiers, and error codes.
+- Use one word for one meaning. Do not vary synonyms for style.
+- Use active voice only. Do not use passive constructions.
+- Use present or simple past tense. Do not use `-ing` gerunds or participles as
+  nouns.
+- Limit procedures to 20 words per sentence. Limit descriptions to 25 words per
+  sentence.
+- Put one instruction in each sentence.
+- Do not use idioms, metaphors, or hedging.
+
+The goal is text a reviewer understands in one read.
+
+Quoted material keeps its original words: log output, error text, issue titles,
+and the headings a PR template supplies.
