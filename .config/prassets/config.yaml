@@ -29,3 +29,4 @@ repos:
     pr:
       key: "branch={{ .Branch }}/{{ .File }}"
       usage: "screenshots and screen recordings for one pull request; public, deleted after 30 days"
+  github.com/hay-kot/bizkit: *pr-assets
