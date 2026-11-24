@@ -395,11 +395,6 @@ version = "10.14.0"
 backend = "npm:eslint"
 specifiers = ["latest"]
 
-[[tools."npm:playwright"]]
-version = "1.65.1"
-backend = "npm:playwright"
-specifiers = ["latest"]
-
 [[tools."npm:pnpm"]]
 version = "12.20.0"
 backend = "npm:pnpm"

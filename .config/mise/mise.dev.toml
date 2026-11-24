@@ -20,9 +20,6 @@ uv = "0.13.8"
 "npm:pnpm" = "latest"
 "npm:yarn" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "1.5.2"
-# The pr-assets recorder loads Playwright from this install when the repo it
-# runs in has none of its own.
-"npm:playwright" = "latest"
 
 # -------------------------------------------------------
 # Go
