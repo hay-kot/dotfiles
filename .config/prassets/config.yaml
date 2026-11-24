@@ -14,17 +14,18 @@ stores:
     access_key: '{{ cmd "security find-generic-password -s pra-agent-assets -a access_key -w" }}'
     secret_key: '{{ cmd "security find-generic-password -s pra-agent-assets -a secret_key -w" }}'
 
-# Every key starts with pr/ so that one R2 lifecycle rule on pr/ expires the
-# assets of every repo after 30 days. pra always puts the entry prefix first,
-# so the shared segment must be in the prefix, and the pr type drops its own
-# pr/ to avoid pr/<repo>/pr/. Types from a repo's .prassets.yaml also land
-# under pr/ and expire: this bucket holds throwaway PR media only.
+# Keys use hive-style partitions. Every key starts with type=pr/ so that one
+# R2 lifecycle rule on type=pr/ expires the assets of every repo after 30
+# days. pra always puts the entry prefix first, so the shared segment must be
+# in the prefix, and the pr type key holds only the branch. Types from a
+# repo's .prassets.yaml also land under type=pr/ and expire: this bucket holds
+# throwaway PR media only.
 #
 # To enable a repo, add a line: github.com/<owner>/<repo>: *pr-assets
 repos:
   github.com/colonyops/hive: &pr-assets
     store: agent-pr-assets
-    prefix: "pr/{{ .Host }}/{{ .Owner }}/{{ .Repo }}/"
+    prefix: "type=pr/host={{ .Host }}/owner={{ .Owner }}/repo={{ .Repo }}/"
     pr:
-      key: "{{ .Branch }}/{{ .File }}"
+      key: "branch={{ .Branch }}/{{ .File }}"
       usage: "screenshots and screen recordings for one pull request; public, deleted after 30 days"
