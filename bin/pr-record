@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Records a scripted walk through a web app to MP4 + poster for a PR.
+# See docs/pr-assets.md; pr-record --help lists the options.
+set -euo pipefail
+here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+exec node "$here/../src/pr-record/record.mjs" "$@"

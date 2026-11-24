@@ -249,6 +249,46 @@ to send only tokens, cost, timing, and tool names.
 
 [o11y]: https://grafana.com/docs/grafana-cloud/machine-learning/ai-observability/
 
+## PR screenshots and recordings
+
+Agents attach screenshots and screen recordings to PRs with [pra](https://github.com/hay-kot/prassets), which uploads to a public R2 bucket and prints stable URLs. It is opt-in per repo, because anything uploaded is public.
+
+- `pra` and the Playwright that `pr-record` falls back to come from `.config/mise/mise.personal.toml`, so only the personal Mac has them.
+- `.config/prassets/config.yaml` names the bucket and lists the repos that may upload. There is no `default:` entry, so an unlisted repo gets an error. Never list a work or private repo.
+- `setup/prassets.sh` copies the R2 key from the 1Password item in `PRASSETS_OP_ITEM` (`files/personal.local.env`) into the login keychain (service `pra-agent-assets`) on every `dotsync`. The config reads it with `security find-generic-password`, so the key is never a plaintext file and pra keeps working while 1Password is locked. It does need a logged-in GUI session: over SSH the login keychain is locked.
+- `bin/pr-record` records a scripted Playwright walk through a web app to an MP4 and a poster, and `--upload` puts both with pra. The code is in `src/pr-record/`.
+- `src/pr-record/SKILL.md` is the agent skill. It is not in `.ai/skills/` on purpose: copy it into each repo that uses pra.
+
+Keys use hive-style partitions: `type=pr/host=<host>/owner=<owner>/repo=<repo>/branch=<branch>/<file>`. pra always puts a repo's prefix first, so a shared leading `type=pr/` is the only way one lifecycle rule covers every repo.
+
+### Enable a repo
+
+1. Add a line under `repos:` in `.config/prassets/config.yaml`: `github.com/<owner>/<repo>: *pr-assets`.
+2. Copy `src/pr-record/SKILL.md` to `.claude/skills/pr-assets/SKILL.md` in that repo.
+3. Run `pra config check` in a checkout of the repo.
+
+### Set up the bucket (once)
+
+The bucket exists with the r2.dev URL and the lifecycle rule below. Steps 1 to 3 record how it was made.
+
+1. Create the bucket in the Cloudflare account whose ID is in the config's `endpoint`: `wrangler r2 bucket create agent-pr-assets`.
+2. Turn on public access: `wrangler r2 bucket dev-url enable agent-pr-assets`. That URL is `public_url` in `.config/prassets/config.yaml`.
+3. Expire PR assets after 30 days: `wrangler r2 bucket lifecycle add agent-pr-assets expire-pr-assets type=pr/ --expire-days 30 --abort-multipart-days 7`.
+4. Create an R2 API token (R2 > Manage API tokens) with Object Read & Write on `agent-pr-assets` only, then store it. Read the secret into a variable so it never lands in shell history:
+
+   ```sh
+   printf 'secret access key: ' >&2; IFS= read -rs SECRET; echo >&2
+
+   op item create --category "API Credential" --title pra-agent-assets --vault Private \
+     "access_key_id[text]=<access key id>" \
+     "secret_access_key[concealed]=$SECRET"
+
+   unset SECRET
+   ```
+
+   The field labels matter: `setup/prassets.sh` looks them up by name.
+5. Run `dotsync`, then `pra config check` in a checkout of an enabled repo.
+
 ## Git commit signing
 
 `setup/git.sh` configures SSH commit signing via 1Password's `op-ssh-sign`

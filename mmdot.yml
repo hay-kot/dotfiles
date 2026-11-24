@@ -137,6 +137,8 @@ exec:
     # after ai.sh and env.*.sh: reads AGENTO11Y_OP_ITEM from ~/.shell.env, and
     # the pi plugin registers into the ~/.pi/agent/settings.json ai.sh symlinks
     - { path: "./setup/agento11y.sh", tags: ["grafana", "personal", "ai"] }
+    # after env.*.sh: reads PRASSETS_OP_ITEM from ~/.shell.env
+    - { path: "./setup/prassets.sh", tags: ["personal", "ai"] }
     # SCAFFOLD:setup-script
 
 age:

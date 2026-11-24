@@ -29,6 +29,17 @@ overwrites it, so fix credentials in 1Password, not in the file.
 Never run `agento11y login` — it hand-writes that file and the next converge
 discards the change.
 
+## PR Assets (pra)
+
+`.config/prassets/config.yaml` lists the repos that may upload to the public
+PR asset bucket; there is no default entry on purpose. Never add a work or
+private repo. `setup/prassets.sh` copies the R2 key from 1Password into the
+login keychain (service `pra-agent-assets`); fix it in 1Password, not in the
+keychain.
+The agent skill is `src/pr-record/SKILL.md`, copied into each repo that uses
+pra, not shared through `.ai/skills/`. README "PR screenshots and
+recordings" has the setup.
+
 ## Docker Engines
 
 OrbStack and Docker Desktop are both installed. `bin/docker-use orb|desktop`
