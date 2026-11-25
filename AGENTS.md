@@ -37,7 +37,8 @@ private repo. `setup/prassets.sh` copies the R2 key from 1Password into the
 login keychain (service `pra-agent-assets`); fix it in 1Password, not in the
 keychain.
 The agent skill is `src/pr-record/SKILL.md`, copied into each repo that uses
-pra, not shared through `.ai/skills/`. README "PR screenshots and
+pra (or linked by a hive rule, see `.config/hive/scripts/link-skill.sh`), not
+shared through `.ai/skills/`. README "PR screenshots and
 recordings" has the setup.
 
 ## Docker Engines

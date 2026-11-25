@@ -49,7 +49,39 @@ GitHub plays inline only the videos it hosts. A `<video>` tag that points at ano
 Other apps:
 
 - iOS simulator: XcodeBuildMCP's `record_sim_video`, then `pra put` the file.
-- CLI or TUI: `vhs` (where installed) renders a tape to a GIF or MP4, then `pra put` it.
+- CLI or TUI: see the next section.
+
+## Terminal recordings (CLI and TUI)
+
+Record a command or a TUI with `vhs`, which plays a tape file in a headless terminal and writes a GIF or MP4.
+
+1. Write the tape in your scratchpad:
+
+   ```tape
+   Output hc-next.gif
+   Set Shell bash
+   Set FontSize 16
+   Set Width 1200
+   Set Height 600
+   Set TypingSpeed 40ms
+
+   Hide
+   Type "export PS1='$ ' HOME=/tmp/demo-home && cd /tmp/demo && clear"
+   Enter
+   Show
+
+   Type "mytool list --json"
+   Sleep 500ms
+   Enter
+   Sleep 2s
+   ```
+
+   Put setup between `Hide` and `Show`: point the tool at a sandbox with demo data, and set a short prompt so no real path, user, or host name shows. For a TUI, `Sleep` until it draws, then send keys (`Down`, `Enter`, `Type "/"`) and quit with `Ctrl+C` or `q`.
+2. Run `vhs tape.tape`. `vhs validate tape.tape` checks the syntax without a run.
+3. Look at the result before you upload it. `Screenshot frame.png` in the tape saves a still, or `ffmpeg -i hc-next.gif -vf fps=1 frame-%02d.png` splits a GIF into frames. Read every frame for private data.
+4. Upload with `pra put`.
+
+GitHub shows a GIF inline, so use a GIF for a short clip (under about 15 seconds and 5 MB). For a longer one, write an MP4, take a poster with `ffmpeg -ss 2 -i demo.mp4 -frames:v 1 demo-poster.jpg`, upload both, and link the poster to the video: `[![what it shows](poster-url)](video-url)`.
 
 ## The PR body
 
