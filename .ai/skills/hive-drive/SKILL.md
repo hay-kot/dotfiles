@@ -3,8 +3,8 @@ name: hive-drive
 description: >
   Save documents to Hive Drive and manage the tabs beside the session through the hive-drive MCP
   server, and push documents or create share links with the hive CLI when the user asks. Use when
-  a result reads better rendered than as terminal text (tables, comparisons, reports, diagrams),
-  when a skill saves a doc or mockup to Drive, when the user asks to open, move, or close a tab, or
+  a result reads better rendered than as terminal text (tables, comparisons, reports, diagrams,
+  file trees, call paths, PR and issue cards), when a skill saves a doc or mockup to Drive, when the user asks to open, move, or close a tab, or
   when the user asks to push a doc or share a link to it.
 ---
 
@@ -35,6 +35,23 @@ In a hive session the space is the repo's `.hive` folder, so `research/x.md` her
   is refused, not saved.
 - **HTML** (`.html`) when the layout is the point: styled reports, drawn diagrams, mockups. The
   page renders in a sandboxed frame. Follow `drive-doc-style`, which lists what the frame allows.
+
+## Markdown components
+
+Markdown docs render these as components in the Drive tab and on share links:
+
+- `hive-tree` fence: a file tree from a flat list of paths, with added, modified, deleted, or
+  renamed status and a note per file.
+- `hive-calls` fence: a call tree. The reader selects a row to read its explanation.
+- `hive-forge` fence: static PR and issue cards. Fetch the data when you write the doc.
+- `[[wikilinks]]`: links to other docs in the same space, by path or file name.
+- `mermaid` fence: diagrams. Use `flowchart LR` for dependency graphs.
+
+Read `references/fences.md` (in this skill's directory) before you write one. It has the
+YAML keys, the required fields, and where each one renders. A body that does not validate shows
+as an error above the raw YAML. Outside Hive Desktop and share links (GitHub, terminal, TUI) the
+fences show as YAML code blocks and wikilinks as plain text, so never put them in a PR or issue
+body. HTML docs do not parse them.
 
 ## Documents
 

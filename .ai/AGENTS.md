@@ -73,7 +73,7 @@ Store generated documents (plans, research, notes) in `.hive/`, the repo's Hive 
 
 To find `.hive/` documents, run exactly `hive drive ls` (no arguments, no piping) — Glob and standard `ls` do not follow the symlink and fail silently. Then Read the full path from the output.
 
-In a hive session, the `hive-drive` MCP server writes documents to Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write. It also covers `hive drive push` and `share`.
+In a hive session, the `hive-drive` MCP server writes documents to Drive and opens them as tabs beside the chat, with fuller HTML rendering than the terminal. Use it for output that reads better rendered: tables, side-by-side comparisons, stat summaries, diagrams, reports. Load the `hive-drive` skill before the first write. It also covers `hive drive push` and `share`. Markdown docs render `hive-tree` (file trees), `hive-calls` (call paths), and `hive-forge` (PR and issue cards) fences and `[[wikilinks]]`. The skill's `references/fences.md` has the format.
 
 When you review a hive session's branch, you can put the findings inline in Hive Desktop's Changes view with `hive review diff put`. The `review` skill covers the format.
 

@@ -93,6 +93,7 @@ Assume readers work on the same codebase or a related codebase. They have genera
 
 - **Be brief.** Readers' time is valuable. Use only enough text to make each point clear and useful.
 - Use tables, bullet points, and lists to aid readability over prose paragraphs.
+- Use the Drive components in `~/.claude/skills/hive-drive/references/fences.md` where they fit: `hive-calls` for the current call path, `hive-tree` for the files a proposal touches, `mermaid` for component graphs, `hive-forge` for related issues and PRs. They render on a `hive drive share` link too. Wikilinks do not, so name a linked doc in words as well.
 - Keep language direct and concise — no filler, no hedging.
 
 ## Section Guidelines

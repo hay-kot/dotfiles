@@ -1,231 +1,212 @@
 ---
 name: review
 description: >
-  Single-pass code review of the current branch (or a diff) that routes the changes
-  to relevant concerns, dispatches fresh-context reviewer sub-agents, verifies findings
-  to strip false positives, and reports a ranked, evidence-backed review. Use when the
+  Proof-backed code review of the current branch, a diff, or a PR. Restates the
+  intent, checks the diff against its spec or plan, looks for breakage beyond the
+  diff, and keeps a blocking finding only when a command proves it. Use when the
   user asks to review local changes, a branch, or a PR before it goes to humans.
-argument-hint: "[base-branch]"
+argument-hint: "[base-branch | PR number]"
 disable-model-invocation: true
 ---
 
 # Code Review
 
-One orchestrated review that favors **signal over volume**. The goal is a short list of
-findings a human reviewer will trust — not an exhaustive dump. A review that flags thirty
-things trains the author to ignore all thirty.
-
-**Default base branch:** `main`. If an argument is given, use it instead.
+A review a human can trust without replaying it. Reviewers try to break the change, and a blocking finding survives only when a command shows the failure.
 
 ## Operating principles
 
-1. **Signal first.** A missed nit costs nothing; a false positive costs trust. When in
-   doubt about whether something is a real problem, drop it or mark it low confidence.
-2. **Evidence or silence.** Every Critical/Major finding cites `file:line`, quotes the
-   offending code, and gives a concrete fix. No "consider reviewing…".
-3. **Route, don't blanket.** Review only the concerns the diff actually touches.
-4. **"Nothing blocks" is a valid result.** If a concern is clean, it returns
-   `no_findings`. Do not manufacture concerns to look thorough.
+1. **Proof or it is not blocking.** Critical and Major findings need a command that ran against the real code and printed the failure: a failing test, a repro script, a crafted input, command output. A finding you can only argue for goes under Unproven, with what would prove it.
+2. **Signal over volume.** A missed nit costs nothing; a false positive costs trust. "No verified findings" is a valid result. Do not manufacture concerns to look thorough.
+3. **Fresh eyes.** Reviewers are sub-agents that have not seen your reasoning. Never review the diff yourself in their place.
+4. **Hands off the user's tree.** Reviewers run and write repros only in the review worktree. The review applies no fixes.
 
-## Step 1 — Gather the diff
+## Evidence levels
+
+Every finding carries the highest level it reached:
+
+1. **Asserted** -- someone said so. Never reported.
+2. **Pointed** -- a real `file:line` (or the library's own source) shows the problem.
+3. **Traced** -- the failing path walked step by step, from input to wrong result.
+4. **Ran** -- a command against the real code fails the way the finding says.
+5. **Reproduced** -- the failure shows in the running app. When the repo has a `verify-<app>` skill, use it.
+
+Critical and Major need level 4 or 5. Level 3 goes under Unproven. Design and Comments findings are never blocking: they cap at Minor and need level 2.
+
+## Step 1 -- Scope, intent, spec
+
+**Scope.** Default base branch `main`; an argument replaces it. For a branch, the scope is `git diff <base>...HEAD` plus uncommitted changes. For a PR number, fetch it with `git fetch origin pull/<n>/head` and review that commit against its base. Detect the languages from the changed files.
+
+**Intent.** Restate in two to four plain sentences what the change is for and what must stay true. Build it from the user's message, the commits, the PR description, the plan, and the `hive hc` task the work tracks. If the intent is unclear and the user is present, ask. Otherwise state your assumption in the report.
+
+**Spec.** Look for the document the change implements: a plan or design in `.hive/plans/` or `.hive/designs/` (run `hive drive ls`; Glob does not follow the symlink) that matches the branch or topic, the `hive hc` task, the PR's linked issue, or a path the user gave. With none, report "no spec" and skip the Spec concern.
+
+## Step 2 -- Review worktree
+
+Reviewers need a copy of the change they can run and write into:
 
 ```bash
-git diff <base-branch>...HEAD          # committed changes vs base
-git diff                               # unstaged changes
-git diff --name-only <base-branch>...HEAD
-git diff --name-only
+dir="${TMPDIR:-/tmp}/review-<slug>"
+git worktree add --detach "$dir" <head>        # HEAD, or the fetched PR commit
+git diff HEAD | git -C "$dir" apply            # uncommitted tracked changes (branch scope only)
+git ls-files --others --exclude-standard       # copy these untracked files into "$dir"
 ```
 
-Combine both diffs. Detect the primary language(s) from the changed file extensions —
-this selects the language notes in Step 3.
+Find the repo's test command (`mi --ls`, then the language default), install dependencies in the worktree if it needs them, and run the tests once. Note what already fails: a failure present before any repro is not a finding of this review.
 
-## Step 2 — Classify and route
+A finding is a regression only when its repro passes on the base. When that is in doubt, check it in a second worktree at `git merge-base <base> <head>`. A bug the base already has goes in a one-line Pre-existing list.
 
-Classify the change shape, then pick the concerns to run. State your routing decision
-(activated concerns + one-line reason each) before dispatching.
+## Step 3 -- Route
+
+Classify the change, then pick the concerns. State the routing (each concern and a one-line reason) before you dispatch.
 
 | Change shape | Typical concerns |
 |--------------|------------------|
-| `docs-only` | Comments only (usually skip the rest) |
+| `docs-only` | Comments, Spec (usually skip the rest) |
 | `tests-only` | Tests, Comments |
-| `config/infra` | Correctness (of the config), Security if it touches auth/permissions/CI |
+| `config/infra` | Correctness of the config, Blast radius, Security if it touches auth, permissions, or CI |
 | `product-runtime` | All applicable concerns |
-| `mixed` | Route each area independently |
+| `mixed` | Route each area on its own |
 
-### Always consider
-- **Correctness** — any new/changed logic, error handling, concurrency, I/O, security-sensitive code.
-- **Tests** — any executable change (including CI/build scripts).
+Always run Correctness, Tests, and Blast radius for executable changes, and Spec when a spec exists. Run Design, Comments, and Security when the diff touches their area; never skip Security for auth, secrets, input parsing, path or URL construction, SQL, shell commands, or dependency manifests. When in doubt, include the concern.
 
-### Conditional
-- **Design** — new public APIs, new abstractions, refactors spanning multiple files.
-- **Comments** — any added/modified comments or missing "why" on non-obvious code.
-- **Security** — auth, tokens, secrets, input parsing, URL/path construction, SQL, shell commands, dependency manifests. Never suppress for these.
+## Step 4 -- Dispatch reviewers
 
-**When genuinely uncertain, include the concern.** Omit only when the area is clearly
-absent from the diff.
-
-## Step 3 — Dispatch reviewer sub-agents
-
-Run the activated concerns through the **`diff-reviewer` sub-agent** (forked/clean context,
-tuned to refute-by-default). The `diff-reviewer` agent is defined once and rendered per harness
-(pi: `~/.pi/agent/agents/diff-reviewer.md`; Claude Code: `~/.claude/agents/diff-reviewer.md`).
-
-**Sub-agent dispatch is mandatory — never self-review.** The entire value of this skill is
-fresh eyes: a reviewer that has not seen your reasoning can independently disagree. You,
-the orchestrator, have already rationalized the diff, so your own pass cannot provide that.
-Every review dispatches **at least one** `diff-reviewer` sub-agent. If dispatch genuinely fails
-(agent missing or the tool errors), stop and report that — do not silently downgrade to
-reviewing it yourself.
-
-**Scale the fan-out to the diff — the floor is one, the ceiling is open.** You choose how
-many agents to spawn based on size, complexity, and risk; you do not choose whether to
-spawn any.
+Run the concerns through the `diff-reviewer` sub-agent, defined once and rendered per harness (Claude Code: `~/.claude/agents/diff-reviewer.md`; pi: `~/.pi/agent/agents/diff-reviewer.md`). Every review dispatches at least one. If dispatch fails, stop and report it; do not review it yourself instead.
 
 | Diff shape | Sub-agents |
 |------------|-----------|
-| trivial / docs / one-liner | 1 reviewer covering all activated concerns |
-| small | 1–2 reviewers, batching related concerns |
-| medium | one reviewer per activated concern (parallel) |
-| large / cross-file / risky | per-concern, split further per file/area |
+| trivial, docs, one-liner | 1 reviewer for all concerns |
+| small | 1-2 reviewers, related concerns batched |
+| medium | one reviewer per concern, in parallel |
+| large, cross-file, risky | per concern, split further by file or area |
 
-When uncertain, dispatch **more** agents, not fewer.
+Give each reviewer, in Mode A:
 
-Give each sub-agent ONLY:
+- the concern definition below, pasted in full,
+- the intent from Step 1, and the spec path for the Spec concern,
+- the changed hunks for its concern,
+- the worktree path, the test command, and the tests that already fail,
+- a unique repro prefix, such as `review-correctness-`, for any file it writes.
 
-- the concern definition below (paste the relevant subsection),
-- the changed hunks relevant to that concern (not the whole repo),
-- the language notes for the detected language(s),
-- a one-line statement of the change's intent.
-
-Each sub-agent must return findings in the **Finding schema** (below) or
-`no_findings` / `not_applicable`. Record every dispatched agent (concern + result) — the
-output template's `Reviewers dispatched` block requires it, and a review without it is
-invalid.
+Record every dispatched reviewer and its result for the report.
 
 ### Concern: Correctness
 Find bugs before users do. Trace the happy path, then break the sad paths.
 - Logic: off-by-one, inverted condition, wrong operator, missing case.
 - Errors: swallowed errors, missing context, panics in library code. Logging is not handling.
-- Edge cases: nil/zero/empty, boundaries, overflow, missing map key, cancelled context, very large input.
-- Concurrency: unsynchronized shared state, races, deadlocks, goroutine/task leaks.
-- Resources: unclosed files/connections/bodies; cleanup on every early return.
+- Edge cases: nil, zero, empty, boundaries, overflow, missing map key, cancelled context, very large input.
+- Concurrency: unsynchronized shared state, races, deadlocks, leaked goroutines or tasks.
+- Resources: unclosed files, connections, or bodies; cleanup on every early return.
+Prove each finding with a test or script that calls the changed code with the breaking input.
+
+### Concern: Spec
+Hold the diff against the spec. Quote the spec line for each finding.
+- Requirements the spec asks for that are missing or partial.
+- Behavior the diff adds that the spec did not ask for.
+- Requirements that look implemented but behave wrong. Prove these with a run.
+Missing and unrequested behavior need level 2: the spec line and the `file:line`.
+
+### Concern: Blast radius
+Find what the change breaks outside the diff. Listing callers is not the job; grep does that in a second.
+- Find the one fact the change is safe because of (for example, "this call only drops cache entries that are already dead"). Prove it with a script that runs the real code, or report it as unproven.
+- Look where grep stops: the source of the library at its pinned version and any local patch, wire formats, JSON an API returns, database columns, another language reading the same bytes, feature flags, config, lifecycle and timing order, code a few hops downstream.
+- Report each risk with how it breaks, the `file:line`, how likely and how bad, and the check. List what you checked and cleared.
 
 ### Concern: Security
 Treat every input as hostile until the code proves otherwise.
 - Injection: SQL, shell, and template injection; path traversal from unvalidated input.
-- Secrets: hardcoded credentials; tokens or secrets written to logs, errors, or URLs.
+- Secrets: hardcoded credentials; tokens or secrets in logs, errors, or URLs.
 - Authz: missing or bypassable permission checks on new endpoints, handlers, or commands.
-- Randomness: `math/rand`-style generators used for tokens, ids, or anything guessable.
-- Dependencies: new or changed manifest entries — unpinned versions, unfamiliar packages, install scripts.
-
-### Concern: Design
-Simple beats clever; obvious beats implicit.
-- Boundaries: each unit has one describable responsibility; no upward/circular deps.
-- Naming: names describe what a thing *is*/does honestly; flag `utils`/`helpers`/`manager` vagueness.
-- Abstractions: interfaces/generics justified by ≥2 real consumers, not speculation.
-- Helpers: single-call-site wrappers that only compress syntax → inline them.
-- API surface: default to unexported; hard-to-misuse contracts.
-Only raise design findings that impede change or correctness — not taste.
+- Randomness: predictable generators used for tokens, ids, or anything guessable.
+- Dependencies: new or changed manifest entries, unpinned versions, unfamiliar packages, install scripts.
+Prove with a crafted input against the real code where you can. Never send it to a live external system.
 
 ### Concern: Tests
 Confidence, not coverage percentage.
-- One test per distinct execution path; flag redundant table entries covering the same path.
-- Flag tests that assert on implementation details or mocks (they break on refactor / test nothing).
-- Flag flaky patterns (time.Sleep / real clocks) and missing coverage for new branches.
-- Boundaries only when the code actually has boundary logic.
+- New branches and changed behavior with no test.
+- Tests that assert on mocks or internals, or that pass by construction (the expected value computed the way the code computes it).
+- Flaky patterns: sleeps, real clocks, shared global state.
+Prove a weak test by breaking the code it covers in the worktree and showing the test still passes. Revert that change afterwards.
+
+### Concern: Design
+Simple beats clever; obvious beats implicit. Raise only what impedes change or correctness, never taste.
+- Boundaries: each unit has one describable responsibility; no upward or circular dependencies.
+- Abstractions: interfaces and generics justified by two or more real consumers, not speculation.
+- Wrappers with one caller that only compress syntax: inline them.
+- API surface: unexported by default; contracts hard to misuse.
 
 ### Concern: Comments
 Why over what.
-- Remove comments that restate code, repeat the symbol name, or are decoration.
-- Flag stale comments that no longer match behavior (these are bugs).
-- Flag missing "why" on non-obvious decisions (magic numbers, workarounds, ordering constraints).
-- Fix by renaming, not commenting, where naming is the real issue. Godoc/JSDoc on exported symbols is expected, not noise.
+- Comments that restate code, repeat the symbol name, or decorate.
+- Stale comments that no longer match behavior. These are bugs.
+- Missing "why" on non-obvious decisions: magic numbers, workarounds, ordering constraints.
+Doc comments on exported symbols are expected, not noise.
 
-## Step 4 — Verify findings (always on)
+## Step 5 -- Verify
 
-Before reporting, run an adversarial verification pass to kill plausible-but-wrong findings.
+Do not trust a pasted output. For every level 4 or 5 finding, rerun its exact command in the worktree yourself. Keep the finding when the output shows the failure and the failure breaks the intent. Otherwise drop it, with the reason.
 
-For every finding of severity **Major or Critical**:
-1. Spawn a fresh skeptic sub-agent (use `diff-reviewer` with a refute prompt) given ONLY the
-   finding, the relevant diff hunk, and the concern definition — **not** the original
-   reviewer's reasoning.
-2. The skeptic's job is to *refute* the finding and defaults to `refuted: true` when
-   uncertain. It returns `{ refuted: boolean, reason: string }`.
-3. **Drop** any finding the skeptic refutes; record it in a `Dropped in verification`
-   list with the skeptic's reason so a human can reinstate it if wanted.
+For a level 3 finding a reviewer rated Major or Critical, spawn a fresh `diff-reviewer` in Mode B with only the finding, its hunk, and the concern definition. A refuted finding goes to Dropped; a surviving one goes to Unproven.
 
-Findings rated **Minor** or below skip verification (verifying them costs more than they're worth).
+Merge findings that share a root cause. Minor and Nit findings skip verification.
 
-## Step 5 — Synthesize and report
+## Step 6 -- Report
 
-Merge reviewer outputs into one review:
-- Deduplicate findings at the same location; keep one owning concern, list secondary
-  concerns only if they add explanatory value.
-- Prefer one precise finding over several variants of the same issue.
-- Order by severity, then confidence.
-
-### Finding schema
-Each finding: **severity**, **confidence** (high/medium/low), `file:line`, one-line
-problem, why it matters, concrete fix.
-
-### Severity
-| Level | Meaning | Blocks merge? |
-|-------|---------|---------------|
-| **Critical** | Bug, data loss, race, security hole | Yes |
-| **Major** | Likely-wrong behavior or significant design/test gap | Yes, unless justified |
-| **Minor** | Improvement, better naming, missing error context | Recommended |
-| **Nit** | Style, optional cleanup | No |
-
-Default to the lower severity when uncertain. A misclassified Critical erodes trust.
-
-### Output template
 ```markdown
-# Code Review: <branch> → <base>
+# Code Review: <branch> -> <base>
 
-_Concerns: [activated concerns + one-line reason each]_
-_Reviewers dispatched: [each `diff-reviewer` sub-agent + its concern(s) + result, e.g. `Correctness → findings`, `Design → no_findings`]_
+**Intent:** <the restatement>
+**Spec:** <path or task id, or "none">
+_Concerns: <each concern and a one-line reason>_
+_Reviewers dispatched: <each reviewer, its concerns, and its result>_
 
-[2-3 sentence overview: what the branch does, overall quality, merge readiness.]
-
----
+<two or three sentences: what the change does and whether it is ready to merge>
 
 ### Critical
-1. **`auth.go:45` — Swallowed error hides failure** (confidence: high)
-   - `if err != nil { log.Println(err) }` — caller sees success on failure.
+1. **`auth.go:45` -- Swallowed error hides failure** (level 4, verified)
+   - Problem and why it matters.
+   - Proof: `go test ./auth -run TestCreateUserError` printed `expected error, got nil`; the intent requires the caller to see the error.
    - Fix: `return fmt.Errorf("creating user: %w", err)`
 
 ### Major
-...
-
 ### Minor
-...
-
 ### Nits
-...
 
----
+### Unproven
+<level 3 findings: the traced path, and the command that would prove or clear it>
 
-### Test Coverage
-[Are new code paths covered? Gaps or redundant tests?]
+### Blast radius
+<the one fact the change is safe because of, its level, and its proof or "unproven"; risks are findings above; then what was checked and cleared>
 
-### Dropped in verification
-[Findings a skeptic refuted, with reason — omit the section if none.]
+### Pre-existing
+<one line each; omit when empty>
 
----
+### Dropped
+<findings dropped in verification, with the reason; omit when empty>
+
+### Before you merge
+<the cheapest repro or test that guards the worst finding, with its path in the worktree>
 
 ### Verdict
-**[APPROVE / REQUEST CHANGES / NEEDS DISCUSSION]** — [one sentence]
-
-Critical: N | Major: N | Minor: N | Nits: N
+**APPROVE / REQUEST CHANGES / NEEDS DISCUSSION** -- one sentence.
+Critical: N | Major: N | Minor: N | Nits: N | Unproven: N
 ```
 
-## Step 6 — Save the review
+Default to the lower severity when unsure.
 
-Save a copy to `.hive/reviews/YYYY-MM-DD-<slug>.md` (slug from branch/scope). If `.hive/`
-is not a symlink, run `hive drive init` first — never create it as a plain directory. Always
-use the lowercase `reviews/` directory so tooling can aggregate review feedback consistently.
+| Severity | Meaning | Blocks merge? |
+|-------|---------|---------------|
+| **Critical** | Bug, data loss, race, security hole | Yes |
+| **Major** | Wrong behavior, spec gap, or test gap that hides a bug | Yes, unless justified |
+| **Minor** | Improvement, naming, missing error context, design | Recommended |
+| **Nit** | Style, optional cleanup | No |
 
-Include frontmatter:
+## Step 7 -- Save and clean up
+
+Copy the repro scripts worth keeping into the report's "Before you merge" section. Then remove the worktrees with `git worktree remove --force "$dir"`.
+
+Save the report to `.hive/reviews/YYYY-MM-DD-<slug>.md` (slug from the branch or scope). If `.hive` is not a symlink, run `hive drive init` first; never create it as a plain directory. Use the lowercase `reviews/` directory so tooling can aggregate reviews.
+
 ```yaml
 ---
 type: review
@@ -238,13 +219,9 @@ tags: [component, topic]
 ---
 ```
 
-## Step 7 — Post inline in Hive Desktop
+## Step 8 -- Post inline in Hive Desktop
 
-In a hive session, also put the verified findings on the branch diff. Hive Desktop shows them
-inline in the session's Changes view. The user dismisses the ones they disagree with and sends
-the rest, with their own comments, to the session's agent. Do this only when the review covered
-the session's own branch against its base. Skip it for a PR or another diff, because the line
-numbers will not match.
+In a hive session, also put the findings on the branch diff. Hive Desktop shows them inline in the session's Changes view. The user dismisses the ones they disagree with and sends the rest, with their own comments, to the session's agent. Do this only when the review covered the session's own branch against its base. Skip it for a PR or another diff, because the line numbers will not match.
 
 ```bash
 hive review diff put <<'JSON'
@@ -253,19 +230,16 @@ hive review diff put <<'JSON'
   "summary": "<overview sentence> Verdict: REQUEST CHANGES.",
   "comments": [
     {"path": "auth.go", "startLine": 45, "severity": "issue",
-     "text": "Swallowed error: the caller sees success on failure. Fix: return fmt.Errorf(\"creating user: %w\", err)"}
+     "text": "Swallowed error: the caller sees success on failure. Proof: go test ./auth -run TestCreateUserError printed 'expected error, got nil'. Fix: return fmt.Errorf(\"creating user: %w\", err)"}
   ]
 }
 JSON
 ```
 
 - Set `author` to your agent's name (`claude`, `pi`, ...).
-- Write one comment per finding. Map severity: Critical and Major to `issue`, Minor to
-  `suggestion`, Nit to `note`. Leave out findings dropped in verification.
-- Line numbers count the branch's version of the file. Add `endLine` for a range. For removed
-  code, add `"startSide": "deletions"` and use the base's line numbers. For a whole-file
-  comment, use `"kind": "file"` with no lines.
-- Write `text` for the agent that will act on it: the problem, why it matters, and the fix.
+- Write one comment per finding. Map severity: Critical and Major to `issue`, Minor to `suggestion`, Nit and Unproven to `note`. Start an Unproven comment with "Unproven:". Leave out dropped and pre-existing findings.
+- Line numbers count the branch's version of the file. Add `endLine` for a range. For removed code, add `"startSide": "deletions"` and use the base's line numbers. For a whole-file comment, use `"kind": "file"` with no lines.
+- Write `text` for the agent that will act on it: the problem, the proof, and the fix.
 - A later put from the same `author` replaces the earlier review, so always put the whole review.
 - A refused review stores nothing and lists each comment to fix. Fix those and put again.
 - The `diff_review_put` tool on the `hive-drive` MCP server takes the same fields plus `caller`.

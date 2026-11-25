@@ -38,8 +38,10 @@ choice with real alternatives), stop and tell the user to use `/research` +
 
 Run `~/.claude/skills/research/scripts/doc-meta.sh` for frontmatter values.
 
-Write to `.hive/plans/YYYY-MM-DD-short-description.md`. Keep it short. Every file in
-the Files table has a line reference. Where something is unknown, write
+Write to `.hive/plans/YYYY-MM-DD-short-description.md`. Keep it short. List the files
+in a `hive-tree` fence, and start every `note` with a line reference (`line 42: ...`).
+`~/.claude/skills/hive-drive/references/fences.md` has the format;
+read it before you write the fence. Where something is unknown, write
 `[GAP: description]` rather than guessing. Code blocks show contracts only
 (signatures and types, bodies elided as `...`).
 
@@ -61,9 +63,12 @@ tags: [relevant tags]
 
 ## Files
 
-| File | Change |
-|------|--------|
-| `path/to/file.ext:line` | What changes and why |
+```hive-tree
+files:
+  - path: path/to/file.ext
+    status: modified
+    note: "line 42: what changes and why"
+```
 
 ## What We're NOT Changing
 

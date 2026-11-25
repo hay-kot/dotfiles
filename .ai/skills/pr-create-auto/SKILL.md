@@ -97,6 +97,17 @@ Also render, don't dump: use ``` fences for code and logs, backticks for
 identifiers and paths, `> ` for quoted output, and a Markdown table if you have
 tabular data. Reference issues and PRs as `#12` so GitHub links them.
 
+**No Drive components.** Plan and research docs in `.hive/` can hold `hive-tree`,
+`hive-calls`, and `hive-forge` fences and `[[wikilinks]]`. GitHub and Gitea show
+the fences as raw YAML and the wikilinks as bracket text. Do not carry them into the
+body:
+
+- `hive-tree`: drop it. A file list is diff narration.
+- `hive-forge`: write the items as `#12` or `owner/repo#12` refs.
+- `hive-calls`: write the one call path that matters in a sentence, if any.
+- `[[wikilinks]]`: drop them. Reviewers cannot open a Drive path.
+- `mermaid`: keep it if the diagram helps. GitHub renders it.
+
 ### Sentence shape
 
 One idea per sentence, in the order a reader needs it. Plain and a little long

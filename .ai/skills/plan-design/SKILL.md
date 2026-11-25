@@ -6,7 +6,7 @@ description: >
   short question rounds and writes a design to .hive/designs/. Use when the user
   wants to define the UX, success criteria, or scope of a feature before technical
   planning. Not for team proposal docs (/design-doc) or technical design (/plan-code).
-allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),AskUserQuestion,Read,Write,Edit"
+allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),AskUserQuestion,Read,Write,Edit,Skill"
 ---
 
 # Plan Design
@@ -34,6 +34,9 @@ Work in rounds. Each round:
   Ask only what needs the user's judgment: who it is for, which flow matters most,
   trade-offs between options, where scope ends. Never ask what the input or the
   product already answers.
+- When a question turns on how something behaves or feels in use (a flow, a state
+  model, a layout in the real app), run the `prototype` skill and show the user
+  what you observed instead of asking in the abstract.
 - When you have a recommendation, make it the first option. When an answer
   contradicts an earlier one or grows the scope, say so once, then go with the
   user's call.
@@ -72,6 +75,11 @@ write placeholders.
 Write to `.hive/designs/YYYY-MM-DD-description.md`. Leave out sections with nothing
 in them. Open Questions holds only what the user chose to defer.
 
+Link input docs in the body with `[[wikilinks]]` (`[[research/2026-11-20-auth-flow]]`).
+Show the tickets and PRs behind the design as a `hive-forge` fence, fetched when you
+write. `~/.claude/skills/hive-drive/references/fences.md` has
+the format.
+
 ````markdown
 ---
 type: design
@@ -89,7 +97,9 @@ updates:
 
 ## Problem
 
-[Who hits it, what they do today, why that is not good enough]
+[Who hits it, what they do today, why that is not good enough. Link the research as
+[[research/YYYY-MM-DD-description]] and list the source issues in a `hive-forge`
+fence.]
 
 ## Experience
 

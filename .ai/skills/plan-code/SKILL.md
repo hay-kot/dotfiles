@@ -6,7 +6,7 @@ description: >
   .hive/plans/. Use when the user wants to plan how to build something before
   implementing. Takes a design from /plan-design, a research doc, a ticket, or a
   plain description as input; none is required. For small changes use /plan-mini.
-allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),AskUserQuestion,Read,Write,Edit,Task(*)"
+allowed-tools: "Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(git rev-parse:*),Bash(hive:*),Bash(~/.claude/skills/research/scripts/doc-meta.sh),AskUserQuestion,Read,Write,Edit,Task(*),Skill"
 ---
 
 # Plan Code
@@ -42,6 +42,12 @@ Post a short summary in chat:
 - **Decisions** -- each with its rationale and the alternatives you rejected
 - **Open questions** -- anything you would otherwise have to guess
 
+Settle questions a run can answer before you ask them. When an open question turns
+on how something behaves (a library's edge case, a timing, whether a state model
+holds up, which layout reads better), run the `prototype` skill and bring the
+evidence and your recommendation instead of the question. Record the verdict under
+Decisions. Ask only product and preference calls that no run can settle.
+
 Ask the open questions with the question tool (AskUserQuestion / ask_user_question),
 up to 3 at a time, with your recommendation as the first option. Ask only what the
 inputs and code cannot answer. Before writing, check: what would an implementer,
@@ -63,6 +69,11 @@ Write to `.hive/plans/YYYY-MM-DD-description.md` using the template below.
   design from `/plan-design` exists, use its success criteria as input for what to
   verify; no one-to-one mapping is needed. Unit tests alone don't prove the change
   works -- include integration or e2e checks where the repo has them.
+- Use the Drive components in `~/.claude/skills/hive-drive/references/fences.md`:
+  `hive-tree` for Layout, `hive-calls` for a call path in Current State or
+  Architecture, `hive-forge` for linked issues and PRs, `mermaid` for component
+  graphs, and `[[wikilinks]]` for input docs. Read the reference before the first
+  fence; a body that does not validate renders as an error.
 - Leave out sections that do not apply. A small change may need only Program
   Design, Layout, and Verification.
 - The plan has no open questions. Anything unresolved goes back to the user.
@@ -126,7 +137,9 @@ updates:
 
 ## Current State
 
-[What exists and the constraints that matter, with file:line refs]
+[What exists and the constraints that matter, with file:line refs. When the change
+hangs off a call path, show it as a `hive-calls` fence with `focus` on the call
+that changes.]
 
 ## Architecture
 
@@ -158,12 +171,18 @@ to reuse.]
 
 ## Layout
 
-```
-path/to/pkg/
-  service.go      -- [purpose]
-  service_test.go -- [what it covers]
-  store/
-    sql.go        -- [purpose]
+```hive-tree
+root: path/to/pkg
+files:
+  - path: service.go
+    status: modified
+    note: "[purpose]"
+  - path: service_test.go
+    status: modified
+    note: "[what it covers]"
+  - path: store/sql.go
+    status: added
+    note: "[purpose]"
 ```
 
 ## Decisions
@@ -186,4 +205,14 @@ path/to/pkg/
 ## References
 
 - Similar implementation: `path/to/file.ext:line`
+- Inputs: [[designs/YYYY-MM-DD-description]], [[research/YYYY-MM-DD-description]]
+
+```hive-forge
+snapshot: YYYY-MM-DDTHH:MM
+items:
+  - kind: issue
+    ref: owner/repo#123
+    title: "[issue title]"
+    state: open
+```
 ````

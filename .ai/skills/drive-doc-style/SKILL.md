@@ -18,6 +18,11 @@ Use this for docs where structure helps the reader think: trade-off comparisons,
 data-flow diagrams, failure analysis, decision records. For short notes, plain
 markdown is fine.
 
+Markdown docs already render file trees (`hive-tree`), call paths (`hive-calls`),
+PR and issue cards (`hive-forge`), mermaid diagrams, and `[[wikilinks]]`, and HTML
+docs render none of them (see `references/fences.md` in the `hive-drive` skill).
+When those carry the doc, write markdown instead of HTML.
+
 ## Workflow
 
 1. Copy `assets/doc.html` (in this skill's directory) to the Drive path. Edit

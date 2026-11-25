@@ -84,6 +84,12 @@ Keep it to the facts the planner needs -- usually under 300 lines. Every finding
 a `file:line` or URL. Leave out sections that have nothing in them. Write the TL;DR
 last.
 
+Use the Drive components in `~/.claude/skills/hive-drive/references/fences.md`:
+a `hive-calls` fence for a call path or data flow (`at: file:line` on every call), a
+`hive-tree` fence for where an area's code lives, a `hive-forge` fence for related
+PRs and issues you found with `gh`, and `[[wikilinks]]` for other `.hive/` docs.
+Read the reference before the first fence.
+
 ```markdown
 ---
 type: research
@@ -119,6 +125,15 @@ updates:
 ### [Component/Area]
 
 - How it works, with `file.ext:line` references and connections to other areas
+
+```hive-calls
+name: EntryPoint
+at: path/to/file.ext:line
+calls:
+  - name: Callee
+    at: path/to/other.ext:line
+    note: "[what it does in this flow]"
+```
 
 ## Patterns and Conventions
 
