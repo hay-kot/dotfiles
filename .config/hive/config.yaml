@@ -72,6 +72,11 @@ rules:
   - pattern: ".*[:/]colonyops/.*"
     commands:
       - mise trust
+  # pra uploads PR assets for colonyops/hive, but the skill stays personal:
+  # link it in and hide it from git instead of committing it.
+  - pattern: '.*[:/]colonyops/hive(\.git)?$'
+    commands:
+      - ~/.config/hive/scripts/link-skill.sh ~/code/repos/dotfiles/src/pr-record pr-assets
   - pattern: ".*[:/]colonyops/conductor"
     commands:
       - bun install

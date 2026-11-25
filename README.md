@@ -264,7 +264,7 @@ Keys use hive-style partitions: `type=pr/host=<host>/owner=<owner>/repo=<repo>/b
 ### Enable a repo
 
 1. Add a line under `repos:` in `.config/prassets/config.yaml`: `github.com/<owner>/<repo>: *pr-assets`.
-2. Copy `src/pr-record/SKILL.md` to `.claude/skills/pr-assets/SKILL.md` in that repo.
+2. Copy `src/pr-record/SKILL.md` to `.claude/skills/pr-assets/SKILL.md` in that repo. For a repo where only I use pra, commit nothing there: add a hive rule that runs `.config/hive/scripts/link-skill.sh`, as the colonyops/hive rule in `.config/hive/config.yaml` does. Each new or recycled session links the skill and hides it from git in `.git/info/exclude`.
 3. Run `pra config check` in a checkout of the repo.
 
 ### Set up the bucket (once)
