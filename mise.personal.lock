@@ -42,6 +42,6 @@ url = "https://gitea.kotel.app/hay-kot/infra/releases/download/ops%2Fv0.26.1/inf
 url_api = "https://gitea.kotel.app/attachments/bc735348-7486-4d4f-9d74-9390c7c5bda8"
 
 [[tools."npm:@posthog/cli"]]
-version = "0.20.0"
+version = "0.20.1"
 backend = "npm:@posthog/cli"
 specifiers = ["latest"]
