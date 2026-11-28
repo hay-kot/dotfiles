@@ -332,9 +332,9 @@ backend = "go:github.com/tmc/json-to-struct"
 specifiers = ["v0.1.0"]
 
 [[tools."go:github.com/twpayne/go-jsonstruct/v3/cmd/gojsonstruct"]]
-version = "3.3.0"
+version = "3.4.0"
 backend = "go:github.com/twpayne/go-jsonstruct/v3/cmd/gojsonstruct"
-specifiers = ["v3.3.0"]
+specifiers = ["v3.4.0"]
 
 [[tools."go:golang.org/x/perf/cmd/benchstat"]]
 version = "0.0.0-20261009192801-be2c69fb417e"
